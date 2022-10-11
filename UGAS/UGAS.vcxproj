@@ -128,7 +128,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ProjectTest.cpp" />
+    <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp" />
+    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp" />
+    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Parameters\Parameters.cpp" />
+    <ClCompile Include="ProjectTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="UGAS.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lib\GimbalSerial\CRC\CRC.h" />
+    <ClInclude Include="lib\GimbalSerial\GimbalSerial.h" />
+    <ClInclude Include="lib\Common\Color.h" />
+    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.h" />
+    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.h" />
+    <ClInclude Include="lib\GimbalSerial\Packages.h" />
+    <ClInclude Include="Parameters\UsingModules.h" />
+    <ClInclude Include="UGAS_Headers.h" />
+    <ClInclude Include="lib\Common\UniversalStruct.h" />
+    <ClInclude Include="Parameters\DebugSettings.h" />
+    <ClInclude Include="Parameters\Parameters.h" />
+    <ClInclude Include="UGAS.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

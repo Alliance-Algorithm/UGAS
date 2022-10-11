@@ -13,10 +13,69 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Parameters">
+      <UniqueIdentifier>{48af17b1-4825-4fe0-96e5-719e644f3437}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ProjectTest.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UGAS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Parameters\Parameters.cpp">
+      <Filter>Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UGAS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Parameters\Parameters.h">
+      <Filter>Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Parameters\DebugSettings.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\Color.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\UniversalStruct.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UGAS_Headers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\GimbalSerial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\CRC\CRC.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\Packages.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Parameters\UsingModules.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

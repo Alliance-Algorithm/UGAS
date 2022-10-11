@@ -6,19 +6,19 @@ Developer(s): 21 THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Class public functions:
 - initial:
-	initialize for UGAS
+	Initialize for UGAS
 - always:
-	work progress in forever loop
+	Working process in an endless loop
 */
-#include <opencv.hpp>
+#include "UGAS_Headers.h"
 
 // main progress for UGAS
 class UGAS {
 private:
-
+	serial::GimbalSerial& _com;
 public:
-	UGAS() {}
-	virtual ~UGAS() {}
+	UGAS();
+	virtual ~UGAS();
 
 	void initial();
 	void always();
