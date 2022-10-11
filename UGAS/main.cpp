@@ -4,7 +4,15 @@
 UGAS ugas;
 
 int main() {
-	ugas.initial();
-	ugas.always();
+	try {
+		ugas.initial();
+		ugas.always();
+	}
+	catch (...) {
+		// 自我重启
+
+		// 还没实现haha
+
+	}
 	return 0;
 }
