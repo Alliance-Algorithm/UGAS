@@ -13,6 +13,8 @@ Header Functions:
 
 
 /// Img input			 图像输入
+#define VIDEO_VAR_TYPE	int				// 视频读入参数类型
+#define VIDEO_VAR		0				// 视频读入参数
 
 
 /// constant vars		 常值变量

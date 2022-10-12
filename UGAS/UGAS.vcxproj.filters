@@ -39,6 +39,15 @@
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\ImgCapture\Implementations\CVImgCapture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -75,6 +84,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgCapture\ImgCapture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgCapture\Implementations\CVImgCapture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

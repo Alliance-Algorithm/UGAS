@@ -25,6 +25,7 @@ void ParametersInit(const Team team);
 
 /* Univertial Parameters */
 extern Team team;
+extern VIDEO_VAR_TYPE video;
 
 /* LightBar Parameters */
 

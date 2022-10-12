@@ -32,6 +32,7 @@ void ParametersInit(const Team team) {
 
 /* Univertial Parameters */
 Team team = Blue;
+VIDEO_VAR_TYPE video = VIDEO_VAR;
 
 /* LightBar Parameters */
 

@@ -15,7 +15,9 @@ Class public functions:
 // main progress for UGAS
 class UGAS {
 private:
-	serial::GimbalSerial& _com;
+	serial::GimbalSerial&	_com;
+	ImgCapture&				_imgCapture;
+
 public:
 	UGAS();
 	virtual ~UGAS();

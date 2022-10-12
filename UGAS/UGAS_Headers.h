@@ -17,4 +17,4 @@ Header Functions:
 #include "Parameters/Parameters.h"
 #include "Parameters/UsingModules.h"
 #include "lib/GimbalSerial/GimbalSerial.h"
-
+#include "lib/ImgCapture/ImgCapture.h"

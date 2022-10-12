@@ -128,6 +128,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\CVImgCapture.cpp" />
     <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp" />
@@ -136,16 +138,21 @@
     <ClCompile Include="ProjectTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp" />
     <ClCompile Include="UGAS.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\CVImgCapture.h" />
     <ClInclude Include="lib\GimbalSerial\CRC\CRC.h" />
     <ClInclude Include="lib\GimbalSerial\GimbalSerial.h" />
     <ClInclude Include="lib\Common\Color.h" />
     <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.h" />
     <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.h" />
     <ClInclude Include="lib\GimbalSerial\Packages.h" />
+    <ClInclude Include="lib\ImgCapture\ImgCapture.h" />
     <ClInclude Include="Parameters\UsingModules.h" />
+    <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h" />
     <ClInclude Include="UGAS_Headers.h" />
     <ClInclude Include="lib\Common\UniversalStruct.h" />
     <ClInclude Include="Parameters\DebugSettings.h" />
