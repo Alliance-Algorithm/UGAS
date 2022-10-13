@@ -1,4 +1,12 @@
 #pragma once
+/*
+Creation Date: 2022/10/13
+Latest Update: 2022/10/13
+Developer(s): 21-THY
+(C)Copyright: NJUST.Alliance - All rights reserved
+Header Functions:
+- 声明并实现所有通用计算辅助函数
+*/
 #include <opencv.hpp>
 #include "../UniversalStruct.h"
 
