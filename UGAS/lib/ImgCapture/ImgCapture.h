@@ -2,7 +2,7 @@
 /*
 Creation Date: 2022/10/12
 Latest Update: 2022/10/12
-Developer(s): 21 THY
+Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
 - 定义获取图像类的通用接口

@@ -1,8 +1,8 @@
 #pragma once
 /*
-Creation Date: 2022/10/11
-Latest Update: 2022/10/11
-Developer(s): 21 THY
+Creation Date: 2022/10/13
+Latest Update: 2022/10/13
+Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
 - 提供一个暂时充数的实现，就叫 ImgPretreat Ver 1.0

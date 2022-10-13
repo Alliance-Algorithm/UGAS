@@ -2,7 +2,7 @@
 /*
 Creation Date: 2022/10/11
 Latest Update: 2022/10/11
-Developer(s): 21 THY
+Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
 - 定义串口数据包具体内容

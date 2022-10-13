@@ -1,4 +1,12 @@
 #pragma once
+/*
+Creation Date: 2022/10/13
+Latest Update: 2022/10/13
+Developer(s): 21-THY 21-YY
+(C)Copyright: NJUST.Alliance - All rights reserved
+Header Functions:
+- 提供一些常用的基本颜色BGR值
+*/
 #include <opencv.hpp>
 using cv::Scalar;
 

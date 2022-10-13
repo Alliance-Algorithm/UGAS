@@ -1,4 +1,12 @@
 #pragma once
+/*
+Creation Date: 2022/10/11
+Latest Update: 2022/10/11
+Developer(s): 21-THY
+(C)Copyright: NJUST.Alliance - All rights reserved
+Header Functions:
+- 提供CRC8，CRC16校验码计算方法
+*/
 #include <cstdlib>
 #include <cstdint>
 
