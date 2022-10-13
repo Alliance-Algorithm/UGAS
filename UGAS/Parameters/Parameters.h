@@ -26,6 +26,15 @@ void ParametersInit(const Team team);
 /* Univertial Parameters */
 extern Team team;
 extern VIDEO_VAR_TYPE video;
+extern int frameWidth, frameHeight;
+
+
+/* Pretreat Parameters */
+extern int BHmin, BHmax, BSmin, BSmax, BVmin, BVmax;
+extern int RHminL, RHmaxL, RHminR, RHmaxR,
+				RSmin, RSmax, RVmin, RVmax;
+extern int closeCoreSize;
+
 
 /* LightBar Parameters */
 

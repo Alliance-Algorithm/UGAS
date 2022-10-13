@@ -10,7 +10,7 @@ Header Functions:
 
 /// debug state switches 调试开关
 #define       DEBUG_PARA 1				// 动态调参拖动条窗口
-
+#define   PRETREAT_DEBUG 0				// 显示预处理后的图像
 
 /// Img input			 图像输入
 #define VIDEO_VAR_TYPE	int				// 视频读入参数类型

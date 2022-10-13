@@ -17,6 +17,7 @@ class UGAS {
 private:
 	serial::GimbalSerial&	_com;
 	ImgCapture&				_imgCapture;
+	ImgPretreat&			_pretreater;
 
 public:
 	UGAS();

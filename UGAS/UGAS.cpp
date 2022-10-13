@@ -4,7 +4,8 @@ using namespace cv;
 
 UGAS::UGAS() :
 	_com(*new GIMBAL_SERIAL()),
-	_imgCapture(*new IMG_CAPTURE())
+	_imgCapture(*new IMG_CAPTURE()),
+	_pretreater(*new IMG_PRETREAT(_com))
 {
 	_com.Open(SERIAL_PORT);
 	_com.RecvGimbalData();

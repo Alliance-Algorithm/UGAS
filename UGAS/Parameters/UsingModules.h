@@ -10,6 +10,8 @@ Header Functions:
 */
 #include "../lib/GimbalSerial/Implementations/Windows/WindowsGimbalSerial.h"
 #include "../lib/ImgCapture/Implementations/CVVideoCapture.h"
+#include "../lib/ImgPretreat/Implementations/ImgPretreat_V1.h"
 
 #define GIMBAL_SERIAL	serial::WindowsGimbalSerial
 #define IMG_CAPTURE		CVVideoCapture
+#define IMG_PRETREAT	ImgPretreat_V1

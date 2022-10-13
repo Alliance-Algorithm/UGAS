@@ -18,3 +18,4 @@ Header Functions:
 #include "Parameters/UsingModules.h"
 #include "lib/GimbalSerial/GimbalSerial.h"
 #include "lib/ImgCapture/ImgCapture.h"
+#include "lib/ImgPretreat/ImgPretreat.h"
