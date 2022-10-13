@@ -51,6 +51,12 @@
     <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Common\UniversalFunctions\UniversalFunctions.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -105,6 +111,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ArmorFinder\ArmorIdentifier.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\UniversalFunctions\UniversalFunctions.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\NumberIdentifier.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NullNumberIdentifier.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -26,6 +26,7 @@ void ParametersInit(const Team team);
 /* Univertial Parameters */
 extern Team team;
 extern VIDEO_VAR_TYPE video;
+extern NUM_PARA_TYPE numberIdPara;
 extern int frameWidth, frameHeight;
 
 
@@ -37,9 +38,13 @@ extern int closeCoreSize;
 
 
 /* LightBar Parameters */
+extern int minLightRatio, maxLightRatio;
+extern int minLightAngle, maxLightAngle;
 
 
 /* Armor Parameters */
+extern double maxArmorLightRatio, maxdAngle,
+	maxMalposition, maxLightDy, bigArmorDis;
 
 
 /* Buff Parameters */

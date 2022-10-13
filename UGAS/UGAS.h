@@ -18,6 +18,7 @@ private:
 	serial::GimbalSerial&	_com;
 	ImgCapture&				_imgCapture;
 	ImgPretreat&			_pretreater;
+	ArmorIdentifier&		_armorIdentifier;
 
 public:
 	UGAS();

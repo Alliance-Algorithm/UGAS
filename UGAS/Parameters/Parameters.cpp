@@ -33,6 +33,7 @@ void ParametersInit(const Team team) {
 /* Univertial Parameters */
 Team team = Blue;
 VIDEO_VAR_TYPE video = VIDEO_VAR;
+NUM_PARA_TYPE numberIdPara = NUM_PARA;
 int frameWidth = 0, frameHeight = 0;
 
 
@@ -45,9 +46,13 @@ int closeCoreSize = 17;
 
 
 /* LightBar Parameters */
+int minLightRatio = 3, maxLightRatio = 20;
+int minLightAngle = 0, maxLightAngle = 40;
 
 
 /* Armor Parameters */
+double maxArmorLightRatio = 1.5, maxdAngle = 9.5, \
+	maxMalposition = 0.7, maxLightDy = 0.9, bigArmorDis = 5.9;
 
 
 /* Buff Parameters */
