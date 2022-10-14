@@ -22,7 +22,7 @@ void ImgPretreat_V1::GetPretreated(Img& img) {
 #endif
 		Mat closeCore = getStructuringElement(MORPH_RECT, Size(closeCoreSize | 1, closeCoreSize | 1));
 	morphologyEx(img, img, MORPH_CLOSE, closeCore);
-#if PRETREAT_DEBUG == 1
+#if DEBUG_PRETREAT == 1
 	imshow("Pretreated", img);
 	waitKey(1);
 #endif

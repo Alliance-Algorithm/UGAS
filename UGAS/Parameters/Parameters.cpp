@@ -15,19 +15,41 @@ void DebugImg(const cv::String& winname, cv::InputArray mat) {
 #endif
 
 void ParametersInit(const Team team) {
-	// Special init for different team
-	switch (team)
-	{
-	case Red:
-
+#if DEBUG_PARA == 1
+	/// Special init for different team
+	switch (team) {
+	case Red: // ===== BULE Light =====
+		AddTrackbar("BHmin", &BHmin, 180);
+		AddTrackbar("BHmax", &BHmax, 180);
+		AddTrackbar("BSmin", &BSmin, 255);
+		AddTrackbar("BSmax", &BSmax, 255);
+		AddTrackbar("BVmin", &BVmin, 255);
+		AddTrackbar("BVmax", &BVmax, 255);
 		break;
-	case Blue:
-
+	case Blue: // ===== RED Light =====
+		AddTrackbar("RHminL", &RHminL, 180);
+		AddTrackbar("RHmaxL", &RHmaxL, 180);
+		AddTrackbar("RHminR", &RHminR, 180);
+		AddTrackbar("RHmaxR", &RHmaxR, 180);
+		AddTrackbar("RSmin", &RSmin, 255);
+		AddTrackbar("RSmax", &RSmax, 255);
+		AddTrackbar("RVmin", &RVmin, 255);
+		AddTrackbar("RVmax", &RVmax, 255);
 		break;
 	default: throw "Unkown Team Id!";
 	}
-	// Universal init
 
+	/// Universal init
+	// LightBar Parameters
+	AddTrackbar("closeCoreSize", &closeCoreSize, 50);
+	AddTrackbar("minLightRatio", &minLightRatio, 255);
+	AddTrackbar("maxLightRatio", &maxLightRatio, 255);
+	AddTrackbar("minLightAngle", &minLightAngle, 180);
+	AddTrackbar("maxLightAngle", &maxLightAngle, 180);
+	// Armor Parameters
+
+
+#endif
 }
 
 /* Univertial Parameters */
