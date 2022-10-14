@@ -20,7 +20,10 @@ Header Functions:
 #define VIDEO_VAR		"resources/Red.mp4"	// 视频读入
 #define NUM_PARA_TYPE	void*				// 数字识别参数类型
 #define NUM_PARA		nullptr				// 数字识别参数
+
+/// debug var			 调试变量
 #define DEFAULT_TEAM	Blue				// 虚拟云台队伍颜色
+
 
 /// constant vars		 常值变量
 #define SERIAL_PORT		"\\\\.\\COM3"		// 串口逻辑名

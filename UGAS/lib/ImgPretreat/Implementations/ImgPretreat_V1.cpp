@@ -10,12 +10,13 @@ void ImgPretreat_V1::GetPretreated(Img& img) {
 	if (_com.team == ((int)Red ^ IN_STATE(_com.flag, STATE_BUFF)))
 		inRange(img, Scalar(BHmin, BSmin, BVmin), Scalar(BHmax, BSmax, BVmax), img);
 	else { // 红色HSV的H色度刚好分布在色度条两头，得分开inRange然后合并（好麻烦）
-		Mat redL, redR;
-		inRange(img, Scalar(RHminL, RSmin, RVmin), Scalar(RHmaxL, RSmax, RVmax), redL);
-		inRange(img, Scalar(RHminR, RSmin, RVmin), Scalar(RHmaxR, RSmax, RVmax), redR);
-		static_cast<Mat>(img) = redL | redR;
+		Mat tmp;
+		inRange(img, Scalar(RHminL, RSmin, RVmin), Scalar(RHmaxL, RSmax, RVmax), tmp);
+		inRange(img, Scalar(RHminR, RSmin, RVmin), Scalar(RHmaxR, RSmax, RVmax), img);
+		img |= tmp;
 	}
 	threshold(img, img, 0, 255, THRESH_BINARY);
+
 #if DEBUG_PARA == 0
 	static // 非调试模式设置静态内核
 #endif

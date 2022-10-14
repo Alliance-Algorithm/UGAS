@@ -49,8 +49,6 @@ void UGAS::always() {
 			_pretreater.GetPretreated(img);
 			_armorIdentifier.Identify(img, armors);
 
-			
-
 		}
 		catch (const char* str) {
 			cout << str;

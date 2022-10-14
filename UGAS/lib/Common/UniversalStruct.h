@@ -16,6 +16,9 @@ typedef unsigned long long TimeStamp;
 class MatWithTimeStamp :public cv::Mat {
 public:
 	TimeStamp timeStamp;
+
+	MatWithTimeStamp() {}
+	MatWithTimeStamp(const Mat& img) :Mat(img) {}
 };
 typedef MatWithTimeStamp Img;
 
