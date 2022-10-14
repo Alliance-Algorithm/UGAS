@@ -45,7 +45,7 @@ public:
 		points.push_back(right.bottom); points.push_back(right.top);
 		if (_id) id = _id;
 	}
-	cv::Point2f center() {
+	cv::Point2f center() const {
 		if (points.size() != 4)
 			throw "Invalid ArmorPlate object";
 		return (points[0] + points[1] + points[2] + points[3]) / 4;

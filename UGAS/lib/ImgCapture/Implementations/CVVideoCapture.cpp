@@ -7,7 +7,7 @@ void CVVideoCapture::init(void* camIndex) {
 }
 
 void CVVideoCapture::read(Img& img) {
-	read(img);
+	VideoCapture::read(img);
 	// 不知道这玩意好不好用
 	img.timeStamp = get(cv::CAP_PROP_POS_MSEC);
 }

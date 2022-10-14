@@ -17,6 +17,9 @@ UGAS::UGAS() :
 UGAS::~UGAS() {
 	delete& _com;
 	delete& _imgCapture;
+	delete& _pretreater;
+	delete& _armorIdentifier;
+
 }
 
 void UGAS::initial() {
@@ -35,9 +38,18 @@ void UGAS::initial() {
 }
 
 void UGAS::always() {
+	// 中间过程变量
+	Img					img;
+	vector<ArmorPlate>	armors;
+
 	while (true) {
 		try {
 			// 主要工作循环
+			_imgCapture.read(img);
+			_pretreater.GetPretreated(img);
+			_armorIdentifier.Identify(img, armors);
+
+			
 
 		}
 		catch (const char* str) {

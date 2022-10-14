@@ -3,6 +3,9 @@
 using namespace serial;
 
 bool WindowsSerial::Open(const char* portName, int baudrate, BYTE parity, char databit, BYTE stopbit, bool synFlag) {
+#if VIRTUAL_GIBAL == 1
+	return false;
+#endif
 	_handle = CreateFileA(portName, GENERIC_READ | GENERIC_WRITE, 0, NULL,
 		OPEN_EXISTING, synFlag ? 0 : FILE_FLAG_OVERLAPPED, 0);
 	if (_handle == INVALID_HANDLE_VALUE) {

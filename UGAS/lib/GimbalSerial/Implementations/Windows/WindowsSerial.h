@@ -10,6 +10,7 @@ Header Functions:
 #ifdef _WIN32
 #include <iostream>
 #include <Windows.h>
+#include "../../../../Parameters/DebugSettings.h"
 
 namespace serial {
 	class WindowsSerial {

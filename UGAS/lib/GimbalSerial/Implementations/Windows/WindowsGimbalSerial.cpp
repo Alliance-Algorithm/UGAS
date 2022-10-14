@@ -18,6 +18,7 @@ bool serial::WindowsGimbalSerial::Send() {
 }
 
 const RecvPkg& WindowsGimbalSerial::RecvGimbalData() {
+#if VIRTUAL_GIBAL == 0
 	RecvPkg tmp;
 	recv((BYTE*)&tmp, _RecvPkgSize);
 
@@ -31,6 +32,7 @@ const RecvPkg& WindowsGimbalSerial::RecvGimbalData() {
 		VerifyRecvData(tmp);
 		static_cast<RecvPkg&>(*this) = tmp;
 	}
+#endif
 	return static_cast<RecvPkg&>(*this);
 }
 #endif // _WIN32

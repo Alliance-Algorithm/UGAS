@@ -1,5 +1,6 @@
 #include "ArmorIdentifier_V1.h"
 #include "../../Common/UniversalFunctions/UniversalFunctions.h"
+#include "../../Common/Color.h"
 using namespace std;
 using namespace cv;
 
@@ -68,4 +69,27 @@ void ArmorIdentifier_V1::FindArmorPlates(const Img& img, std::vector<ArmorPlate>
 void ArmorIdentifier_V1::Identify(const Img& img, std::vector<ArmorPlate>& result) {
 	FindLightBars(img);
 	FindArmorPlates(img, result);
+#if DEBUG_ARMOR == 1
+	Mat debugImg = img.clone();
+	cvtColor(debugImg, debugImg, COLOR_GRAY2BGR);
+	for (const auto& lightBar : _lightBars) {
+		line(debugImg, lightBar.top, lightBar.bottom, COLOR_BLUE, 5);
+		circle(debugImg, lightBar.top, 2, COLOR_ORANGE, 2);
+		circle(debugImg, lightBar.bottom, 2, COLOR_PINK, 2);
+		auto angle = to_string(lightBar.angle); angle.resize(4);
+		//TextFormat(angle).SetFontScale(0.5)
+		//	.Draw(img, lightBar._bottom, COLOR_YELLOW, Direction::BOTTOM_RIGHT);
+		putText(debugImg, angle, lightBar.bottom, 0, 0.5, COLOR_YELLOW);
+	}
+	for (const auto& armorPlate : result) {
+		const vector<Point2f>& points = armorPlate.points;
+		line(debugImg, points[0], points[1], COLOR_WHITE);
+		line(debugImg, points[1], points[2], COLOR_LIGHTGRAY);
+		line(debugImg, points[2], points[3], COLOR_DARKGRAY);
+		line(debugImg, points[3], points[0], COLOR_RED);
+		circle(debugImg, armorPlate.center(), 3, COLOR_GREEN, 2);
+	}
+	imshow("ArmorPlates", debugImg);
+	waitKey(1);
+#endif
 }
