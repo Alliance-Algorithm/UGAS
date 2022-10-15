@@ -41,7 +41,7 @@ void UGAS::always() {
 	// 中间过程变量
 	Img					img;
 	vector<ArmorPlate>	armors;
-
+	
 	while (true) {
 		try {
 			// 主要工作循环

@@ -4,9 +4,34 @@ using namespace cv;
 #if DEBUG_PARA == 1
 // Function Implementations
 void AddTrackbar(const cv::String& trackbarname, int* value, int count,
-	cv::TrackbarCallback onChange, const cv::String& winname)
+	const cv::String& winname, cv::TrackbarCallback onChange)
 {
 	createTrackbar(trackbarname, winname, value, count, onChange);
+}
+
+class DoubleTrackBarCB {
+	double* _value;
+	int _div, _setValue;
+public:
+	DoubleTrackBarCB(double* value, int div, int setValue) :
+		_value(value), _div(div), _setValue(setValue) {}
+
+	static void CallBackFunc(int pos, void* data) {
+		DoubleTrackBarCB* _this = static_cast<DoubleTrackBarCB*>(data);
+		*(_this->_value) = static_cast<double>(pos) / _this->_div;
+	}
+	friend void AddTrackbar(const cv::String& trackbarname,
+		double* value, int div, int count, const cv::String& winname);
+};
+
+void AddTrackbar(const cv::String& trackbarname,
+	double* value, int div, int count, const cv::String& winname)
+{
+	// 因为只创建一次，生命周期为整个程序运行周期，这个new没有对应的delete
+	// 如需修改，需要加入后即不变物理地址的容器来管理内存，否则TrackBar拿到的指针地址不安全
+	DoubleTrackBarCB* doubleCB = new DoubleTrackBarCB(value, div, *value * div);
+	createTrackbar(trackbarname, winname, &doubleCB->_setValue, count * div,
+		DoubleTrackBarCB::CallBackFunc, doubleCB);
 }
 
 void DebugImg(const cv::String& winname, cv::InputArray mat) {
@@ -15,6 +40,7 @@ void DebugImg(const cv::String& winname, cv::InputArray mat) {
 #endif
 
 void ParametersInit(const Team team) {
+	namedWindow(TRACKBAR_NAME, WINDOW_NORMAL);
 #if DEBUG_PARA == 1
 	/// Special init for different team
 	switch (team) {
@@ -47,6 +73,11 @@ void ParametersInit(const Team team) {
 	AddTrackbar("minLightAngle", &minLightAngle, 180);
 	AddTrackbar("maxLightAngle", &maxLightAngle, 180);
 	// Armor Parameters
+	AddTrackbar("maxArmorLightRatio",	&maxArmorLightRatio,	10, 20);
+	AddTrackbar("maxdAngle",			&maxdAngle,				10, 20);
+	AddTrackbar("maxMalposition",		&maxMalposition,		10, 10);
+	AddTrackbar("maxLightDy",			&maxLightDy,			10, 10);
+	AddTrackbar("bigArmorDis",			&bigArmorDis,			10, 10);
 
 
 #endif

@@ -16,8 +16,10 @@ Header Functions:
 
 #if DEBUG_PARA == 1
 // Debug Functions Announcement
-void AddTrackbar(const cv::String& trackbarname, int* value, int count,
-	cv::TrackbarCallback onChange = 0, const cv::String& winname = TRACKBAR_NAME);
+void AddTrackbar(const cv::String& trackbarname, int* value, int count,	// for int var
+	const cv::String& winname = TRACKBAR_NAME, cv::TrackbarCallback onChange = 0);
+void AddTrackbar(const cv::String& trackbarname,						// for double var
+	double* value, int div, int count, const cv::String& winname = TRACKBAR_NAME);
 void DebugImg(const cv::String& winname, cv::InputArray mat);
 #endif
 // Initialize Function
