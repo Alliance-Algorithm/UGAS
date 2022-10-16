@@ -19,3 +19,5 @@ Header Functions:
 #include "lib/GimbalSerial/GimbalSerial.h"
 #include "lib/ImgCapture/ImgCapture.h"
 #include "lib/ImgPretreat/ImgPretreat.h"
+
+#include "lib/Common/FPSCounter/FPSCounter.h"

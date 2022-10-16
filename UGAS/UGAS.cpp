@@ -49,6 +49,9 @@ void UGAS::always() {
 			_pretreater.GetPretreated(img);
 			_armorIdentifier.Identify(img, armors);
 
+			_fps.Count();
+			printf("\rNow time stamp:%llu | Fps: %3d     ",
+				TimeStampCounter::GetTimeStamp(), _fps.GetFPS());
 		}
 		catch (const char* str) {
 			cout << str;

@@ -28,6 +28,7 @@ Header Functions:
 
 /// constant vars		 常值变量
 #define SERIAL_PORT		"\\\\.\\COM3"		// 串口逻辑名
+#define MAX_FPS			1000				// 最大帧数限制（多了会抛出异常haha）
 
 
 /// var(s) Debug func	调试曲线生成宏定义 #

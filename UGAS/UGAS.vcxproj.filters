@@ -57,6 +57,9 @@
     <ClCompile Include="lib\Common\UniversalFunctions\UniversalFunctions.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -126,6 +129,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NullNumberIdentifier.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\FPSCounter\FPSCounter.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -15,10 +15,14 @@ Class public functions:
 // main progress for UGAS
 class UGAS {
 private:
+	// 主过程功能模块
 	serial::GimbalSerial&	_com;
 	ImgCapture&				_imgCapture;
 	ImgPretreat&			_pretreater;
 	ArmorIdentifier&		_armorIdentifier;
+
+	// 附属功能模块
+	FPSCounter				_fps;
 
 public:
 	UGAS();
