@@ -45,27 +45,13 @@ void UGAS::always() {
 	while (true) {
 		try {
 			// 主要工作循环
-
-			START_COUNT
 			_imgCapture.read(img);
-			PRINT_COST
-			END_COUNT
-
-			START_COUNT
 			_pretreater.GetPretreated(img);
-			PRINT_COST
-			END_COUNT
-
-			START_COUNT
 			_armorIdentifier.Identify(img, armors);
-			PRINT_COST
-			END_COUNT
 
-			putchar('\n');
-
-			//_fps.Count();
-			//printf("\rNow time stamp:%llu | Fps: %3d     ",
-			//	TimeStampCounter::GetTimeStamp(), _fps.GetFPS());
+			_fps.Count();
+			printf("\rNow time stamp:%llu | Fps: %3d     ",
+				TimeStampCounter::GetTimeStamp(), _fps.GetFPS());
 		}
 		catch (const char* str) {
 			cout << str;

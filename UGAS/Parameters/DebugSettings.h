@@ -33,9 +33,10 @@ Header Functions:
 
 /// Time cost analysis	运行时间分析宏定义
 #define START_COUNT {TimeStamp __tsTmp=TimeStampCounter::GetTimeStamp();
-#define  PRINT_COST printf("Toke %llu ms | ", \
+#define PRINT_COST printf("Toke %llu ms | ", \
 	TimeStampCounter::GetTimeStamp() - __tsTmp);
-#define   END_COUNT }
+#define END_COUNT }
+#define	PRINT_END_COUNT PRINT_COST END_COUNT
 
 
 /// var(s) Debug func	调试曲线生成宏定义 #
