@@ -17,8 +17,8 @@ class MatWithTimeStamp :public cv::Mat {
 public:
 	TimeStamp timeStamp;
 
-	MatWithTimeStamp() {}
-	MatWithTimeStamp(const Mat& img) :Mat(img) {}
+	MatWithTimeStamp() :timeStamp(0) {}
+	MatWithTimeStamp(const Mat& img) :Mat(img), timeStamp(0) {}
 };
 typedef MatWithTimeStamp Img;
 

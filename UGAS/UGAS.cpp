@@ -14,7 +14,6 @@ UGAS::~UGAS() {
 	delete& _imgCapture;
 	delete& _pretreater;
 	delete& _armorIdentifier;
-
 }
 
 void UGAS::initial() {
