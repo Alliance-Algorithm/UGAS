@@ -31,6 +31,13 @@ Header Functions:
 #define MAX_FPS			1000				// 最大帧数限制（多了会抛出异常haha）
 
 
+/// Time cost analysis	运行时间分析宏定义
+#define START_COUNT {TimeStamp __tsTmp=TimeStampCounter::GetTimeStamp();
+#define  PRINT_COST printf("Toke %llu ms | ", \
+	TimeStampCounter::GetTimeStamp() - __tsTmp);
+#define   END_COUNT }
+
+
 /// var(s) Debug func	调试曲线生成宏定义 #
 
 
