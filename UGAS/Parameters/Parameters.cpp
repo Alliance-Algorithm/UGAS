@@ -40,8 +40,8 @@ void DebugImg(const cv::String& winname, cv::InputArray mat) {
 #endif
 
 void ParametersInit(const Team team) {
-	namedWindow(TRACKBAR_NAME, WINDOW_NORMAL);
 #if DEBUG_PARA == 1
+	namedWindow(TRACKBAR_NAME, WINDOW_NORMAL);
 	/// Special init for different team
 	switch (team) {
 	case Red: // ===== BULE Light =====

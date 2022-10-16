@@ -23,7 +23,7 @@ public:
     }
     size_t size() {
         return (_last >= _head) ? _last - _head :
-            Size - _last - _head;
+            Size + _last - _head;
     }
     bool empty() { return _head == _last; }
     void pop() { if (++_head == Size) _head = 0; }

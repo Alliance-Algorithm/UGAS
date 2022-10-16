@@ -7,12 +7,7 @@ UGAS::UGAS() :
 	_imgCapture(*new IMG_CAPTURE()),
 	_pretreater(*new IMG_PRETREAT(_com)),
 	_armorIdentifier(*new ARMOR_IDENTIFY(_com, *new NUMBER_IDENTIFY()))
-{
-	_com.Open(SERIAL_PORT);
-	_com.RecvGimbalData();
-	_imgCapture.init(&video);
-	ParametersInit(static_cast<Team>(_com.team));
-}
+	{}
 
 UGAS::~UGAS() {
 	delete& _com;
@@ -25,7 +20,10 @@ UGAS::~UGAS() {
 void UGAS::initial() {
 	try {
 		// 初始化部分
-
+		_com.Open(SERIAL_PORT);
+		_com.RecvGimbalData();
+		_imgCapture.init(&video);
+		ParametersInit(static_cast<Team>(_com.team));
 	}
 	catch (const char* str) {
 		cout << str;
