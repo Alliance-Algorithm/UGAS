@@ -29,6 +29,9 @@ Header Functions:
 /// constant vars		 常值变量
 #define SERIAL_PORT		"\\\\.\\COM3"		// 串口逻辑名
 #define MAX_FPS			1000				// 最大帧数限制（多了会抛出异常haha）
+#define MAX_CNT			1000000				// 弹道仿真迭代次数限制
+#define PI				3.1415926535897		// Π值
+#define G				9.8					// 重力常数
 
 
 /// Time cost analysis	运行时间分析宏定义

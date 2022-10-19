@@ -144,6 +144,7 @@
     </ClCompile>
     <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp" />
     <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp" />
+    <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp" />
     <ClCompile Include="UGAS.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,9 +167,13 @@
     <ClInclude Include="lib\ArmorFinder\NumberIdentifier\NumberIdentifier.h" />
     <ClInclude Include="lib\TargetSolution\Target.h" />
     <ClInclude Include="lib\TargetSolution\TargetSolution.h" />
+    <ClInclude Include="lib\TrackingStrategy\Implementations\TrackingStrategy_V1.h" />
+    <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h" />
+    <ClInclude Include="lib\Trajectory\Trajectory.h" />
     <ClInclude Include="Parameters\UsingModules.h" />
     <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h" />
     <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h" />
+    <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h" />
     <ClInclude Include="UGAS_Headers.h" />
     <ClInclude Include="lib\Common\UniversalStruct.h" />
     <ClInclude Include="Parameters\DebugSettings.h" />

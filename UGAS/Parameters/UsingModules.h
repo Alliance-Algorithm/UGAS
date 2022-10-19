@@ -14,6 +14,8 @@ Header Functions:
 #include "../lib/ArmorFinder/Implementations/ArmorIdentifier_V1.h"
 #include "../lib/ArmorFinder/NumberIdentifier/Implementations/NullNumberIdentifier.h"
 #include "../lib/TargetSolution/Implementations/TargetSolution_V1.h"
+#include "../lib/TrackingStrategy/Implementations/TrackingStrategy_V1.h"
+#include "../lib/Trajectory/Implementations/Trajectory_FEM.h"
 
 #define GIMBAL_SERIAL	serial::WindowsGimbalSerial
 #define IMG_CAPTURE		CVImgCapture
@@ -21,3 +23,5 @@ Header Functions:
 #define ARMOR_IDENTIFY	ArmorIdentifier_V1
 #define NUMBER_IDENTIFY	NullNumberIdentifier
 #define TARGET_SOLUTION TargetSolution_V1
+#define TRACK_STRATEGY  TrackingStrategy_V1
+#define TRAJECTORY		Trajectory_FEM

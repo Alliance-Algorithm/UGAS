@@ -65,5 +65,6 @@ extern const std::vector<cv::Point3f> NormalArmor3f, LargeArmor3f;
 
 
 /* Trajectory Parameters */
-
-
+extern const double Trajc_k, Trajc_dertaT;
+extern const double angleLowest, angleHighest, angleEPS;
+extern const int Trajc_iterate;

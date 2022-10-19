@@ -141,5 +141,6 @@ const std::vector<Point3f>
 
 
 /* Trajectory Parameters */
-
-
+const double Trajc_k = 0.00001, Trajc_dertaT = 0.0001;
+const double angleLowest = -30.0, angleHighest = 45.0, angleEPS = 1e-2;
+const int Trajc_iterate = 3;

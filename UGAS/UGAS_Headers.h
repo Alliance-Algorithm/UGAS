@@ -21,5 +21,7 @@ Header Functions:
 #include "lib/ImgPretreat/ImgPretreat.h"
 #include "lib/ArmorFinder/ArmorIdentifier.h"
 #include "lib/TargetSolution/TargetSolution.h"
+#include "lib/TrackingStrategy/TrackingStrategy.h"
+#include "lib/Trajectory/Trajectory.h"
 
 #include "lib/Common/FPSCounter/FPSCounter.h"

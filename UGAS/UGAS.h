@@ -21,6 +21,8 @@ private:
 	ImgPretreat&			_pretreater;
 	ArmorIdentifier&		_armorIdentifier;
 	TargetSolution&			_targetSolution;
+	TrackingStrategy&		_trackingStrategy;
+	Trajectory&				_trajectory;
 
 	// ¸½Êô¹¦ÄÜÄ£¿é
 	FPSCounter				_fps;

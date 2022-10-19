@@ -7,7 +7,9 @@ UGAS::UGAS() :
 	_imgCapture(*new IMG_CAPTURE()),
 	_pretreater(*new IMG_PRETREAT(_com)),
 	_armorIdentifier(*new ARMOR_IDENTIFY(_com, *new NUMBER_IDENTIFY())),
-	_targetSolution(*new TARGET_SOLUTION(_com))
+	_targetSolution(*new TARGET_SOLUTION(_com)),
+	_trackingStrategy(*new TRACK_STRATEGY(_com)),
+	_trajectory(*new TRAJECTORY(_com))
 	{}
 
 UGAS::~UGAS() {
@@ -16,6 +18,8 @@ UGAS::~UGAS() {
 	delete& _pretreater;
 	delete& _armorIdentifier;
 	delete& _targetSolution;
+	delete& _trackingStrategy;
+	delete& _trajectory;
 }
 
 void UGAS::initial() {
@@ -41,6 +45,8 @@ void UGAS::always() {
 	Img						img;
 	vector<ArmorPlate>		armors;
 	const vector<Target>&	targets = _targetSolution.GetResultRefer();
+	Target					aimingTarget;
+	double yaw, pitch;
 
 	while (true) {
 		try {
@@ -49,6 +55,9 @@ void UGAS::always() {
 			_pretreater.GetPretreated(img);
 			_armorIdentifier.Identify(img, armors);
 			_targetSolution.Solve(armors);
+			_trackingStrategy.GetTarget(targets, aimingTarget);
+			_trajectory.GetShotAngle(aimingTarget, img.timeStamp, yaw, pitch);
+
 
 			_fps.Count();
 			printf("\rNow time stamp:%llu | Fps: %3d     ",

@@ -63,6 +63,9 @@
     <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -144,6 +147,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\TrackingStrategy\Implementations\TrackingStrategy_V1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Trajectory\Trajectory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
