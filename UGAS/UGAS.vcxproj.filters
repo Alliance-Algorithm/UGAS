@@ -60,6 +60,9 @@
     <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -132,6 +135,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\Common\FPSCounter\FPSCounter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\TargetSolution\TargetSolution.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\TargetSolution\Target.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -53,7 +53,10 @@ extern double maxArmorLightRatio, maxdAngle,
 
 
 /* PNP Parameters */
-
+extern bool isLargeArmor[10];
+extern const cv::Mat CameraMatrix, DistCoeffs;
+// TL -> BL -> BR -> TR
+extern const std::vector<cv::Point3f> NormalArmor3f, LargeArmor3f;
 
 /* AttitudeSolution Parameters */
 

@@ -6,7 +6,8 @@ UGAS::UGAS() :
 	_com(*new GIMBAL_SERIAL()),
 	_imgCapture(*new IMG_CAPTURE()),
 	_pretreater(*new IMG_PRETREAT(_com)),
-	_armorIdentifier(*new ARMOR_IDENTIFY(_com, *new NUMBER_IDENTIFY()))
+	_armorIdentifier(*new ARMOR_IDENTIFY(_com, *new NUMBER_IDENTIFY())),
+	_targetSolution(*new TARGET_SOLUTION(_com))
 	{}
 
 UGAS::~UGAS() {
@@ -14,6 +15,7 @@ UGAS::~UGAS() {
 	delete& _imgCapture;
 	delete& _pretreater;
 	delete& _armorIdentifier;
+	delete& _targetSolution;
 }
 
 void UGAS::initial() {
@@ -36,15 +38,17 @@ void UGAS::initial() {
 
 void UGAS::always() {
 	// 中间过程变量
-	Img					img;
-	vector<ArmorPlate>	armors;
-	
+	Img						img;
+	vector<ArmorPlate>		armors;
+	const vector<Target>&	targets = _targetSolution.GetResultRefer();
+
 	while (true) {
 		try {
 			// 主要工作循环
 			_imgCapture.read(img);
 			_pretreater.GetPretreated(img);
 			_armorIdentifier.Identify(img, armors);
+			_targetSolution.Solve(armors);
 
 			_fps.Count();
 			printf("\rNow time stamp:%llu | Fps: %3d     ",

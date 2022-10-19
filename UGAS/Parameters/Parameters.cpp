@@ -112,7 +112,27 @@ double maxArmorLightRatio = 1.5, maxdAngle = 9.5, \
 
 
 /* PNP Parameters */
-
+bool isLargeArmor[10];
+// 注意两个相机矩阵的重标定
+double CameraMatrixData[3][3] = {	1867.490995615071, 0, 469.7628091162226, \
+									0, 1873.208292955122, 464.9909258534828, \
+									0, 0, 1 };
+double DistCoeffsData[1][5] = { 0.02620928720926602, -0.01944757276326156, \
+				0.009617926923965665, 0.0004854948878220314, -2.381184392406337 };
+const Mat	CameraMatrix(3, 3, CV_64F, CameraMatrixData),
+			DistCoeffs(1, 5, CV_64F, DistCoeffsData);
+const int	NormalArmorWidth = 134, NormalArmorHeight = 56, \
+			LargerArmorWidth = 230, LargerArmorHeight = 56;
+const std::vector<Point3f>
+	NormalArmor3f = {
+	/*Top Left*/	 Point3f(-0.5 * NormalArmorWidth,	0.5 * NormalArmorHeight ,	0.0f),	
+	/*Bottom Left*/	 Point3f(-0.5 * NormalArmorWidth,	-0.5 * NormalArmorHeight,	0.0f),	
+	/*Bottom Right*/ Point3f(0.5 * NormalArmorWidth ,	-0.5 * NormalArmorHeight,	0.0f),	
+	/*Top Right*/	 Point3f(0.5 * NormalArmorWidth ,	0.5 * NormalArmorHeight ,	0.0f) },
+	LargeArmor3f = { Point3f(-0.5 * LargerArmorWidth,	0.5 * LargerArmorHeight ,	0.0f),
+					 Point3f(-0.5 * LargerArmorWidth,	-0.5 * LargerArmorHeight,	0.0f),
+					 Point3f(0.5 * LargerArmorWidth ,	-0.5 * LargerArmorHeight,	0.0f),
+					 Point3f(0.5 * LargerArmorWidth ,	0.5 * LargerArmorHeight ,	0.0f) };
 
 /* AttitudeSolution Parameters */
 

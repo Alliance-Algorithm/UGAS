@@ -20,6 +20,7 @@ private:
 	ImgCapture&				_imgCapture;
 	ImgPretreat&			_pretreater;
 	ArmorIdentifier&		_armorIdentifier;
+	TargetSolution&			_targetSolution;
 
 	// ¸½Êô¹¦ÄÜÄ£¿é
 	FPSCounter				_fps;
