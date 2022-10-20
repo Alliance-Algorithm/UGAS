@@ -4,15 +4,22 @@
 UGAS ugas;
 
 int main() {
-	try {
-		ugas.initial();
-		ugas.always();
-	}
-	catch (...) {
-		// 自我重启
+	//初始化日志库
+	LOG_INIT();
 
-		// 还没实现haha
-
+	for (int restartTime = 0;; ++restartTime) {
+		try {
+			LOG(INFO) << "Program starts, count " << restartTime;
+			ugas.initial();
+			ugas.always();
+		}
+		catch (std::exception& e) {
+			LOG(ERROR) << "Uncaught " << typeid(e).name() << ">: " << e.what();
+		}
+		catch (...) {
+			LOG(ERROR) << "Uncaught unknown error";
+		}
+		LOG(ERROR) << "Program crashed, restarting... ";
 	}
 	return 0;
 }
