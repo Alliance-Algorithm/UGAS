@@ -8,6 +8,7 @@ Header Functions:
 - 声明并定义所有通用结构体
 */
 #include <opencv2/opencv.hpp>
+#include "DebugTools/DebugHeader.h"
 
 enum Team { Red = 1, Blue = 2 };
 
@@ -50,7 +51,7 @@ public:
 	}
 	cv::Point2f center() const {
 		if (points.size() != 4)
-			throw "Invalid ArmorPlate object";
+			throw_with_trace(std::runtime_error, "Invalid ArmorPlate object");
 		return (points[0] + points[1] + points[2] + points[3]) / 4;
 	}
 };

@@ -14,6 +14,7 @@ Class public functions:
 */
 #include <opencv2/opencv.hpp>
 #include "../../lib/Common/UniversalStruct.h"
+#include "../Common/DebugTools/DebugHeader.h"
 
 class ImgCapture {
 public:

@@ -31,12 +31,10 @@ void UGAS::initial() {
 		ParametersInit(static_cast<Team>(_com.team));
 	}
 	catch (const char* str) {
-		cout << str;
-		throw;
+		throw_with_trace(std::runtime_error, str);
 	}
 	catch (...) {
-		cout << "Unkown Error!";
-		throw;
+		throw_with_trace(std::runtime_error, "Unkown Error!");
 	}
 }
 
@@ -65,12 +63,10 @@ void UGAS::always() {
 				TimeStampCounter::GetTimeStamp(), _fps.GetFPS());
 		}
 		catch (const char* str) {
-			cout << str;
-			throw;
+			throw_with_trace(std::runtime_error, str);
 		}
 		catch (...) {
-			cout << "Unkown Error!";
-			throw;
+			throw_with_trace(std::runtime_error, "Unkown Error!");
 		}
 	}
 }

@@ -10,18 +10,17 @@ bool WindowsSerial::Open(const char* portName, int baudrate, BYTE parity, char d
 		OPEN_EXISTING, synFlag ? 0 : FILE_FLAG_OVERLAPPED, 0);
 	if (_handle == INVALID_HANDLE_VALUE) {
 		int errorCode = static_cast<int>(GetLastError());
-		printf("[ERROR]<WindowsSerial> INVALID_HANDLE_VALUE in Open! Code: %d\n", errorCode);
 		switch (errorCode) {
-		case 2: puts("[ERROR]<WindowsSerial> Check the correctness of serial port name!"); break;
-		case 5: puts("[ERROR]<WindowsSerial> Check whether the serial port has been occupied!"); break;
-		default: throw "[ERROR]<WindowsSerial> INVALID_HANDLE_VALUE in Open!";
+		case 2: LOG(ERROR) << "Check the correctness of serial port name!"; break;
+		case 5: LOG(ERROR) << "Check whether the serial port has been occupied!"; break;
+		default: LOG(ERROR) << "INVALID_HANDLE_VALUE!";
 		}
-		exit(errorCode);
+		throw_with_trace(std::runtime_error,
+			"INVALID_HANDLE_VALUE Code:" + std::to_string(errorCode));
 	}
-	if (!SetupComm(_handle, 1024, 1024)) {
-		printf("[ERROR]<WindowsSerial> ERROR in SetupComm! Code: %d\n", GetLastError());
-		throw "[ERROR]<WindowsSerial> ERROR in SetupComm!";
-	}
+	if (!SetupComm(_handle, 1024, 1024))
+		throw_with_trace(std::runtime_error,
+			"ERROR in SetupComm Code:" + std::to_string(GetLastError()));
 	_synState = synFlag;
 
 	DCB dcb;
@@ -32,7 +31,7 @@ bool WindowsSerial::Open(const char* portName, int baudrate, BYTE parity, char d
 	dcb.StopBits = stopbit;
 	dcb.fRtsControl = RTS_CONTROL_ENABLE;
 	if (!SetCommState(_handle, &dcb))
-		throw "[ERROR]<WindowsSerial> ERROR in SetCommState!";
+		throw_with_trace(std::runtime_error, "ERROR in SetCommState!");
 
 	COMMTIMEOUTS timeOuts;
 	timeOuts.ReadIntervalTimeout = 1000;
@@ -60,14 +59,10 @@ bool WindowsSerial::send(const BYTE* data, int dataLenth) {
 		DWORD sended;
 		if (!WriteFile(_handle, data, dataLenth, &sended, NULL))
 			return false;
-		//printf("sended %d bits\n", dataLenth);
+		LOG(INFO) << "sended " << dataLenth << " bits";
 		return dataLenth == sended;
 	}
-	else {
-		throw "[ERROR]<WindowsSerial> Undefined synState";
-		puts("[ERROR]<WindowsSerial> Undefined synState");
-		//暂时不打算异步
-	}
+	else throw_with_trace(std::runtime_error, "Undefined synState");
 	return false;
 }
 
@@ -79,11 +74,7 @@ DWORD WindowsSerial::recv(BYTE* data, int dataMaxLenth) {
 			return 0;
 		return received;
 	}
-	else {
-		throw "[ERROR]<WindowsSerial> Undefined synState";
-		puts("[ERROR]<WindowsSerial> Undefined synState");
-		//暂时不打算异步
-	}
+	else throw_with_trace(std::runtime_error, "Undefined synState");
 	return 0;
 }
 #endif

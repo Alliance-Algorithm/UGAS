@@ -9,6 +9,7 @@ Header Functions:
 */
 #include "../GimbalSerial/GimbalSerial.h"
 #include "NumberIdentifier/NumberIdentifier.h"
+#include "../Common/DebugTools/DebugHeader.h"
 
 class ArmorIdentifier {
 protected:

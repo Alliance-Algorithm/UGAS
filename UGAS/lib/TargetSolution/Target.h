@@ -8,6 +8,7 @@ Header Functions:
 - 提供存储完整目标信息的封装
 */
 #include <opencv2/opencv.hpp>
+#include "../Common/DebugTools/DebugHeader.h"
 
 class TargetSolution; // 友元函数的预声明
 

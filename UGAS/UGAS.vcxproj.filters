@@ -63,6 +63,12 @@
     <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -156,6 +162,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\DebugHeader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,6 +12,7 @@ Header Functions:
 #include <opencv2/opencv.hpp>
 #include "DebugSettings.h"
 #include "../lib/Common/UniversalStruct.h"
+#include "../lib/Common/DebugTools/DebugHeader.h"
 #define TRACKBAR_NAME "Default TrackBars"
 
 #if DEBUG_PARA == 1

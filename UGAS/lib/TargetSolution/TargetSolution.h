@@ -12,6 +12,7 @@ Header Functions:
 */
 #include "../Common/UniversalStruct.h"
 #include "../GimbalSerial/GimbalSerial.h"
+#include "../Common/DebugTools/DebugHeader.h"
 #include "Target.h"
 
 class TargetSolution {

@@ -4,7 +4,7 @@ using namespace cv;
 void ImgPretreat_V1::GetPretreated(Img& img) {
 	frameWidth = img.cols; frameHeight = img.rows;
 	if (img.empty())
-		throw "[ERROR]<ImgPretreat> Get empty img in GetTreatedImg()!";
+		throw_with_trace(std::runtime_error, "Get empty img!");
 	cvtColor(img, img, COLOR_BGR2HSV);
 	// 大符颜色参数还没搞，和灯条混在一起弄了，再列几个参数就行
 	if (_com.team == ((int)Red ^ IN_STATE(_com.flag, STATE_BUFF)))

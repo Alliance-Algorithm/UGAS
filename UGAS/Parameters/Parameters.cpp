@@ -62,7 +62,7 @@ void ParametersInit(const Team team) {
 		AddTrackbar("RVmin", &RVmin, 255);
 		AddTrackbar("RVmax", &RVmax, 255);
 		break;
-	default: throw "Unkown Team Id!";
+	default: throw_with_trace(std::runtime_error, "Unkown Team Id!");
 	}
 
 	/// Universal init

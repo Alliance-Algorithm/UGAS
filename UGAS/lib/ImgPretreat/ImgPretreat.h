@@ -8,6 +8,7 @@ Header Functions:
 - 提供图片预处理类的接口
 */
 #include "../GimbalSerial/GimbalSerial.h"
+#include "../Common/DebugTools/DebugHeader.h"
 
 class ImgPretreat {
 protected:

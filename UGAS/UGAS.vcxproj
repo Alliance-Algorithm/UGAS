@@ -128,6 +128,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc" />
+    <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp" />
     <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp" />
     <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp" />
     <ClCompile Include="lib\Common\UniversalFunctions\UniversalFunctions.cpp" />
@@ -145,6 +147,11 @@
     <ClCompile Include="UGAS.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib\Common\DebugTools\DebugHeader.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h" />
     <ClInclude Include="lib\Common\FPSCounter\FPSCounter.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.h" />
     <ClInclude Include="lib\ArmorFinder\ArmorIdentifier.h" />

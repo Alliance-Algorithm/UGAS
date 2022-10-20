@@ -10,6 +10,7 @@ Header Functions:
 */
 #include <iostream>
 #include "CRC/CRC.h"
+#include "../Common/DebugTools/DebugHeader.h"
 
 // RecvPkg::flag States Define
 #define STATE_NORMAL		0x01
@@ -58,7 +59,7 @@ namespace serial {
 				os << "yawW:" << yawW << "pitchW:" << pitchW << "rollW:" << rollW << std::endl;
 				os << "speed:" << speed << "flag:" << static_cast<int>(flag) << std::endl;
 			}
-			else os << "Invalid CRC8 Check Sum!" << std::endl;
+			else LOG(INFO) << "Invalid CRC8 Check Sum!";
 		}
 	};
 #pragma pack(pop)

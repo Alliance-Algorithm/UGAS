@@ -9,6 +9,7 @@ Header Functions:
 */
 #include "../GimbalSerial/GimbalSerial.h"
 #include "../TargetSolution/Target.h"
+#include "../Common/DebugTools/DebugHeader.h"
 
 class Trajectory {
 protected:

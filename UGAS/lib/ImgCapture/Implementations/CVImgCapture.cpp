@@ -3,7 +3,7 @@
 void CVImgCapture::init(void* fileName) {
 	open(*(const char**)fileName);
 	if (!isOpened())
-		throw "<CVImgCapture::init> Fail to open.";
+		throw_with_trace(std::runtime_error, "Fail to open.");
 }
 
 void CVImgCapture::read(Img& img) {

@@ -10,6 +10,7 @@ Header Functions:
   返回值表示是否正在跟踪目标
 */
 #include "../TargetSolution/Target.h"
+#include "../Common/DebugTools/DebugHeader.h"
 
 class TrackingStrategy {
 protected:

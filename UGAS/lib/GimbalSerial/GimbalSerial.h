@@ -30,6 +30,7 @@ Class public functions:
 #include "../../Parameters/DebugSettings.h"
 #include "../../Parameters/Parameters.h"
 #include "Packages.h"
+#include "../Common/DebugTools/DebugHeader.h"
 
 namespace serial {
 	class GimbalSerial : public SendPkg, public RecvPkg {
