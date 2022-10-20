@@ -139,9 +139,6 @@
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parameters\Parameters.cpp" />
-    <ClCompile Include="ProjectTest.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp" />
     <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp" />
     <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp" />

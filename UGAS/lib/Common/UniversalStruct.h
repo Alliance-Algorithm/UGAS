@@ -7,7 +7,7 @@ Developer(s): 21-THY
 Header Functions:
 - 声明并定义所有通用结构体
 */
-#include <opencv.hpp>
+#include <opencv2/opencv.hpp>
 
 enum Team { Red = 1, Blue = 2 };
 

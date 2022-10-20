@@ -7,7 +7,7 @@ Developer(s): 21-THY 21-YY
 Header Functions:
 - 提供一些常用的基本颜色BGR值
 */
-#include <opencv.hpp>
+#include <opencv2/opencv.hpp>
 using cv::Scalar;
 
 #define COLOR_RED				Scalar(0	,0		,255)

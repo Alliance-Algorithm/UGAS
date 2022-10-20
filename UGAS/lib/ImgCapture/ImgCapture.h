@@ -12,7 +12,7 @@ Class public functions:
 - read(Img&)
 	读取一帧图像，通过修改引用的方式返回结果
 */
-#include <opencv.hpp>
+#include <opencv2/opencv.hpp>
 #include "../../lib/Common/UniversalStruct.h"
 
 class ImgCapture {

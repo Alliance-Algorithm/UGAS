@@ -57,7 +57,7 @@ void UGAS::always() {
 			_targetSolution.Solve(armors);
 			_trackingStrategy.GetTarget(targets, aimingTarget);
 			_trajectory.GetShotAngle(aimingTarget, img.timeStamp, yaw, pitch);
-			_com.SetAngle(yaw - _com.yawA, pitch - _com.pitchA);
+			_com.SetAngle(yaw, pitch - _com.pitchA);
 			_com.Send();
 
 			_fps.Count();

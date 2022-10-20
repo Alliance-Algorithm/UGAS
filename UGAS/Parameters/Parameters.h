@@ -9,7 +9,7 @@ Header Functions:
 - 根据 "DebugSettings.h" 创建 Debug 拖动条
 - 提供调试性函数
 */
-#include <opencv.hpp>
+#include <opencv2/opencv.hpp>
 #include "DebugSettings.h"
 #include "../lib/Common/UniversalStruct.h"
 #define TRACKBAR_NAME "Default TrackBars"

@@ -10,7 +10,7 @@ Header Functions:
 */
 
 // External Library Files
-#include <opencv.hpp>
+#include <opencv2/opencv.hpp>
 
 // Custom Library Files
 #include "Parameters/DebugSettings.h"

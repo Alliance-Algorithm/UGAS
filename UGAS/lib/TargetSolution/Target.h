@@ -7,7 +7,7 @@ Developer(s): 21-THY
 Header Functions:
 - 提供存储完整目标信息的封装
 */
-#include <opencv.hpp>
+#include <opencv2/opencv.hpp>
 
 class TargetSolution; // 友元函数的预声明
 
