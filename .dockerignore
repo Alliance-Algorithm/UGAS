@@ -1,0 +1,8 @@
+.git
+.gitignore
+dockerBase
+build
+.vs
+x64
+UGAS.sln
+UGAS.vcxproj*
