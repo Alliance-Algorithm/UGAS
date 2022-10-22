@@ -1,8 +1,12 @@
 .git
-.gitignore
-dockerBase
 build
+dockerBase
+.gitignore
+README.md
+runUGAS.bat
+
 .vs
 x64
+myeasylog.log
 UGAS.sln
 UGAS.vcxproj*

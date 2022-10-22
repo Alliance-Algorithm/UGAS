@@ -24,7 +24,7 @@ file(GLOB_RECURSE LIB_SOURCES  UGAS/lib/*.c*)
 file(GLOB_RECURSE PARA_SOURCES UGAS/Parameters/*.c*)
 
 # generate exec
-add_executable(UGAS ${MAIN_SOURCES} ${PARA_SOURCES} ${LIB_SOURCES})
+add_executable(ugas ${MAIN_SOURCES} ${PARA_SOURCES} ${LIB_SOURCES})
 
 # link to OpenCV lib
-target_link_libraries(UGAS ${OpenCV_LIBS})
+target_link_libraries(ugas ${OpenCV_LIBS})

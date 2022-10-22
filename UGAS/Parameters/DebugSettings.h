@@ -17,7 +17,7 @@ Header Functions:
 
 /// static var			 静态变量
 #define VIDEO_VAR_TYPE	const char*			// 视频读入类型
-#define VIDEO_VAR		"resources/Red.mp4"	// 视频读入
+#define VIDEO_VAR		"Red.mp4"			// 视频读入
 #define NUM_PARA_TYPE	void*				// 数字识别参数类型
 #define NUM_PARA		nullptr				// 数字识别参数
 
