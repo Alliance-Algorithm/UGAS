@@ -3,3 +3,4 @@ resources
 .vs
 x64
 dockerBase
+myeasylog.log
