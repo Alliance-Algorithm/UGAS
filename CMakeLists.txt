@@ -18,7 +18,7 @@ include_directories(${Opencv_INCLUDE_DIRS})
 aux_source_directory(UGAS MAIN_SOURCES)
 
 # lib sources
-file(GLOB_RECURSE LIB_SOURCES  UGAS/lib/*.c*)
+file(GLOB_RECURSE LIB_SOURCES UGAS/lib/*.c*)
 
 # parameter sources
 file(GLOB_RECURSE PARA_SOURCES UGAS/Parameters/*.c*)
