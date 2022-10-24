@@ -1,25 +1,40 @@
 #pragma once
 /*
-Creation Date: 2022/10/21
-Latest Update: 2022/10/21
-Developer(s): 21-THY
+Creation Date: 2022/10/24
+Latest Update: 2022/10/24
+Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 没实现来充数的
+- GimbalSerial在Linux上的实例化，提供对Liunx串口的封装
+- 参数定义见GimbalSerial.h
 */
-#ifndef _WIN32
+
+#if !defined(_WIN32)
+
 #include "../../GimbalSerial.h"
+#include "LinuxSerial.h"
+#include "../../../../Parameters/DebugSettings.h"
+#include "../../../../Parameters/Parameters.h"
+#include "../../Packages.h"
+#include "../../../Common/DebugTools/DebugHeader.h"
+
 
 namespace serial {
-	class LinuxGimbalSerial : public GimbalSerial {
-		void Open(const char* portName) {}
-		bool IsOpen() { return 0; }
-		void Close() {}
 
-		bool  Send() { return 0; }
-		const RecvPkg& RecvGimbalData() {
-			return static_cast<RecvPkg&>(*this);
-		}
+	class LinuxGimbalSerial : public GimbalSerial, private LinuxSerial {
+	private:
+		const SerialOptions GimbalOptions;
+		bool _isOpen = false;
+	public:
+		LinuxGimbalSerial() : GimbalOptions{ 115200ul, DataBits8, StopBits1, ParityNone } {}
+
+		void Open(const char* portName);
+		bool IsOpen();
+		void Close();
+
+		bool Send();
+		const RecvPkg& RecvGimbalData();
 	};
 }
+
 #endif
