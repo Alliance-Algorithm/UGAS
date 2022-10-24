@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -128,7 +128,62 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ProjectTest.cpp" />
+    <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc" />
+    <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp" />
+    <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp" />
+    <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp" />
+    <ClCompile Include="lib\Common\UniversalFunctions\UniversalFunctions.cpp" />
+    <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\CVImgCapture.cpp" />
+    <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp" />
+    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp" />
+    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Parameters\Parameters.cpp" />
+    <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp" />
+    <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp" />
+    <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp" />
+    <ClCompile Include="UGAS.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lib\Common\DebugTools\DebugHeader.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h" />
+    <ClInclude Include="lib\Common\FPSCounter\FPSCounter.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.h" />
+    <ClInclude Include="lib\ArmorFinder\ArmorIdentifier.h" />
+    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NullNumberIdentifier.h" />
+    <ClInclude Include="lib\Common\UniversalFunctions\UniversalFunctions.h" />
+    <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.h" />
+    <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h" />
+    <ClInclude Include="lib\ImgPretreat\ImgPretreat.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\CVImgCapture.h" />
+    <ClInclude Include="lib\GimbalSerial\CRC\CRC.h" />
+    <ClInclude Include="lib\GimbalSerial\GimbalSerial.h" />
+    <ClInclude Include="lib\Common\Color.h" />
+    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.h" />
+    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.h" />
+    <ClInclude Include="lib\GimbalSerial\Packages.h" />
+    <ClInclude Include="lib\ImgCapture\ImgCapture.h" />
+    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\NumberIdentifier.h" />
+    <ClInclude Include="lib\TargetSolution\Target.h" />
+    <ClInclude Include="lib\TargetSolution\TargetSolution.h" />
+    <ClInclude Include="lib\TrackingStrategy\Implementations\TrackingStrategy_V1.h" />
+    <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h" />
+    <ClInclude Include="lib\Trajectory\Trajectory.h" />
+    <ClInclude Include="Parameters\UsingModules.h" />
+    <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h" />
+    <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h" />
+    <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h" />
+    <ClInclude Include="UGAS_Headers.h" />
+    <ClInclude Include="lib\Common\UniversalStruct.h" />
+    <ClInclude Include="Parameters\DebugSettings.h" />
+    <ClInclude Include="Parameters\Parameters.h" />
+    <ClInclude Include="UGAS.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

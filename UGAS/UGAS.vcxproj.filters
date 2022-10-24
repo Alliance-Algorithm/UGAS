@@ -13,10 +13,171 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Parameters">
+      <UniqueIdentifier>{48af17b1-4825-4fe0-96e5-719e644f3437}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ProjectTest.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="UGAS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Parameters\Parameters.cpp">
+      <Filter>Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\ImgCapture\Implementations\CVImgCapture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Common\UniversalFunctions\UniversalFunctions.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UGAS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Parameters\Parameters.h">
+      <Filter>Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="Parameters\DebugSettings.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\Color.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\UniversalStruct.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UGAS_Headers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\GimbalSerial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\CRC\CRC.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\Packages.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Parameters\UsingModules.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgCapture\ImgCapture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgCapture\Implementations\CVImgCapture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgPretreat\ImgPretreat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ArmorFinder\ArmorIdentifier.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\UniversalFunctions\UniversalFunctions.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\NumberIdentifier.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NullNumberIdentifier.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\FPSCounter\FPSCounter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\TargetSolution\TargetSolution.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\TargetSolution\Target.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\TrackingStrategy\Implementations\TrackingStrategy_V1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Trajectory\Trajectory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\DebugHeader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
