@@ -133,6 +133,8 @@
     <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp" />
     <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp" />
     <ClCompile Include="lib\Common\UniversalFunctions\UniversalFunctions.cpp" />
+    <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.cpp" />
+    <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.cpp" />
     <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp" />
     <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp" />
     <ClCompile Include="lib\ImgCapture\Implementations\CVImgCapture.cpp" />
@@ -158,6 +160,7 @@
     <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NullNumberIdentifier.h" />
     <ClInclude Include="lib\Common\UniversalFunctions\UniversalFunctions.h" />
     <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.h" />
+    <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.h" />
     <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h" />
     <ClInclude Include="lib\ImgPretreat\ImgPretreat.h" />
     <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h" />

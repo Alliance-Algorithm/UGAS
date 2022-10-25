@@ -69,6 +69,12 @@
     <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -177,6 +183,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
