@@ -5,11 +5,11 @@ Latest Update: 2022/10/24
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- GimbalSerial在Linux上的实例化，提供对Liunx串口的封装
-- 参数定义见GimbalSerial.h
+- GimbalSerial锟斤拷Linux锟较碉拷实锟斤拷锟斤拷锟斤拷锟结供锟斤拷Liunx锟斤拷锟节的凤拷装
+- 锟斤拷锟斤拷锟斤拷锟斤拷锟紾imbalSerial.h
 */
 
-#if !defined(_WIN32)
+#ifndef _WIN32
 
 #include "../../GimbalSerial.h"
 #include "LinuxSerial.h"

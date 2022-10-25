@@ -1,4 +1,4 @@
-#if !defined(_WIN32)
+#ifndef _WIN32
 
 #include "LinuxGimbalSerial.h"
 
@@ -32,7 +32,7 @@ namespace serial {
 		RecvPkg tmp;
 		LinuxSerial::Recv((unsigned char*)&tmp, _RecvPkgSize);
 
-		if (tmp.head != '\xFF') { // ÖØÐÂ¶ÔÆë
+		if (tmp.head != '\xFF') { // ï¿½ï¿½ï¿½Â¶ï¿½ï¿½ï¿½
 			while (tmp.head != '\xFF')
 				LinuxSerial::Recv((BYTE*)&tmp, 1);
 			LinuxSerial::Recv(((BYTE*)&tmp) + 1, _RecvPkgSize - 1);

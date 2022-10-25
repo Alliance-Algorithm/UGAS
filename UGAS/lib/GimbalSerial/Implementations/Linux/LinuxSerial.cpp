@@ -1,4 +1,4 @@
-#if !defined(_WIN32)
+#ifndef _WIN32
 
 #include "LinuxSerial.h"
 using namespace serial;

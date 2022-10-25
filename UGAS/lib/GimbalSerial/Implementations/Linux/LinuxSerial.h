@@ -5,9 +5,9 @@ Latest Update: 2022/10/24
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 提供Linux串口通讯基本函数
+- 锟结供Linux锟斤拷锟斤拷通讯锟斤拷锟斤拷锟斤拷锟斤拷
 */
-#if !defined(_WIN32)
+#ifndef _WIN32
 
 #include <dirent.h>
 #include <unistd.h>
