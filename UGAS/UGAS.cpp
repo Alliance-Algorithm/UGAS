@@ -33,9 +33,6 @@ void UGAS::initial() {
 	catch (const char* str) {
 		throw_with_trace(std::runtime_error, str);
 	}
-	catch (...) {
-		throw_with_trace(std::runtime_error, "Unkown Error!");
-	}
 }
 
 void UGAS::always() {
@@ -64,9 +61,6 @@ void UGAS::always() {
 		}
 		catch (const char* str) {
 			throw_with_trace(std::runtime_error, str);
-		}
-		catch (...) {
-			throw_with_trace(std::runtime_error, "Unkown Error!");
 		}
 	}
 }

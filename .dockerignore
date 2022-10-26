@@ -3,10 +3,11 @@ build
 dockerBase
 .gitignore
 README.md
+makeUGAS.bat
 runUGAS.bat
 
-.vs
-x64
-myeasylog.log
-UGAS.sln
-UGAS.vcxproj*
+UGAS/.vs
+UGAS/x64
+UGAS/myeasylog.log
+UGAS/UGAS.sln
+UGAS/UGAS.vcxproj*

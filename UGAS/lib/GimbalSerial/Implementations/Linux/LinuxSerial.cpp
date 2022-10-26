@@ -5,7 +5,7 @@ using namespace serial;
 
 
 void LinuxSerial::Open(const char* path, const SerialOptions& options) {
-    _tty_fd = ::open(path.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
+    _tty_fd = ::open(path, O_RDWR | O_NOCTTY | O_NONBLOCK);
     if (_tty_fd < 0) {
         throw_with_trace(std::runtime_error, "Failed to open serial port")
     }
