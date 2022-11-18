@@ -41,7 +41,7 @@ void UGAS::always() {
 	vector<ArmorPlate>		armors;
 	const vector<Target>&	targets = _targetSolution.GetResultRefer();
 	Target					aimingTarget;
-	double yaw, pitch;
+	double					yaw, pitch;
 
 	while (true) {
 		try {
