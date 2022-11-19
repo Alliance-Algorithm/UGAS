@@ -8,14 +8,14 @@ Header Functions:
 - 定义一个描述机器人及其装甲板运动信息的数据模型
 */
 #include <opencv2/opencv.hpp>
-#include "../TimeStamp/TimeStampCounter.h"
+#include "Common/UniversalStruct.h"
 
 extern enum RotateDirc;
 
 class Robot {
 private:
 	TimeStamp _latestUpdate;
-	double pitch, roll, yaw;
+	double _pitch, _roll, _yaw;
 	cv::Vec3f _robotCenter;
 	cv::Vec3f _movingSpeed;
 

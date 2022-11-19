@@ -138,7 +138,7 @@ const std::vector<Point3f>
 
 
 /* TrackingStrategy Parameters */
-
+double keep_tracking = 0.3;
 
 /* Trajectory Parameters */
 const double Trajc_k = 0.00001, Trajc_dertaT = 0.0001;

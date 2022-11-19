@@ -7,9 +7,9 @@ Developer(s): 21-THY
 Header Functions:
 - 提供统计帧数信息的方法
 */
-#include "../../../Parameters/DebugSettings.h"
-#include "../TimeStamp/TimeStampCounter.h"
-#include "../UniversalStruct.h"
+#include "DebugSettings.h"
+#include "Common/TimeStamp/TimeStampCounter.h"
+#include "Common/UniversalStruct.h"
 
 template <class valType, int Size>
 class CircularQueue {

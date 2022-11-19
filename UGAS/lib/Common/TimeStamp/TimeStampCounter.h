@@ -7,7 +7,7 @@ Developer(s): 21-THY
 Header Functions:
 - 提供获取系统时间戳的方法
 */
-#include "../UniversalStruct.h"
+#include "Common/UniversalStruct.h"
 
 class TimeStampCounter {
 public:

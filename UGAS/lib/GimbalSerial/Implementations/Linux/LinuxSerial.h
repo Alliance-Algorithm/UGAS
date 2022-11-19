@@ -14,8 +14,6 @@ Header Functions:
 #include <fcntl.h>
 #include <termios.h>
 #include "../../GimbalSerial.h"
-#include "../../../../Parameters/DebugSettings.h"
-#include "../../../Common/DebugTools/DebugHeader.h"
 
 namespace serial {
 	enum DataBits : unsigned char {

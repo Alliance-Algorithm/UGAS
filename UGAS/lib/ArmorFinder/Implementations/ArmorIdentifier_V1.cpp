@@ -1,6 +1,6 @@
 #include "ArmorIdentifier_V1.h"
-#include "../../Common/UniversalFunctions/UniversalFunctions.h"
-#include "../../Common/Color.h"
+#include "Common/UniversalFunctions/UniversalFunctions.h"
+#include "Common/Color.h"
 using namespace std;
 using namespace cv;
 

@@ -1,6 +1,6 @@
 #include "Trajectory_FEM.h"
-#include "../../Common/UniversalFunctions/UniversalFunctions.h"
-#include "../../Common/TimeStamp/TimeStampCounter.h"
+#include "Common/UniversalFunctions/UniversalFunctions.h"
+#include "Common/TimeStamp/TimeStampCounter.h"
 using namespace cv;
 
 double Trajectory_FEM::Analyze(double distance, double angle, double altitudeTarget, double& flyTime) {

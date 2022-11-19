@@ -10,9 +10,9 @@ Header Functions:
   维护已识别目标集合相关数据
 - 通过引用返回结果
 */
-#include "../Common/UniversalStruct.h"
-#include "../GimbalSerial/GimbalSerial.h"
-#include "../Common/DebugTools/DebugHeader.h"
+#include "Common/UniversalStruct.h"
+#include "GimbalSerial/GimbalSerial.h"
+#include "Common/DebugTools/DebugHeader.h"
 #include "Target.h"
 
 class TargetSolution {

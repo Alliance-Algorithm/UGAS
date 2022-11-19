@@ -8,7 +8,7 @@ Header Functions:
 - 封装Windows环境下云台通信有关功能
 */
 #ifdef _WIN32
-#include <thread>
+//#include <thread>
 #include "../../GimbalSerial.h"
 #include "WindowsSerial.h"
 

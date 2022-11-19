@@ -1,5 +1,5 @@
 #include "FPSCounter.h"
-#include "../Color.h"
+#include "Common/Color.h"
 
 void FPSCounter::Count() {
     _timeStamps.push(TimeStampCounter::GetTimeStamp());

@@ -7,9 +7,9 @@ Developer(s): 21-THY
 Header Functions:
 - 定义弹道解算类的统一接口
 */
-#include "../GimbalSerial/GimbalSerial.h"
-#include "../TargetSolution/Target.h"
-#include "../Common/DebugTools/DebugHeader.h"
+#include "GimbalSerial/GimbalSerial.h"
+#include "TargetSolution/Target.h"
+#include "Common/DebugTools/DebugHeader.h"
 
 class Trajectory {
 protected:

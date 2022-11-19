@@ -9,8 +9,8 @@ Header Functions:
   在丢失目标后有预测跟踪迟滞
   返回值表示是否正在跟踪目标
 */
-#include "../TargetSolution/Target.h"
-#include "../Common/DebugTools/DebugHeader.h"
+#include "TargetSolution/Target.h"
+#include "Common/DebugTools/DebugHeader.h"
 
 class TrackingStrategy {
 protected:

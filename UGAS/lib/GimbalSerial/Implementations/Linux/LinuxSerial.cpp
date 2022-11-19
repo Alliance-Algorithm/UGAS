@@ -1,6 +1,8 @@
 #ifndef _WIN32
 
 #include "LinuxSerial.h"
+#include "DebugSettings.h"
+#include "Common/DebugTools/DebugHeader.h"
 using namespace serial;
 
 

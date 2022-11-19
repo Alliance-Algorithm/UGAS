@@ -1,5 +1,7 @@
 #ifdef _WIN32
 #include "WindowsSerial.h"
+#include "DebugSettings.h"
+#include "Common/DebugTools/DebugHeader.h"
 using namespace serial;
 
 bool WindowsSerial::Open(const char* portName, int baudrate, BYTE parity, char databit, BYTE stopbit, bool synFlag) {

@@ -13,15 +13,16 @@ Header Functions:
 #include <opencv2/opencv.hpp>
 
 // Custom Library Files
-#include "Parameters/DebugSettings.h"
-#include "Parameters/Parameters.h"
-#include "Parameters/UsingModules.h"
-#include "lib/GimbalSerial/GimbalSerial.h"
-#include "lib/ImgCapture/ImgCapture.h"
-#include "lib/ImgPretreat/ImgPretreat.h"
-#include "lib/ArmorFinder/ArmorIdentifier.h"
-#include "lib/TargetSolution/TargetSolution.h"
-#include "lib/TrackingStrategy/TrackingStrategy.h"
-#include "lib/Trajectory/Trajectory.h"
+#include "DebugSettings.h"
+#include "Parameters.h"
+#include "UsingModules.h"
 
-#include "lib/Common/FPSCounter/FPSCounter.h"
+#include "GimbalSerial/GimbalSerial.h"
+#include "ImgCapture/ImgCapture.h"
+#include "ImgPretreat/ImgPretreat.h"
+#include "ArmorFinder/ArmorIdentifier.h"
+#include "TargetSolution/TargetSolution.h"
+#include "TrackingStrategy/TrackingStrategy.h"
+#include "Trajectory/Trajectory.h"
+
+#include "Common/FPSCounter/FPSCounter.h"

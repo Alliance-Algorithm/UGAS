@@ -12,11 +12,8 @@ Header Functions:
 #ifndef _WIN32
 
 #include "../../GimbalSerial.h"
-#include "LinuxSerial.h"
-#include "../../../../Parameters/DebugSettings.h"
-#include "../../../../Parameters/Parameters.h"
 #include "../../Packages.h"
-#include "../../../Common/DebugTools/DebugHeader.h"
+#include "LinuxSerial.h"
 
 
 namespace serial {

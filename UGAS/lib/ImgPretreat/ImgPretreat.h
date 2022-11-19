@@ -7,8 +7,8 @@ Developer(s): 21-THY
 Header Functions:
 - 提供图片预处理类的接口
 */
-#include "../GimbalSerial/GimbalSerial.h"
-#include "../Common/DebugTools/DebugHeader.h"
+#include "GimbalSerial/GimbalSerial.h"
+#include "Common/DebugTools/DebugHeader.h"
 
 class ImgPretreat {
 protected:

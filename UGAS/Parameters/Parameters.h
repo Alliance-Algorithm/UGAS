@@ -11,8 +11,8 @@ Header Functions:
 */
 #include <opencv2/opencv.hpp>
 #include "DebugSettings.h"
-#include "../lib/Common/UniversalStruct.h"
-#include "../lib/Common/DebugTools/DebugHeader.h"
+#include "Common/UniversalStruct.h"
+#include "Common/DebugTools/DebugHeader.h"
 #define TRACKBAR_NAME "Default TrackBars"
 
 #if DEBUG_PARA == 1
@@ -63,7 +63,7 @@ extern const std::vector<cv::Point3f> NormalArmor3f, LargeArmor3f;
 
 
 /* TrackingStrategy Parameters */
-
+extern double keep_tracking;
 
 /* Trajectory Parameters */
 extern const double Trajc_k, Trajc_dertaT;

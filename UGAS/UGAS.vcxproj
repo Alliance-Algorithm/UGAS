@@ -71,6 +71,9 @@
     <Import Project="D:\openCV.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>E:\GitHub\UGAS\UGAS\Parameters;E:\GitHub\UGAS\UGAS\lib;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -146,6 +149,7 @@
     <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp" />
     <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp" />
     <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp" />
+    <ClCompile Include="lib\Common\Robot\Robot.cpp" />
     <ClCompile Include="UGAS.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +186,7 @@
     <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h" />
     <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h" />
     <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h" />
+    <ClInclude Include="lib\Common\Robot\Robot.h" />
     <ClInclude Include="UGAS_Headers.h" />
     <ClInclude Include="lib\Common\UniversalStruct.h" />
     <ClInclude Include="Parameters\DebugSettings.h" />
