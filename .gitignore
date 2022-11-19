@@ -1,6 +1,6 @@
 build
 resources
 .vs
-x64
+UGAS/x64
 dockerBase
 myeasylog.log
