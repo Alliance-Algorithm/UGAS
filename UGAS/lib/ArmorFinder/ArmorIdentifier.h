@@ -7,17 +7,16 @@ Developer(s): 21-THY
 Header Functions:
 - 提供装甲识别类的接口
 */
-#include "GimbalSerial/GimbalSerial.h"
+#include "GimbalSerial/GimbalSerialHandle.h"
 #include "NumberIdentifier/NumberIdentifier.h"
 #include "Common/DebugTools/DebugHeader.h"
 
 class ArmorIdentifier {
 protected:
-	serial::GimbalSerial&	_com;
 	NumberIdentifier&		_numberIdentifier;
 public:
-	ArmorIdentifier(serial::GimbalSerial& com, NumberIdentifier& numberIdentifier) :
-		_com(com), _numberIdentifier(numberIdentifier)
+	ArmorIdentifier(NumberIdentifier& numberIdentifier) :
+		_numberIdentifier(numberIdentifier)
 		{ numberIdentifier.init(static_cast<void*>(&numberIdPara)); }
 
 	virtual void Identify(const Img& img, std::vector<ArmorPlate>& result) = 0;

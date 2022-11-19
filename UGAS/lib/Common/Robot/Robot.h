@@ -15,19 +15,20 @@ extern enum RotateDirc;
 class Robot {
 private:
 	TimeStamp _latestUpdate;
-	double _pitch, _roll, _yaw;
-	cv::Vec3f _robotCenter;
+	cv::Point3f _robotCenter;
 	cv::Vec3f _movingSpeed;
 
 	ArmorPlate _armor;
+	cv::Point3f _armorCenter;
 
+	TimeStamp _rotationLatestUpdate;
 	RotateDirc _rotate;
 	double _rotateSpeed; // omiga(w) : rad/s
 public:
 	Robot();
 
-	void Update(TimeStamp tp, ArmorPlate armor);
-	cv::Point3f Predict(int millisec);
+	void Update(TimeStamp ImgTime, const ArmorPlate& armor);
+	cv::Point3f Predict(int millisec) const;
 };
 
 extern Robot robots[10];

@@ -16,8 +16,8 @@ private:
 	void FindLightBars(const Img& img);
 	void FindArmorPlates(const Img& img, std::vector<ArmorPlate>& result);
 public:
-	ArmorIdentifier_V1(serial::GimbalSerial& com, NumberIdentifier& numberIdentifier) :
-		ArmorIdentifier(com, numberIdentifier) {}
+	ArmorIdentifier_V1(NumberIdentifier& numberIdentifier) :
+		ArmorIdentifier(numberIdentifier) {}
 
 	void Identify(const Img& img, std::vector<ArmorPlate>& result);
 };

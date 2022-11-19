@@ -16,8 +16,5 @@ private:
 	// 迭代弹丸飞行时间预测目标运动量
 	void Iterate(cv::Point3f position, double& pitch, double& flyTime);
 public:
-	Trajectory_FEM(serial::GimbalSerial& com) :
-		Trajectory(com) {}
-
-	void GetShotAngle(const Target& target, TimeStamp ImgTime, double& yaw, double& pitch);
+	void GetShotAngle(const int targetID, TimeStamp ImgTime, double& yaw, double& pitch);
 };

@@ -63,7 +63,7 @@ extern const std::vector<cv::Point3f> NormalArmor3f, LargeArmor3f;
 
 
 /* TrackingStrategy Parameters */
-extern double keep_tracking;
+extern double keep_tracking, rotation_validity;
 
 /* Trajectory Parameters */
 extern const double Trajc_k, Trajc_dertaT;

@@ -5,6 +5,9 @@ Latest Update: 2022/10/14
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 
+改进意见：引用太多难以处理初始化问题（C++不支持空引用）
+		考虑使用带引用计数的句柄类代理一下
+
 Class property:
 - 继承自 SendPkg 和 RecvPkg，可直接类型转换使用
 

@@ -10,11 +10,8 @@ Header Functions:
 #include "../TargetSolution.h"
 
 class TargetSolution_V1 : public TargetSolution {
-protected:
-	cv::Vec3f SolvePNP(const ArmorPlate& armor);
+private:
+	static inline bool isValidId(int id);
 public:
-	TargetSolution_V1(serial::GimbalSerial& com) :
-		TargetSolution(com) {}
-
-	void Solve(const std::vector<ArmorPlate>& armors);
+	void Solve(TimeStamp ImgTime, const std::vector<ArmorPlate>& armors);
 };

@@ -136,6 +136,7 @@
     <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp" />
     <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp" />
     <ClCompile Include="lib\Common\UniversalFunctions\UniversalFunctions.cpp" />
+    <ClCompile Include="lib\GimbalSerial\GimbalSerialHandle.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.cpp" />
     <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp" />
     <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp" />
     <ClCompile Include="lib\Common\Robot\Robot.cpp" />
+    <ClCompile Include="lib\Common\PnP\PnP.cpp" />
     <ClCompile Include="UGAS.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +165,7 @@
     <ClInclude Include="lib\ArmorFinder\ArmorIdentifier.h" />
     <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NullNumberIdentifier.h" />
     <ClInclude Include="lib\Common\UniversalFunctions\UniversalFunctions.h" />
+    <ClInclude Include="lib\GimbalSerial\GimbalSerialHandle.h" />
     <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.h" />
     <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.h" />
     <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h" />
@@ -177,7 +180,6 @@
     <ClInclude Include="lib\GimbalSerial\Packages.h" />
     <ClInclude Include="lib\ImgCapture\ImgCapture.h" />
     <ClInclude Include="lib\ArmorFinder\NumberIdentifier\NumberIdentifier.h" />
-    <ClInclude Include="lib\TargetSolution\Target.h" />
     <ClInclude Include="lib\TargetSolution\TargetSolution.h" />
     <ClInclude Include="lib\TrackingStrategy\Implementations\TrackingStrategy_V1.h" />
     <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h" />
@@ -187,6 +189,7 @@
     <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h" />
     <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h" />
     <ClInclude Include="lib\Common\Robot\Robot.h" />
+    <ClInclude Include="lib\Common\PnP\PnP.h" />
     <ClInclude Include="UGAS_Headers.h" />
     <ClInclude Include="lib\Common\UniversalStruct.h" />
     <ClInclude Include="Parameters\DebugSettings.h" />

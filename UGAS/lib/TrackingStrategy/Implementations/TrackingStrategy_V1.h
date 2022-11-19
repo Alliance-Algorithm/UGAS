@@ -1,7 +1,7 @@
 #pragma once
 /*
-Creation Date: 2022/10/19
-Latest Update: 2022/10/19
+Creation Date: 2022/11/19
+Latest Update: 2022/11/19
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
@@ -11,13 +11,8 @@ Header Functions:
 
 class TrackingStrategy_V1 : public TrackingStrategy {
 public:
-	TrackingStrategy_V1(serial::GimbalSerial& com) :
-		TrackingStrategy(com) {}
-
-	bool GetTarget(const std::vector<Target>& targets, Target& result) {
+	int GetTargetID() {
 		// 不能说是极其敷衍吧，只能说是滥竽充数
-		if (targets.empty()) return false;
-		result = targets[0];
-		return true;
+		return 0;
 	}
 };

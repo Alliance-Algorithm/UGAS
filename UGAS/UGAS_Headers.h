@@ -25,4 +25,6 @@ Header Functions:
 #include "TrackingStrategy/TrackingStrategy.h"
 #include "Trajectory/Trajectory.h"
 
+#include "Common/PnP/PnP.h"
+
 #include "Common/FPSCounter/FPSCounter.h"
