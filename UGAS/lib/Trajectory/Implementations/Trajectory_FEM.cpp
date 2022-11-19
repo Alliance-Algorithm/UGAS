@@ -32,15 +32,20 @@ void Trajectory_FEM::Iterate(Point3f position, double& pitch, double& flyTime) {
 }
 
 void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double& yaw, double& pitch) {
-	// 这里要解算Yaw需要将串口接收到的角度信息转换成真实世界的角度
-	// 可是那还没写，这里暂时没有Yaw的动态瞄准
-	yaw = 0.0;
-	// Pitch的迭代解算
+	// Pitch差值的迭代解算
 	double flyTime = 0.0;
 	for (int i = Trajc_iterate; i; --i)
 		Iterate(
 			robots[targetID].Predict(
 				TimeStampCounter::GetTimeStamp() - ImgTime + flyTime
 			),
-			pitch, flyTime);
+		pitch, flyTime);
+	pitch -= com.Get().pitchA;
+
+	// Yaw差值的解算
+	Point2f ImgPoint = PnPsolver.RevertPnP(
+		robots[targetID].Predict(
+			TimeStampCounter::GetTimeStamp() - ImgTime + flyTime
+	));
+	yaw = ImgPoint.x - (frameWidth >> 1);
 }

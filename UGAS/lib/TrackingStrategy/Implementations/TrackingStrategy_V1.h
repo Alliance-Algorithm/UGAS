@@ -12,7 +12,15 @@ Header Functions:
 class TrackingStrategy_V1 : public TrackingStrategy {
 public:
 	int GetTargetID() {
-		// 不能说是极其敷衍吧，只能说是滥竽充数
-		return 0;
+		int res = 0;
+		double maxPossibility = .0;
+		for (int i = 1; i < 10; ++i) {
+			double possibility = robots[i].GetPossibility();
+			if (possibility > maxPossibility) {
+				res = i;
+				maxPossibility = possibility;
+			}
+		}
+		return res;
 	}
 };

@@ -7,7 +7,7 @@ enum RotateDirc { UNKNOWN = 0, LEFT, RIGHT };
 Robot robots[10];
 
 Robot::Robot() :_latestUpdate(0ULL), _rotationLatestUpdate(0ULL),
-	_robotCenter(), _movingSpeed(), _armor(),
+	_robotCenter(), _movingSpeed(), _armor(), _armorCenter(),
 	_rotate(RotateDirc::UNKNOWN), _rotateSpeed(.0) {}
 
 void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
@@ -26,6 +26,9 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 				static_cast<double>(ImgTime - _latestUpdate) * 0.1;
 		}
 
+		// ÔÝÊ±ÂÒ´òÒ»²¨
+		_possibility = 100.;
+
 		_armor = armor;
 		_latestUpdate = ImgTime;
 	}
@@ -41,6 +44,11 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 
 		_rotationLatestUpdate = ImgTime;
 	}
+}
+
+double Robot::GetPossibility() {
+	return (TimeStampCounter::GetTimeStamp() - _latestUpdate < keep_tracking) ?
+		_possibility : (_possibility = .0);
 }
 
 cv::Point3f Robot::Predict(int millisec) const {

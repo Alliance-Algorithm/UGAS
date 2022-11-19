@@ -9,6 +9,7 @@ Header Functions:
 */
 #include "GimbalSerial/GimbalSerialHandle.h"
 #include "Common/Robot/Robot.h"
+#include "Common/PnP/PnP.h"
 #include "Common/DebugTools/DebugHeader.h"
 
 class Trajectory {

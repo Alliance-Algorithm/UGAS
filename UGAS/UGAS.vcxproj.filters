@@ -84,6 +84,9 @@
     <ClCompile Include="lib\GimbalSerial\GimbalSerialHandle.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\Common\Filter\Filter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="Parameters\UsingModules.h">
       <Filter>Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\Filter\Filter.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

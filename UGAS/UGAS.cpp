@@ -23,8 +23,6 @@ UGAS::~UGAS() {
 void UGAS::initial() {
 	try {
 		// 初始化部分
-		// 统一所有单例类的串口
-		PnPsolver._com = com;
 		com.Get().Open(SERIAL_PORT);
 		com.Get().RecvGimbalData();
 		_imgCapture.init(&video);
@@ -45,13 +43,17 @@ void UGAS::always() {
 	while (true) {
 		try {
 			// 主要工作循环
+			com.Get().RecvGimbalData();
 			_imgCapture.read(img);
 			_pretreater.GetPretreated(img);
 			_armorIdentifier.Identify(img, armors);
 			_targetSolution.Solve(img.timeStamp, armors);
 			targetID = _trackingStrategy.GetTargetID();
-			_trajectory.GetShotAngle(targetID, img.timeStamp, yaw, pitch);
-			com.Get().SetAngle(yaw, pitch - com.Get().pitchA);
+			if (targetID) {
+				_trajectory.GetShotAngle(targetID, img.timeStamp, yaw, pitch);
+				com.Get().SetAngle(yaw, pitch);
+			}
+			else com.Get().SetAngle(.0, .0);
 			com.Get().Send();
 
 			_fps.Count();

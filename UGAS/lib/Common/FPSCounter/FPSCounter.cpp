@@ -2,13 +2,13 @@
 #include "Common/Color.h"
 
 void FPSCounter::Count() {
-    _timeStamps.push(TimeStampCounter::GetTimeStamp());
+    _timeStamps.push_back(TimeStampCounter::GetTimeStamp());
 }
 
 int FPSCounter::GetFPS() {
     TimeStamp _presentTime = TimeStampCounter::GetTimeStamp();
     while (!_timeStamps.empty() && 
-            _presentTime - _timeStamps.front() > 1000)
+            _presentTime - _timeStamps.first() > 1000)
         _timeStamps.pop();
     return _timeStamps.size();
 }

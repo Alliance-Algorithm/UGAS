@@ -12,16 +12,11 @@ Header Functions:
 
 class PnP {
 private:
-	serial::GimbalSerialHandle _com;
-
 	double _pitch, _roll, _yaw; // pose
 	cv::Mat _transMat, _revertMat;
 
 	void GetTransMat();
 public:
-	PnP();
-	PnP(serial::GimbalSerialHandle com);
-
 	cv::Point3f SolvePnP(const ArmorPlate& armor);
 	cv::Point2f RevertPnP(const cv::Point3f position);
 

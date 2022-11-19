@@ -4,9 +4,9 @@
 PnP PnPsolver;
 
 void PnP::GetTransMat() {
-	_pitch = _com.Get().pitchA * PI / 180;
-	_roll  = _com.Get().rollA  * PI / 180;
-	_yaw   = _com.Get().yawA   * PI / 180;
+	_pitch = com.Get().pitchA * PI / 180;
+	_roll  = com.Get().rollA  * PI / 180;
+	_yaw   = com.Get().yawA   * PI / 180;
 	// Ã»¿¼ÂÇrollÖá
 	_transMat = (cv::Mat_<float>(3, 3) <<
 		-sin(_yaw), sin(_pitch)* cos(_yaw), cos(_pitch)* cos(_yaw),
@@ -14,12 +14,6 @@ void PnP::GetTransMat() {
 		0, -cos(_pitch), sin(_pitch));
 	cv::transpose(_transMat, _revertMat);
 }
-
-PnP::PnP() :_com(), 
-	_pitch(.0), _roll(.0), _yaw(.0), _transMat(), _revertMat() {}
-
-PnP::PnP(serial::GimbalSerialHandle com) :_com(com),
-	_pitch(.0), _roll(.0), _yaw(.0), _transMat(), _revertMat() {}
 
 cv::Point3f PnP::SolvePnP(const ArmorPlate& armor) {
 	cv::Point3f result;
