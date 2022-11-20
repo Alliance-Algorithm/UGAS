@@ -14,6 +14,7 @@ private:
 	cv::Point3f _3Dposition;
 	cv::Point2f _2Dposition;
 
+	double EvaluateBulletFlightTime(const int targetID);
 	// 分析以angle角度到达distance时的z轴高度
 	double Analyze(double distance, double angle, double altitudeTarget, double& flyTime);
 	// 迭代弹丸飞行时间预测目标运动量

@@ -10,7 +10,7 @@ Header Functions:
 */
 
 #include "GimbalSerial/GimbalSerialHandle.h"
-#include "ImgCapture/Implementations/CVImgCapture.h"
+#include "../lib/ImgCapture/Implementations/CVImgCapture.h"
 #include "ImgPretreat/Implementations/ImgPretreat_V1.h"
 #include "ArmorFinder/Implementations/ArmorIdentifier_V1.h"
 #include "ArmorFinder/NumberIdentifier/Implementations/NullNumberIdentifier.h"

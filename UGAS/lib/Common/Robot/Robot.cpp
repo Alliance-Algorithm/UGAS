@@ -21,9 +21,9 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 			cv::Point3f lastPostion = _armorCenter;
 			_armorCenter = PnPsolver.SolvePnP(armor);
 			// 暂时用一下线性滤波
-			_movingSpeed = _movingSpeed * 0.9 +
+			_movingSpeed = _movingSpeed * 0.99 +
 				static_cast<cv::Vec3f>(_armorCenter - lastPostion) / 
-				static_cast<double>(ImgTime - _latestUpdate) * 0.1;
+				static_cast<double>(ImgTime - _latestUpdate) * 0.01;
 		}
 
 		// 暂时乱打一波

@@ -56,6 +56,7 @@ void UGAS::always() {
 #else	// DEBUG_IMG == 0
 			_pretreater.GetPretreated(img);
 #endif	// DEBUG_IMG
+			PnPsolver.GetTransMat();
 			_armorIdentifier.Identify(img, armors);
 			_targetSolution.Solve(img.timeStamp, armors);
 			targetID = _trackingStrategy.GetTargetID();

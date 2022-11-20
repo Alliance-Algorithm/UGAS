@@ -12,11 +12,14 @@ Header Functions:
 
 class PnP {
 private:
+	cv::Mat _CameraMatrix;
+
 	double _pitch, _roll, _yaw; // pose
 	cv::Mat _transMat, _revertMat;
+public:
+	PnP();
 
 	void GetTransMat();
-public:
 	cv::Point3f SolvePnP(const ArmorPlate& armor);
 	cv::Point2f RevertPnP(const cv::Point3f position);
 

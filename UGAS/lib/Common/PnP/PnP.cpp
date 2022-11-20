@@ -3,6 +3,13 @@
 
 PnP PnPsolver;
 
+PnP::PnP() {
+	_CameraMatrix = (cv::Mat_<float>(3, 3) <<
+		CameraMatrixData[0][0], CameraMatrixData[0][1], CameraMatrixData[0][2],
+		CameraMatrixData[1][0], CameraMatrixData[1][1], CameraMatrixData[1][2],
+		CameraMatrixData[2][0], CameraMatrixData[2][1], CameraMatrixData[2][2]);
+}
+
 void PnP::GetTransMat() {
 	_pitch = com.Get().pitchA * PI / 180;
 	_roll  = com.Get().rollA  * PI / 180;
@@ -30,7 +37,6 @@ cv::Point3f PnP::SolvePnP(const ArmorPlate& armor) {
 			rvec, tvec, false, cv::SOLVEPNP_AP3P);
 	}
 
-	GetTransMat();
 	cv::Mat position = _transMat * (cv::Mat_<float>(3, 1) <<
 		tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2));
 
@@ -45,8 +51,10 @@ cv::Point3f PnP::SolvePnP(const ArmorPlate& armor) {
 }
 
 cv::Point2f PnP::RevertPnP(const cv::Point3f position) {
-	cv::Mat pos = CameraMatrix * (_revertMat *
+	cv::Mat pos = _CameraMatrix * (_revertMat *
 		(cv::Mat_<float>(3, 1) << position.x, position.y, position.z));
+	//LOG(INFO) << CameraMatrix << '\n' << _CameraMatrix << '\n' << _revertMat << '\n' \
+	//	<< (cv::Mat_<float>(3, 1) << position.x, position.y, position.z) << '\n' << pos << '\n';
 	pos /= pos.at<float>(2);
 	return cv::Point2f(pos.at<float>(0), pos.at<float>(1));
 }

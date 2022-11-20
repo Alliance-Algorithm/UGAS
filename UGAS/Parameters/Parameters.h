@@ -55,6 +55,7 @@ extern double maxArmorLightRatio, maxdAngle,
 
 /* PNP Parameters */
 extern bool isLargeArmor[10];
+extern double CameraMatrixData[3][3], DistCoeffsData[1][5];
 extern const cv::Mat CameraMatrix, DistCoeffs;
 // TL -> BL -> BR -> TR
 extern const std::vector<cv::Point3f> NormalArmor3f, LargeArmor3f;
@@ -66,6 +67,7 @@ extern const std::vector<cv::Point3f> NormalArmor3f, LargeArmor3f;
 extern double keep_tracking, rotation_validity;
 
 /* Trajectory Parameters */
+extern const int iterations;
 extern const double Trajc_k, Trajc_dertaT;
 extern const double angleLowest, angleHighest, angleEPS;
 extern const int Trajc_iterate;

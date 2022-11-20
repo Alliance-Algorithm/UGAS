@@ -27,4 +27,5 @@ Header Functions:
 
 #include "Common/PnP/PnP.h"
 
+#include "Common/Color.h"
 #include "Common/FPSCounter/FPSCounter.h"

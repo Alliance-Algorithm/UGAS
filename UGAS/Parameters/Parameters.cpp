@@ -141,6 +141,7 @@ const std::vector<Point3f>
 double keep_tracking = 0.3, rotation_validity = 0.2;
 
 /* Trajectory Parameters */
+const int iterations = 2;
 const double Trajc_k = 0.00001, Trajc_dertaT = 0.0001;
 const double angleLowest = -30.0, angleHighest = 45.0, angleEPS = 1e-2;
 const int Trajc_iterate = 3;
