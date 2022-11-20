@@ -72,7 +72,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>E:\GitHub\UGAS\UGAS\Parameters;E:\GitHub\UGAS\UGAS\lib;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Parameters;$(SolutionDir)\lib;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
