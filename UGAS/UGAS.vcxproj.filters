@@ -90,6 +90,12 @@
     <ClCompile Include="lib\Common\DebugTools\Implementations\InfoImg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\ImgCapture\Implementations\Windows\WindowsHTCameraCapture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -218,5 +224,30 @@
     <ClInclude Include="lib\Common\DebugTools\Implementations\InfoImg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApiLoad.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraDefine.H">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraStatus.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgCapture\Implementations\Windows\WindowsHTCameraCapture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgCapture\Implementations\HTCameraCapture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="third-party\HTCameraSDK\Windows\MVCAMSDK_X64.lib" />
+    <Library Include="third-party\HTCameraSDK\Windows\MVCAMSDK.lib" />
   </ItemGroup>
 </Project>
