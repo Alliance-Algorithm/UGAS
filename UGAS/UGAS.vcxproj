@@ -140,12 +140,14 @@
     <ClCompile Include="lib\GimbalSerial\GimbalSerialHandle.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\Windows\WindowsHTCameraCapture.cpp" />
     <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp" />
     <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp" />
     <ClCompile Include="lib\ImgCapture\Implementations\CVImgCapture.cpp" />
     <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parameters\Parameters.cpp" />
     <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp" />
@@ -170,6 +172,8 @@
     <ClInclude Include="lib\GimbalSerial\GimbalSerialHandle.h" />
     <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.h" />
     <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\HTCameraCapture.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\Windows\WindowsHTCameraCapture.h" />
     <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h" />
     <ClInclude Include="lib\ImgPretreat\ImgPretreat.h" />
     <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h" />
@@ -186,17 +190,26 @@
     <ClInclude Include="lib\TrackingStrategy\Implementations\TrackingStrategy_V1.h" />
     <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h" />
     <ClInclude Include="lib\Trajectory\Trajectory.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.h" />
     <ClInclude Include="Parameters\UsingModules.h" />
     <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h" />
     <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h" />
     <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h" />
     <ClInclude Include="lib\Common\Robot\Robot.h" />
     <ClInclude Include="lib\Common\PnP\PnP.h" />
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApi.h" />
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApiLoad.h" />
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraDefine.H" />
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraStatus.h" />
     <ClInclude Include="UGAS_Headers.h" />
     <ClInclude Include="lib\Common\UniversalStruct.h" />
     <ClInclude Include="Parameters\DebugSettings.h" />
     <ClInclude Include="Parameters\Parameters.h" />
     <ClInclude Include="UGAS.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="third-party\HTCameraSDK\Windows\MVCAMSDK.lib" />
+    <Library Include="third-party\HTCameraSDK\Windows\MVCAMSDK_X64.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
