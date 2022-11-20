@@ -70,8 +70,6 @@ void ArmorIdentifier_V1::Identify(const Img& img, std::vector<ArmorPlate>& resul
 	FindLightBars(img);
 	FindArmorPlates(img, result);
 #if DEBUG_ARMOR == 1
-	Mat debugImg = img.clone();
-	cvtColor(debugImg, debugImg, COLOR_GRAY2BGR);
 	for (const auto& lightBar : _lightBars) {
 		line(debugImg, lightBar.top, lightBar.bottom, COLOR_BLUE, 5);
 		circle(debugImg, lightBar.top, 2, COLOR_ORANGE, 2);
@@ -89,7 +87,5 @@ void ArmorIdentifier_V1::Identify(const Img& img, std::vector<ArmorPlate>& resul
 		line(debugImg, points[3], points[0], COLOR_RED);
 		circle(debugImg, armorPlate.center(), 3, COLOR_GREEN, 2);
 	}
-	imshow("ArmorPlates", debugImg);
-	waitKey(1);
 #endif
 }

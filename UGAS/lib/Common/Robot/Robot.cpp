@@ -47,8 +47,9 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 }
 
 double Robot::GetPossibility() {
-	return (TimeStampCounter::GetTimeStamp() - _latestUpdate < keep_tracking) ?
-		_possibility : (_possibility = .0);
+	//return (TimeStampCounter::GetTimeStamp() - _latestUpdate < keep_tracking * 1000) ?
+	//	_possibility : (_possibility = .0);
+	return _possibility;
 }
 
 cv::Point3f Robot::Predict(int millisec) const {

@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp" />
+    <ClCompile Include="lib\Common\DebugTools\Implementations\InfoImg.cpp" />
     <ClCompile Include="lib\Common\Filter\Filter.cpp" />
     <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp" />
     <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\InfoImg.h" />
     <ClInclude Include="lib\Common\Filter\Filter.h" />
     <ClInclude Include="lib\Common\FPSCounter\FPSCounter.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.h" />

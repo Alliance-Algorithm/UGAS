@@ -10,9 +10,11 @@ Header Functions:
 
 /// debug state switches 调试开关
 #define VIRTUAL_GIBAL	1					// 虚拟云台开关
+#define DEBUG_IMG		1					// 显示调试图像总开关
 #define DEBUG_PARA		1					// 动态调参拖动条窗口
-#define DEBUG_PRETREAT	0					// 显示预处理后的图像
-#define DEBUG_ARMOR		1					// 显示装甲板识别图像
+#define DEBUG_PRETREAT	0					// 使用预处理后的图像作为调试图像
+#define DEBUG_ARMOR		1					// 绘制装甲板识别图像
+#define DEBUG_PREDICT	1					// 绘制预测点
 
 
 /// static var			 静态变量
@@ -20,6 +22,7 @@ Header Functions:
 #define VIDEO_VAR		"Red.mp4"			// 视频读入
 #define NUM_PARA_TYPE	void*				// 数字识别参数类型
 #define NUM_PARA		nullptr				// 数字识别参数
+#define NUM_DEFAULT		1					// 数字识别默认返回数字(一般是0)
 
 
 /// debug var			 调试变量
@@ -35,10 +38,10 @@ Header Functions:
 
 
 /// Time cost analysis	运行时间分析宏定义
-#define START_COUNT {TimeStamp __tsTmp=TimeStampCounter::GetTimeStamp();
-#define PRINT_COST printf("Took %llu ms | ", \
+#define START_COUNT	{TimeStamp __tsTmp=TimeStampCounter::GetTimeStamp();
+#define PRINT_COST	 printf("Took %llu ms | ", \
 						TimeStampCounter::GetTimeStamp() - __tsTmp);
-#define END_COUNT }
+#define END_COUNT	}
 #define	PRINT_END_COUNT PRINT_COST END_COUNT
 
 

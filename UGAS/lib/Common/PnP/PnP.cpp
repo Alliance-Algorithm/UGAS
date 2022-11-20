@@ -9,9 +9,9 @@ void PnP::GetTransMat() {
 	_yaw   = com.Get().yawA   * PI / 180;
 	// 没考虑roll轴
 	_transMat = (cv::Mat_<float>(3, 3) <<
-		-sin(_yaw), sin(_pitch)* cos(_yaw), cos(_pitch)* cos(_yaw),
-		cos(_yaw), sin(_pitch)* sin(_yaw), cos(_pitch)* sin(_yaw),
-		0, -cos(_pitch), sin(_pitch));
+		-sin(_yaw),  sin(_pitch)* cos(_yaw), cos(_pitch)* cos(_yaw),
+		 cos(_yaw),  sin(_pitch)* sin(_yaw), cos(_pitch)* sin(_yaw),
+		 0,			-cos(_pitch),			 sin(_pitch));
 	cv::transpose(_transMat, _revertMat);
 }
 
@@ -31,10 +31,12 @@ cv::Point3f PnP::SolvePnP(const ArmorPlate& armor) {
 	}
 
 	GetTransMat();
-	cv::Mat position = tvec * _transMat;
-	result.x = position.at<double>(0);
-	result.y = position.at<double>(1);
-	result.z = position.at<double>(2);
+	cv::Mat position = _transMat * (cv::Mat_<float>(3, 1) <<
+		tvec.at<double>(0), tvec.at<double>(1), tvec.at<double>(2));
+
+	result.x = position.at<float>(0);
+	result.y = position.at<float>(1);
+	result.z = position.at<float>(2);
 
 	cv::Rodrigues(rvec, rvec);
 	// 这还有欧拉角解算还没写，也没留接口，要用再说
@@ -43,9 +45,8 @@ cv::Point3f PnP::SolvePnP(const ArmorPlate& armor) {
 }
 
 cv::Point2f PnP::RevertPnP(const cv::Point3f position) {
-	cv::Mat pos =
-		(cv::Mat_<float>(3, 1) << position.x, position.y, position.z)
-		* _revertMat * CameraMatrix;
+	cv::Mat pos = CameraMatrix * (_revertMat *
+		(cv::Mat_<float>(3, 1) << position.x, position.y, position.z));
 	pos /= pos.at<float>(2);
 	return cv::Point2f(pos.at<float>(0), pos.at<float>(1));
 }

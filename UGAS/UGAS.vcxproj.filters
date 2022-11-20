@@ -87,6 +87,9 @@
     <ClCompile Include="lib\Common\Filter\Filter.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\Common\DebugTools\Implementations\InfoImg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -210,6 +213,9 @@
       <Filter>Parameters</Filter>
     </ClInclude>
     <ClInclude Include="lib\Common\Filter\Filter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\Common\DebugTools\Implementations\InfoImg.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

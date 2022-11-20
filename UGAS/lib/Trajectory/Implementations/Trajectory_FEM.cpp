@@ -1,6 +1,7 @@
 #include "Trajectory_FEM.h"
 #include "Common/UniversalFunctions/UniversalFunctions.h"
 #include "Common/TimeStamp/TimeStampCounter.h"
+#include "Common/Color.h"
 using namespace cv;
 
 double Trajectory_FEM::Analyze(double distance, double angle, double altitudeTarget, double& flyTime) {
@@ -36,16 +37,17 @@ void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double&
 	double flyTime = 0.0;
 	for (int i = Trajc_iterate; i; --i)
 		Iterate(
-			robots[targetID].Predict(
+			_3Dposition = robots[targetID].Predict(
 				TimeStampCounter::GetTimeStamp() - ImgTime + flyTime
 			),
 		pitch, flyTime);
 	pitch -= com.Get().pitchA;
 
 	// Yaw²îÖµµÄ½âËã
-	Point2f ImgPoint = PnPsolver.RevertPnP(
-		robots[targetID].Predict(
-			TimeStampCounter::GetTimeStamp() - ImgTime + flyTime
-	));
-	yaw = ImgPoint.x - (frameWidth >> 1);
+	Point2f _2Dposition = PnPsolver.RevertPnP(_3Dposition);
+	yaw = _2Dposition.x - (frameWidth >> 1);
+
+#if DEBUG_PREDICT == 1
+	cv::circle(debugImg, _2Dposition, 5, COLOR_RED, 2);
+#endif
 }

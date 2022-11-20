@@ -11,3 +11,4 @@ Header Functions:
 #include "Implementations/Log.h"
 #include "Implementations/CustomException.h"
 #include "Implementations/ExceptionHandling.h"
+#include "Implementations/InfoImg.h"

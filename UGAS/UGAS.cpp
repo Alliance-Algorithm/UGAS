@@ -45,7 +45,17 @@ void UGAS::always() {
 			// 主要工作循环
 			com.Get().RecvGimbalData();
 			_imgCapture.read(img);
+#if		DEBUG_IMG == 1
+#if		DEBUG_PRETREAT == 0
+			debugImg.Load(img);
 			_pretreater.GetPretreated(img);
+#else	// DEBUG_PRETREAT == 1
+			_pretreater.GetPretreated(img);
+			debugImg.Load(img);
+#endif	// DEBUG_PRETREAT
+#else	// DEBUG_IMG == 0
+			_pretreater.GetPretreated(img);
+#endif	// DEBUG_IMG
 			_armorIdentifier.Identify(img, armors);
 			_targetSolution.Solve(img.timeStamp, armors);
 			targetID = _trackingStrategy.GetTargetID();
@@ -55,6 +65,10 @@ void UGAS::always() {
 			}
 			else com.Get().SetAngle(.0, .0);
 			com.Get().Send();
+
+#if		DEBUG_IMG == 1
+			debugImg.Show();
+#endif	// DEBUG_IMG
 
 			_fps.Count();
 			printf("\rNow time stamp:%llu | Fps: %3d     ",
