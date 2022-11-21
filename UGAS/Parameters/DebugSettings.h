@@ -22,16 +22,17 @@ Header Functions:
 #define VIDEO_VAR		"Red.mp4"			// 视频读入
 #define NUM_PARA_TYPE	void*				// 数字识别参数类型
 #define NUM_PARA		nullptr				// 数字识别参数
-#define NUM_DEFAULT		1					// 数字识别默认返回数字(一般是0)
+#define FILTER_TYPE		PID::PDfilter		// 目标运动滤波器类型
 
 
 /// debug var			 调试变量
 #define DEFAULT_TEAM	Blue				// 虚拟云台队伍颜色
+#define NUM_DEFAULT		1					// 数字识别默认返回数字(一般是0)
 
 
 /// constant vars		 常值变量
 #define SERIAL_PORT		"\\\\.\\COM3"		// 串口逻辑名
-#define MAX_FPS			1000				// 最大帧数限制（多了会抛出异常haha）
+#define MAX_FPS			1000				// 最大帧数限制
 #define MAX_CNT			1000000				// 弹道仿真迭代次数限制
 #define PI				3.1415926535897		// Π值
 #define G				9.8					// 重力常数

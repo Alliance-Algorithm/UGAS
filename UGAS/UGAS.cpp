@@ -67,13 +67,17 @@ void UGAS::always() {
 			else com.Get().SetAngle(.0, .0);
 			com.Get().Send();
 
+			_fps.Count();
+			/* //直接打印在控制台上
+			printf("\rNow time stamp:%llu | Fps: %3d     ",
+				TimeStampCounter::GetTimeStamp(), _fps.GetFPS());
+			/*///输出至图像
+			_fps.PrintFPS(debugImg);
+			//*
+
 #if		DEBUG_IMG == 1
 			debugImg.Show();
 #endif	// DEBUG_IMG
-
-			_fps.Count();
-			printf("\rNow time stamp:%llu | Fps: %3d     ",
-				TimeStampCounter::GetTimeStamp(), _fps.GetFPS());
 		}
 		catch (const char* str) {
 			throw_with_trace(std::runtime_error, str);

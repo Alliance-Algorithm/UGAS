@@ -9,6 +9,8 @@ Header Functions:
 */
 #include <opencv2/opencv.hpp>
 #include "Common/TimeStamp/TimeStampCounter.h"
+#include "Common/Filter/Filter.h"
+#include "DebugSettings.h"
 
 enum RotateDirc;
 
@@ -26,6 +28,8 @@ private:
 	double _rotateSpeed; // omiga(w) : rad/s
 
 	double _possibility;
+
+	filters::FILTER_TYPE<cv::Vec3f> filter;
 public:
 	Robot();
 

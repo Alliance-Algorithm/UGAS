@@ -69,7 +69,7 @@ public:
 	void push_back(const valType& val) {
 		_data[_tail++] = val;
 		if (_tail == _head)
-			throw_with_trace(std::runtime_error, "[ERROR]<CircularQueue> overflow in push_back()!");
+			throw_with_trace(std::runtime_error, "overflow in push_back()!");
 		if (_tail == Size) _tail = 0;
 	}
 	void pop() { if (++_head == Size) _head = 0; }

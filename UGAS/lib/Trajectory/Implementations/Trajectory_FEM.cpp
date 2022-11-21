@@ -69,8 +69,7 @@ void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double&
 	// Yaw²îÖµµÄ½âËã
 	Point2f _2Dposition = PnPsolver.RevertPnP(_3Dposition);
 	yaw = _2Dposition.x - (frameWidth >> 1);
-
-	LOG(INFO) << _2Dposition << '\n';
+	//LOG(INFO) << _2Dposition << '\n';
 
 #if DEBUG_PREDICT == 1
 	cv::circle(debugImg, _2Dposition, 5, COLOR_RED, 2);

@@ -13,9 +13,8 @@ Header Functions:
 
 class FPSCounter {
 private:
-	CircularQueue<TimeStamp, MAX_FPS> _timeStamps;
+	CircularQueue<TimeStamp, MAX_FPS + 100> _timeStamps;
 public:
-	void Count();
-	int GetFPS();
+	int Count();
 	void PrintFPS(cv::Mat& img);
 };

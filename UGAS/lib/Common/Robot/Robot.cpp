@@ -20,10 +20,16 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 		{ // 持续跟踪的目标
 			cv::Point3f lastPostion = _armorCenter;
 			_armorCenter = PnPsolver.SolvePnP(armor);
-			// 暂时用一下线性滤波
-			_movingSpeed = _movingSpeed * 0.99 +
+			/* 暂时用一下线性滤波
+			_movingSpeed = _movingSpeed * 0.97 +
 				static_cast<cv::Vec3f>(_armorCenter - lastPostion) / 
-				static_cast<double>(ImgTime - _latestUpdate) * 0.01;
+				static_cast<double>(ImgTime - _latestUpdate) * 0.03;
+			/*/// 或者是封装好的滤波
+			_movingSpeed = filter.Predict(
+				static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
+				static_cast<double>(ImgTime - _latestUpdate)
+			);
+			//*/
 		}
 
 		// 暂时乱打一波
@@ -47,9 +53,8 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 }
 
 double Robot::GetPossibility() {
-	//return (TimeStampCounter::GetTimeStamp() - _latestUpdate < keep_tracking * 1000) ?
-	//	_possibility : (_possibility = .0);
-	return _possibility;
+	return (TimeStampCounter::GetTimeStamp() - _latestUpdate < keep_tracking * 1000) ? \
+		_possibility : (_possibility = .0);
 }
 
 cv::Point3f Robot::Predict(int millisec) const {
