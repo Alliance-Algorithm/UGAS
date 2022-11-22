@@ -13,11 +13,11 @@ class ArmorIdentifier_V1 : public ArmorIdentifier {
 private:
 	std::vector<LightBar> _lightBars;
 
-	void FindLightBars(const Img& img);
-	void FindArmorPlates(const Img& img, std::vector<ArmorPlate>& result);
+	void FindLightBars(const Img& imgThre);
+	void FindArmorPlates(const Img& imgGray, std::vector<ArmorPlate>& result);
 public:
 	ArmorIdentifier_V1(NumberIdentifier& numberIdentifier) :
 		ArmorIdentifier(numberIdentifier) {}
 
-	void Identify(const Img& img, std::vector<ArmorPlate>& result);
+	void Identify(const Img& imgThre, const Img& imgGray, std::vector<ArmorPlate>& result);
 };

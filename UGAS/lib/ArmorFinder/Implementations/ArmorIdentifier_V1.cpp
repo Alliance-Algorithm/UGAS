@@ -4,12 +4,12 @@
 using namespace std;
 using namespace cv;
 
-void ArmorIdentifier_V1::FindLightBars(const Img& img) {
+void ArmorIdentifier_V1::FindLightBars(const Img& imgThre) {
 	static vector< vector<Point> > contours;
 
 	contours.clear();
 	_lightBars.clear();
-	findContours(img, contours, RETR_EXTERNAL, CHAIN_APPROX_NONE);
+	findContours(imgThre, contours, RETR_EXTERNAL, CHAIN_APPROX_NONE);
 
 	for (const auto& contour : contours) {
 		if (contour.size() > 3) {
@@ -38,7 +38,7 @@ void ArmorIdentifier_V1::FindLightBars(const Img& img) {
 	}
 }
 
-void ArmorIdentifier_V1::FindArmorPlates(const Img& img, std::vector<ArmorPlate>& result) {
+void ArmorIdentifier_V1::FindArmorPlates(const Img& imgGray, std::vector<ArmorPlate>& result) {
 	result.clear();
 	sort(_lightBars.begin(), _lightBars.end(),
 		[&](LightBar& a, LightBar& b) {
@@ -60,15 +60,15 @@ void ArmorIdentifier_V1::FindArmorPlates(const Img& img, std::vector<ArmorPlate>
 
 			// 数字识别部分（暂时放这，可能会挪到运动模型那去）
 			ArmorPlate armor(_lightBars[i], _lightBars[j]);
-			armor.id = _numberIdentifier.Identify(img, armor);
+			armor.id = _numberIdentifier.Identify(imgGray, armor);
 			result.push_back(armor);
 		}
 	}
 }
 
-void ArmorIdentifier_V1::Identify(const Img& img, std::vector<ArmorPlate>& result) {
-	FindLightBars(img);
-	FindArmorPlates(img, result);
+void ArmorIdentifier_V1::Identify(const Img& imgThre, const Img& imgGray, std::vector<ArmorPlate>& result) {
+	FindLightBars(imgThre);
+	FindArmorPlates(imgGray, result);
 #if DEBUG_ARMOR == 1
 	for (const auto& lightBar : _lightBars) {
 		line(debugImg, lightBar.top, lightBar.bottom, COLOR_BLUE, 5);

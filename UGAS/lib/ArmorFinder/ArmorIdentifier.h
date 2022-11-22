@@ -19,5 +19,5 @@ public:
 		_numberIdentifier(numberIdentifier)
 		{ numberIdentifier.init(static_cast<void*>(&numberIdPara)); }
 
-	virtual void Identify(const Img& img, std::vector<ArmorPlate>& result) = 0;
+	virtual void Identify(const Img& imgThre, const Img& imgGray, std::vector<ArmorPlate>& result) = 0;
 };

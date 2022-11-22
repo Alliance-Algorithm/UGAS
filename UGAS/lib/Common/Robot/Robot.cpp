@@ -8,7 +8,7 @@ Robot robots[10];
 
 Robot::Robot() :_latestUpdate(0ULL), _rotationLatestUpdate(0ULL),
 	_robotCenter(), _movingSpeed(), _armor(), _armorCenter(),
-	_rotate(RotateDirc::UNKNOWN), _rotateSpeed(.0) {}
+	_rotate(RotateDirc::UNKNOWN), _rotateSpeed(.0), _possibility(.0) {}
 
 void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 	if (_latestUpdate != ImgTime) {
@@ -25,7 +25,7 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 				static_cast<cv::Vec3f>(_armorCenter - lastPostion) / 
 				static_cast<double>(ImgTime - _latestUpdate) * 0.03;
 			/*/// 或者是封装好的滤波
-			_movingSpeed = filter.Predict(
+			_movingSpeed = _speedFilter.Predict(
 				static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
 				static_cast<double>(ImgTime - _latestUpdate)
 			);

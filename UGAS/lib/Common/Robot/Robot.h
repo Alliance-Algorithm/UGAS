@@ -19,6 +19,7 @@ private:
 	TimeStamp _latestUpdate;
 	cv::Point3f _robotCenter;
 	cv::Vec3f _movingSpeed;
+	filters::FILTER_TYPE<cv::Vec3f> _speedFilter;
 
 	ArmorPlate _armor;
 	cv::Point3f _armorCenter;
@@ -28,8 +29,6 @@ private:
 	double _rotateSpeed; // omiga(w) : rad/s
 
 	double _possibility;
-
-	filters::FILTER_TYPE<cv::Vec3f> filter;
 public:
 	Robot();
 

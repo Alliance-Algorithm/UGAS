@@ -35,7 +35,7 @@ void UGAS::initial() {
 
 void UGAS::always() {
 	// 中间过程变量
-	Img					img;
+	Img					img, imgGray;
 	vector<ArmorPlate>	armors;
 	int					targetID;
 	double				yaw, pitch;
@@ -48,16 +48,16 @@ void UGAS::always() {
 #if		DEBUG_IMG == 1
 #if		DEBUG_PRETREAT == 0
 			debugImg.Load(img);
-			_pretreater.GetPretreated(img);
+			_pretreater.GetPretreated(img, img, imgGray);
 #else	// DEBUG_PRETREAT == 1
-			_pretreater.GetPretreated(img);
+			_pretreater.GetPretreated(img, img, imgGray);
 			debugImg.Load(img);
 #endif	// DEBUG_PRETREAT
 #else	// DEBUG_IMG == 0
-			_pretreater.GetPretreated(img);
+			_pretreater.GetPretreated(img, img, imgGray);
 #endif	// DEBUG_IMG
 			PnPsolver.GetTransMat();
-			_armorIdentifier.Identify(img, armors);
+			_armorIdentifier.Identify(img, imgGray, armors);
 			_targetSolution.Solve(img.timeStamp, armors);
 			targetID = _trackingStrategy.GetTargetID();
 			if (targetID) {

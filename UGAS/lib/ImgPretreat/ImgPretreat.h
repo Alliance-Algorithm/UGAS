@@ -16,5 +16,5 @@ protected:
 public:
 	ImgPretreat(const serial::GimbalSerialHandle& com) :_com(com) {}
 
-	virtual void GetPretreated(Img& img) = 0;
+	virtual void GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat& imgGray) = 0;
 };

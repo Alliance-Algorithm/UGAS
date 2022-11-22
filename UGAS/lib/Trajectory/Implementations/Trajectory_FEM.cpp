@@ -60,7 +60,7 @@ void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double&
 	double flyTime = EvaluateBulletFlightTime(targetID);
 	for (int i = Trajc_iterate; i; --i)
 		Iterate(
-			_3Dposition = robots[targetID].Predict(
+			_3Dposition = robots[targetID].Predict(staticReactionTime * 1000 +
 				TimeStampCounter::GetTimeStamp() - ImgTime + flyTime
 			),
 		pitch, flyTime);
@@ -72,6 +72,7 @@ void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double&
 	//LOG(INFO) << _2Dposition << '\n';
 
 #if DEBUG_PREDICT == 1
-	cv::circle(debugImg, _2Dposition, 5, COLOR_RED, 2);
+	static filters::PID::PDfilter<cv::Point2f> _2DpositionFilter;
+	cv::circle(debugImg, _2DpositionFilter.Predict(_2Dposition), 5, COLOR_RED, 2);
 #endif
 }

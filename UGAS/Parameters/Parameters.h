@@ -70,3 +70,4 @@ extern double keep_tracking, rotation_validity;
 extern const int iterations, Trajc_iterate;
 extern const double Trajc_k, Trajc_dertaT;
 extern const double angleLowest, angleHighest, angleEPS;
+extern const double staticReactionTime;
