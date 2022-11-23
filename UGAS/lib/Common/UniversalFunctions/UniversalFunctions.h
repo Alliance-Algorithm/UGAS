@@ -15,4 +15,5 @@ double P2PDis(const cv::Point3f& a, const cv::Point3f& b);
 
 double malposition(const LightBar& LBl, const LightBar& LBr);
 
+double VecLenth(const cv::Vec3f& v);
 double CoordinateDistance(double a, double b);

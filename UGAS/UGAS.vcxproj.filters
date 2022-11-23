@@ -96,9 +96,6 @@
     <ClCompile Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="lib\Common\DebugTools\Implementations\ValueGragh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">

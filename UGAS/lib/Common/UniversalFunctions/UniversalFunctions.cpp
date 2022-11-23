@@ -17,6 +17,10 @@ double malposition(const LightBar& LBl, const LightBar& LBr) {
 	return fabs(axis.dot(dis) / axis.cross(dis));
 }
 
+double VecLenth(const cv::Vec3f& v) {
+	return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+}
+
 double CoordinateDistance(double a, double b) {
 	return sqrt(a * a + b * b);
 }

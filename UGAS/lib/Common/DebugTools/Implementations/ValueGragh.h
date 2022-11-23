@@ -100,7 +100,7 @@ inline void ValueGraghPrinter<ValType, Size>::draw(ValueGragh& img, cv::Scalar c
 			{ static ValueGragh __img(width, height); \
 			static ValueGraghPrinter<decltype(x), maxSize> __gragh; \
 			__gragh.push_back(x); \
-			__gragh.draw(img, color); \
+			__gragh.draw(__img, color, true); \
 			cv::imshow(#x, __img); cv::waitKey(1); \
 			}
 // #################### 显示默认单变量曲线 #

@@ -23,6 +23,7 @@ UGAS::~UGAS() {
 void UGAS::initial() {
 	try {
 		// 初始化部分
+		destroyAllWindows();
 		com.Get().Open(SERIAL_PORT);
 		com.Get().RecvGimbalData();
 		_imgCapture.init(&video);
@@ -51,7 +52,7 @@ void UGAS::always() {
 			_pretreater.GetPretreated(img, img, imgGray);
 #else	// DEBUG_PRETREAT == 1
 			_pretreater.GetPretreated(img, img, imgGray);
-			debugImg.Load(img);
+			cvtColor(img, debugImg, COLOR_GRAY2BGR);
 #endif	// DEBUG_PRETREAT
 #else	// DEBUG_IMG == 0
 			_pretreater.GetPretreated(img, img, imgGray);

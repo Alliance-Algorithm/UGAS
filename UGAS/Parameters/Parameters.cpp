@@ -79,6 +79,9 @@ void ParametersInit(const Team team) {
 	AddTrackbar("maxLightDy",			&maxLightDy,			10, 10);
 	AddTrackbar("bigArmorDis",			&bigArmorDis,			10, 10);
 
+	// TrackingStrategy Parameters
+	AddTrackbar("maxAcceleration", &maxAcceleration, 10, 10);
+
 
 #endif
 }
@@ -91,7 +94,7 @@ int frameWidth = 0, frameHeight = 0;
 
 
 /* Pretreat Parameters */
-int BHmin = 80, BHmax = 100, BSmin = 220,
+int BHmin = 90, BHmax = 120, BSmin = 200,
 		BSmax = 255, BVmin = 230, BVmax = 255;
 int RHminL = 0, RHmaxL = 20, RHminR = 160, RHmaxR = 180,
 		RSmin = 70, RSmax = 255, RVmin = 110, RVmax = 255;
@@ -138,6 +141,7 @@ const std::vector<Point3f>
 
 
 /* TrackingStrategy Parameters */
+double maxAcceleration = 5.;
 double keep_tracking = 0.3, rotation_validity = 0.2;
 
 /* Trajectory Parameters */

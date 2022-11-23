@@ -1,6 +1,7 @@
 #include "Robot.h"
 #include "Common/PnP/PnP.h"
 #include "Parameters.h"
+#include "Common/UniversalFunctions/UniversalFunctions.h"
 
 enum RotateDirc { UNKNOWN = 0, LEFT, RIGHT };
 
@@ -20,16 +21,24 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 		{ // 持续跟踪的目标
 			cv::Point3f lastPostion = _armorCenter;
 			_armorCenter = PnPsolver.SolvePnP(armor);
-			/* 暂时用一下线性滤波
-			_movingSpeed = _movingSpeed * 0.97 +
-				static_cast<cv::Vec3f>(_armorCenter - lastPostion) / 
-				static_cast<double>(ImgTime - _latestUpdate) * 0.03;
-			/*/// 或者是封装好的滤波
-			_movingSpeed = _speedFilter.Predict(
+
+			double passedTime = static_cast<double>(ImgTime - _latestUpdate);
+			cv::Vec3f speed = static_cast<cv::Vec3f>(_armorCenter - lastPostion) / passedTime;
+
+			if (VecLenth(speed - _movingSpeed) / passedTime > maxAcceleration)
+				_speedFilter.Reset(); // 超过最大加速度，不认为是同一个装甲板
+			else { // 对同一个装甲板有效的跟踪
+				/* 暂时用一下线性滤波
+				_movingSpeed = _movingSpeed * 0.97 +
 				static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
-				static_cast<double>(ImgTime - _latestUpdate)
-			);
-			//*/
+				static_cast<double>(ImgTime - _latestUpdate) * 0.03;
+				/*/// 或者是封装好的滤波
+				_movingSpeed = _speedFilter.Predict(
+					static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
+					static_cast<double>(ImgTime - _latestUpdate)
+				);
+				//*/
+			}
 		}
 
 		// 暂时乱打一波

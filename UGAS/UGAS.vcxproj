@@ -158,7 +158,6 @@
     <ClCompile Include="lib\Common\Robot\Robot.cpp" />
     <ClCompile Include="lib\Common\PnP\PnP.cpp" />
     <ClCompile Include="UGAS.cpp" />
-    <ClCompile Include="lib\Common\DebugTools\Implementations\ValueGragh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\Common\DebugTools\DebugHeader.h" />
