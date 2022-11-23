@@ -24,7 +24,7 @@ Header Functions:
 #define IMG_CAPTURE		CVVideoCapture
 #define IMG_PRETREAT	ImgPretreat_V2
 #define ARMOR_IDENTIFY	ArmorIdentifier_V1
-#define NUMBER_IDENTIFY	NumberIdentifier_V1
+#define NUMBER_IDENTIFY	NullNumberIdentifier
 #define TARGET_SOLUTION TargetSolution_V1
 #define TRACK_STRATEGY  TrackingStrategy_V1
 #define TRAJECTORY		Trajectory_FEM

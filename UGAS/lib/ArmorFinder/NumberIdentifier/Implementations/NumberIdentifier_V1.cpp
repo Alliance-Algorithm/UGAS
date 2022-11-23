@@ -15,27 +15,23 @@ void NumberIdentifier_V1::init(void* model) {
 }
 
 short NumberIdentifier_V1::Identify(const Img& imgGray, const ArmorPlate& region) {
-	static const std::vector<cv::Point2f> dst = { {-4, 9}, {-4, 23}, {36, 23}, {36, 9} };
-	cv::Mat M = cv::getPerspectiveTransform(region.points, dst);
-	cv::Mat imgWarped, imgNumber;
-	cv::warpPerspective(imgGray, imgWarped, M, cv::Size(32, 32));
-	cv::threshold(imgWarped, imgNumber, 0, 255, cv::THRESH_BINARY + cv::THRESH_OTSU);
-	//cv::resize(imgNumber, imgNumber, cv::Size(36, 36));
-	Mat blobImage = dnn::blobFromImage(imgNumber, 1.0, Size(32, 32), false, false);
+	static const std::vector<Point2f> dst = { {-4, 9}, {-4, 23}, {36, 23}, {36, 9} };
+	Mat  imgWarped, imgNumber, M = getPerspectiveTransform(region.points, dst);
+	warpPerspective(imgGray, imgWarped, M, Size(32, 32));
+	threshold(imgWarped, imgNumber, 0, 255, THRESH_BINARY | THRESH_OTSU);
+	Mat blobImage = blobFromImage(imgNumber, 1.0, Size(32, 32), false, false);
 	_net.setInput(blobImage);
 	Mat pred = _net.forward();
-	std::cout << pred << std::endl;
-	Point maxLoc;
-	double maxVal;
-	minMaxLoc(pred, &maxVal, NULL, NULL, &maxLoc);
 
-#if true
+	Point maxLoc;
+	minMaxLoc(pred, NULL, NULL, NULL, &maxLoc);
+
+#if DEBUG_ARMOR_NUM == 1
 	cv::cvtColor(imgNumber, imgNumber, cv::COLOR_GRAY2BGR);
 	cv::Point drawPos = static_cast<cv::Point>(region.center());
 	cv::Rect drawRect = cv::Rect(drawPos.x - 16, drawPos.y - 16, 32, 32);
 	imgNumber.copyTo(debugImg(drawRect));
-	cv::putText(debugImg, std::to_string(maxVal), region.points[0], 1, 2, COLOR_GREEN);
-	cv::putText(debugImg, std::to_string(maxLoc.x), region.points[2], 1, 5, COLOR_GREEN);
+	cv::putText(debugImg, std::to_string(maxLoc.x), Point(drawPos.x - 12, drawPos.y + 13), 1, 2.5, COLOR_GREEN, 3);
 #endif
 
 	return maxLoc.x;
