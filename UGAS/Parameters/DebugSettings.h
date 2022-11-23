@@ -22,8 +22,8 @@ Header Functions:
 /// static var			 静态变量
 #define VIDEO_VAR_TYPE	const char*			// 视频读入类型
 #define VIDEO_VAR		"Blue_2.mp4" 		// 视频读入
-#define NUM_PARA_TYPE	void*				// 数字识别参数类型
-#define NUM_PARA		nullptr				// 数字识别参数
+#define NUM_PARA_TYPE	const char*			// 数字识别参数类型
+#define NUM_PARA		"V1.pb"				// 数字识别参数
 #define FILTER_TYPE		PID::PDfilter		// 目标运动滤波器类型
 
 
