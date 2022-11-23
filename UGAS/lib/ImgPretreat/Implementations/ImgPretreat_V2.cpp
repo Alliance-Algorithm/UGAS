@@ -1,5 +1,4 @@
 #include "ImgPretreat_V2.h"
-using namespace cv;
 
 inline void ImgPretreat_V2::LoopPixel(const uchar* src, uchar* dst, int n) const {
     static const int div_table[] = {
@@ -50,7 +49,7 @@ inline void ImgPretreat_V2::LoopPixel(const uchar* src, uchar* dst, int n) const
         diff = vmax - vmin;
         int light = (vmin + vmax) >> 1;
 
-        if (diff > 10 && light > 100) {
+        if (diff > 10 && light > 60) {
             vr = vmax == r ? -1 : 0;
             vg = vmax == g ? -1 : 0;
 
@@ -68,7 +67,7 @@ inline void ImgPretreat_V2::LoopPixel(const uchar* src, uchar* dst, int n) const
 }
 
 inline void ImgPretreat_V2::Threshold(const cv::Mat& src, cv::Mat& dst) const {
-    Size sz = src.size();
+    cv::Size sz = src.size();
     const uchar* srcBuf = src.data;
     uchar* dstBuf = dst.data;
     size_t srcstep = src.step, dststep = dst.step;
@@ -86,10 +85,11 @@ void ImgPretreat_V2::GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat
 	if (imgThre.empty())
         imgThre.create(img.size(), CV_8UC1);
 	Threshold(img, imgThre);
+    cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
 
 #if DEBUG_PARA == 0
     static // 非调试模式设置静态内核
 #endif
-        Mat closeCore = getStructuringElement(MORPH_RECT, Size(closeCoreSize | 1, closeCoreSize | 1));
-    morphologyEx(imgThre, imgThre, MORPH_CLOSE, closeCore);
+        cv::Mat closeCore = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(closeCoreSize | 1, closeCoreSize | 1));
+    morphologyEx(imgThre, imgThre, cv::MORPH_CLOSE, closeCore);
 }

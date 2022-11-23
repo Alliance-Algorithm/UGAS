@@ -1,268 +1,100 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Parameters">
-      <UniqueIdentifier>{48af17b1-4825-4fe0-96e5-719e644f3437}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.cpp" />
+    <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc" />
+    <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp" />
+    <ClCompile Include="lib\Common\DebugTools\Implementations\InfoImg.cpp" />
+    <ClCompile Include="lib\Common\Filter\Filter.cpp" />
+    <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp" />
+    <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp" />
+    <ClCompile Include="lib\Common\UniversalFunctions\UniversalFunctions.cpp" />
+    <ClCompile Include="lib\GimbalSerial\GimbalSerialHandle.cpp" />
+    <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.cpp" />
+    <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\Windows\WindowsHTCameraCapture.cpp" />
+    <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp" />
+    <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp" />
+    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp" />
+    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.cpp" />
+    <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Parameters\Parameters.cpp" />
+    <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp" />
+    <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp" />
+    <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp" />
+    <ClCompile Include="lib\Common\Robot\Robot.cpp" />
+    <ClCompile Include="lib\Common\PnP\PnP.cpp" />
+    <ClCompile Include="UGAS.cpp" />
+    <ClCompile Include="lib\ArmorFinder\NumberIdentifier\Implementations\NumberIdentifier_V1.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\CVCameraCapture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="UGAS.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Parameters\Parameters.cpp">
-      <Filter>Parameters</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\ImgCapture\Implementations\CVCameraCapture.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\Common\UniversalFunctions\UniversalFunctions.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\Common\Robot\Robot.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\Common\PnP\PnP.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\GimbalSerial\GimbalSerialHandle.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\Common\Filter\Filter.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\Common\DebugTools\Implementations\InfoImg.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\ImgCapture\Implementations\Windows\WindowsHTCameraCapture.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.h" />
+    <ClInclude Include="lib\Common\DebugTools\DebugHeader.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\InfoImg.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\FastStruct.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastArray2d.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastBucketMap.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastDisjointSet.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastStack.h" />
+    <ClInclude Include="lib\Common\Filter\Filter.h" />
+    <ClInclude Include="lib\Common\FPSCounter\FPSCounter.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.h" />
+    <ClInclude Include="lib\ArmorFinder\ArmorIdentifier.h" />
+    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NullNumberIdentifier.h" />
+    <ClInclude Include="lib\Common\UniversalFunctions\UniversalFunctions.h" />
+    <ClInclude Include="lib\GimbalSerial\GimbalSerialHandle.h" />
+    <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.h" />
+    <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\HTCameraCapture.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\Windows\WindowsHTCameraCapture.h" />
+    <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h" />
+    <ClInclude Include="lib\ImgPretreat\ImgPretreat.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h" />
+    <ClInclude Include="lib\GimbalSerial\CRC\CRC.h" />
+    <ClInclude Include="lib\GimbalSerial\GimbalSerial.h" />
+    <ClInclude Include="lib\Common\Color.h" />
+    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.h" />
+    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.h" />
+    <ClInclude Include="lib\GimbalSerial\Packages.h" />
+    <ClInclude Include="lib\ImgCapture\ImgCapture.h" />
+    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\NumberIdentifier.h" />
+    <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.h" />
+    <ClInclude Include="lib\TargetSolution\TargetSolution.h" />
+    <ClInclude Include="lib\TrackingStrategy\Implementations\TrackingStrategy_V1.h" />
+    <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h" />
+    <ClInclude Include="lib\Trajectory\Trajectory.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.h" />
+    <ClInclude Include="Parameters\UsingModules.h" />
+    <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h" />
+    <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h" />
+    <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h" />
+    <ClInclude Include="lib\Common\Robot\Robot.h" />
+    <ClInclude Include="lib\Common\PnP\PnP.h" />
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApi.h" />
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApiLoad.h" />
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraDefine.H" />
+    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraStatus.h" />
+    <ClInclude Include="UGAS_Headers.h" />
+    <ClInclude Include="lib\Common\UniversalStruct.h" />
+    <ClInclude Include="Parameters\DebugSettings.h" />
+    <ClInclude Include="Parameters\Parameters.h" />
+    <ClInclude Include="UGAS.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\ValueGragh.h" />
+    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NumberIdentifier_V1.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\CVCameraCapture.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UGAS.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Parameters\Parameters.h">
-      <Filter>Parameters</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\Color.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\UniversalStruct.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="UGAS_Headers.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\GimbalSerial\GimbalSerial.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\GimbalSerial\CRC\CRC.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\GimbalSerial\Packages.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ImgCapture\ImgCapture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ImgCapture\Implementations\CVCameraCapture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ImgPretreat\ImgPretreat.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ArmorFinder\ArmorIdentifier.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\UniversalFunctions\UniversalFunctions.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\NumberIdentifier.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NullNumberIdentifier.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\FPSCounter\FPSCounter.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\TargetSolution\TargetSolution.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\TrackingStrategy\Implementations\TrackingStrategy_V1.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Trajectory\Trajectory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\DebugTools\DebugHeader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\Robot\Robot.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\PnP\PnP.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\GimbalSerial\GimbalSerialHandle.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Parameters\DebugSettings.h">
-      <Filter>Parameters</Filter>
-    </ClInclude>
-    <ClInclude Include="Parameters\UsingModules.h">
-      <Filter>Parameters</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\Filter\Filter.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\DebugTools\Implementations\InfoImg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApi.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApiLoad.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraDefine.H">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraStatus.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ImgCapture\Implementations\Windows\WindowsHTCameraCapture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ImgCapture\Implementations\HTCameraCapture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\Common\DebugTools\Implementations\ValueGragh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="third-party\HTCameraSDK\Windows\MVCAMSDK_X64.lib" />
     <Library Include="third-party\HTCameraSDK\Windows\MVCAMSDK.lib" />
+    <Library Include="third-party\HTCameraSDK\Windows\MVCAMSDK_X64.lib" />
   </ItemGroup>
 </Project>

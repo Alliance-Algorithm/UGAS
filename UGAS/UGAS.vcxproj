@@ -133,6 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.cpp" />
+    <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.cpp" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\InfoImg.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.cpp" />
     <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="lib\ArmorFinder\NumberIdentifier\Implementations\NumberIdentifier_V1.cpp" />
     <ClCompile Include="Parameters\Parameters.cpp" />
     <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp" />
     <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp" />
@@ -163,12 +165,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.h" />
     <ClInclude Include="lib\Common\DebugTools\DebugHeader.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\InfoImg.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\FastStruct.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastArray2d.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastBucketMap.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastDisjointSet.h" />
+    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastStack.h" />
     <ClInclude Include="lib\Common\Filter\Filter.h" />
     <ClInclude Include="lib\Common\FPSCounter\FPSCounter.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.h" />
@@ -198,6 +206,7 @@
     <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h" />
     <ClInclude Include="lib\Trajectory\Trajectory.h" />
     <ClInclude Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.h" />
+    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NumberIdentifier_V1.h" />
     <ClInclude Include="Parameters\UsingModules.h" />
     <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h" />
     <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h" />
