@@ -71,7 +71,7 @@ void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double&
 	yaw = _2Dposition.x - (frameWidth >> 1);
 	//LOG(INFO) << _2Dposition << '\n';
 
-#if DEBUG_PREDICT == 1
+#if DEBUG_IMG == 1 && DEBUG_PREDICT == 1
 	//*///
 	static filters::PID::PDfilter<cv::Point2f> _2DpositionFilter;
 	cv::circle(debugImg, _2DpositionFilter.Predict(_2Dposition), 5, COLOR_RED, 2);

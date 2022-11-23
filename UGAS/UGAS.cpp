@@ -47,17 +47,12 @@ void UGAS::always() {
 			com.Get().RecvGimbalData();
 			_imgCapture.read(img);
 			frameWidth = img.cols; frameHeight = img.rows;
+
 #if		DEBUG_IMG == 1
-#if		DEBUG_PRETREAT == 0
 			debugImg.Load(img);
-			_pretreater.GetPretreated(img, imgThre, imgGray);
-#else	// DEBUG_PRETREAT == 1
-			_pretreater.GetPretreated(img, imgThre, imgGray);
-			cvtColor(imgThre, debugImg, COLOR_GRAY2BGR);
-#endif	// DEBUG_PRETREAT
-#else	// DEBUG_IMG == 0
-			_pretreater.GetPretreated(img, imgThre, imgGray);
 #endif	// DEBUG_IMG
+
+			_pretreater.GetPretreated(img, imgThre, imgGray);
 			PnPsolver.GetTransMat();
 			_armorIdentifier.Identify(imgThre, imgGray, armors);
 			_targetSolution.Solve(img.timeStamp, armors);
@@ -69,23 +64,24 @@ void UGAS::always() {
 			else com.Get().SetAngle(yaw = .0, pitch = .0);
 			com.Get().Send();
 
-			_fps.Count();
-			/*///直接打印在控制台上
-			printf("\rNow time stamp:%llu | Fps: %3d     ",
-				TimeStampCounter::GetTimeStamp(), _fps.GetFPS());
-			//*///输出至图像
-			_fps.PrintFPS(debugImg);
-			//*///
+#if		DEBUG_PRETREAT == 1
+			imshow("Pretreat", imgThre);
+#endif
 
-#if DEBUG_ANGLE == 1
+#if		DEBUG_ANGLE == 1
 			MAKE_GRAGH_DEFAULT
 				GRAGH_ADD_VAR(yaw, COLOR_YELLOW)
 				GRAGH_ADD_VAR(pitch, COLOR_BLUE)
 			SHOW_GRAGH(Gragh_Yaw_Pitch)
 #endif // DEBUG_ANGLE == 1
 
-#if		DEBUG_IMG == 1
+#if		DEBUG_IMG == 1 //输出至图像
+			_fps.Count();
+			_fps.PrintFPS(debugImg);
 			debugImg.Show();
+#else		//直接打印在控制台上
+			printf("\rNow time stamp:%llu | Fps: %3d     ",
+				TimeStampCounter::GetTimeStamp(), _fps.Count());
 #endif	// DEBUG_IMG == 1
 
 		}

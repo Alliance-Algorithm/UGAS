@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.cpp" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\InfoImg.cpp" />
@@ -144,8 +145,8 @@
     <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.cpp" />
     <ClCompile Include="lib\ImgCapture\Implementations\Windows\WindowsHTCameraCapture.cpp" />
     <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\CVCameraCapture.cpp" />
     <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp" />
-    <ClCompile Include="lib\ImgCapture\Implementations\CVImgCapture.cpp" />
     <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="UGAS.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.h" />
     <ClInclude Include="lib\Common\DebugTools\DebugHeader.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h" />
@@ -180,8 +182,8 @@
     <ClInclude Include="lib\ImgCapture\Implementations\Windows\WindowsHTCameraCapture.h" />
     <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h" />
     <ClInclude Include="lib\ImgPretreat\ImgPretreat.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\CVCameraCapture.h" />
     <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h" />
-    <ClInclude Include="lib\ImgCapture\Implementations\CVImgCapture.h" />
     <ClInclude Include="lib\GimbalSerial\CRC\CRC.h" />
     <ClInclude Include="lib\GimbalSerial\GimbalSerial.h" />
     <ClInclude Include="lib\Common\Color.h" />

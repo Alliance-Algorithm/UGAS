@@ -36,13 +36,13 @@
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="lib\ImgCapture\Implementations\CVImgCapture.cpp">
+    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp">
+    <ClCompile Include="lib\ImgCapture\Implementations\CVCameraCapture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp">
@@ -99,6 +99,9 @@
     <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -134,13 +137,13 @@
     <ClInclude Include="lib\ImgCapture\ImgCapture.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="lib\ImgCapture\Implementations\CVImgCapture.h">
+    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h">
+    <ClInclude Include="lib\ImgCapture\Implementations\CVCameraCapture.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\ImgPretreat\ImgPretreat.h">
@@ -252,6 +255,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

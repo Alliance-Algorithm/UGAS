@@ -16,23 +16,34 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 		if (ImgTime - _latestUpdate > keep_tracking * 1000)
 		{ // 新观察到的目标
 			_armorCenter = PnPsolver.SolvePnP(armor);
+			_speedFilter.Reset();
 		}
 		else
 		{ // 持续跟踪的目标
+			// 比较预测点与观测点的距离，保存预测点
+			cv::Point2f prediction = PnPsolver.RevertPnP(
+				this->Predict(ImgTime - _latestUpdate)
+			);
+
+			// 计算新的三维中心
 			cv::Point3f lastPostion = _armorCenter;
 			_armorCenter = PnPsolver.SolvePnP(armor);
-
-			double passedTime = static_cast<double>(ImgTime - _latestUpdate);
-			cv::Vec3f speed = static_cast<cv::Vec3f>(_armorCenter - lastPostion) / passedTime;
-
-			if (VecLenth(speed - _movingSpeed) / passedTime > maxAcceleration)
-				_speedFilter.Reset(); // 超过最大加速度，不认为是同一个装甲板
-			else { // 对同一个装甲板有效的跟踪
-				/* 暂时用一下线性滤波
-				_movingSpeed = _movingSpeed * 0.97 + speed * 0.03;
-				/*/// 或者是封装好的滤波
-				_movingSpeed = _speedFilter.Predict(speed);
-				//*/
+			
+			// 如果超过最大跟踪距离，不认为是同一个装甲板，在可接受的时间差内继承速度
+			// 对同一个装甲板有效的跟踪则更新速度
+			if (P2PDis(prediction, armor.center()) < maxArmorTrackDis ||
+				// 下面这个P2PDis()和原位置比较，加快对本身有一定初速度目标的响应
+				P2PDis(_armor.center(), armor.center()) < maxArmorTrackDis) {
+				// 用封装好的滤波
+				_movingSpeed = _speedFilter.Predict(
+					static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
+					static_cast<double>(ImgTime - _latestUpdate)
+				);
+			}
+			else if (ImgTime - _latestUpdate > 100)
+			{ // 超过一个较短时间即放弃对速度的继承
+				_movingSpeed = cv::Vec3f();
+				_speedFilter.Reset();
 			}
 		}
 
