@@ -1,5 +1,4 @@
 #pragma once
-
 #include <map>
 
 template <typename Key, typename Value>
@@ -11,7 +10,6 @@ private:
 	};
 	std::map<Key, Node*> _map;
 	FastStack<Node> _dataArray;
-
 public:
 	inline void Reset() {
 		_map.clear();
@@ -35,4 +33,3 @@ public:
 		}
 	}
 };
-

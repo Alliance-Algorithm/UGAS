@@ -5,7 +5,6 @@ class FastStack {
 private:
 	T* _pointer;
 	int _length, _maxLength;
-
 public:
 	int& Length = _length;
 
@@ -54,4 +53,3 @@ public:
 		return _pointer[index];
 	}
 };
-

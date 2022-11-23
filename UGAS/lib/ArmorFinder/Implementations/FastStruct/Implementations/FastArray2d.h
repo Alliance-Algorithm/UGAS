@@ -8,7 +8,6 @@ private:
 	T* _pointer;
 	int _rows, _cols;
 	size_t _memorySize;
-
 public:
 	FastArray2d() {
 		_rows = _cols = 0;
@@ -41,4 +40,3 @@ public:
 		return _pointer[(row * _cols) + col];
 	}
 };
-

@@ -8,10 +8,8 @@ Header Functions:
 - 使用DFS和并查集实现的灯条查找算法
 - 滥竽充数的灯条匹配
 */
-
 #include "../ArmorIdentifier.h"
 #include "FastStruct/FastStruct.h"
-
 
 class ArmorIdentifier_V2 : public ArmorIdentifier {
 private:
@@ -24,9 +22,7 @@ private:
 	void _floodPixel(const cv::Mat& grayImg, int flood_val, FastDisjointSet<cv::Point>::Node* source, int fy, int fx);
 	bool _solveToLightbar(const std::vector<cv::Point>& area);
 	void _matchArmorPlates(std::vector<ArmorPlate>& result);
-
 public:
 	using ArmorIdentifier::ArmorIdentifier;
 	void Identify(const Img& imgThre, const Img& imgGray, std::vector<ArmorPlate>& result);
 };
-

@@ -1,11 +1,9 @@
 #pragma once
-
 #include <map>
 #include <vector>
 
 template <class T>
 class FastDisjointSet {
-
 public:
 	struct Node {
 		Node* Parent;
@@ -16,10 +14,8 @@ public:
 		std::vector<T> Items;
 		unsigned char Level;
 	};
-
 private:
 	FastStack<Node> _dataArray;
-
 public:
 	const int& Length = _dataArray.Length;
 

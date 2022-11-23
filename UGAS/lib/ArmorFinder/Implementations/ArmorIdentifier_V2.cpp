@@ -1,8 +1,6 @@
 #include <cmath>
-
 #include "Common/Color.h"
 #include "ArmorIdentifier_V2.h"
-
 
 inline std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(const cv::Mat& grayImg, int areaVal, int floodVal, bool borderEngulfment) {
     std::queue<cv::Point> emptyQueue;
@@ -90,7 +88,6 @@ inline bool ArmorIdentifier_V2::_solveToLightbar(const std::vector<cv::Point>& a
     return false;
 }
 
-
 inline void ArmorIdentifier_V2::_matchArmorPlates(std::vector<ArmorPlate>& result) {
     result.clear();
     std::sort(_lightBarList.begin(), _lightBarList.end(),
@@ -102,7 +99,6 @@ inline void ArmorIdentifier_V2::_matchArmorPlates(std::vector<ArmorPlate>& resul
             result.push_back(ArmorPlate(*(i - 1), *i, 3));
         }
 }
-
 
 void ArmorIdentifier_V2::Identify(const Img& imgThre, const Img& imgGray, std::vector<ArmorPlate>& result) {
     auto areaList = _floodFindAreas(imgThre, 250, 120, true);

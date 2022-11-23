@@ -92,5 +92,3 @@ cv::Point3f Robot::Predict(int millisec) const {
 	}
 	return prediction;
 }
-
-
