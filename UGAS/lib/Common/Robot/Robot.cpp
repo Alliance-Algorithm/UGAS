@@ -29,14 +29,9 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 				_speedFilter.Reset(); // 超过最大加速度，不认为是同一个装甲板
 			else { // 对同一个装甲板有效的跟踪
 				/* 暂时用一下线性滤波
-				_movingSpeed = _movingSpeed * 0.97 +
-				static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
-				static_cast<double>(ImgTime - _latestUpdate) * 0.03;
+				_movingSpeed = _movingSpeed * 0.97 + speed * 0.03;
 				/*/// 或者是封装好的滤波
-				_movingSpeed = _speedFilter.Predict(
-					static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
-					static_cast<double>(ImgTime - _latestUpdate)
-				);
+				_movingSpeed = _speedFilter.Predict(speed);
 				//*/
 			}
 		}

@@ -2,13 +2,12 @@
 using namespace cv;
 
 void ImgPretreat_V1::GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat& imgGray) {
-	frameWidth = img.cols; frameHeight = img.rows;
 	if (img.empty())
 		throw_with_trace(std::runtime_error, "Get empty img!");
 	cvtColor(img, imgGray, COLOR_BGR2GRAY);
 	cvtColor(img, imgThre, COLOR_BGR2HSV);
 	// 大符颜色参数还没搞，和灯条混在一起弄了，再列几个参数就行
-	if (_com.Get().team == ((int)Red ^ IN_STATE(_com.Get().flag, STATE_BUFF)))
+	if (com.Get().team == ((int)Red ^ IN_STATE(com.Get().flag, STATE_BUFF)))
 		inRange(imgThre, Scalar(BHmin, BSmin, BVmin), Scalar(BHmax, BSmax, BVmax), imgThre);
 	else { // 红色HSV的H色度刚好分布在色度条两头，得分开inRange然后合并（好麻烦）
 		Mat tmp;

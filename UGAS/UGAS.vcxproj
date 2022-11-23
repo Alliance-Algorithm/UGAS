@@ -150,6 +150,7 @@
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp" />
     <ClCompile Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.cpp" />
+    <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Parameters\Parameters.cpp" />
     <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="lib\GimbalSerial\Packages.h" />
     <ClInclude Include="lib\ImgCapture\ImgCapture.h" />
     <ClInclude Include="lib\ArmorFinder\NumberIdentifier\NumberIdentifier.h" />
+    <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.h" />
     <ClInclude Include="lib\TargetSolution\TargetSolution.h" />
     <ClInclude Include="lib\TrackingStrategy\Implementations\TrackingStrategy_V1.h" />
     <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h" />

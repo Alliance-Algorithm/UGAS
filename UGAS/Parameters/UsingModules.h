@@ -11,7 +11,7 @@ Header Functions:
 
 #include "GimbalSerial/GimbalSerialHandle.h"
 #include "../lib/ImgCapture/Implementations/CVImgCapture.h"
-#include "ImgPretreat/Implementations/ImgPretreat_V1.h"
+#include "ImgPretreat/Implementations/ImgPretreat_V2.h"
 #include "ArmorFinder/Implementations/ArmorIdentifier_V1.h"
 #include "ArmorFinder/NumberIdentifier/Implementations/NullNumberIdentifier.h"
 #include "TargetSolution/Implementations/TargetSolution_V1.h"
@@ -19,7 +19,7 @@ Header Functions:
 #include "Trajectory/Implementations/Trajectory_FEM.h"
 
 #define IMG_CAPTURE		CVImgCapture
-#define IMG_PRETREAT	ImgPretreat_V1
+#define IMG_PRETREAT	ImgPretreat_V2
 #define ARMOR_IDENTIFY	ArmorIdentifier_V1
 #define NUMBER_IDENTIFY	NullNumberIdentifier
 #define TARGET_SOLUTION TargetSolution_V1

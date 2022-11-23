@@ -11,10 +11,6 @@ Header Functions:
 #include "Common/DebugTools/DebugHeader.h"
 
 class ImgPretreat {
-protected:
-	serial::GimbalSerialHandle _com;
 public:
-	ImgPretreat(const serial::GimbalSerialHandle& com) :_com(com) {}
-
 	virtual void GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat& imgGray) = 0;
 };

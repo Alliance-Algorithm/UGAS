@@ -96,6 +96,9 @@
     <ClCompile Include="lib\ImgCapture\Implementations\Linux\LinuxHTCameraCapture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS.h">
@@ -246,6 +249,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="lib\Common\DebugTools\Implementations\ValueGragh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,8 +11,5 @@ Header Functions:
 
 class ImgPretreat_V1 : public ImgPretreat {
 public:
-	ImgPretreat_V1(serial::GimbalSerialHandle com) :
-		ImgPretreat(com) {}
-
 	void GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat& imgGray);
 };

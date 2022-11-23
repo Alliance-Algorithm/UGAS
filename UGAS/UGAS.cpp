@@ -4,7 +4,7 @@ using namespace cv;
 
 UGAS::UGAS() :
 	_imgCapture(*new IMG_CAPTURE()),
-	_pretreater(*new IMG_PRETREAT(com)),
+	_pretreater(*new IMG_PRETREAT()),
 	_armorIdentifier(*new ARMOR_IDENTIFY(*new NUMBER_IDENTIFY())),
 	_targetSolution(*new TARGET_SOLUTION()),
 	_trackingStrategy(*new TRACK_STRATEGY()),
@@ -36,7 +36,7 @@ void UGAS::initial() {
 
 void UGAS::always() {
 	// 中间过程变量
-	Img					img, imgGray;
+	Img					img, imgThre, imgGray;
 	vector<ArmorPlate>	armors;
 	int					targetID;
 	double				yaw, pitch;
@@ -46,19 +46,20 @@ void UGAS::always() {
 			// 主要工作循环
 			com.Get().RecvGimbalData();
 			_imgCapture.read(img);
+			frameWidth = img.cols; frameHeight = img.rows;
 #if		DEBUG_IMG == 1
 #if		DEBUG_PRETREAT == 0
 			debugImg.Load(img);
-			_pretreater.GetPretreated(img, img, imgGray);
+			_pretreater.GetPretreated(img, imgThre, imgGray);
 #else	// DEBUG_PRETREAT == 1
-			_pretreater.GetPretreated(img, img, imgGray);
-			cvtColor(img, debugImg, COLOR_GRAY2BGR);
+			_pretreater.GetPretreated(img, imgThre, imgGray);
+			cvtColor(imgThre, debugImg, COLOR_GRAY2BGR);
 #endif	// DEBUG_PRETREAT
 #else	// DEBUG_IMG == 0
-			_pretreater.GetPretreated(img, img, imgGray);
+			_pretreater.GetPretreated(img, imgThre, imgGray);
 #endif	// DEBUG_IMG
 			PnPsolver.GetTransMat();
-			_armorIdentifier.Identify(img, imgGray, armors);
+			_armorIdentifier.Identify(imgThre, imgGray, armors);
 			_targetSolution.Solve(img.timeStamp, armors);
 			targetID = _trackingStrategy.GetTargetID();
 			if (targetID) {
