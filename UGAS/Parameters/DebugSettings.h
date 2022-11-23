@@ -15,6 +15,7 @@ Header Functions:
 #define DEBUG_PRETREAT	0					// 使用预处理后的图像作为调试图像
 #define DEBUG_ARMOR		1					// 绘制装甲板识别图像
 #define DEBUG_PREDICT	1					// 绘制预测点
+#define DEBUG_ANGLE		0					// 绘制Yaw、Pitch曲线
 
 
 /// static var			 静态变量
@@ -38,14 +39,20 @@ Header Functions:
 #define G				9.8					// 重力常数
 
 
+/// var(s) Debug func	调试曲线生成宏定义
+#define DEFAULT_MEM_NUM 300					// 默认最大采样数量
+/*# 调试宏使用示例 (单变量)
+* DEBUG_GRAGH(var)
+### 调试宏使用示例 (多变量)
+* MAKE_GRAGH_DEFAULT
+*     GRAGH_ADD_VAR(var1, COLOR_YELLOW)
+*     GRAGH_ADD_VAR(var2, COLOR_BLUE)
+* SHOW_GRAGH(Gragh_var1_var2)
+*/
+
 /// Time cost analysis	运行时间分析宏定义
 #define START_COUNT	{TimeStamp __tsTmp=TimeStampCounter::GetTimeStamp();
 #define PRINT_COST	 printf("Took %llu ms | ", \
 						TimeStampCounter::GetTimeStamp() - __tsTmp);
 #define END_COUNT	}
 #define	PRINT_END_COUNT PRINT_COST END_COUNT
-
-
-/// var(s) Debug func	调试曲线生成宏定义 #
-
-

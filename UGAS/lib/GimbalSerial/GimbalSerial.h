@@ -42,10 +42,13 @@ namespace serial {
 		{ // 虚拟云台串口数据初始化
 #if VIRTUAL_GIBAL == 1
 			memset(this, 0, sizeof(*this));
-			RecvPkg::head = '\xFF';
-			RecvPkg::team  = DEFAULT_TEAM;
-			RecvPkg::speed = 30000.0;
-			RecvPkg::flag  = STATE_NORMAL;
+			RecvPkg::head   = '\xFF';
+			RecvPkg::team   = DEFAULT_TEAM;
+			RecvPkg::yawA   = 0.f;
+			RecvPkg::pitchA = 0.f;
+			RecvPkg::rollA  = 0.f;
+			RecvPkg::speed  = 30000.0;
+			RecvPkg::flag   = STATE_NORMAL;
 #endif
 		}
 

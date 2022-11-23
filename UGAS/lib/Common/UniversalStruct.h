@@ -8,7 +8,15 @@ Header Functions:
 - 声明并定义所有通用结构体
 */
 #include <opencv2/opencv.hpp>
-#include "DebugTools/DebugHeader.h"
+#include "DebugTools/Implementations/Easylogging++.h"
+#include "DebugTools/Implementations/CustomException.h"
+#include "DebugTools/Implementations/ExceptionHandling.h"
+/* 
+* 值得说的是，因为这个头文件被很多文件引用，
+* 所以不要include不必要的东西，容易循环引用，
+* 如果你遇到了类似“未定义的标识符”、“不允许使用不完整的类型”，
+* 请检查头文件之间的引用关系，尽量避免出现循环引用的情况。
+*/
 
 enum Team { Red = 1, Blue = 2 };
 
@@ -78,8 +86,8 @@ public:
 	int size()   const { return _tail < _head ? (Size + _tail - _head) : (_tail - _head); }
 	const valType& first() const { return _data[_head]; }
 	const valType& last()  const { return _data[_tail ? _tail : (Size - 1)]; }
-	inline iterator begin() const { return iterator(*this, _head); }
-	inline iterator end()   const { return iterator(*this, _tail); }
+	inline iterator begin() { return iterator(*this, _head); }
+	inline iterator end()   { return iterator(*this, _tail); }
 	inline int get_next(int index) const { return ++index == Size ? 0 : index; }
 
 	class iterator {

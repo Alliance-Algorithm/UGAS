@@ -35,3 +35,4 @@ using cv::Scalar;
 #define COLOR_MALACHITEGREEN	Scalar(128	,128	,0)
 #define COLOR_EARTHYYELLOW		Scalar(0	,128	,128)
 #define COLOR_ORANGE			Scalar(0	,128	,255)
+#define COLOR_LIME				Scalar(255	,255	,0)

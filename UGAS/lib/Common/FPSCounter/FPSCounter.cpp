@@ -18,5 +18,5 @@ int FPSCounter::Count() {
 
 void FPSCounter::PrintFPS(cv::Mat& img) {
     cv::putText(img, "Fps : " + std::to_string(_timeStamps.size()),
-        cv::Point(0, frameHeight - 10), 0, 1, COLOR_YELLOW);
+        cv::Point(0, frameHeight - 10), 0, 1, COLOR_LIME);
 }

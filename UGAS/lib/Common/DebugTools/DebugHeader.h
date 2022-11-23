@@ -12,3 +12,4 @@ Header Functions:
 #include "Implementations/CustomException.h"
 #include "Implementations/ExceptionHandling.h"
 #include "Implementations/InfoImg.h"
+#include "Implementations/ValueGragh.h"

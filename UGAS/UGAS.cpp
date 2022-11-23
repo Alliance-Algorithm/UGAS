@@ -64,20 +64,28 @@ void UGAS::always() {
 				_trajectory.GetShotAngle(targetID, img.timeStamp, yaw, pitch);
 				com.Get().SetAngle(yaw, pitch);
 			}
-			else com.Get().SetAngle(.0, .0);
+			else com.Get().SetAngle(yaw = .0, pitch = .0);
 			com.Get().Send();
 
 			_fps.Count();
-			/* //直接打印在控制台上
+			/*///直接打印在控制台上
 			printf("\rNow time stamp:%llu | Fps: %3d     ",
 				TimeStampCounter::GetTimeStamp(), _fps.GetFPS());
-			/*///输出至图像
+			//*///输出至图像
 			_fps.PrintFPS(debugImg);
-			//*
+			//*///
+
+#if DEBUG_ANGLE == 1
+			MAKE_GRAGH_DEFAULT
+				GRAGH_ADD_VAR(yaw, COLOR_YELLOW)
+				GRAGH_ADD_VAR(pitch, COLOR_BLUE)
+			SHOW_GRAGH(Gragh_Yaw_Pitch)
+#endif // DEBUG_ANGLE == 1
 
 #if		DEBUG_IMG == 1
 			debugImg.Show();
-#endif	// DEBUG_IMG
+#endif	// DEBUG_IMG == 1
+
 		}
 		catch (const char* str) {
 			throw_with_trace(std::runtime_error, str);

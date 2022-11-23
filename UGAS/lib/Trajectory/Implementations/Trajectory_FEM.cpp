@@ -43,8 +43,8 @@ double Trajectory_FEM::Analyze(double distance, double angle, double altitudeTar
 }
 
 void Trajectory_FEM::Iterate(Point3f position, double& pitch, double& flyTime) {
-	double distance = CoordinateDistance(position.x, position.z);
-	double altitudeTarget = -position.y;
+	double distance = CoordinateDistance(position.x, position.y);
+	double altitudeTarget = -position.z;
 	double angleLow = angleLowest, angleHigh = angleHighest;
 	while (angleHigh - angleLow > angleEPS) {
 		double angleM = (angleLow + angleHigh) / 2;
@@ -67,7 +67,7 @@ void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double&
 	pitch -= com.Get().pitchA;
 
 	// Yaw²îÖµµÄ½âËã
-	Point2f _2Dposition = PnPsolver.RevertPnP(_3Dposition);
+	_2Dposition = PnPsolver.RevertPnP(_3Dposition);
 	yaw = _2Dposition.x - (frameWidth >> 1);
 	//LOG(INFO) << _2Dposition << '\n';
 
