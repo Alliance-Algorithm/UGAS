@@ -16,8 +16,9 @@ Header Functions:
 #define DEBUG_LIGHTBAR	0					// 绘制灯条识别图像
 #define DEBUG_ARMOR		1					// 绘制装甲板识别图像
 #define DEBUG_ARMOR_NUM 1					// 绘制装甲板数字识别结果
+#define DEBUG_TRACK		1					// 绘制跟踪点
 #define DEBUG_PREDICT	1					// 绘制预测点
-#define DEBUG_ANGLE		0					// 绘制Yaw、Pitch曲线
+#define DEBUG_ANGLE		1					// 绘制Yaw、Pitch曲线
 
 
 /// static var			 静态变量

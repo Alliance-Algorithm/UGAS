@@ -13,5 +13,5 @@ Header Functions:
 
 class TargetSolution {
 public:
-	virtual void Solve(TimeStamp ImgTime, const std::vector<ArmorPlate>& armors) = 0;
+	virtual void Solve(TimeStamp ImgTime, std::vector<ArmorPlate>& armors) = 0;
 };

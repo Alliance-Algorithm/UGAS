@@ -32,6 +32,7 @@ private:
 public:
 	Robot();
 
+	inline const TimeStamp& LatestUpdate() { return _latestUpdate; }
 	void Update(TimeStamp ImgTime, const ArmorPlate& armor);
 	double GetPossibility();
 	cv::Point3f Predict(int millisec) const;

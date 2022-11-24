@@ -13,5 +13,5 @@ class TargetSolution_V1 : public TargetSolution {
 private:
 	static inline bool isValidId(int id);
 public:
-	void Solve(TimeStamp ImgTime, const std::vector<ArmorPlate>& armors);
+	void Solve(TimeStamp ImgTime, std::vector<ArmorPlate>& armors);
 };

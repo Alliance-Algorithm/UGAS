@@ -26,7 +26,6 @@ double Trajectory_FEM::EvaluateBulletFlightTime(const int targetID) {
 	return res;
 }
 
-
 double Trajectory_FEM::Analyze(double distance, double angle, double altitudeTarget, double& flyTime) {
 	Point2f position(.0, .0);
 	Point2f speed(com.Get().speed * cos(angle / 180 * PI), com.Get().speed * sin(angle / 180 * PI));
@@ -72,7 +71,7 @@ void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double&
 	//LOG(INFO) << _2Dposition << '\n';
 
 #if DEBUG_IMG == 1 && DEBUG_PREDICT == 1
-	//*///
+	/*///
 	static filters::PID::PDfilter<cv::Point2f> _2DpositionFilter;
 	cv::circle(debugImg, _2DpositionFilter.Predict(_2Dposition), 5, COLOR_RED, 2);
 	/*///

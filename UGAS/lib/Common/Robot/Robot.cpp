@@ -17,6 +17,7 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 		{ // 新观察到的目标
 			_armorCenter = PnPsolver.SolvePnP(armor);
 			_speedFilter.Reset();
+			_movingSpeed = cv::Vec3f();
 		}
 		else
 		{ // 持续跟踪的目标
@@ -25,31 +26,39 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 				this->Predict(ImgTime - _latestUpdate)
 			);
 
+#if DEBUG_IMG == 1 && DEBUG_TRACK == 1
+			cv::circle(debugImg, prediction, 5, COLOR_YELLOW, 2);
+#endif
+
 			// 计算新的三维中心
 			cv::Point3f lastPostion = _armorCenter;
 			_armorCenter = PnPsolver.SolvePnP(armor);
 			
-			// 如果超过最大跟踪距离，不认为是同一个装甲板，在可接受的时间差内继承速度
-			// 对同一个装甲板有效的跟踪则更新速度
-			if (P2PDis(prediction, armor.center()) < maxArmorTrackDis ||
-				// 下面这个P2PDis()和原位置比较，加快对本身有一定初速度目标的响应
-				P2PDis(_armor.center(), armor.center()) < maxArmorTrackDis) {
+			if (P2PDis(prediction, armor.center()) < maxArmorTrackDis)
+			{ // 对同一个装甲板有效的跟踪则更新速度
 				// 用封装好的滤波
 				_movingSpeed = _speedFilter.Predict(
 					static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
 					static_cast<double>(ImgTime - _latestUpdate)
 				);
 			}
-			else if (ImgTime - _latestUpdate > 100)
+			else if (_movingSpeed == cv::Vec3f())
+			{ // 如果没有速度直接更新，加快对本身有一定初速度目标的响应
+				_movingSpeed =
+					static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
+					static_cast<double>(ImgTime - _latestUpdate);
+			}
+			// 如果超过最大跟踪距离，不认为是同一个装甲板，在可接受的时间差内继承速度
+			else if (ImgTime - _latestUpdate > 100) // 这个值很容易调出问题暂时弄成定值
 			{ // 超过一个较短时间即放弃对速度的继承
 				_movingSpeed = cv::Vec3f();
 				_speedFilter.Reset();
 			}
 		}
-
 		// 暂时乱打一波
 		_possibility = 100.;
 
+		// 更新数据
 		_armor = armor;
 		_latestUpdate = ImgTime;
 	}
@@ -75,10 +84,13 @@ double Robot::GetPossibility() {
 cv::Point3f Robot::Predict(int millisec) const {
 	cv::Point3f prediction = _movingSpeed * millisec;
 
-	if (_rotate == RotateDirc::UNKNOWN) {
+	// 没有有效的旋转信息则为动靶模式
+	if (TimeStampCounter::GetTimeStamp() - _rotationLatestUpdate
+			> rotation_validity * 1000 || _rotate == RotateDirc::UNKNOWN)
+	{
 		prediction += _armorCenter;
 	}
-	else {
+	else { // 对于小陀螺的预测
 		prediction += _robotCenter;
 		switch (_rotate) {
 		case LEFT:
