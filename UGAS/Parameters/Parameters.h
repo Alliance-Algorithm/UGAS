@@ -32,26 +32,21 @@ extern VIDEO_VAR_TYPE video;
 extern NUM_PARA_TYPE numberIdPara;
 extern int frameWidth, frameHeight;
 
-
 /* Pretreat Parameters */
 extern int BHmin, BHmax, BSmin, BSmax, BVmin, BVmax;
 extern int RHminL, RHmaxL, RHminR, RHmaxR,
 				RSmin, RSmax, RVmin, RVmax;
 extern int closeCoreSize;
 
-
 /* LightBar Parameters */
 extern int minLightRatio, maxLightRatio;
 extern int minLightAngle, maxLightAngle;
-
 
 /* Armor Parameters */
 extern double maxArmorLightRatio, maxdAngle,
 	maxMalposition, maxLightDy, bigArmorDis;
 
-
 /* Buff Parameters */
-
 
 /* PNP Parameters */
 extern bool isLargeArmor[10];
@@ -61,7 +56,6 @@ extern const cv::Mat CameraMatrix, DistCoeffs;
 extern const std::vector<cv::Point3f> NormalArmor3f, LargeArmor3f;
 
 /* AttitudeSolution Parameters */
-
 
 /* TrackingStrategy Parameters */
 extern int maxArmorTrackDis;

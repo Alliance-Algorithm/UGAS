@@ -49,7 +49,7 @@ inline void ImgPretreat_V2::LoopPixel(const uchar* src, uchar* dst, int n) const
         diff = vmax - vmin;
         int light = (vmin + vmax) >> 1;
 
-        if (diff > 10 && light > 60) {
+        if (diff > 10 && light > 110) {
             vr = vmax == r ? -1 : 0;
             vg = vmax == g ? -1 : 0;
 

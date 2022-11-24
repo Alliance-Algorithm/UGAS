@@ -35,7 +35,7 @@ void TargetSolution_V1::Solve(TimeStamp ImgTime, std::vector<ArmorPlate>& armors
 			// 检查距离
 			for (auto& armor : bin) {
 				if (P2PDis(armor.center(), prediction) < maxArmorTrackDis)
-					(LOG(INFO) << "recycle!\n"),
+					//(LOG(INFO) << "recycle!\n"),
 					robot.Update(ImgTime, armor); // 回收成功
 			}
 		}

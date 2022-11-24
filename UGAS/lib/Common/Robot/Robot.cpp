@@ -16,8 +16,8 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 		if (ImgTime - _latestUpdate > keep_tracking * 1000)
 		{ // 新观察到的目标
 			_armorCenter = PnPsolver.SolvePnP(armor);
-			_speedFilter.Reset();
 			_movingSpeed = cv::Vec3f();
+			_speedFilter.Reset();
 		}
 		else
 		{ // 持续跟踪的目标
