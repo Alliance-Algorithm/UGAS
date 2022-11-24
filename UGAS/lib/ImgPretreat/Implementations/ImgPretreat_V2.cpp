@@ -41,15 +41,14 @@ inline void ImgPretreat_V2::LoopPixel(const uchar* src, uchar* dst, int n) const
 
     for (int i = 0; i < n; i += 1, src += 3) {
         int b = src[0], g = src[1], r = src[2];
-        int hue, vmax = b, vmin = b, diff, vr, vg;
+        int hue, saturation, vmax = b, vmin = b, diff, vr, vg;
 
         vmax = vmax > g ? vmax : g; vmax = vmax > r ? vmax : r;
         vmin = vmin < g ? vmin : g; vmin = vmin < r ? vmin : r;
 
         diff = vmax - vmin;
-        int light = (vmin + vmax) >> 1;
 
-        if (diff > 10 && light > 110) {
+        /*if (diff > 10 && light > 110) {
             vr = vmax == r ? -1 : 0;
             vg = vmax == g ? -1 : 0;
 
@@ -62,6 +61,26 @@ inline void ImgPretreat_V2::LoopPixel(const uchar* src, uchar* dst, int n) const
                 dst[i] = (hue > BHmin && hue < BHmax) ? (uchar)255 : (uchar)0;
             else dst[i] = (hue > RHminR || hue < RHmaxL) ? (uchar)255 : (uchar)0;
         }
+        else dst[i] = 0;*/
+        if (vmax > 100) {
+            //diff > 10
+            saturation = diff * div_table[vmax] >> hsv_shift;
+            if (saturation > 20) {
+                vr = vmax == r ? -1 : 0;
+                vg = vmax == g ? -1 : 0;
+
+                hue = (vr & (g - b)) +
+                    (~vr & ((vg & (b - r + 2 * diff)) + ((~vg) & (r - g + 4 * diff))));
+                hue = (hue * div_table[diff] * hueScale + (1 << (hsv_shift + 6))) >> (7 + hsv_shift);
+                hue += hue < 0 ? hueRange : 0;
+
+                dst[i] = (hue < RHmaxL || hue > RHminR) ? (vmax > 160 ? 255 : 63) : 1;
+            }
+            else if(vmax > 200) dst[i] = 63;
+            //int light = (vmin + vmax) >> 1;
+            
+        }
+        //else dst[i] = (light > 60) ? (uchar)0 : (uchar)0;
         else dst[i] = 0;
     }
 }
@@ -87,9 +106,9 @@ void ImgPretreat_V2::GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat
 	Threshold(img, imgThre);
     cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
 
-#if DEBUG_PARA == 0
+/*#if DEBUG_PARA == 0
     static // 非调试模式设置静态内核
 #endif
         cv::Mat closeCore = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(closeCoreSize | 1, closeCoreSize | 1));
-    morphologyEx(imgThre, imgThre, cv::MORPH_CLOSE, closeCore);
+    morphologyEx(imgThre, imgThre, cv::MORPH_CLOSE, closeCore);*/
 }

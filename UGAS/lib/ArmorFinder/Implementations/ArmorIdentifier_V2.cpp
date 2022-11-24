@@ -1,15 +1,16 @@
 #include <cmath>
 #include "Common/Color.h"
+#include "Common/UniversalFunctions/UniversalFunctions.h"
 #include "ArmorIdentifier_V2.h"
 
-inline std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(const cv::Mat& grayImg, int areaVal, int floodVal, bool borderEngulfment) {
+inline std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(const cv::Mat& img, int areaVal, int floodVal, bool borderEngulfment) {
     std::queue<cv::Point> emptyQueue;
     std::swap(emptyQueue, _dfsQueue);
-    _disjointSet.Reset(grayImg.rows * grayImg.cols);
-    _floodMap.Reset(grayImg.rows, grayImg.cols);
-    for (int y = 0; y < grayImg.rows; ++y)
-        for (int x = 0; x < grayImg.cols; ++x)
-            if (grayImg.at<uchar>(y, x) >= areaVal) {
+    _disjointSet.Reset(img.rows * img.cols);
+    _floodMap.Reset(img.rows, img.cols);
+    for (int y = 0; y < img.rows; ++y)
+        for (int x = 0; x < img.cols; ++x)
+            if (img.at<uchar>(y, x) == 255) {
                 _dfsQueue.push(cv::Point(x, y));
                 _floodMap.At(y, x) = _disjointSet.Add(cv::Point(x, y));
             }
@@ -20,18 +21,18 @@ inline std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(c
         auto p = _floodMap.At(point.y, point.x);
         bool isEdge = false;
         if (point.y > 0)
-            _floodPixel(grayImg, floodVal, p, point.y - 1, point.x);
+            _floodPixel(img, floodVal, p, point.y - 1, point.x);
         else isEdge = true;
-        if (point.y < grayImg.rows - 1)
-            _floodPixel(grayImg, floodVal, p, point.y + 1, point.x);
+        if (point.y < img.rows - 1)
+            _floodPixel(img, floodVal, p, point.y + 1, point.x);
         else isEdge = true;
         if (point.x > 0)
-            _floodPixel(grayImg, floodVal, p, point.y, point.x - 1);
+            _floodPixel(img, floodVal, p, point.y, point.x - 1);
         else isEdge = true;
-        if (point.x < grayImg.cols - 1)
-            _floodPixel(grayImg, floodVal, p, point.y, point.x + 1);
+        if (point.x < img.cols - 1)
+            _floodPixel(img, floodVal, p, point.y, point.x + 1);
         else isEdge = true;
-        if (borderEngulfment && isEdge)
+        if (/*img.at<uchar>(point) == 1 || */(borderEngulfment && isEdge))
             _disjointSet.SetLevel(p, 1);
     }
     //return _disjointSet.GetGroups();
@@ -39,7 +40,7 @@ inline std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(c
 }
 
 inline void ArmorIdentifier_V2::_floodPixel(const cv::Mat& grayImg, int floodVal, FastDisjointSet<cv::Point>::Node* source, int fy, int fx) {
-    if (grayImg.at<uchar>(fy, fx) > floodVal) {
+    if (grayImg.at<uchar>(fy, fx) > 0) {
         if (_floodMap.At(fy, fx) == nullptr) {
             _floodMap.At(fy, fx) = _disjointSet.Add(cv::Point(fx, fy));
             _dfsQueue.push(cv::Point(fx, fy));
@@ -51,7 +52,7 @@ inline void ArmorIdentifier_V2::_floodPixel(const cv::Mat& grayImg, int floodVal
 }
 
 inline bool ArmorIdentifier_V2::_solveToLightbar(const std::vector<cv::Point>& area) {
-    if (area.size() > 10) {
+    if (area.size() > 3) {
         static const int angleRange = 30;
         auto box = cv::minAreaRect(area);
         auto width = box.size.width + 1;
@@ -88,8 +89,8 @@ inline bool ArmorIdentifier_V2::_solveToLightbar(const std::vector<cv::Point>& a
     return false;
 }
 
-inline void ArmorIdentifier_V2::_matchArmorPlates(std::vector<ArmorPlate>& result) {
-    result.clear();
+inline void ArmorIdentifier_V2::_matchArmorPlates(const Img& imgGray, std::vector<ArmorPlate>& result) {
+    /*result.clear();
     std::sort(_lightBarList.begin(), _lightBarList.end(),
         [&](LightBar& a, LightBar& b) {
             return a.top.x < b.top.x;
@@ -97,7 +98,32 @@ inline void ArmorIdentifier_V2::_matchArmorPlates(std::vector<ArmorPlate>& resul
     if (_lightBarList.size() >= 2)
         for (auto i = _lightBarList.begin() + 1; i != _lightBarList.end(); ++i) {
             result.push_back(ArmorPlate(*(i - 1), *i, 3));
+        }*/
+    result.clear();
+    std::sort(_lightBarList.begin(), _lightBarList.end(),
+        [&](LightBar& a, LightBar& b) {
+        return a.top.x < b.top.x;
+    }
+    );
+    int n = _lightBarList.size();
+    for (int i = 0; i < n; ++i) {
+        float Isize = P2PDis(_lightBarList[i].top, _lightBarList[i].bottom);
+        cv::Point2f Icenter = (_lightBarList[i].top + _lightBarList[i].bottom) / 2;
+        for (int j = i + 1; j < n; ++j) { // 一些筛选条件
+            float Jsize = P2PDis(_lightBarList[j].top, _lightBarList[j].bottom);
+            if (max(Isize, Jsize) / min(Isize, Jsize) > maxArmorLightRatio)		continue;
+            if (fabs(_lightBarList[i].angle - _lightBarList[j].angle) > maxdAngle)	continue;
+            if (malposition(_lightBarList[i], _lightBarList[j]) > maxMalposition)		continue;
+            cv::Point2f Jcenter = (_lightBarList[j].top + _lightBarList[j].bottom) / 2;
+            if (fabs(Icenter.y - Jcenter.y) * 2 / (Isize + Jsize) > maxLightDy)	continue;
+            if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis)	continue;
+
+            // 数字识别部分（暂时放这，可能会挪到运动模型那去）
+            ArmorPlate armor(_lightBarList[i], _lightBarList[j]);
+            armor.id = _numberIdentifier.Identify(imgGray, armor);
+            result.push_back(armor);
         }
+    }
 }
 
 void ArmorIdentifier_V2::Identify(const Img& imgThre, const Img& imgGray, std::vector<ArmorPlate>& result) {
@@ -105,7 +131,7 @@ void ArmorIdentifier_V2::Identify(const Img& imgThre, const Img& imgGray, std::v
     _lightBarList.clear();
     for (auto i = areaList.begin(); i != areaList.end(); ++i)
         _solveToLightbar(*i);
-    _matchArmorPlates(result);
+    _matchArmorPlates(imgGray, result);
 
 #if DEBUG_LIGHTBAR == 1
     for (const auto& lightBar : _lightBarList) {

@@ -21,7 +21,7 @@ private:
 	std::vector<std::vector<cv::Point>> _floodFindAreas(const cv::Mat& grayImg, int area_val, int flood_val, bool border_engulfment = false);
 	void _floodPixel(const cv::Mat& grayImg, int flood_val, FastDisjointSet<cv::Point>::Node* source, int fy, int fx);
 	bool _solveToLightbar(const std::vector<cv::Point>& area);
-	void _matchArmorPlates(std::vector<ArmorPlate>& result);
+	void _matchArmorPlates(const Img& imgGray, std::vector<ArmorPlate>& result);
 public:
 	using ArmorIdentifier::ArmorIdentifier;
 	void Identify(const Img& imgThre, const Img& imgGray, std::vector<ArmorPlate>& result);
