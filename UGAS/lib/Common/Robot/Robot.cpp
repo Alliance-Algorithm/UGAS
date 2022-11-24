@@ -84,8 +84,8 @@ cv::Point3f Robot::Predict(int millisec) const {
 	cv::Point3f prediction = _movingSpeed * millisec;
 
 	// 没有有效的旋转信息则为动靶模式
-	if (TimeStampCounter::GetTimeStamp() - _rotationLatestUpdate
-			> rotation_validity * 1000 || _rotate == RotateDirc::UNKNOWN)
+	if (_rotate == RotateDirc::UNKNOWN || // 顺序优化
+		TimeStampCounter::GetTimeStamp() - _rotationLatestUpdate > rotation_validity * 1000)
 	{
 		prediction += _armorCenter;
 	}

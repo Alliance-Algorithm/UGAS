@@ -13,7 +13,7 @@ class TrackingStrategy_V1 : public TrackingStrategy {
 public:
 	int GetTargetID() {
 		int res = 0;
-		double maxPossibility = .0;
+		double maxPossibility = 10.; // 暂时随便给个值
 		for (int i = 1; i < 10; ++i) {
 			double possibility = robots[i].GetPossibility();
 			if (possibility > maxPossibility) {

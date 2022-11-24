@@ -33,9 +33,8 @@ extern NUM_PARA_TYPE numberIdPara;
 extern int frameWidth, frameHeight;
 
 /* Pretreat Parameters */
-extern int BHmin, BHmax, BSmin, BSmax, BVmin, BVmax;
-extern int RHminL, RHmaxL, RHminR, RHmaxR,
-				RSmin, RSmax, RVmin, RVmax;
+extern int BHmin , BHmax , BSmin, BSmax, BVmin, BVmax;
+extern int RHmaxL, RHminR, RSmin, RSmax, RVmin, RVmax;
 extern int closeCoreSize;
 
 /* LightBar Parameters */

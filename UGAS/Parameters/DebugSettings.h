@@ -19,8 +19,8 @@ Header Functions:
 /// debug state switches 调试开关
 #define VIRTUAL_GIBAL	1					// 虚拟云台开关
 #define DEBUG_IMG		1					// 显示调试图像总开关
-#define DEBUG_PARA		1					// 动态调参拖动条窗口
-#define DEBUG_PRETREAT	1					// 使用预处理后的图像作为调试图像
+#define DEBUG_PARA		0					// 动态调参拖动条窗口
+#define DEBUG_PRETREAT	0					// 使用预处理后的图像作为调试图像
 #define DEBUG_LIGHTBAR	0					// 绘制灯条识别图像
 #define DEBUG_ARMOR		1					// 绘制装甲板识别图像
 #define DEBUG_ARMOR_NUM 1					// 绘制装甲板数字识别结果

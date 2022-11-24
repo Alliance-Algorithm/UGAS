@@ -53,10 +53,8 @@ void ParametersInit(const Team team) {
 		AddTrackbar("BVmax", &BVmax, 255);
 		break;
 	case Blue: // ===== RED Light =====
-		AddTrackbar("RHminL", &RHminL, 180);
 		AddTrackbar("RHmaxL", &RHmaxL, 180);
 		AddTrackbar("RHminR", &RHminR, 180);
-		AddTrackbar("RHmaxR", &RHmaxR, 180);
 		AddTrackbar("RSmin", &RSmin, 255);
 		AddTrackbar("RSmax", &RSmax, 255);
 		AddTrackbar("RVmin", &RVmin, 255);
@@ -95,8 +93,8 @@ int frameWidth = 0, frameHeight = 0;
 /* Pretreat Parameters */
 int BHmin = 90, BHmax = 120, BSmin = 200,
 		BSmax = 255, BVmin = 230, BVmax = 255;
-int RHminL = 0, RHmaxL = 20, RHminR = 160, RHmaxR = 180,
-		RSmin = 70, RSmax = 255, RVmin = 110, RVmax = 255;
+int RHmaxL = 15, RHminR = 130, RSmin = 150,
+		RSmax = 200, RVmin = 120, RVmax = 255;
 int closeCoreSize = 13;
 
 /* LightBar Parameters */
@@ -142,4 +140,4 @@ double keep_tracking = 0.3, rotation_validity = 0.2;
 const int iterations = 2, Trajc_iterate = 2;
 const double Trajc_k = 0.00001, Trajc_dertaT = 0.0001;
 const double angleLowest = -30.0, angleHighest = 45.0, angleEPS = 1e-2;
-const double staticReactionTime = 0.1;
+const double staticReactionTime = 0.05;

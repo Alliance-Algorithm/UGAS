@@ -1,4 +1,12 @@
 #pragma once
+/*
+Creation Date: 2022/11/24
+Latest Update: 2022/11/24
+Developer(s): 21-THY
+(C)Copyright: NJUST.Alliance - All rights reserved
+Header Functions:
+- 提供通用滤波方法
+*/
 #include <opencv2/opencv.hpp>
 #include "Common/UniversalStruct.h"
 
@@ -19,13 +27,18 @@ namespace filters {
 		class Linear :public Filter<type_t> {
 		protected:
 			type_t _saved;
+			bool _initial;
 		public:
-			Linear() :_saved() {}
+			Linear() :_saved(), _initial(true) {}
 
 			type_t Predict(type_t value) {
-				return _saved = _saved * 0.9f + value * 0.1f;
+				if (_initial) {
+					_initial = false;
+					return _saved = value;
+				}
+				else return _saved = _saved * 0.9f + value * 0.1f;
 			}
-			void Reset() { _saved = type_t(); }
+			void Reset() { _saved = type_t(); _initial = true; }
 		};
 
 		// ### 高阶低通线性滤波器
@@ -33,13 +46,18 @@ namespace filters {
 		class Linear_S :public Filter<type_t> {
 		protected:
 			type_t _saved;
+			bool _initial;
 		public:
-			Linear_S() :_saved() {}
+			Linear_S() :_saved(), _initial(true) {}
 
 			type_t Predict(type_t value) {
-				return _saved = _saved * 0.99f + value * 0.01f;
+				if (_initial) {
+					_initial = false;
+					return _saved = value;
+				}
+				else return _saved = _saved * 0.99f + value * 0.01f;
 			}
-			void Reset() { _saved = type_t(); }
+			void Reset() { _saved = type_t();  _initial = true; }
 		};
 
 		// ### 均值线性滤波器
@@ -70,17 +88,24 @@ namespace filters {
 		protected:
 			double _Kp, _Kd;
 			type_t _last, _lastErr;
+			bool _initial;
 		public:
 			PDfilter(double Kp = .7, double Kd = .1) :
-				_Kp(Kp), _Kd(Kd), _last(), _lastErr() {}
+				_Kp(Kp), _Kd(Kd), _last(), _lastErr(), _initial(true) {}
 
 			type_t Predict(type_t value) {
-				type_t err = _last - value;
-				type_t res = err * _Kp + (err - _lastErr) * _Kd;
-				_lastErr = err;
-				return _last = value + res;
+				if (_initial) { // 第一个值
+					_initial = false;
+					return _last = value;
+				}
+				else { // 被低通滤波的值
+					type_t err = _last - value;
+					type_t res = err * _Kp + (err - _lastErr) * _Kd;
+					_lastErr = err;
+					return _last = value + res;
+				}
 			}
-			void Reset() { _last = _lastErr = type_t(); }
+			void Reset() { _last = _lastErr = type_t(); _initial = true; }
 		};
 	}
 
