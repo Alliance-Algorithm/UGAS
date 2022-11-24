@@ -18,19 +18,19 @@ Header Functions:
 #define DEBUG_ARMOR_NUM 1					// 绘制装甲板数字识别结果
 #define DEBUG_TRACK		1					// 绘制跟踪点
 #define DEBUG_PREDICT	1					// 绘制预测点
-#define DEBUG_ANGLE		1					// 绘制Yaw、Pitch曲线
+#define DEBUG_ANGLE		0					// 绘制Yaw、Pitch曲线
 
 
 /// static var			 静态变量
 #define VIDEO_VAR_TYPE	const char*			// 视频读入类型
-#define VIDEO_VAR		"Blue_2.mp4" 		// 视频读入
+#define VIDEO_VAR		"Red_2.mp4" 		// 视频读入
 #define NUM_PARA_TYPE	const char*			// 数字识别参数类型
 #define NUM_PARA		"V1.pb"				// 数字识别参数
 #define FILTER_TYPE		PID::PDfilter		// 目标运动滤波器类型
 
 
 /// debug var			 调试变量
-#define DEFAULT_TEAM	Red 				// 虚拟云台队伍颜色
+#define DEFAULT_TEAM	Blue 				// 虚拟云台队伍颜色
 #define NUM_DEFAULT		1					// 数字识别默认返回数字(一般是0)
 
 

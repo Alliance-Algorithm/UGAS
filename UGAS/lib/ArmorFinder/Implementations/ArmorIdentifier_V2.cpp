@@ -106,6 +106,7 @@ void ArmorIdentifier_V2::Identify(const Img& imgThre, const Img& imgGray, std::v
     for (auto i = areaList.begin(); i != areaList.end(); ++i)
         _solveToLightbar(*i);
     _matchArmorPlates(result);
+
 #if DEBUG_LIGHTBAR == 1
     for (const auto& lightBar : _lightBarList) {
         line(debugImg, lightBar.top, lightBar.bottom, COLOR_BLUE, 5);

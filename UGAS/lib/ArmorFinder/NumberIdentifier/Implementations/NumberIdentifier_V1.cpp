@@ -26,7 +26,7 @@ short NumberIdentifier_V1::Identify(const Img& imgGray, const ArmorPlate& region
 	Point maxLoc;
 	minMaxLoc(pred, NULL, NULL, NULL, &maxLoc);
 
-#if DEBUG_ARMOR_NUM == 1
+#if DEBUG_IMG == 1 && DEBUG_ARMOR_NUM == 1
 	cv::cvtColor(imgNumber, imgNumber, cv::COLOR_GRAY2BGR);
 	cv::Point drawPos = static_cast<cv::Point>(region.center());
 	cv::Rect drawRect = cv::Rect(drawPos.x - 16, drawPos.y - 16, 32, 32);

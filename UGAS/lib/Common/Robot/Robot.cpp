@@ -33,24 +33,23 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 			// 计算新的三维中心
 			cv::Point3f lastPostion = _armorCenter;
 			_armorCenter = PnPsolver.SolvePnP(armor);
-			
-			if (P2PDis(prediction, armor.center()) < maxArmorTrackDis)
-			{ // 对同一个装甲板有效的跟踪则更新速度
-				// 用封装好的滤波
+
+			// 对同一个装甲板有效的跟踪则更新速度
+			if (P2PDis(prediction, armor.center()) < maxArmorTrackDis ||
+				// 对于极大加速度（如刹车）的响应优化
+				P2PDis(_armor.center(), armor.center()) < maxArmorTrackDis ||
+				// 如果没有速度直接更新，加快对本身有一定初速度目标的响应
+				_movingSpeed == cv::Vec3f())
+			{ // 用封装好的滤波
 				_movingSpeed = _speedFilter.Predict(
 					static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
 					static_cast<double>(ImgTime - _latestUpdate)
 				);
 			}
-			else if (_movingSpeed == cv::Vec3f())
-			{ // 如果没有速度直接更新，加快对本身有一定初速度目标的响应
-				_movingSpeed =
-					static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
-					static_cast<double>(ImgTime - _latestUpdate);
-			}
 			// 如果超过最大跟踪距离，不认为是同一个装甲板，在可接受的时间差内继承速度
-			else if (ImgTime - _latestUpdate > 100) // 这个值很容易调出问题暂时弄成定值
-			{ // 超过一个较短时间即放弃对速度的继承
+			// 超过一个较短时间即放弃对速度的继承
+			else if (ImgTime - _latestUpdate > 100)
+			{ // 这个值很容易调出问题暂时弄成定值
 				_movingSpeed = cv::Vec3f();
 				_speedFilter.Reset();
 			}
