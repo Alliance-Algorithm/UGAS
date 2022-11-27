@@ -1,6 +1,6 @@
 #include "FPSCounter.h"
-#include "Common/Color.h"
-#include "Parameters.h"
+#include <Common/Color.h>
+#include <Parameters.h>
 
 int FPSCounter::Count() {
     if (!_timeStamps.empty()) {
@@ -18,5 +18,5 @@ int FPSCounter::Count() {
 
 void FPSCounter::PrintFPS(cv::Mat& img) {
     cv::putText(img, "Fps : " + std::to_string(_timeStamps.size()),
-        cv::Point(0, frameHeight - 10), 0, 1, COLOR_LIME);
+        cv::Point(0, img.rows - 10), 0, 1, COLOR_LIME);
 }

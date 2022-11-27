@@ -15,7 +15,6 @@ Header Functions:
 #include "../../Packages.h"
 #include "LinuxSerial.h"
 
-
 namespace serial {
 
 	class LinuxGimbalSerial : public GimbalSerial, private LinuxSerial {

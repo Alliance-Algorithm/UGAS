@@ -10,9 +10,9 @@ Header Functions:
 - 提供调试性函数
 */
 #include <opencv2/opencv.hpp>
-#include "DebugSettings.h"
-#include "Common/UniversalStruct.h"
-#include "Common/DebugTools/DebugHeader.h"
+#include <DebugSettings.h>
+#include <Common/UniversalStruct.h>
+#include <Common/DebugTools/DebugHeader.h>
 #define TRACKBAR_NAME "Default TrackBars"
 
 #if DEBUG_PARA == 1
@@ -31,6 +31,7 @@ extern Team team;
 extern VIDEO_VAR_TYPE video;
 extern NUM_PARA_TYPE numberIdPara;
 extern int frameWidth, frameHeight;
+extern cv::Point2f ROIoffset;
 
 /* Pretreat Parameters */
 extern int BHmin , BHmax , BSmin, BSmax, BVmin, BVmax;

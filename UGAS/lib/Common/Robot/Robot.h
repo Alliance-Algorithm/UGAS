@@ -8,9 +8,9 @@ Header Functions:
 - 定义一个描述机器人及其装甲板运动信息的数据模型
 */
 #include <opencv2/opencv.hpp>
-#include "Common/TimeStamp/TimeStampCounter.h"
-#include "Common/Filter/Filter.h"
-#include "DebugSettings.h"
+#include <Common/TimeStamp/TimeStampCounter.h>
+#include <Common/Filter/Filter.h>
+#include <DebugSettings.h>
 
 enum RotateDirc;
 
@@ -36,6 +36,7 @@ public:
 	void Update(TimeStamp ImgTime, const ArmorPlate& armor);
 	double GetPossibility();
 	cv::Point3f Predict(int millisec) const;
+	cv::Rect ROIregion(TimeStamp ImgTime);
 };
 
 extern Robot robots[10];

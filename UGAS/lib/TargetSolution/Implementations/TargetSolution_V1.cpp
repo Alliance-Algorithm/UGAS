@@ -1,7 +1,7 @@
 #include "TargetSolution_V1.h"
-#include "Common/PnP/PnP.h"
-#include "Common/UniversalFunctions/UniversalFunctions.h"
-#include "Parameters.h"
+#include <Common/PnP/PnP.h>
+#include <Parameters.h>
+#include <Common/UniversalFunctions/UniversalFunctions.h>
 using namespace cv;
 
 inline bool TargetSolution_V1::isValidId(int id) {

@@ -13,8 +13,8 @@ Class public functions:
 	读取一帧图像，通过修改引用的方式返回结果
 */
 #include <opencv2/opencv.hpp>
-#include "Common/UniversalStruct.h"
-#include "Common/DebugTools/DebugHeader.h"
+#include <Common/UniversalStruct.h>
+#include <Common/DebugTools/DebugHeader.h>
 
 class ImgCapture {
 public:

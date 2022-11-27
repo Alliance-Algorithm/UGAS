@@ -1,7 +1,7 @@
 #include "Robot.h"
-#include "Common/PnP/PnP.h"
-#include "Parameters.h"
-#include "Common/UniversalFunctions/UniversalFunctions.h"
+#include <Common/PnP/PnP.h>
+#include <Parameters.h>
+#include <Common/UniversalFunctions/UniversalFunctions.h>
 
 enum RotateDirc { UNKNOWN = 0, LEFT, RIGHT };
 
@@ -101,5 +101,23 @@ cv::Point3f Robot::Predict(int millisec) const {
 		default: break;
 		}
 	}
+
 	return prediction;
+}
+
+cv::Rect Robot::ROIregion(TimeStamp ImgTime) {
+	if (_latestUpdate == ImgTime) {
+		cv::Point2f center = _armor.center();
+		cv::Size robotSize = cv::boundingRect(_armor.points).size();
+		cv::Point2f ROIsize = cv::Point2f(robotSize.width * 2, robotSize.height) * 2.;
+
+		cv::Point tl = center - ROIsize, br = center + ROIsize;
+		if (tl.x < 0) tl.x = 0; if (tl.x >= frameWidth) tl.x = frameWidth - 1;
+		if (tl.y < 0) tl.y = 0; if (tl.y >= frameHeight) tl.y = frameHeight - 1;
+		if (br.x < 0) br.x = 0; if (br.x >= frameWidth) br.x = frameWidth - 1;
+		if (br.y < 0) br.y = 0; if (br.y >= frameHeight) br.y = frameHeight - 1;
+
+		return cv::Rect(tl, br);
+	}
+	return cv::Rect(0, 0, frameWidth, frameHeight);
 }

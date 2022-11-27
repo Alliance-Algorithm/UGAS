@@ -30,10 +30,10 @@ Class public functions:
 	调用 SendPkg 和 RecvPkg Debug输出函数
 */
 #include <iostream>
+#include <DebugSettings.h>
+#include <Parameters.h>
+#include <Common/DebugTools/DebugHeader.h>
 #include "Packages.h"
-#include "DebugSettings.h"
-#include "Parameters.h"
-#include "../Common/DebugTools/DebugHeader.h"
 
 namespace serial {
 	class GimbalSerial : public SendPkg, public RecvPkg {

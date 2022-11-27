@@ -1,7 +1,7 @@
 #include "Trajectory_FEM.h"
-#include "Common/UniversalFunctions/UniversalFunctions.h"
-#include "Common/TimeStamp/TimeStampCounter.h"
-#include "Common/Color.h"
+#include <Common/UniversalFunctions/UniversalFunctions.h>
+#include <Common/TimeStamp/TimeStampCounter.h>
+#include <Common/Color.h>
 using namespace cv;
 
 double Trajectory_FEM::EvaluateBulletFlightTime(const int targetID) {

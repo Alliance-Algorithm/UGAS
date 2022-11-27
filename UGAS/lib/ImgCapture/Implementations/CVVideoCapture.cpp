@@ -1,5 +1,5 @@
 #include "CVVideoCapture.h"
-#include "Common/TimeStamp/TimeStampCounter.h"
+#include <Common/TimeStamp/TimeStampCounter.h>
 
 void CVVideoCapture::init(void* fileName) {
 	open(*(const char**)fileName);

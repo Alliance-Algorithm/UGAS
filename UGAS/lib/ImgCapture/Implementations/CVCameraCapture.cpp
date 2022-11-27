@@ -1,5 +1,5 @@
 #include "CVCameraCapture.h"
-#include "Common/TimeStamp/TimeStampCounter.h"
+#include <Common/TimeStamp/TimeStampCounter.h>
 
 void CVCameraCapture::init(void* camIndex) {
 	open(*(int*)camIndex);

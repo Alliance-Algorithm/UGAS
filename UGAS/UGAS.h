@@ -25,7 +25,6 @@ private:
 
 	// ¸½Êô¹¦ÄÜÄ£¿é
 	FPSCounter					_fps;
-
 public:
 	UGAS();
 	virtual ~UGAS();

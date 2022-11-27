@@ -10,8 +10,8 @@ Header Functions:
 */
 #include <iostream>
 #include "CRC/CRC.h"
-#include "Common/DebugTools/DebugHeader.h"
-#include "Common/UniversalStruct.h"
+#include <Common/DebugTools/DebugHeader.h>
+#include <Common/UniversalStruct.h>
 
 // RecvPkg::flag States Define
 #define STATE_NORMAL		0x01

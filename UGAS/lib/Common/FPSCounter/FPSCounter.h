@@ -7,9 +7,9 @@ Developer(s): 21-THY
 Header Functions:
 - 提供统计帧数信息的方法
 */
-#include "DebugSettings.h"
-#include "Common/TimeStamp/TimeStampCounter.h"
-#include "Common/UniversalStruct.h"
+#include <DebugSettings.h>
+#include <Common/TimeStamp/TimeStampCounter.h>
+#include <Common/UniversalStruct.h>
 
 class FPSCounter {
 private:

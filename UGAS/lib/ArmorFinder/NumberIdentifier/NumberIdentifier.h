@@ -7,7 +7,7 @@ Developer(s): 21-THY
 Header Functions:
 - 提供数字识别类的接口
 */
-#include "Common/UniversalStruct.h"
+#include <Common/UniversalStruct.h>
 
 class NumberIdentifier {
 public:

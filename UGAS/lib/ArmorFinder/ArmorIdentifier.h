@@ -7,9 +7,9 @@ Developer(s): 21-THY
 Header Functions:
 - 提供装甲识别类的接口
 */
-#include "GimbalSerial/GimbalSerialHandle.h"
+#include <GimbalSerial/GimbalSerialHandle.h>
+#include <Common/DebugTools/DebugHeader.h>
 #include "NumberIdentifier/NumberIdentifier.h"
-#include "Common/DebugTools/DebugHeader.h"
 
 class ArmorIdentifier {
 protected:

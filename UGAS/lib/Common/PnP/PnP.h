@@ -8,7 +8,7 @@ Header Functions:
 - 一个典型的单例类
 - 负责解算空间与图像坐标的关系
 */
-#include "GimbalSerial/GimbalSerialHandle.h"
+#include <GimbalSerial/GimbalSerialHandle.h>
 
 class PnP {
 private:

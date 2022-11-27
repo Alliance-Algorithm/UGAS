@@ -28,6 +28,8 @@ public:
 
 	MatWithTimeStamp() :timeStamp(0) {}
 	MatWithTimeStamp(const Mat& img) :Mat(img), timeStamp(0) {}
+
+	void SetROI(const cv::Rect& ROI) { static_cast<Mat&>(*this) = this->operator()(ROI); }
 };
 typedef MatWithTimeStamp Img;
 
@@ -61,6 +63,14 @@ public:
 		if (points.size() != 4)
 			throw_with_trace(std::runtime_error, "Invalid ArmorPlate object");
 		return (points[0] + points[1] + points[2] + points[3]) / 4;
+	}
+	
+	std::vector<cv::Point2f>& OffsetPoints(const cv::Point2f offset) const {
+		std::vector<cv::Point2f> offsetPoints;
+		for_each(points.begin(), points.end(), [&](const cv::Point2f& point) {
+			offsetPoints.push_back(point + offset);
+		});
+		return offsetPoints;
 	}
 };
 

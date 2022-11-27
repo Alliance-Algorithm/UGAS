@@ -1,9 +1,9 @@
 #ifndef _WIN32
 
 #include "LinuxGimbalSerial.h"
-#include "DebugSettings.h"
-#include "Parameters.h"
-#include "Common/DebugTools/DebugHeader.h"
+#include <DebugSettings.h>
+#include <Parameters.h>
+#include <Common/DebugTools/DebugHeader.h>
 
 namespace serial {
 

@@ -8,10 +8,10 @@ Header Functions:
 - 云台串口的句柄类，将串口类变为单例类，解决初始化与复用问题
 */
 #ifdef _WIN32
-#include "GimbalSerial/Implementations/Windows/WindowsGimbalSerial.h"
+#include <GimbalSerial/Implementations/Windows/WindowsGimbalSerial.h>
 #define GIMBAL_SERIAL	serial::WindowsGimbalSerial
 #else
-#include "GimbalSerial/Implementations/Linux/LinuxGimbalSerial.h"
+#include <GimbalSerial/Implementations/Linux/LinuxGimbalSerial.h>
 #define GIMBAL_SERIAL	serial::LinuxGimbalSerial
 #endif
 

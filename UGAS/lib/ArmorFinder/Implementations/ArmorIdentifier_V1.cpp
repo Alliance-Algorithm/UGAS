@@ -1,6 +1,6 @@
 #include "ArmorIdentifier_V1.h"
-#include "Common/UniversalFunctions/UniversalFunctions.h"
-#include "Common/Color.h"
+#include <Common/UniversalFunctions/UniversalFunctions.h>
+#include <Common/Color.h>
 using namespace std;
 using namespace cv;
 
@@ -25,12 +25,12 @@ void ArmorIdentifier_V1::FindLightBars(const Img& imgThre) {
 					Point2f rectPoints[4];
 					rect.points(rectPoints);
 					if (P2PDis(rectPoints[0], rectPoints[1]) > P2PDis(rectPoints[1], rectPoints[2])) {
-						_lightBars.push_back({ (rectPoints[1] + rectPoints[2]) / 2,
-							(rectPoints[0] + rectPoints[3]) / 2 , angle });
-					}
+						_lightBars.push_back({ (rectPoints[1] + rectPoints[2]) / 2 + ROIoffset,
+							(rectPoints[0] + rectPoints[3]) / 2 + ROIoffset, angle });
+					} // 在创建灯条对象时注意补偿ROI的偏移
 					else {
-						_lightBars.push_back({ (rectPoints[0] + rectPoints[1]) / 2,
-							(rectPoints[2] + rectPoints[3]) / 2 , angle });
+						_lightBars.push_back({ (rectPoints[0] + rectPoints[1]) / 2 + ROIoffset,
+							(rectPoints[2] + rectPoints[3]) / 2 + ROIoffset, angle });
 					}
 				}
 			}
@@ -58,7 +58,7 @@ void ArmorIdentifier_V1::FindArmorPlates(const Img& imgGray, std::vector<ArmorPl
 			if (fabs(Icenter.y - Jcenter.y) * 2 / (Isize + Jsize) > maxLightDy)	continue;
 			if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis)	continue;
 
-			// 数字识别部分（暂时放这，可能会挪到运动模型那去）
+			// 数字识别
 			ArmorPlate armor(_lightBars[i], _lightBars[j]);
 			armor.id = _numberIdentifier.Identify(imgGray, armor);
 			result.push_back(armor);

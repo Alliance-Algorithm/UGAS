@@ -7,9 +7,9 @@ Developer(s): 21-THY
 Header Functions:
 - ¸üÐÂrobots
 */
-#include "Common/UniversalStruct.h"
-#include "Common/Robot/Robot.h"
-#include "Common/DebugTools/DebugHeader.h"
+#include <Common/UniversalStruct.h>
+#include <Common/Robot/Robot.h>
+#include <Common/DebugTools/DebugHeader.h>
 
 class TargetSolution {
 public:

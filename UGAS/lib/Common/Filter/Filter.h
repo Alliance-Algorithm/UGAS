@@ -8,7 +8,7 @@ Header Functions:
 - 提供通用滤波方法
 */
 #include <opencv2/opencv.hpp>
-#include "Common/UniversalStruct.h"
+#include <Common/UniversalStruct.h>
 
 namespace filters {
 	// #### Filter 虚基类

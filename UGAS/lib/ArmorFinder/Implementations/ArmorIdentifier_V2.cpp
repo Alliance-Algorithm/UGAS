@@ -1,7 +1,7 @@
-#include <cmath>
-#include "Common/Color.h"
-#include "Common/UniversalFunctions/UniversalFunctions.h"
 #include "ArmorIdentifier_V2.h"
+#include <cmath>
+#include <Common/Color.h>
+#include <Common/UniversalFunctions/UniversalFunctions.h>
 
 inline std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(const cv::Mat& img, int areaVal, int floodVal, bool borderEngulfment) {
     std::queue<cv::Point> emptyQueue;
