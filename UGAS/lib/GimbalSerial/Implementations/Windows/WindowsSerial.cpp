@@ -61,7 +61,7 @@ bool WindowsSerial::send(const BYTE* data, int dataLenth) {
 		DWORD sended;
 		if (!WriteFile(_handle, data, dataLenth, &sended, NULL))
 			return false;
-		LOG(INFO) << "sended " << dataLenth << " bits";
+		//LOG(INFO) << "sended " << dataLenth << " bits";
 		return dataLenth == sended;
 	}
 	else throw_with_trace(std::runtime_error, "Undefined synState");

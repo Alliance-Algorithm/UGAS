@@ -11,6 +11,9 @@ Header Functions:
 #include "../ImgCapture.h"
 
 class CVVideoCapture : public ImgCapture, private cv::VideoCapture {
+private:
+	int _frameCount;
+
 public:
 	virtual void init(void* fileName);
 	virtual void read(Img& img);

@@ -109,7 +109,7 @@ cv::Rect Robot::ROIregion(TimeStamp ImgTime) {
 	if (_latestUpdate == ImgTime) {
 		cv::Point2f center = _armor.center();
 		cv::Size robotSize = cv::boundingRect(_armor.points).size();
-		cv::Point2f ROIsize = cv::Point2f(robotSize.width * 2, robotSize.height) * 2.;
+		cv::Point2f ROIsize = cv::Point2f(robotSize.width * 1.5, robotSize.height) * 2.;
 
 		cv::Point tl = center - ROIsize, br = center + ROIsize;
 		if (tl.x < 0) tl.x = 0; if (tl.x >= frameWidth) tl.x = frameWidth - 1;

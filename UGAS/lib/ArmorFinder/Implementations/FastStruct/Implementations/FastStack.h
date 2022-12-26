@@ -6,7 +6,7 @@ private:
 	T* _pointer;
 	int _length, _maxLength;
 public:
-	int& Length = _length;
+	const int& Length = _length;
 
 	FastStack() {
 		_length = 0;

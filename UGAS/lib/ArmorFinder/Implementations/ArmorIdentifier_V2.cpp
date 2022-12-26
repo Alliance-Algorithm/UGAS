@@ -65,22 +65,22 @@ inline bool ArmorIdentifier_V2::_solveToLightbar(const std::vector<cv::Point>& a
             if (diff > 0) {     //旋转前，矩形横放
                 float angle = fmod(box.angle + 360, 360);
                 if (90 - angleRange < angle && angle < 90 + angleRange) {
-                    _lightBarList.push_back(LightBar((contour[0] + contour[1]) / 2, (contour[2] + contour[3]) / 2, 0));
+                    _lightBarList.push_back(LightBar((contour[0] + contour[1]) / 2 + ROIoffset, (contour[2] + contour[3]) / 2 + ROIoffset, 0));
                     return true;
                 }
                 else if (270 - angleRange < angle && angle < 270 + angleRange) {
-                    _lightBarList.push_back(LightBar((contour[2] + contour[3]) / 2, (contour[0] + contour[1]) / 2, 0));
+                    _lightBarList.push_back(LightBar((contour[2] + contour[3]) / 2 + ROIoffset, (contour[0] + contour[1]) / 2 + ROIoffset, 0));
                     return true;
                 }
             }
             else if (diff < 0) {  //旋转前，矩形横放
                 float angle = fmod(box.angle + 360 + 90, 360);
                 if (90 - angleRange < angle && angle < 90 + angleRange) {
-                    _lightBarList.push_back(LightBar((contour[1] + contour[2]) / 2, (contour[0] + contour[3]) / 2, 0));
+                    _lightBarList.push_back(LightBar((contour[1] + contour[2]) / 2 + ROIoffset, (contour[0] + contour[3]) / 2 + ROIoffset, 0));
                     return true;
                 }
                 else if (270 - angleRange < angle && angle < 270 + angleRange) {
-                    _lightBarList.push_back(LightBar((contour[0] + contour[3]) / 2, (contour[1] + contour[2]) / 2, 0));
+                    _lightBarList.push_back(LightBar((contour[0] + contour[3]) / 2 + ROIoffset, (contour[1] + contour[2]) / 2 + ROIoffset, 0));
                     return true;
                 }
             }
