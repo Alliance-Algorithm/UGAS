@@ -1,0 +1,20 @@
+<!--
+  注意：这是一个模板文件，不起任何实际作用
+  该文件的具体使用方法，请参阅《UGAS编译前准备.md》
+-->
+<!-- 文件适用于OpenCV 4.7.0 -->
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>D:\opencv\build\include\opencv2;D:\opencv\build\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>opencv_world470.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

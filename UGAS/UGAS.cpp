@@ -22,6 +22,7 @@ UGAS::~UGAS() {
 
 void UGAS::initial() {
 	try {
+		//
 		// 初始化部分
 		destroyAllWindows();
 		com.Get().Open(SERIAL_PORT);
