@@ -4,6 +4,10 @@
 
 在一切工作开始前，请打开UGAS，检查是否处于如图编译模式。
 
+<img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
+    AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot">
+
 ![7]
 
 由于Debug模式会带来许多性能问题，UGAS统一在Release模式下运行。
