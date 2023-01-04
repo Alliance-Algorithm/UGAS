@@ -164,6 +164,10 @@
     <ClCompile Include="UGAS.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\ButtonControl.hpp" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\MatControl.hpp" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\MatForm.hpp" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\RectangleControl.hpp" />
     <ClInclude Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.h" />
     <ClInclude Include="lib\Common\DebugTools\DebugHeader.h" />
