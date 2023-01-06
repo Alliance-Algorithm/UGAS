@@ -18,7 +18,7 @@ void NumberIdentifier_V1::init(void* model) {
 short NumberIdentifier_V1::Identify(const Img& imgGray, const ArmorPlate& region) {
 	// 仿射变换与预处理
 	static const std::vector<Point2f> dst = { {-4, 9}, {-4, 23}, {36, 23}, {36, 9} };
-	Mat  imgWarped, imgNumber, M = getPerspectiveTransform(region.OffsetPoints(-ROIoffset), dst);
+	Mat imgWarped, imgNumber, M = getPerspectiveTransform(region.OffsetPoints(-ROIoffset), dst);
 	warpPerspective(imgGray, imgWarped, M, Size(32, 32));
 	threshold(imgWarped, imgNumber, 0, 255, THRESH_BINARY | THRESH_OTSU);
 	// 神经网络预测

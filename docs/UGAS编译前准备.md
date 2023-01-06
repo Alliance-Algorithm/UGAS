@@ -6,7 +6,7 @@
 
 ![](images/de309db8-e726-46c6-8639-e689851c7f9e.png?raw=true)
 
-由于Debug模式会带来许多性能问题，UGAS统一在Release模式下运行。
+由于Debug模式会带来许多性能问题（帧数降至个位数），UGAS一般在Release模式下运行。但若一定要使用Debug模式进行局部动态调试，请另行配置，配置方式在本文最后一段。
 
 <br/>
 
@@ -82,3 +82,23 @@
 ## 编译UGAS
 
 完成以上所有步骤后，就可以进行UGAS的编译了。打开Visual Studio，点击“本地Windows调试器”，你会看到它愉快地跑起来了。
+
+<br/>
+
+## 配置Debug x64编译模式
+
+尽管由于严重的性能问题，我们一般情况下不推荐使用Debug x64编译模式。但Release x64模式也有它的缺陷，它的动态调试功能完全缺失，断点几乎无法命中，当我们需要对代码进行局部动态调试时，我们需要Debug x64编译模式。
+
+具体操作步骤如下：
+
+**Step1 打开 D:\opencv文件夹**
+
+**Step2 将 openCV.props 复制一份并重命名为 openCV.debug.props**
+
+**Step3 修改 openCV.debug.props**
+
+如图，将\<AdditionalDependencies\>中opencv_world\*\*\*后面加上一个小写的“d”。
+
+![](images/9fad27fb-1caf-4441-a23b-c0e330aad9f5.png?raw=true)
+
+保存后即可切换到Debug x64模式进行编译。
