@@ -8,6 +8,5 @@ Header Functions:
 - 对https://github.com/amrayn/easyloggingpp(Easylogging++)的简单封装
 - 提供LOG_TRACE宏，在每次catch时记录
 */
-#include "Easylogging++.h"
 
-void LOG_INIT();
+#include "Easylogging++.h"

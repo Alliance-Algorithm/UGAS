@@ -4,9 +4,6 @@
 UGAS ugas;
 
 int main() {
-	//初始化日志库
-	LOG_INIT();
-
 	for (int restartTime = 0;; ++restartTime) {
 		try {
 			LOG(INFO) << "Program starts, count " << restartTime;
@@ -19,7 +16,8 @@ int main() {
 		catch (...) {
 			LOG(ERROR) << "Uncaught unknown error";
 		}
-		LOG(ERROR) << "Program crashed, restarting... ";
+		LOG(ERROR) << "Program crashed, will restart in 5 seconds... ";
+		std::this_thread::sleep_for(std::chrono::seconds(5));
 	}
 	return 0;
 }
