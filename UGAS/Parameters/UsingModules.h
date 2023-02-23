@@ -12,6 +12,7 @@ Header Functions:
 #include <GimbalSerial/GimbalSerialHandle.h>
 #include <ImgCapture/Implementations/CVVideoCapture.h>
 #include <ImgCapture/Implementations/CVVideoFrameCapture.h>
+#include <ImgCapture/Implementations/HTCameraCapture.h>
 #include <ImgPretreat/Implementations/ImgPretreat_V1.h>
 #include <ImgPretreat/Implementations/ImgPretreat_V2.h>
 #include <ArmorFinder/Implementations/ArmorIdentifier_V1.h>
@@ -22,7 +23,7 @@ Header Functions:
 #include <TrackingStrategy/Implementations/TrackingStrategy_V1.h>
 #include <Trajectory/Implementations/Trajectory_FEM.h>
 
-#define IMG_CAPTURE		CVVideoCapture
+#define IMG_CAPTURE		HTCameraCapture
 #define IMG_PRETREAT	ImgPretreat_V1
 #define ARMOR_IDENTIFY	ArmorIdentifier_V1
 #define NUMBER_IDENTIFY	NumberIdentifier_V1

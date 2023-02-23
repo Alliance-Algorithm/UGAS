@@ -9,7 +9,7 @@ Header Functions:
 -  π”√OTSU∫ÕCNN
 */
 #include "../NumberIdentifier.h"
-#include <opencv2\opencv.hpp>
+#include <opencv2/opencv.hpp>
 
 class NumberIdentifier_V1 : public NumberIdentifier {
 private:

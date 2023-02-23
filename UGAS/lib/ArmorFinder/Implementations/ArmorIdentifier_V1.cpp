@@ -58,10 +58,10 @@ void ArmorIdentifier_V1::FindArmorPlates(const Img& imgGray, std::vector<ArmorPl
 			if (fabs(Icenter.y - Jcenter.y) * 2 / (Isize + Jsize) > maxLightDy)	continue;
 			if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis)	continue;
 
-			// 数字识别（禁用）
-			//ArmorPlate armor(_lightBars[i], _lightBars[j]);
-			//armor.id = _numberIdentifier.Identify(imgGray, armor);
-			//result.push_back(armor);
+			// 数字识别
+			ArmorPlate armor(_lightBars[i], _lightBars[j]);
+			armor.id = _numberIdentifier.Identify(imgGray, armor);
+			result.push_back(armor);
 		}
 	}
 }

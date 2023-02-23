@@ -1,13 +1,12 @@
-#include "WindowsHTCameraCapture.h"
+#include "HTCameraCapture.h"
 
-
-WindowsHTCameraCapture::~WindowsHTCameraCapture() {
+HTCameraCapture::~HTCameraCapture() {
 	CameraUnInit(_hCamera);
 	CameraAlignFree(_pFrameBuffer);
 }
 
 
-void WindowsHTCameraCapture::init(void* useLess) {
+void HTCameraCapture::init(void* useLess) {
 	if (initialized) {
 		throw_with_trace(std::runtime_error, "Already initialized");
 	}
@@ -52,7 +51,7 @@ void WindowsHTCameraCapture::init(void* useLess) {
 	}
 }
 
-void WindowsHTCameraCapture::read(Img& img) {
+void HTCameraCapture::read(Img& img) {
 	if (initialized) {
 		BYTE* pbyBuffer;
 		CameraSdkStatus status;

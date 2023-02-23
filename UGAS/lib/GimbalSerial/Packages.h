@@ -5,8 +5,8 @@ Latest Update: 2022/10/11
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ¶¨Òå´®¿ÚÊı¾İ°ü¾ßÌåÄÚÈİ
-- ÉùÃ÷Êı¾İ°üÏà¹Ø²ÎÊı
+- å®šä¹‰ä¸²å£æ•°æ®åŒ…å…·ä½“å†…å®¹
+- å£°æ˜æ•°æ®åŒ…ç›¸å…³å‚æ•°
 */
 #include <iostream>
 #include "CRC/CRC.h"
@@ -42,18 +42,24 @@ namespace serial {
 	};
 
 	struct RecvPkg {
-		char	head;					// 0xff
-		char	team;					// team id
-		float	yawA, pitchA, rollA;	// Angle
-		float	yawW, pitchW, rollW;	// Angular Velocity
-		float	speed;					// Bullet Speed
-		char	flag;					// State flag
+		char	head=1;					// 0xff
+		char	team=1;					// team id
+		float	yawA, pitchA, rollA=1;	// Angle
+		float	yawW, pitchW, rollW=1;	// Angular Velocity
+		float	speed=1;					// Bullet Speed
+		char	flag=1;					// State flag
 		char	crc8;					// CRC8
 
 		bool CheckCRC8() const {
 			return Verify_CRC8_Check_Sum((BYTE*)this, sizeof(RecvPkg));
 		}
 		void Debug(std::ostream& os = std::cout) const {
+				os<<"Head:"<<int(head)<<std::endl;
+				os << "Team:" <<  ((team == Red) ? "Red" : "Blue")<< std::endl;
+				os << "yawA:" << yawA << "pitchA:" << pitchA << "rollA:" << rollA << std::endl;
+				os << "yawW:" << yawW << "pitchW:" << pitchW << "rollW:" << rollW << std::endl;
+				os << "speed:" << speed << "flag:" << static_cast<int>(flag) << std::endl;
+				os<<"CRC8:"<<int(crc8)<<std::endl;
 			if (CheckCRC8()) {
 				os << "Team:" << ((team == Red) ? "Red" : "Blue") << std::endl;
 				os << "yawA:" << yawA << "pitchA:" << pitchA << "rollA:" << rollA << std::endl;

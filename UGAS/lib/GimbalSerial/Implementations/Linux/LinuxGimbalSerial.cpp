@@ -4,8 +4,17 @@
 #include <DebugSettings.h>
 #include <Parameters.h>
 #include <Common/DebugTools/DebugHeader.h>
+#include <errno.h>
 
 namespace serial {
+	void LinuxGimbalSerial::VerifyRecvData(RecvPkg& recvPkg) {
+		if (IN_STATE(recvPkg.flag, STATE_SHUTDOWN))
+		system("shutdown -s -t 0");
+	//recvPkg.pitchA /= 10;
+	//recvPkg.team = TEAM_BLUE;
+	//recvPkg.speed = 26000;
+	//recvPkg.flag |= STATE_LARGE;
+}
 
 	void LinuxGimbalSerial::Open(const char* portName) {
 #if VIRTUAL_GIBAL == 0
@@ -33,14 +42,24 @@ namespace serial {
 	const RecvPkg& LinuxGimbalSerial::RecvGimbalData() {
 #if VIRTUAL_GIBAL == 0
 		RecvPkg tmp;
-		LinuxSerial::Recv((unsigned char*)&tmp, _RecvPkgSize);
+		int len=11;
+		int status=LinuxSerial::Read((unsigned char*) &tmp, _RecvPkgSize);//返回-1说明接受有问题
+		//std::cout<<"收到的数据位数："<<status<<std::endl;
 
-		if (tmp.head != '\xFF') { // ���¶���
-			while (tmp.head != '\xFF')
-				LinuxSerial::Recv((BYTE*)&tmp, 1);
-			LinuxSerial::Recv(((BYTE*)&tmp) + 1, _RecvPkgSize - 1);
+		/*测试小程序
+		int status=read(_tty_fd,&head,1);
+		std::cout<<status<<std::endl;
+		std::cout<<"head0"<<int(head)<<std::endl;
+		*/
+		//tmp.Debug();
+		if (tmp.head != '\xff') { // 重新对齐
+			while (tmp.head != '\xff'){
+				LinuxSerial::Read((BYTE*)&tmp, 1);
+				// std::cout<<int(tmp.head)<<std::endl;
+			}
+			LinuxSerial::Read(((BYTE*)&tmp) + 1, _RecvPkgSize - 1);
 		}
-
+		//std::cout<<"end receive"<<std::endl;
 		if (tmp.CheckCRC8()) {
 			VerifyRecvData(tmp);
 			static_cast<RecvPkg&>(*this) = tmp;

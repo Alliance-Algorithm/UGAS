@@ -66,6 +66,7 @@ public:
 	}
 	
 	std::vector<cv::Point2f>& OffsetPoints(const cv::Point2f offset) const {
+		//TODO 生存期过了，要改非复制传参
 		std::vector<cv::Point2f> offsetPoints;
 		for_each(points.begin(), points.end(), [&](const cv::Point2f& point) {
 			offsetPoints.push_back(point + offset);
