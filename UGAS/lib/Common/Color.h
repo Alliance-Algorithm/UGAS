@@ -5,7 +5,7 @@ Latest Update: 2022/10/13
 Developer(s): 21-THY 21-YY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- �ṩһЩ���õĻ�����ɫBGRֵ
+- 提供一些常用的基本颜色BGR值
 */
 #include <opencv2/opencv.hpp>
 using cv::Scalar;

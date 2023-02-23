@@ -5,13 +5,13 @@ Latest Update: 2022/11/24
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Ìá¹©Í¨ÓÃÂË²¨·½·¨
+- æä¾›é€šç”¨æ»¤æ³¢æ–¹æ³•
 */
 #include <opencv2/opencv.hpp>
 #include <Common/UniversalStruct.h>
 
 namespace filters {
-	// #### Filter Ğé»ùÀà
+	// #### Filter è™šåŸºç±»
 	template <class type_t> class Filter {
 	public:
 		virtual type_t Predict(type_t value) = 0;
@@ -22,7 +22,7 @@ namespace filters {
 	typedef Filter<double> FilterLF;
 
 	namespace linear {
-		// #### ÏßĞÔÂË²¨Æ÷
+		// #### çº¿æ€§æ»¤æ³¢å™¨
 		template <class type_t>
 		class Linear :public Filter<type_t> {
 		protected:
@@ -41,7 +41,7 @@ namespace filters {
 			void Reset() { _saved = type_t(); _initial = true; }
 		};
 
-		// ### ¸ß½×µÍÍ¨ÏßĞÔÂË²¨Æ÷
+		// ### é«˜é˜¶ä½é€šçº¿æ€§æ»¤æ³¢å™¨
 		template <class type_t>
 		class Linear_S :public Filter<type_t> {
 		protected:
@@ -60,7 +60,7 @@ namespace filters {
 			void Reset() { _saved = type_t();  _initial = true; }
 		};
 
-		// ### ¾ùÖµÏßĞÔÂË²¨Æ÷
+		// ### å‡å€¼çº¿æ€§æ»¤æ³¢å™¨
 		template <class type_t, int num>
 		class Linear_E :public Filter<type_t> {
 		protected:
@@ -82,7 +82,7 @@ namespace filters {
 	}
 
 	namespace PID {
-		// #### PIDÂË²¨Æ÷
+		// #### PIDæ»¤æ³¢å™¨
 		template <class type_t>
 		class PDfilter :public Filter<type_t> {
 		protected:
@@ -94,11 +94,11 @@ namespace filters {
 				_Kp(Kp), _Kd(Kd), _last(), _lastErr(), _initial(true) {}
 
 			type_t Predict(type_t value) {
-				if (_initial) { // µÚÒ»¸öÖµ
+				if (_initial) { // ç¬¬ä¸€ä¸ªå€¼
 					_initial = false;
 					return _last = value;
 				}
-				else { // ±»µÍÍ¨ÂË²¨µÄÖµ
+				else { // è¢«ä½é€šæ»¤æ³¢çš„å€¼
 					type_t err = _last - value;
 					type_t res = err * _Kp + (err - _lastErr) * _Kd;
 					_lastErr = err;
@@ -110,7 +110,7 @@ namespace filters {
 	}
 
 	namespace kalman {
-		// #### ¿¨¶ûÂüÂË²¨Æ÷ Ò»½×
+		// #### å¡å°”æ›¼æ»¤æ³¢å™¨ ä¸€é˜¶
 		class KalmanF :public FilterF {
 		protected:
 			cv::KalmanFilter _filter;
@@ -130,7 +130,7 @@ namespace filters {
 			void Reset() { /* Reset  KalmanFilter */ }
 		};
 
-		// #### ¿¨¶ûÂüÂË²¨Æ÷ ¶ş½×
+		// #### å¡å°”æ›¼æ»¤æ³¢å™¨ äºŒé˜¶
 		class KalmanF2D :public FilterF {
 		protected:
 			cv::KalmanFilter _filter;

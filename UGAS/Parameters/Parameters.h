@@ -5,9 +5,9 @@ Latest Update: 2022/10/13
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ÉùÃ÷²¢³õÊ¼»¯ËùÓĞ²ÎÊı
-- ¸ù¾İ "DebugSettings.h" ´´½¨ Debug ÍÏ¶¯Ìõ
-- Ìá¹©µ÷ÊÔĞÔº¯Êı
+- å£°æ˜å¹¶åˆå§‹åŒ–æ‰€æœ‰å‚æ•°
+- æ ¹æ® "DebugSettings.h" åˆ›å»º Debug æ‹–åŠ¨æ¡
+- æä¾›è°ƒè¯•æ€§å‡½æ•°
 */
 #include <opencv2/opencv.hpp>
 #include <DebugSettings.h>

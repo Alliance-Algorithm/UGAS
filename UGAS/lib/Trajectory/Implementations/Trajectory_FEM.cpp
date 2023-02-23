@@ -16,7 +16,7 @@ double Trajectory_FEM::EvaluateBulletFlightTime(const int targetID) {
 		while (angleHigh - angleLow > angleEPS) {
 			double angleM = (angleLow + angleHigh) / 2;
 			res = distance / speed / cos(angleHigh / 180 * PI);
-			// ¶þ´Îº¯ÊýÄâºÏ(¾­µäÔË¶¯Ñ§) y = V0 * t - (1 / 2)G * t^2;
+			// äºŒæ¬¡å‡½æ•°æ‹Ÿåˆ(ç»å…¸è¿åŠ¨å­¦) y = V0 * t - (1 / 2)G * t^2;
 			double altitude = speed * sin(angleHigh / 180 * PI) * res - G * res * res / 2;
 			if (altitude > altitudeTarget)
 				angleHigh = angleM;
@@ -55,7 +55,7 @@ void Trajectory_FEM::Iterate(Point3f position, double& pitch, double& flyTime) {
 }
 
 void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double& yaw, double& pitch) {
-	// Pitch²îÖµµÄµü´ú½âËã
+	// Pitchå·®å€¼çš„è¿­ä»£è§£ç®—
 	double flyTime = EvaluateBulletFlightTime(targetID);
 	for (int i = Trajc_iterate; i; --i)
 		Iterate(
@@ -65,7 +65,7 @@ void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double&
 		pitch, flyTime);
 	pitch -= com.Get().pitchA;
 
-	// Yaw²îÖµµÄ½âËã
+	// Yawå·®å€¼çš„è§£ç®—
 	_2Dposition = PnPsolver.RevertPnP(_3Dposition);
 	yaw = _2Dposition.x - (frameWidth >> 1);
 	//LOG(INFO) << _2Dposition << '\n';

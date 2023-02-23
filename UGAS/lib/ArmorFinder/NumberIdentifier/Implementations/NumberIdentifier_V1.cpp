@@ -6,7 +6,7 @@ using namespace cv;
 using namespace dnn;
 
 void NumberIdentifier_V1::init(void* model) {
-	//¼ÓÔØÄ£ĞÍ£¬ÊäÈëÎª32*32µÄ¶şÖµ»¯Í¼Ïñ×ª»Ò¶ÈÍ¼
+	//åŠ è½½æ¨¡å‹ï¼Œè¾“å…¥ä¸º32*32çš„äºŒå€¼åŒ–å›¾åƒè½¬ç°åº¦å›¾
 	_net = cv::dnn::readNetFromTensorflow(
 		string("lib/ArmorFinder/NumberIdentifier/Implementations/") + 
 		*static_cast<const char**>(model)
@@ -16,30 +16,30 @@ void NumberIdentifier_V1::init(void* model) {
 }
 
 short NumberIdentifier_V1::Identify(const Img& imgGray, const ArmorPlate& region) {
-	// ·ÂÉä±ä»»ÓëÔ¤´¦Àí
+	// ä»¿å°„å˜æ¢ä¸é¢„å¤„ç†
 	static const std::vector<Point2f> dst = { {-4, 9}, {-4, 23}, {36, 23}, {36, 9} };
 	Mat imgWarped, imgNumber, M = getPerspectiveTransform(region.OffsetPoints(-ROIoffset), dst);
 	warpPerspective(imgGray, imgWarped, M, Size(32, 32));
 	threshold(imgWarped, imgNumber, 0, 255, THRESH_BINARY | THRESH_OTSU);
-	// Éñ¾­ÍøÂçÔ¤²â
+	// ç¥ç»ç½‘ç»œé¢„æµ‹
 	normalize(imgNumber, imgNumber, 1, 0, NORM_MINMAX);
 	Mat blobImage = blobFromImage(imgNumber, 1.0, Size(32, 32), false, false);
 	_net.setInput(blobImage);
 	Mat pred = _net.forward();
-	// »ñÈ¡Ô¤²â½á¹û
+	// è·å–é¢„æµ‹ç»“æœ
 	double maxVal; Point maxLoc;
 	minMaxLoc(pred, NULL, &maxVal, NULL, &maxLoc);
 	if (maxVal < 1.) maxLoc.x = 0;
 
 #if DEBUG_IMG == 1 && DEBUG_ARMOR_NUM == 1
-	// »æÖÆ¶şÖµ»¯Í¼Ïñ
+	// ç»˜åˆ¶äºŒå€¼åŒ–å›¾åƒ
 	cv::cvtColor(imgNumber, imgNumber, cv::COLOR_GRAY2BGR);
 	cv::Point drawPos = static_cast<cv::Point>(region.center());
 	cv::Rect drawRect = cv::Rect(drawPos.x - 16, drawPos.y - 16, 32, 32);
 	imgNumber.copyTo(debugImg(drawRect));
-	// »æÖÆÊ¶±ğÊı×Ö
+	// ç»˜åˆ¶è¯†åˆ«æ•°å­—
 	cv::putText(debugImg, std::to_string(maxLoc.x), Point(drawPos.x - 12, drawPos.y + 13), 1, 2.5, COLOR_GREEN, 3);
-	// »æÖÆÊ¶±ğÖÃĞÅ¶È
+	// ç»˜åˆ¶è¯†åˆ«ç½®ä¿¡åº¦
 	auto maxValStr = std::to_string(maxVal); maxValStr.resize(6);
 	cv::putText(debugImg, maxValStr, region.points[0], 1, 1.5, COLOR_GREEN, 1.5);
 #endif

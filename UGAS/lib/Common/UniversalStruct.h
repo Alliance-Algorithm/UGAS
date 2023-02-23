@@ -5,17 +5,17 @@ Latest Update: 2022/10/13
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ÉùÃ÷²¢¶¨ÒåËùÓĞÍ¨ÓÃ½á¹¹Ìå
+- å£°æ˜å¹¶å®šä¹‰æ‰€æœ‰é€šç”¨ç»“æ„ä½“
 */
 #include <opencv2/opencv.hpp>
 #include "DebugTools/Implementations/Easylogging++.h"
 #include "DebugTools/Implementations/CustomException.h"
 #include "DebugTools/Implementations/ExceptionHandling.h"
 /* 
-* ÖµµÃËµµÄÊÇ£¬ÒòÎªÕâ¸öÍ·ÎÄ¼ş±»ºÜ¶àÎÄ¼şÒıÓÃ£¬
-* ËùÒÔ²»Òªinclude²»±ØÒªµÄ¶«Î÷£¬ÈİÒ×Ñ­»·ÒıÓÃ£¬
-* Èç¹ûÄãÓöµ½ÁËÀàËÆ¡°Î´¶¨ÒåµÄ±êÊ¶·û¡±¡¢¡°²»ÔÊĞíÊ¹ÓÃ²»ÍêÕûµÄÀàĞÍ¡±£¬
-* Çë¼ì²éÍ·ÎÄ¼şÖ®¼äµÄÒıÓÃ¹ØÏµ£¬¾¡Á¿±ÜÃâ³öÏÖÑ­»·ÒıÓÃµÄÇé¿ö¡£
+* å€¼å¾—è¯´çš„æ˜¯ï¼Œå› ä¸ºè¿™ä¸ªå¤´æ–‡ä»¶è¢«å¾ˆå¤šæ–‡ä»¶å¼•ç”¨ï¼Œ
+* æ‰€ä»¥ä¸è¦includeä¸å¿…è¦çš„ä¸œè¥¿ï¼Œå®¹æ˜“å¾ªç¯å¼•ç”¨ï¼Œ
+* å¦‚æœä½ é‡åˆ°äº†ç±»ä¼¼â€œæœªå®šä¹‰çš„æ ‡è¯†ç¬¦â€ã€â€œä¸å…è®¸ä½¿ç”¨ä¸å®Œæ•´çš„ç±»å‹â€ï¼Œ
+* è¯·æ£€æŸ¥å¤´æ–‡ä»¶ä¹‹é—´çš„å¼•ç”¨å…³ç³»ï¼Œå°½é‡é¿å…å‡ºç°å¾ªç¯å¼•ç”¨çš„æƒ…å†µã€‚
 */
 
 enum Team { Red = 1, Blue = 2 };
@@ -37,8 +37,8 @@ struct LightBar {
 	cv::Point2f top, bottom;
 	float angle;
 
-	// Õâ¸ö×Ô¶¯¼ÆËãAngleµÄÊµÏÖÒªºÍÊ¶±ğµÄµØ·½±íÊ¾·½Ê½Í¬²½
-	// ¿´¿´Ê²Ã´Ê±ºò¸ã¸öÍ³Ò»µÄ±ê×¼»¹ÊÇÔõÃ´£¬ÏÈ²»ÊµÏÖÕâ¸ö¹¹Ôì
+	// è¿™ä¸ªè‡ªåŠ¨è®¡ç®—Angleçš„å®ç°è¦å’Œè¯†åˆ«çš„åœ°æ–¹è¡¨ç¤ºæ–¹å¼åŒæ­¥
+	// çœ‹çœ‹ä»€ä¹ˆæ—¶å€™æä¸ªç»Ÿä¸€çš„æ ‡å‡†è¿˜æ˜¯æ€ä¹ˆï¼Œå…ˆä¸å®ç°è¿™ä¸ªæ„é€ 
 	LightBar(cv::Point2f _top, cv::Point2f _bottom);
 	LightBar(cv::Point2f _top, cv::Point2f _bottom, float angle) :
 		top(_top), bottom(_bottom), angle(angle) {}
@@ -49,11 +49,11 @@ public:
 	std::vector<cv::Point2f> points;
 	short id;
 
-	ArmorPlate() :id(0) {} // ÓÃÀ´Ö§³ÖÊı×é
+	ArmorPlate() :id(0) {} // ç”¨æ¥æ”¯æŒæ•°ç»„
 	ArmorPlate(const LightBar& left, const LightBar& right, short _id = 0):
 		id(_id) { Set(left, right, _id); }
 
-	// U×ÖĞÍ£¨ºÍPNP²ÎÊı±íÊ¾Ë³ĞòÍ¬²½£¨ÀÏ´úÂë´«³ĞµÄË³Ğò£©£©
+	// Uå­—å‹ï¼ˆå’ŒPNPå‚æ•°è¡¨ç¤ºé¡ºåºåŒæ­¥ï¼ˆè€ä»£ç ä¼ æ‰¿çš„é¡ºåºï¼‰ï¼‰
 	void Set(const LightBar& left, const LightBar& right, short _id = 0) {
 		points.push_back(left.top); points.push_back(left.bottom);
 		points.push_back(right.bottom); points.push_back(right.top);
@@ -66,7 +66,7 @@ public:
 	}
 	
 	std::vector<cv::Point2f>& OffsetPoints(const cv::Point2f offset) const {
-		//TODO Éú´æÆÚ¹ıÁË£¬Òª¸Ä·Ç¸´ÖÆ´«²Î
+		//TODO ç”Ÿå­˜æœŸè¿‡äº†ï¼Œè¦æ”¹éå¤åˆ¶ä¼ å‚
 		std::vector<cv::Point2f> offsetPoints;
 		for_each(points.begin(), points.end(), [&](const cv::Point2f& point) {
 			offsetPoints.push_back(point + offset);

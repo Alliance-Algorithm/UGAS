@@ -5,7 +5,7 @@ Latest Update: 2022/10/13
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 提供装甲识别类的接口
+- 鎻愪緵瑁呯敳璇嗗埆绫荤殑鎺ュ彛
 */
 #include <GimbalSerial/GimbalSerialHandle.h>
 #include <Common/DebugTools/DebugHeader.h>

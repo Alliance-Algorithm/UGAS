@@ -5,7 +5,7 @@ Latest Update: 2022/10/19
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- °üº¬ËùÓĞ Debug Ïà¹ØµÄÍ·ÎÄ¼ş(ÈÕÖ¾¼ÇÂ¼/×Ô¶¨ÒåÒì³£/¼ÇÂ¼ĞĞºÅÅ×³ö)
+- åŒ…å«æ‰€æœ‰ Debug ç›¸å…³çš„å¤´æ–‡ä»¶(æ—¥å¿—è®°å½•/è‡ªå®šä¹‰å¼‚å¸¸/è®°å½•è¡Œå·æŠ›å‡º)
 */
 
 #include "Implementations/Log.h"

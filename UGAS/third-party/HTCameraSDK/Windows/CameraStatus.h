@@ -2,12 +2,12 @@
 #define __CAMERA_STATUS_DEF__
 
 /// @ingroup MV_TYPEDEF
-/// \~chinese SDK´íÎóÂë
+/// \~chinese SDKé”™è¯¯ç 
 /// \~english SDK error code
 typedef int CameraSdkStatus;
 
 
-/*³£ÓÃµÄºê*/
+/*å¸¸ç”¨çš„å®*/
 #define SDK_SUCCESS(_FUC_)              (_FUC_ == CAMERA_STATUS_SUCCESS)
 
 #define SDK_UNSUCCESS(_FUC_)            (_FUC_ != CAMERA_STATUS_SUCCESS)
@@ -25,92 +25,92 @@ typedef int CameraSdkStatus;
 
 /// @ingroup MV_MACRO_TYPE 
 /// @{
-/* ³£ÓÃ´íÎó  */
+/* å¸¸ç”¨é”™è¯¯  */
 
-#define CAMERA_STATUS_SUCCESS                    0   ///< \~chinese ²Ù×÷³É¹¦ \~english Successful
-#define CAMERA_STATUS_FAILED                    -1   ///< \~chinese ²Ù×÷Ê§°Ü \~english operation failed
-#define CAMERA_STATUS_INTERNAL_ERROR            -2   ///< \~chinese ÄÚ²¿´íÎó \~english internal error
-#define CAMERA_STATUS_UNKNOW                    -3   ///< \~chinese Î´Öª´íÎó \~english unknown error
-#define CAMERA_STATUS_NOT_SUPPORTED             -4   ///< \~chinese ²»Ö§³Ö¸Ã¹¦ÄÜ \~english Does not support this feature
-#define CAMERA_STATUS_NOT_INITIALIZED           -5   ///< \~chinese ³õÊ¼»¯Î´Íê³É \~english Incomplete initialization
-#define CAMERA_STATUS_PARAMETER_INVALID         -6   ///< \~chinese ²ÎÊıÎŞĞ§ \~english Invalid argument
-#define CAMERA_STATUS_PARAMETER_OUT_OF_BOUND    -7   ///< \~chinese ²ÎÊıÔ½½ç \~english Out of bounds of parameters
-#define CAMERA_STATUS_UNENABLED                 -8   ///< \~chinese Î´Ê¹ÄÜ \~english Not enabled
-#define CAMERA_STATUS_USER_CANCEL               -9   ///< \~chinese ÓÃ»§ÊÖ¶¯È¡ÏûÁË£¬±ÈÈçroiÃæ°åµã»÷È¡Ïû£¬·µ»Ø \~english The user manually canceled, such as roi panel click cancel, return
-#define CAMERA_STATUS_PATH_NOT_FOUND            -10  ///< \~chinese ×¢²á±íÖĞÃ»ÓĞÕÒµ½¶ÔÓ¦µÄÂ·¾¶ \~english The corresponding path was not found in the registry
-#define CAMERA_STATUS_SIZE_DISMATCH             -11  ///< \~chinese »ñµÃÍ¼ÏñÊı¾İ³¤¶ÈºÍ¶¨ÒåµÄ³ß´ç²»Æ¥Åä \~english The length of the obtained image data does not match the defined size
-#define CAMERA_STATUS_TIME_OUT                  -12  ///< \~chinese ³¬Ê±´íÎó \~english Timeout error
-#define CAMERA_STATUS_IO_ERROR                  -13  ///< \~chinese Ó²¼şIO´íÎó \~english Hardware IO error
-#define CAMERA_STATUS_COMM_ERROR                -14  ///< \~chinese Í¨Ñ¶´íÎó \~english Communication error
-#define CAMERA_STATUS_BUS_ERROR                 -15  ///< \~chinese ×ÜÏß´íÎó \~english Bus error
-#define CAMERA_STATUS_NO_DEVICE_FOUND           -16  ///< \~chinese Ã»ÓĞ·¢ÏÖÉè±¸ \~english No device found
-#define CAMERA_STATUS_NO_LOGIC_DEVICE_FOUND     -17  ///< \~chinese Î´ÕÒµ½Âß¼­Éè±¸ \~english Logical device not found
-#define CAMERA_STATUS_DEVICE_IS_OPENED          -18  ///< \~chinese Éè±¸ÒÑ¾­´ò¿ª \~english The device is already open
-#define CAMERA_STATUS_DEVICE_IS_CLOSED          -19  ///< \~chinese Éè±¸ÒÑ¾­¹Ø±Õ \~english Device is off
-#define CAMERA_STATUS_DEVICE_VEDIO_CLOSED       -20  ///< \~chinese Ã»ÓĞ´ò¿ªÉè±¸ÊÓÆµ£¬µ÷ÓÃÂ¼ÏñÏà¹ØµÄº¯ÊıÊ±£¬Èç¹ûÏà»úÊÓÆµÃ»ÓĞ´ò¿ª£¬Ôò»Ø·µ»Ø¸Ã´íÎó¡£ \~english Without opening the device video, when the video-related function is called, if the camera video is not open, the error is returned back.
-#define CAMERA_STATUS_NO_MEMORY                 -21  ///< \~chinese Ã»ÓĞ×ã¹»ÏµÍ³ÄÚ´æ \~english Not enough system memory
-#define CAMERA_STATUS_FILE_CREATE_FAILED        -22  ///< \~chinese ´´½¨ÎÄ¼şÊ§°Ü \~english Failed to create file
-#define CAMERA_STATUS_FILE_INVALID              -23  ///< \~chinese ÎÄ¼ş¸ñÊ½ÎŞĞ§ \~english Invalid file format
-#define CAMERA_STATUS_WRITE_PROTECTED           -24  ///< \~chinese Ğ´±£»¤£¬²»¿ÉĞ´ \~english Write protection, not write
-#define CAMERA_STATUS_GRAB_FAILED               -25  ///< \~chinese Êı¾İ²É¼¯Ê§°Ü \~english Data collection failed
-#define CAMERA_STATUS_LOST_DATA                 -26  ///< \~chinese Êı¾İ¶ªÊ§£¬²»ÍêÕû \~english Loss of data, incomplete
-#define CAMERA_STATUS_EOF_ERROR                 -27  ///< \~chinese Î´½ÓÊÕµ½Ö¡½áÊø·û \~english No frame terminator received
-#define CAMERA_STATUS_BUSY                      -28  ///< \~chinese ÕıÃ¦(ÉÏÒ»´Î²Ù×÷»¹ÔÚ½øĞĞÖĞ)£¬´Ë´Î²Ù×÷²»ÄÜ½øĞĞ \~english Busy (last operation is still in progress), this operation cannot be performed
-#define CAMERA_STATUS_WAIT                      -29  ///< \~chinese ĞèÒªµÈ´ı(½øĞĞ²Ù×÷µÄÌõ¼ş²»³ÉÁ¢)£¬¿ÉÒÔÔÙ´Î³¢ÊÔ \~english Need to wait (condition of operation is not established), can try again
-#define CAMERA_STATUS_IN_PROCESS                -30  ///< \~chinese ÕıÔÚ½øĞĞ£¬ÒÑ¾­±»²Ù×÷¹ı \~english Ongoing, has been operated
-#define CAMERA_STATUS_IIC_ERROR                 -31  ///< \~chinese IIC´«Êä´íÎó \~english IIC transmission error
-#define CAMERA_STATUS_SPI_ERROR                 -32  ///< \~chinese SPI´«Êä´íÎó \~english SPI transmission error
-#define CAMERA_STATUS_USB_CONTROL_ERROR         -33  ///< \~chinese USB¿ØÖÆ´«Êä´íÎó \~english USB control transmission error
-#define CAMERA_STATUS_USB_BULK_ERROR            -34  ///< \~chinese USB BULK´«Êä´íÎó \~english USB BULK transmission error
-#define CAMERA_STATUS_SOCKET_INIT_ERROR         -35  ///< \~chinese ÍøÂç´«ÊäÌ×¼ş³õÊ¼»¯Ê§°Ü \~english Network Transport Suite Initialization Failed
-#define CAMERA_STATUS_GIGE_FILTER_INIT_ERROR    -36  ///< \~chinese ÍøÂçÏà»úÄÚºË¹ıÂËÇı¶¯³õÊ¼»¯Ê§°Ü£¬Çë¼ì²éÊÇ·ñÕıÈ·°²×°ÁËÇı¶¯£¬»òÕßÖØĞÂ°²×°¡£ \~english The webcam kernel filter driver failed to initialize. Please check if the driver is installed correctly or reinstall it.
-#define CAMERA_STATUS_NET_SEND_ERROR            -37  ///< \~chinese ÍøÂçÊı¾İ·¢ËÍ´íÎó \~english Network data sending error
-#define CAMERA_STATUS_DEVICE_LOST               -38  ///< \~chinese ÓëÍøÂçÏà»úÊ§È¥Á¬½Ó£¬ĞÄÌø¼ì²â³¬Ê± \~english Lost connection with webcam, heartbeat timeout
-#define CAMERA_STATUS_DATA_RECV_LESS            -39  ///< \~chinese ½ÓÊÕµ½µÄ×Ö½ÚÊı±ÈÇëÇóµÄÉÙ  \~english Received fewer bytes than requested
-#define CAMERA_STATUS_FUNCTION_LOAD_FAILED      -40  ///< \~chinese ´ÓÎÄ¼şÖĞ¼ÓÔØ³ÌĞòÊ§°Ü \~english Failed to load program from file
-#define CAMERA_STATUS_CRITICAL_FILE_LOST        -41  ///< \~chinese ³ÌĞòÔËĞĞËù±ØĞëµÄÎÄ¼ş¶ªÊ§¡£ \~english The file necessary to run the program is missing.
-#define CAMERA_STATUS_SENSOR_ID_DISMATCH        -42  ///< \~chinese ¹Ì¼şºÍ³ÌĞò²»Æ¥Åä£¬Ô­ÒòÊÇÏÂÔØÁË´íÎóµÄ¹Ì¼ş¡£ \~english The firmware and program do not match because the wrong firmware was downloaded.
-#define CAMERA_STATUS_OUT_OF_RANGE              -43  ///< \~chinese ²ÎÊı³¬³öÓĞĞ§·¶Î§¡£ \~english The parameter is out of valid range.
-#define CAMERA_STATUS_REGISTRY_ERROR            -44  ///< \~chinese °²×°³ÌĞò×¢²á´íÎó¡£ÇëÖØĞÂ°²×°³ÌĞò£¬»òÕßÔËĞĞ°²×°Ä¿Â¼Setup/Installer.exe \~english Setup registration error. Please reinstall the program, or run the installation directory Setup/Installer.exe
-#define CAMERA_STATUS_ACCESS_DENY               -45  ///< \~chinese ½ûÖ¹·ÃÎÊ¡£Ö¸¶¨Ïà»úÒÑ¾­±»ÆäËû³ÌĞòÕ¼ÓÃÊ±£¬ÔÙÉêÇë·ÃÎÊ¸ÃÏà»ú£¬»á·µ»Ø¸Ã×´Ì¬¡£(Ò»¸öÏà»ú²»ÄÜ±»¶à¸ö³ÌĞòÍ¬Ê±·ÃÎÊ) \~english No Access. When the specified camera has been occupied by another program, it will return to this state if you request to access the camera. (A camera cannot be accessed simultaneously by multiple programs)
-#define CAMERA_STATUS_CAMERA_NEED_RESET         -46  ///< \~chinese ±íÊ¾Ïà»úĞèÒª¸´Î»ºó²ÅÄÜÕı³£Ê¹ÓÃ£¬´ËÊ±ÇëÈÃÏà»ú¶ÏµçÖØÆô£¬»òÕßÖØÆô²Ù×÷ÏµÍ³ºó£¬±ã¿ÉÕı³£Ê¹ÓÃ¡£ \~english It means that the camera needs to be reset before it can be used normally. At this time, please make the camera power off and restart, or restart the operating system, then it can be used normally.
-#define CAMERA_STATUS_ISP_MOUDLE_NOT_INITIALIZED -47 ///< \~chinese ISPÄ£¿éÎ´³õÊ¼»¯ \~english ISP module is not initialized
-#define CAMERA_STATUS_ISP_DATA_CRC_ERROR        -48  ///< \~chinese Êı¾İĞ£Ñé´íÎó \~english Data check error
-#define CAMERA_STATUS_MV_TEST_FAILED            -49  ///< \~chinese Êı¾İ²âÊÔÊ§°Ü \~english Data test failed
-#define CAMERA_STATUS_INTERNAL_ERR1             -50	 ///< \~chinese ÄÚ²¿´íÎó1 \~english Internal error 1
-#define CAMERA_STATUS_U3V_NO_CONTROL_EP			-51	 ///< \~chinese U3V¿ØÖÆ¶ËµãÎ´ÕÒµ½ \~english U3V control endpoint not found
-#define CAMERA_STATUS_U3V_CONTROL_ERROR			-52	 ///< \~chinese U3V¿ØÖÆÍ¨Ñ¶´íÎó \~english U3V control communication error
-#define CAMERA_STATUS_INVALID_FRIENDLY_NAME		-53	 ///< \~chinese ÎŞĞ§µÄÉè±¸Ãû£¬Ãû×ÖÀï²»ÄÜ°üº¬ÒÔÏÂ×Ö·û(\/:*?"<>|") \~english Invalid device name, the name cannot contain the following characters (\/:*?"<>|")
-#define CAMERA_STATUS_FORMAT_ERROR				-54	 ///< \~chinese ¸ñÊ½´íÎó \~english Format error
-#define CAMERA_STATUS_PCIE_OPEN_ERROR			-55  ///< \~chinese PCIEÉè±¸´ò¿ªÊ§°Ü \~english PCIE device open failed
-#define CAMERA_STATUS_PCIE_COMM_ERROR			-56  ///< \~chinese PCIEÉè±¸Í¨Ñ¶Ê§°Ü \~english PCIE device communication failed
-#define CAMERA_STATUS_PCIE_DDR_ERROR			-57  ///< \~chinese PCIE DDR´íÎó \~english PCIE DDR error
-#define CAMERA_STATUS_IP_ERROR					-58  ///< \~chinese IP´íÎó \~english IP error
+#define CAMERA_STATUS_SUCCESS                    0   ///< \~chinese æ“ä½œæˆåŠŸ \~english Successful
+#define CAMERA_STATUS_FAILED                    -1   ///< \~chinese æ“ä½œå¤±è´¥ \~english operation failed
+#define CAMERA_STATUS_INTERNAL_ERROR            -2   ///< \~chinese å†…éƒ¨é”™è¯¯ \~english internal error
+#define CAMERA_STATUS_UNKNOW                    -3   ///< \~chinese æœªçŸ¥é”™è¯¯ \~english unknown error
+#define CAMERA_STATUS_NOT_SUPPORTED             -4   ///< \~chinese ä¸æ”¯æŒè¯¥åŠŸèƒ½ \~english Does not support this feature
+#define CAMERA_STATUS_NOT_INITIALIZED           -5   ///< \~chinese åˆå§‹åŒ–æœªå®Œæˆ \~english Incomplete initialization
+#define CAMERA_STATUS_PARAMETER_INVALID         -6   ///< \~chinese å‚æ•°æ— æ•ˆ \~english Invalid argument
+#define CAMERA_STATUS_PARAMETER_OUT_OF_BOUND    -7   ///< \~chinese å‚æ•°è¶Šç•Œ \~english Out of bounds of parameters
+#define CAMERA_STATUS_UNENABLED                 -8   ///< \~chinese æœªä½¿èƒ½ \~english Not enabled
+#define CAMERA_STATUS_USER_CANCEL               -9   ///< \~chinese ç”¨æˆ·æ‰‹åŠ¨å–æ¶ˆäº†ï¼Œæ¯”å¦‚roié¢æ¿ç‚¹å‡»å–æ¶ˆï¼Œè¿”å› \~english The user manually canceled, such as roi panel click cancel, return
+#define CAMERA_STATUS_PATH_NOT_FOUND            -10  ///< \~chinese æ³¨å†Œè¡¨ä¸­æ²¡æœ‰æ‰¾åˆ°å¯¹åº”çš„è·¯å¾„ \~english The corresponding path was not found in the registry
+#define CAMERA_STATUS_SIZE_DISMATCH             -11  ///< \~chinese è·å¾—å›¾åƒæ•°æ®é•¿åº¦å’Œå®šä¹‰çš„å°ºå¯¸ä¸åŒ¹é… \~english The length of the obtained image data does not match the defined size
+#define CAMERA_STATUS_TIME_OUT                  -12  ///< \~chinese è¶…æ—¶é”™è¯¯ \~english Timeout error
+#define CAMERA_STATUS_IO_ERROR                  -13  ///< \~chinese ç¡¬ä»¶IOé”™è¯¯ \~english Hardware IO error
+#define CAMERA_STATUS_COMM_ERROR                -14  ///< \~chinese é€šè®¯é”™è¯¯ \~english Communication error
+#define CAMERA_STATUS_BUS_ERROR                 -15  ///< \~chinese æ€»çº¿é”™è¯¯ \~english Bus error
+#define CAMERA_STATUS_NO_DEVICE_FOUND           -16  ///< \~chinese æ²¡æœ‰å‘ç°è®¾å¤‡ \~english No device found
+#define CAMERA_STATUS_NO_LOGIC_DEVICE_FOUND     -17  ///< \~chinese æœªæ‰¾åˆ°é€»è¾‘è®¾å¤‡ \~english Logical device not found
+#define CAMERA_STATUS_DEVICE_IS_OPENED          -18  ///< \~chinese è®¾å¤‡å·²ç»æ‰“å¼€ \~english The device is already open
+#define CAMERA_STATUS_DEVICE_IS_CLOSED          -19  ///< \~chinese è®¾å¤‡å·²ç»å…³é—­ \~english Device is off
+#define CAMERA_STATUS_DEVICE_VEDIO_CLOSED       -20  ///< \~chinese æ²¡æœ‰æ‰“å¼€è®¾å¤‡è§†é¢‘ï¼Œè°ƒç”¨å½•åƒç›¸å…³çš„å‡½æ•°æ—¶ï¼Œå¦‚æœç›¸æœºè§†é¢‘æ²¡æœ‰æ‰“å¼€ï¼Œåˆ™å›è¿”å›è¯¥é”™è¯¯ã€‚ \~english Without opening the device video, when the video-related function is called, if the camera video is not open, the error is returned back.
+#define CAMERA_STATUS_NO_MEMORY                 -21  ///< \~chinese æ²¡æœ‰è¶³å¤Ÿç³»ç»Ÿå†…å­˜ \~english Not enough system memory
+#define CAMERA_STATUS_FILE_CREATE_FAILED        -22  ///< \~chinese åˆ›å»ºæ–‡ä»¶å¤±è´¥ \~english Failed to create file
+#define CAMERA_STATUS_FILE_INVALID              -23  ///< \~chinese æ–‡ä»¶æ ¼å¼æ— æ•ˆ \~english Invalid file format
+#define CAMERA_STATUS_WRITE_PROTECTED           -24  ///< \~chinese å†™ä¿æŠ¤ï¼Œä¸å¯å†™ \~english Write protection, not write
+#define CAMERA_STATUS_GRAB_FAILED               -25  ///< \~chinese æ•°æ®é‡‡é›†å¤±è´¥ \~english Data collection failed
+#define CAMERA_STATUS_LOST_DATA                 -26  ///< \~chinese æ•°æ®ä¸¢å¤±ï¼Œä¸å®Œæ•´ \~english Loss of data, incomplete
+#define CAMERA_STATUS_EOF_ERROR                 -27  ///< \~chinese æœªæ¥æ”¶åˆ°å¸§ç»“æŸç¬¦ \~english No frame terminator received
+#define CAMERA_STATUS_BUSY                      -28  ///< \~chinese æ­£å¿™(ä¸Šä¸€æ¬¡æ“ä½œè¿˜åœ¨è¿›è¡Œä¸­)ï¼Œæ­¤æ¬¡æ“ä½œä¸èƒ½è¿›è¡Œ \~english Busy (last operation is still in progress), this operation cannot be performed
+#define CAMERA_STATUS_WAIT                      -29  ///< \~chinese éœ€è¦ç­‰å¾…(è¿›è¡Œæ“ä½œçš„æ¡ä»¶ä¸æˆç«‹)ï¼Œå¯ä»¥å†æ¬¡å°è¯• \~english Need to wait (condition of operation is not established), can try again
+#define CAMERA_STATUS_IN_PROCESS                -30  ///< \~chinese æ­£åœ¨è¿›è¡Œï¼Œå·²ç»è¢«æ“ä½œè¿‡ \~english Ongoing, has been operated
+#define CAMERA_STATUS_IIC_ERROR                 -31  ///< \~chinese IICä¼ è¾“é”™è¯¯ \~english IIC transmission error
+#define CAMERA_STATUS_SPI_ERROR                 -32  ///< \~chinese SPIä¼ è¾“é”™è¯¯ \~english SPI transmission error
+#define CAMERA_STATUS_USB_CONTROL_ERROR         -33  ///< \~chinese USBæ§åˆ¶ä¼ è¾“é”™è¯¯ \~english USB control transmission error
+#define CAMERA_STATUS_USB_BULK_ERROR            -34  ///< \~chinese USB BULKä¼ è¾“é”™è¯¯ \~english USB BULK transmission error
+#define CAMERA_STATUS_SOCKET_INIT_ERROR         -35  ///< \~chinese ç½‘ç»œä¼ è¾“å¥—ä»¶åˆå§‹åŒ–å¤±è´¥ \~english Network Transport Suite Initialization Failed
+#define CAMERA_STATUS_GIGE_FILTER_INIT_ERROR    -36  ///< \~chinese ç½‘ç»œç›¸æœºå†…æ ¸è¿‡æ»¤é©±åŠ¨åˆå§‹åŒ–å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ˜¯å¦æ­£ç¡®å®‰è£…äº†é©±åŠ¨ï¼Œæˆ–è€…é‡æ–°å®‰è£…ã€‚ \~english The webcam kernel filter driver failed to initialize. Please check if the driver is installed correctly or reinstall it.
+#define CAMERA_STATUS_NET_SEND_ERROR            -37  ///< \~chinese ç½‘ç»œæ•°æ®å‘é€é”™è¯¯ \~english Network data sending error
+#define CAMERA_STATUS_DEVICE_LOST               -38  ///< \~chinese ä¸ç½‘ç»œç›¸æœºå¤±å»è¿æ¥ï¼Œå¿ƒè·³æ£€æµ‹è¶…æ—¶ \~english Lost connection with webcam, heartbeat timeout
+#define CAMERA_STATUS_DATA_RECV_LESS            -39  ///< \~chinese æ¥æ”¶åˆ°çš„å­—èŠ‚æ•°æ¯”è¯·æ±‚çš„å°‘  \~english Received fewer bytes than requested
+#define CAMERA_STATUS_FUNCTION_LOAD_FAILED      -40  ///< \~chinese ä»æ–‡ä»¶ä¸­åŠ è½½ç¨‹åºå¤±è´¥ \~english Failed to load program from file
+#define CAMERA_STATUS_CRITICAL_FILE_LOST        -41  ///< \~chinese ç¨‹åºè¿è¡Œæ‰€å¿…é¡»çš„æ–‡ä»¶ä¸¢å¤±ã€‚ \~english The file necessary to run the program is missing.
+#define CAMERA_STATUS_SENSOR_ID_DISMATCH        -42  ///< \~chinese å›ºä»¶å’Œç¨‹åºä¸åŒ¹é…ï¼ŒåŸå› æ˜¯ä¸‹è½½äº†é”™è¯¯çš„å›ºä»¶ã€‚ \~english The firmware and program do not match because the wrong firmware was downloaded.
+#define CAMERA_STATUS_OUT_OF_RANGE              -43  ///< \~chinese å‚æ•°è¶…å‡ºæœ‰æ•ˆèŒƒå›´ã€‚ \~english The parameter is out of valid range.
+#define CAMERA_STATUS_REGISTRY_ERROR            -44  ///< \~chinese å®‰è£…ç¨‹åºæ³¨å†Œé”™è¯¯ã€‚è¯·é‡æ–°å®‰è£…ç¨‹åºï¼Œæˆ–è€…è¿è¡Œå®‰è£…ç›®å½•Setup/Installer.exe \~english Setup registration error. Please reinstall the program, or run the installation directory Setup/Installer.exe
+#define CAMERA_STATUS_ACCESS_DENY               -45  ///< \~chinese ç¦æ­¢è®¿é—®ã€‚æŒ‡å®šç›¸æœºå·²ç»è¢«å…¶ä»–ç¨‹åºå ç”¨æ—¶ï¼Œå†ç”³è¯·è®¿é—®è¯¥ç›¸æœºï¼Œä¼šè¿”å›è¯¥çŠ¶æ€ã€‚(ä¸€ä¸ªç›¸æœºä¸èƒ½è¢«å¤šä¸ªç¨‹åºåŒæ—¶è®¿é—®) \~english No Access. When the specified camera has been occupied by another program, it will return to this state if you request to access the camera. (A camera cannot be accessed simultaneously by multiple programs)
+#define CAMERA_STATUS_CAMERA_NEED_RESET         -46  ///< \~chinese è¡¨ç¤ºç›¸æœºéœ€è¦å¤ä½åæ‰èƒ½æ­£å¸¸ä½¿ç”¨ï¼Œæ­¤æ—¶è¯·è®©ç›¸æœºæ–­ç”µé‡å¯ï¼Œæˆ–è€…é‡å¯æ“ä½œç³»ç»Ÿåï¼Œä¾¿å¯æ­£å¸¸ä½¿ç”¨ã€‚ \~english It means that the camera needs to be reset before it can be used normally. At this time, please make the camera power off and restart, or restart the operating system, then it can be used normally.
+#define CAMERA_STATUS_ISP_MOUDLE_NOT_INITIALIZED -47 ///< \~chinese ISPæ¨¡å—æœªåˆå§‹åŒ– \~english ISP module is not initialized
+#define CAMERA_STATUS_ISP_DATA_CRC_ERROR        -48  ///< \~chinese æ•°æ®æ ¡éªŒé”™è¯¯ \~english Data check error
+#define CAMERA_STATUS_MV_TEST_FAILED            -49  ///< \~chinese æ•°æ®æµ‹è¯•å¤±è´¥ \~english Data test failed
+#define CAMERA_STATUS_INTERNAL_ERR1             -50	 ///< \~chinese å†…éƒ¨é”™è¯¯1 \~english Internal error 1
+#define CAMERA_STATUS_U3V_NO_CONTROL_EP			-51	 ///< \~chinese U3Væ§åˆ¶ç«¯ç‚¹æœªæ‰¾åˆ° \~english U3V control endpoint not found
+#define CAMERA_STATUS_U3V_CONTROL_ERROR			-52	 ///< \~chinese U3Væ§åˆ¶é€šè®¯é”™è¯¯ \~english U3V control communication error
+#define CAMERA_STATUS_INVALID_FRIENDLY_NAME		-53	 ///< \~chinese æ— æ•ˆçš„è®¾å¤‡åï¼Œåå­—é‡Œä¸èƒ½åŒ…å«ä»¥ä¸‹å­—ç¬¦(\/:*?"<>|") \~english Invalid device name, the name cannot contain the following characters (\/:*?"<>|")
+#define CAMERA_STATUS_FORMAT_ERROR				-54	 ///< \~chinese æ ¼å¼é”™è¯¯ \~english Format error
+#define CAMERA_STATUS_PCIE_OPEN_ERROR			-55  ///< \~chinese PCIEè®¾å¤‡æ‰“å¼€å¤±è´¥ \~english PCIE device open failed
+#define CAMERA_STATUS_PCIE_COMM_ERROR			-56  ///< \~chinese PCIEè®¾å¤‡é€šè®¯å¤±è´¥ \~english PCIE device communication failed
+#define CAMERA_STATUS_PCIE_DDR_ERROR			-57  ///< \~chinese PCIE DDRé”™è¯¯ \~english PCIE DDR error
+#define CAMERA_STATUS_IP_ERROR					-58  ///< \~chinese IPé”™è¯¯ \~english IP error
 
 
 
-//ºÍAIAÖÆ¶¨µÄ±ê×¼ÏàÍ¬
+//å’ŒAIAåˆ¶å®šçš„æ ‡å‡†ç›¸åŒ
 /*#define CAMERA_AIA_SUCCESS                        0x0000 */
-#define CAMERA_AIA_PACKET_RESEND                          0x0100 ///< \~chinese ¸ÃÖ¡ĞèÒªÖØ´« \~english The frame needs to be retransmitted
-#define CAMERA_AIA_NOT_IMPLEMENTED                        0x8001 ///< \~chinese Éè±¸²»Ö§³ÖµÄÃüÁî \~english Device does not support commands
-#define CAMERA_AIA_INVALID_PARAMETER                      0x8002 ///< \~chinese ÃüÁî²ÎÊı·Ç·¨ \~english Illegal command parameters
-#define CAMERA_AIA_INVALID_ADDRESS                        0x8003 ///< \~chinese ²»¿É·ÃÎÊµÄµØÖ· \~english Inaccessible address
-#define CAMERA_AIA_WRITE_PROTECT                          0x8004 ///< \~chinese ·ÃÎÊµÄ¶ÔÏó²»¿ÉĞ´ \~english The accessed object cannot be written
-#define CAMERA_AIA_BAD_ALIGNMENT                          0x8005 ///< \~chinese ·ÃÎÊµÄµØÖ·Ã»ÓĞ°´ÕÕÒªÇó¶ÔÆë \~english Visited address is not aligned as required
-#define CAMERA_AIA_ACCESS_DENIED                          0x8006 ///< \~chinese Ã»ÓĞ·ÃÎÊÈ¨ÏŞ \~english No access
-#define CAMERA_AIA_BUSY                                   0x8007 ///< \~chinese ÃüÁîÕıÔÚ´¦ÀíÖĞ \~english Command is processing
-#define CAMERA_AIA_DEPRECATED                             0x8008 ///< \~chinese 0x8008-0x0800B  0x800F  ¸ÃÖ¸ÁîÒÑ¾­·ÏÆú \~english 0x8008-0x0800B 0x800F This instruction has been deprecated
-#define CAMERA_AIA_PACKET_UNAVAILABLE                     0x800C ///< \~chinese °üÎŞĞ§ \~english Invalid package
-#define CAMERA_AIA_DATA_OVERRUN                           0x800D ///< \~chinese Êı¾İÒç³ö£¬Í¨³£ÊÇÊÕµ½µÄÊı¾İ±ÈĞèÒªµÄ¶à \~english Data overflow, usually more data than needed
-#define CAMERA_AIA_INVALID_HEADER                         0x800E ///< \~chinese Êı¾İ°üÍ·²¿ÖĞÄ³Ğ©ÇøÓòÓëĞ­Òé²»Æ¥Åä \~english Some areas in the packet header do not match the protocol
-#define CAMERA_AIA_PACKET_NOT_YET_AVAILABLE               0x8010 ///< \~chinese Í¼Ïñ·Ö°üÊı¾İ»¹Î´×¼±¸ºÃ£¬¶àÓÃÓÚ´¥·¢Ä£Ê½£¬Ó¦ÓÃ³ÌĞò·ÃÎÊ³¬Ê± \~english Image packet data is not ready yet. It is mostly used in trigger mode. Application access timeout
-#define CAMERA_AIA_PACKET_AND_PREV_REMOVED_FROM_MEMORY    0x8011 ///< \~chinese ĞèÒª·ÃÎÊµÄ·Ö°üÒÑ¾­²»´æÔÚ¡£¶àÓÃÓÚÖØ´«Ê±Êı¾İÒÑ¾­²»ÔÚ»º³åÇøÖĞ \~english Subcontracts that require access no longer exist. Mostly used for data retransmission is not in the buffer
+#define CAMERA_AIA_PACKET_RESEND                          0x0100 ///< \~chinese è¯¥å¸§éœ€è¦é‡ä¼  \~english The frame needs to be retransmitted
+#define CAMERA_AIA_NOT_IMPLEMENTED                        0x8001 ///< \~chinese è®¾å¤‡ä¸æ”¯æŒçš„å‘½ä»¤ \~english Device does not support commands
+#define CAMERA_AIA_INVALID_PARAMETER                      0x8002 ///< \~chinese å‘½ä»¤å‚æ•°éæ³• \~english Illegal command parameters
+#define CAMERA_AIA_INVALID_ADDRESS                        0x8003 ///< \~chinese ä¸å¯è®¿é—®çš„åœ°å€ \~english Inaccessible address
+#define CAMERA_AIA_WRITE_PROTECT                          0x8004 ///< \~chinese è®¿é—®çš„å¯¹è±¡ä¸å¯å†™ \~english The accessed object cannot be written
+#define CAMERA_AIA_BAD_ALIGNMENT                          0x8005 ///< \~chinese è®¿é—®çš„åœ°å€æ²¡æœ‰æŒ‰ç…§è¦æ±‚å¯¹é½ \~english Visited address is not aligned as required
+#define CAMERA_AIA_ACCESS_DENIED                          0x8006 ///< \~chinese æ²¡æœ‰è®¿é—®æƒé™ \~english No access
+#define CAMERA_AIA_BUSY                                   0x8007 ///< \~chinese å‘½ä»¤æ­£åœ¨å¤„ç†ä¸­ \~english Command is processing
+#define CAMERA_AIA_DEPRECATED                             0x8008 ///< \~chinese 0x8008-0x0800B  0x800F  è¯¥æŒ‡ä»¤å·²ç»åºŸå¼ƒ \~english 0x8008-0x0800B 0x800F This instruction has been deprecated
+#define CAMERA_AIA_PACKET_UNAVAILABLE                     0x800C ///< \~chinese åŒ…æ— æ•ˆ \~english Invalid package
+#define CAMERA_AIA_DATA_OVERRUN                           0x800D ///< \~chinese æ•°æ®æº¢å‡ºï¼Œé€šå¸¸æ˜¯æ”¶åˆ°çš„æ•°æ®æ¯”éœ€è¦çš„å¤š \~english Data overflow, usually more data than needed
+#define CAMERA_AIA_INVALID_HEADER                         0x800E ///< \~chinese æ•°æ®åŒ…å¤´éƒ¨ä¸­æŸäº›åŒºåŸŸä¸åè®®ä¸åŒ¹é… \~english Some areas in the packet header do not match the protocol
+#define CAMERA_AIA_PACKET_NOT_YET_AVAILABLE               0x8010 ///< \~chinese å›¾åƒåˆ†åŒ…æ•°æ®è¿˜æœªå‡†å¤‡å¥½ï¼Œå¤šç”¨äºè§¦å‘æ¨¡å¼ï¼Œåº”ç”¨ç¨‹åºè®¿é—®è¶…æ—¶ \~english Image packet data is not ready yet. It is mostly used in trigger mode. Application access timeout
+#define CAMERA_AIA_PACKET_AND_PREV_REMOVED_FROM_MEMORY    0x8011 ///< \~chinese éœ€è¦è®¿é—®çš„åˆ†åŒ…å·²ç»ä¸å­˜åœ¨ã€‚å¤šç”¨äºé‡ä¼ æ—¶æ•°æ®å·²ç»ä¸åœ¨ç¼“å†²åŒºä¸­ \~english Subcontracts that require access no longer exist. Mostly used for data retransmission is not in the buffer
 #define CAMERA_AIA_PACKET_REMOVED_FROM_MEMORY             0x8012 ///< \~chinese CAMERA_AIA_PACKET_AND_PREV_REMOVED_FROM_MEMORY \~english CAMERA_AIA_PACKET_AND_PREV_REMOVED_FROM_MEMORY
-#define CAMERA_AIA_NO_REF_TIME                            0x0813 ///< \~chinese Ã»ÓĞ²Î¿¼Ê±ÖÓÔ´¡£¶àÓÃÓÚÊ±¼äÍ¬²½µÄÃüÁîÖ´ĞĞÊ± \~english There is no reference clock source. When used for time synchronization commands
-#define CAMERA_AIA_PACKET_TEMPORARILY_UNAVAILABLE         0x0814 ///< \~chinese ÓÉÓÚĞÅµÀ´ø¿íÎÊÌâ£¬µ±Ç°·Ö°üÔİÊ±²»¿ÉÓÃ£¬ĞèÉÔºó½øĞĞ·ÃÎÊ \~english Due to channel bandwidth issues, the current subcontracting is temporarily unavailable and needs to be accessed later
-#define CAMERA_AIA_OVERFLOW                               0x0815 ///< \~chinese Éè±¸¶ËÊı¾İÒç³ö£¬Í¨³£ÊÇ¶ÓÁĞÒÑÂú \~english Data overflow on the device, usually the queue is full
-#define CAMERA_AIA_ACTION_LATE                            0x0816 ///< \~chinese ÃüÁîÖ´ĞĞÒÑ¾­³¬¹ıÓĞĞ§µÄÖ¸¶¨Ê±¼ä \~english Command execution has exceeded valid specified time
-#define CAMERA_AIA_ERROR                                  0x8FFF ///< \~chinese ´íÎó \~english error
+#define CAMERA_AIA_NO_REF_TIME                            0x0813 ///< \~chinese æ²¡æœ‰å‚è€ƒæ—¶é’Ÿæºã€‚å¤šç”¨äºæ—¶é—´åŒæ­¥çš„å‘½ä»¤æ‰§è¡Œæ—¶ \~english There is no reference clock source. When used for time synchronization commands
+#define CAMERA_AIA_PACKET_TEMPORARILY_UNAVAILABLE         0x0814 ///< \~chinese ç”±äºä¿¡é“å¸¦å®½é—®é¢˜ï¼Œå½“å‰åˆ†åŒ…æš‚æ—¶ä¸å¯ç”¨ï¼Œéœ€ç¨åè¿›è¡Œè®¿é—® \~english Due to channel bandwidth issues, the current subcontracting is temporarily unavailable and needs to be accessed later
+#define CAMERA_AIA_OVERFLOW                               0x0815 ///< \~chinese è®¾å¤‡ç«¯æ•°æ®æº¢å‡ºï¼Œé€šå¸¸æ˜¯é˜Ÿåˆ—å·²æ»¡ \~english Data overflow on the device, usually the queue is full
+#define CAMERA_AIA_ACTION_LATE                            0x0816 ///< \~chinese å‘½ä»¤æ‰§è¡Œå·²ç»è¶…è¿‡æœ‰æ•ˆçš„æŒ‡å®šæ—¶é—´ \~english Command execution has exceeded valid specified time
+#define CAMERA_AIA_ERROR                                  0x8FFF ///< \~chinese é”™è¯¯ \~english error
 
 /// @} end of MV_MACRO_TYPE
 

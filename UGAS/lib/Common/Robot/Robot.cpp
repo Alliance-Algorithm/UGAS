@@ -14,14 +14,14 @@ Robot::Robot() :_latestUpdate(0ULL), _rotationLatestUpdate(0ULL),
 void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 	if (_latestUpdate != ImgTime) {
 		if (ImgTime - _latestUpdate > keep_tracking * 1000)
-		{ // ĞÂ¹Û²ìµ½µÄÄ¿±ê
+		{ // æ–°è§‚å¯Ÿåˆ°çš„ç›®æ ‡
 			_armorCenter = PnPsolver.SolvePnP(armor);
 			_movingSpeed = cv::Vec3f();
 			_speedFilter.Reset();
 		}
 		else
-		{ // ³ÖĞø¸ú×ÙµÄÄ¿±ê
-			// ±È½ÏÔ¤²âµãÓë¹Û²âµãµÄ¾àÀë£¬±£´æÔ¤²âµã
+		{ // æŒç»­è·Ÿè¸ªçš„ç›®æ ‡
+			// æ¯”è¾ƒé¢„æµ‹ç‚¹ä¸è§‚æµ‹ç‚¹çš„è·ç¦»ï¼Œä¿å­˜é¢„æµ‹ç‚¹
 			cv::Point2f prediction = PnPsolver.RevertPnP(
 				this->Predict(ImgTime - _latestUpdate)
 			);
@@ -30,44 +30,44 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 			cv::circle(debugImg, prediction, 5, COLOR_YELLOW, 2);
 #endif
 
-			// ¼ÆËãĞÂµÄÈıÎ¬ÖĞĞÄ
+			// è®¡ç®—æ–°çš„ä¸‰ç»´ä¸­å¿ƒ
 			cv::Point3f lastPostion = _armorCenter;
 			_armorCenter = PnPsolver.SolvePnP(armor);
 
-			// ¶ÔÍ¬Ò»¸ö×°¼×°åÓĞĞ§µÄ¸ú×ÙÔò¸üĞÂËÙ¶È
+			// å¯¹åŒä¸€ä¸ªè£…ç”²æ¿æœ‰æ•ˆçš„è·Ÿè¸ªåˆ™æ›´æ–°é€Ÿåº¦
 			if (P2PDis(prediction, armor.center()) < maxArmorTrackDis ||
-				// ¶ÔÓÚ¼«´ó¼ÓËÙ¶È£¨ÈçÉ²³µ£©µÄÏìÓ¦ÓÅ»¯
+				// å¯¹äºæå¤§åŠ é€Ÿåº¦ï¼ˆå¦‚åˆ¹è½¦ï¼‰çš„å“åº”ä¼˜åŒ–
 				P2PDis(_armor.center(), armor.center()) < maxArmorTrackDis ||
-				// Èç¹ûÃ»ÓĞËÙ¶ÈÖ±½Ó¸üĞÂ£¬¼Ó¿ì¶Ô±¾ÉíÓĞÒ»¶¨³õËÙ¶ÈÄ¿±êµÄÏìÓ¦
+				// å¦‚æœæ²¡æœ‰é€Ÿåº¦ç›´æ¥æ›´æ–°ï¼ŒåŠ å¿«å¯¹æœ¬èº«æœ‰ä¸€å®šåˆé€Ÿåº¦ç›®æ ‡çš„å“åº”
 				_movingSpeed == cv::Vec3f())
-			{ // ÓÃ·â×°ºÃµÄÂË²¨
+			{ // ç”¨å°è£…å¥½çš„æ»¤æ³¢
 				_movingSpeed = _speedFilter.Predict(
 					static_cast<cv::Vec3f>(_armorCenter - lastPostion) /
 					static_cast<double>(ImgTime - _latestUpdate)
 				);
 			}
-			// Èç¹û³¬¹ı×î´ó¸ú×Ù¾àÀë£¬²»ÈÏÎªÊÇÍ¬Ò»¸ö×°¼×°å£¬ÔÚ¿É½ÓÊÜµÄÊ±¼ä²îÄÚ¼Ì³ĞËÙ¶È
-			// ³¬¹ıÒ»¸ö½Ï¶ÌÊ±¼ä¼´·ÅÆú¶ÔËÙ¶ÈµÄ¼Ì³Ğ
+			// å¦‚æœè¶…è¿‡æœ€å¤§è·Ÿè¸ªè·ç¦»ï¼Œä¸è®¤ä¸ºæ˜¯åŒä¸€ä¸ªè£…ç”²æ¿ï¼Œåœ¨å¯æ¥å—çš„æ—¶é—´å·®å†…ç»§æ‰¿é€Ÿåº¦
+			// è¶…è¿‡ä¸€ä¸ªè¾ƒçŸ­æ—¶é—´å³æ”¾å¼ƒå¯¹é€Ÿåº¦çš„ç»§æ‰¿
 			else if (ImgTime - _latestUpdate > 100)
-			{ // Õâ¸öÖµºÜÈİÒ×µ÷³öÎÊÌâÔİÊ±Åª³É¶¨Öµ
+			{ // è¿™ä¸ªå€¼å¾ˆå®¹æ˜“è°ƒå‡ºé—®é¢˜æš‚æ—¶å¼„æˆå®šå€¼
 				_movingSpeed = cv::Vec3f();
 				_speedFilter.Reset();
 			}
 		}
-		// ÔİÊ±ÂÒ´òÒ»²¨
+		// æš‚æ—¶ä¹±æ‰“ä¸€æ³¢
 		_possibility = 100.;
 
-		// ¸üĞÂÊı¾İ
+		// æ›´æ–°æ•°æ®
 		_armor = armor;
 		_latestUpdate = ImgTime;
 	}
-	else { // ¸üĞÂ¹Û²âµÄµÚ¶ş¸ö×°¼×°å
+	else { // æ›´æ–°è§‚æµ‹çš„ç¬¬äºŒä¸ªè£…ç”²æ¿
 		if (ImgTime - _rotationLatestUpdate > rotation_validity * 1000)
-		{ // ĞÂµÃµ½µÄĞı×ªÊı¾İ
+		{ // æ–°å¾—åˆ°çš„æ—‹è½¬æ•°æ®
 
 		}
 		else
-		{ // ³ÖĞø¸üĞÂµÄĞı×ªÊı¾İ
+		{ // æŒç»­æ›´æ–°çš„æ—‹è½¬æ•°æ®
 
 		}
 
@@ -83,13 +83,13 @@ double Robot::GetPossibility() {
 cv::Point3f Robot::Predict(int millisec) const {
 	cv::Point3f prediction = _movingSpeed * millisec;
 
-	// Ã»ÓĞÓĞĞ§µÄĞı×ªĞÅÏ¢ÔòÎª¶¯°ĞÄ£Ê½
-	if (_rotate == RotateDirc::UNKNOWN || // Ë³ĞòÓÅ»¯
+	// æ²¡æœ‰æœ‰æ•ˆçš„æ—‹è½¬ä¿¡æ¯åˆ™ä¸ºåŠ¨é¶æ¨¡å¼
+	if (_rotate == RotateDirc::UNKNOWN || // é¡ºåºä¼˜åŒ–
 		TimeStampCounter::GetTimeStamp() - _rotationLatestUpdate > rotation_validity * 1000)
 	{
 		prediction += _armorCenter;
 	}
-	else { // ¶ÔÓÚĞ¡ÍÓÂİµÄÔ¤²â
+	else { // å¯¹äºå°é™€èºçš„é¢„æµ‹
 		prediction += _robotCenter;
 		switch (_rotate) {
 		case LEFT:

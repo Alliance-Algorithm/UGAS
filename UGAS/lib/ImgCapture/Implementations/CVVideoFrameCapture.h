@@ -5,8 +5,8 @@ Latest Update: 2022/11/23
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- °ü×°OpenCV×Ô´øVideoCapture£¬Ê¹Æä·ûºÏImgCaptureµÄ½Ó¿Ú
-- ½ö°üº¬ÊÓÆµ¶ÁÈë£¬°´¿Õ¸ñÌø×ªÏÂÒ»Ö¡
+- åŒ…è£…OpenCVè‡ªå¸¦VideoCaptureï¼Œä½¿å…¶ç¬¦åˆImgCaptureçš„æ¥å£
+- ä»…åŒ…å«è§†é¢‘è¯»å…¥ï¼ŒæŒ‰ç©ºæ ¼è·³è½¬ä¸‹ä¸€å¸§
 */
 #include "../ImgCapture.h"
 

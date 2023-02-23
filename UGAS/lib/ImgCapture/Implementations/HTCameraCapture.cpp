@@ -16,15 +16,15 @@ void HTCameraCapture::init(void* useLess) {
 		CameraSdkStatus status;
 		tSdkCameraCapbility sCameraInfo;
 
-		//Ã¶¾ÙÉè±¸£¬»ñµÃÉè±¸ÁĞ±í
-		iCameraNums = 10;//µ÷ÓÃCameraEnumerateDeviceÇ°£¬ÏÈÉèÖÃiCameraNums = 10£¬±íÊ¾×î¶àÖ»¶ÁÈ¡10¸öÉè±¸£¬Èç¹ûĞèÒªÃ¶¾Ù¸ü¶àµÄÉè±¸£¬Çë¸ü¸ÄsCameraListÊı×éµÄ´óĞ¡ºÍiCameraNumsµÄÖµ
+		//æšä¸¾è®¾å¤‡ï¼Œè·å¾—è®¾å¤‡åˆ—è¡¨
+		iCameraNums = 10;//è°ƒç”¨CameraEnumerateDeviceå‰ï¼Œå…ˆè®¾ç½®iCameraNums = 10ï¼Œè¡¨ç¤ºæœ€å¤šåªè¯»å–10ä¸ªè®¾å¤‡ï¼Œå¦‚æœéœ€è¦æšä¸¾æ›´å¤šçš„è®¾å¤‡ï¼Œè¯·æ›´æ”¹sCameraListæ•°ç»„çš„å¤§å°å’ŒiCameraNumsçš„å€¼
 
 		if (CameraEnumerateDevice(sCameraList, &iCameraNums) != CAMERA_STATUS_SUCCESS || iCameraNums == 0)
 		{
 			throw_with_trace(std::runtime_error, "No camera was found!");
 		}
 
-		//¸ÃÊ¾ÀıÖĞ£¬ÎÒÃÇÖ»¼ÙÉèÁ¬½ÓÁËÒ»¸öÏà»ú¡£Òò´Ë£¬Ö»³õÊ¼»¯µÚÒ»¸öÏà»ú¡£(-1,-1)±íÊ¾¼ÓÔØÉÏ´ÎÍË³öÇ°±£´æµÄ²ÎÊı£¬Èç¹ûÊÇµÚÒ»´ÎÊ¹ÓÃ¸ÃÏà»ú£¬Ôò¼ÓÔØÄ¬ÈÏ²ÎÊı.
+		//è¯¥ç¤ºä¾‹ä¸­ï¼Œæˆ‘ä»¬åªå‡è®¾è¿æ¥äº†ä¸€ä¸ªç›¸æœºã€‚å› æ­¤ï¼Œåªåˆå§‹åŒ–ç¬¬ä¸€ä¸ªç›¸æœºã€‚(-1,-1)è¡¨ç¤ºåŠ è½½ä¸Šæ¬¡é€€å‡ºå‰ä¿å­˜çš„å‚æ•°ï¼Œå¦‚æœæ˜¯ç¬¬ä¸€æ¬¡ä½¿ç”¨è¯¥ç›¸æœºï¼Œåˆ™åŠ è½½é»˜è®¤å‚æ•°.
 		//In this demo ,we just init the first camera.
 		if ((status = CameraInit(&sCameraList[0], -1, -1, &_hCamera)) != CAMERA_STATUS_SUCCESS)
 		{
@@ -34,7 +34,7 @@ void HTCameraCapture::init(void* useLess) {
 
 
 		//Get properties description for this camera.
-		CameraGetCapability(_hCamera, &sCameraInfo);//"»ñµÃ¸ÃÏà»úµÄÌØĞÔÃèÊö"
+		CameraGetCapability(_hCamera, &sCameraInfo);//"è·å¾—è¯¥ç›¸æœºçš„ç‰¹æ€§æè¿°"
 
 		_pFrameBuffer = (BYTE*)CameraAlignMalloc(sCameraInfo.sResolutionRange.iWidthMax * sCameraInfo.sResolutionRange.iWidthMax * 3, 16);
 
@@ -57,13 +57,13 @@ void HTCameraCapture::read(Img& img) {
 		CameraSdkStatus status;
 		if (status = CameraGetImageBuffer(_hCamera, &_sFrameInfo, &pbyBuffer, 1000) == CAMERA_STATUS_SUCCESS)
 		{
-			//½«»ñµÃµÄÔ­Ê¼Êı¾İ×ª»»³ÉRGB¸ñÊ½µÄÊı¾İ£¬Í¬Ê±¾­¹ıISPÄ£¿é£¬¶ÔÍ¼Ïñ½øĞĞ½µÔë£¬±ßÑØÌáÉı£¬ÑÕÉ«Ğ£ÕıµÈ´¦Àí¡£
-			//ÎÒ¹«Ë¾´ó²¿·ÖĞÍºÅµÄÏà»ú£¬Ô­Ê¼Êı¾İ¶¼ÊÇBayer¸ñÊ½µÄ
+			//å°†è·å¾—çš„åŸå§‹æ•°æ®è½¬æ¢æˆRGBæ ¼å¼çš„æ•°æ®ï¼ŒåŒæ—¶ç»è¿‡ISPæ¨¡å—ï¼Œå¯¹å›¾åƒè¿›è¡Œé™å™ªï¼Œè¾¹æ²¿æå‡ï¼Œé¢œè‰²æ ¡æ­£ç­‰å¤„ç†ã€‚
+			//æˆ‘å…¬å¸å¤§éƒ¨åˆ†å‹å·çš„ç›¸æœºï¼ŒåŸå§‹æ•°æ®éƒ½æ˜¯Bayeræ ¼å¼çš„
 			if (status = CameraImageProcess(_hCamera, pbyBuffer, _pFrameBuffer, &_sFrameInfo) == CAMERA_STATUS_SUCCESS) {
-				//µ÷ÓÃSDK·â×°ºÃµÄÏÔÊ¾½Ó¿ÚÀ´ÏÔÊ¾Í¼Ïñ,ÄúÒ²¿ÉÒÔ½«m_pFrameBufferÖĞµÄRGBÊı¾İÍ¨¹ıÆäËû·½Ê½ÏÔÊ¾£¬±ÈÈçdirectX,OpengGL,µÈ·½Ê½¡£
+				//è°ƒç”¨SDKå°è£…å¥½çš„æ˜¾ç¤ºæ¥å£æ¥æ˜¾ç¤ºå›¾åƒ,æ‚¨ä¹Ÿå¯ä»¥å°†m_pFrameBufferä¸­çš„RGBæ•°æ®é€šè¿‡å…¶ä»–æ–¹å¼æ˜¾ç¤ºï¼Œæ¯”å¦‚directX,OpengGL,ç­‰æ–¹å¼ã€‚
 				CameraImageOverlay(_hCamera, _pFrameBuffer, &_sFrameInfo);
 
-				// ÓÉÓÚSDKÊä³öµÄÊı¾İÄ¬ÈÏÊÇ´Óµ×µ½¶¥µÄ£¬×ª»»ÎªOpencvÍ¼Æ¬ĞèÒª×öÒ»ÏÂ´¹Ö±¾µÏñ
+				// ç”±äºSDKè¾“å‡ºçš„æ•°æ®é»˜è®¤æ˜¯ä»åº•åˆ°é¡¶çš„ï¼Œè½¬æ¢ä¸ºOpencvå›¾ç‰‡éœ€è¦åšä¸€ä¸‹å‚ç›´é•œåƒ
 				CameraFlipFrameBuffer(_pFrameBuffer, &_sFrameInfo, 1);
 
 				cv::Mat matImage(
@@ -78,8 +78,8 @@ void HTCameraCapture::read(Img& img) {
 				throw_with_trace(std::runtime_error, "Failed to execute CameraImageProcess");
 			}
 
-			//ÔÚ³É¹¦µ÷ÓÃCameraGetImageBufferºó£¬±ØĞëµ÷ÓÃCameraReleaseImageBufferÀ´ÊÍ·Å»ñµÃµÄbuffer¡£
-			//·ñÔòÔÙ´Îµ÷ÓÃCameraGetImageBufferÊ±£¬³ÌĞò½«±»¹ÒÆğ£¬Ö±µ½ÆäËûÏß³ÌÖĞµ÷ÓÃCameraReleaseImageBufferÀ´ÊÍ·ÅÁËbuffer
+			//åœ¨æˆåŠŸè°ƒç”¨CameraGetImageBufferåï¼Œå¿…é¡»è°ƒç”¨CameraReleaseImageBufferæ¥é‡Šæ”¾è·å¾—çš„bufferã€‚
+			//å¦åˆ™å†æ¬¡è°ƒç”¨CameraGetImageBufferæ—¶ï¼Œç¨‹åºå°†è¢«æŒ‚èµ·ï¼Œç›´åˆ°å…¶ä»–çº¿ç¨‹ä¸­è°ƒç”¨CameraReleaseImageBufferæ¥é‡Šæ”¾äº†buffer
 			CameraReleaseImageBuffer(_hCamera, pbyBuffer);
 
 			memcpy(&_sFrameInfo, &_sFrameInfo, sizeof(tSdkFrameHead));

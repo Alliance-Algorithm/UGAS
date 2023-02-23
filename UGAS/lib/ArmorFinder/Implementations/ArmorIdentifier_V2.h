@@ -5,8 +5,8 @@ Latest Update: 2022/10/13
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Ê¹ÓÃDFSºÍ²¢²é¼¯ÊµÏÖµÄµÆÌõ²éÕÒËã·¨
-- ÀÄóÄ³äÊıµÄµÆÌõÆ¥Åä
+- ä½¿ç”¨DFSå’Œå¹¶æŸ¥é›†å®ç°çš„ç¯æ¡æŸ¥æ‰¾ç®—æ³•
+- æ»¥ç«½å……æ•°çš„ç¯æ¡åŒ¹é…
 */
 #include "../ArmorIdentifier.h"
 #include "FastStruct/FastStruct.h"

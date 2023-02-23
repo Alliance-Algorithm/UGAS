@@ -5,14 +5,14 @@ Latest Update: 2022/11/20
 Developer(s): 22-QZH 22-Iruma
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- °ü×°HT¹¤ÒµÏà»úµÄSDK(windows)
-- ½ö°üº¬ÉãÏñÍ·¶ÁÈë
+- åŒ…è£…HTå·¥ä¸šç›¸æœºçš„SDK(windows)
+- ä»…åŒ…å«æ‘„åƒå¤´è¯»å…¥
 */
 
 
 #include "../ImgCapture.h"
 
-#ifdef _WIN32                   //WindowsÍ·ÎÄ¼şÒıÓÃ
+#ifdef _WIN32                   //Windowså¤´æ–‡ä»¶å¼•ç”¨
 
 #ifdef _WIN64
 #pragma comment(lib, "MVCAMSDK_X64.lib")
@@ -21,7 +21,7 @@ Header Functions:
 #endif
 #include "../../../third-party/HTCameraSDK/Windows/CameraApi.h"
 
-#else                            //LinuxÍ·ÎÄ¼şÒıÓÃ
+#else                            //Linuxå¤´æ–‡ä»¶å¼•ç”¨
 
 #include "../../../third-party/HTCameraSDK/Linux/CameraApi.h"
 
@@ -32,10 +32,10 @@ class HTCameraCapture :public ImgCapture {
 private:
 	bool initialized = false;
 
-	HANDLE _hDispThread;         //Í¼Ïñ×¥È¡Ïß³ÌµÄ¾ä±ú
-	CameraHandle _hCamera;       //Ïà»ú¾ä±ú£¬¶à¸öÏà»úÍ¬Ê±Ê¹ÓÃÊ±£¬¿ÉÒÔÓÃÊı×é´úÌæ	
-	tSdkFrameHead _sFrameInfo;   //ÓÃÓÚ±£´æµ±Ç°Í¼ÏñÖ¡µÄÖ¡Í·ĞÅÏ¢
-	BYTE* _pFrameBuffer;         //ÓÃÓÚ½«Ô­Ê¼Í¼ÏñÊı¾İ×ª»»ÎªRGBµÄ»º³åÇø
+	HANDLE _hDispThread;         //å›¾åƒæŠ“å–çº¿ç¨‹çš„å¥æŸ„
+	CameraHandle _hCamera;       //ç›¸æœºå¥æŸ„ï¼Œå¤šä¸ªç›¸æœºåŒæ—¶ä½¿ç”¨æ—¶ï¼Œå¯ä»¥ç”¨æ•°ç»„ä»£æ›¿	
+	tSdkFrameHead _sFrameInfo;   //ç”¨äºä¿å­˜å½“å‰å›¾åƒå¸§çš„å¸§å¤´ä¿¡æ¯
+	BYTE* _pFrameBuffer;         //ç”¨äºå°†åŸå§‹å›¾åƒæ•°æ®è½¬æ¢ä¸ºRGBçš„ç¼“å†²åŒº
 
 public:
 	HTCameraCapture() = default;

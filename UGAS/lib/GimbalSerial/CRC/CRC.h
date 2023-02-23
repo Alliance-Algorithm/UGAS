@@ -5,7 +5,7 @@ Latest Update: 2022/10/11
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Ìá¹©CRC8£¬CRC16Ğ£ÑéÂë¼ÆËã·½·¨
+- æä¾›CRC8ï¼ŒCRC16æ ¡éªŒç è®¡ç®—æ–¹æ³•
 */
 #include <cstdlib>
 #include <cstdint>

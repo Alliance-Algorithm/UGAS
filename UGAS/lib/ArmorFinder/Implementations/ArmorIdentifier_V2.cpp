@@ -62,7 +62,7 @@ inline bool ArmorIdentifier_V2::_solveToLightbar(const std::vector<cv::Point>& a
             std::vector<cv::Point2f> contour(4);
             box.points(contour.data());
             auto diff = width - height;
-            if (diff > 0) {     //Ğı×ªÇ°£¬¾ØĞÎºá·Å
+            if (diff > 0) {     //æ—‹è½¬å‰ï¼ŒçŸ©å½¢æ¨ªæ”¾
                 float angle = fmod(box.angle + 360, 360);
                 if (90 - angleRange < angle && angle < 90 + angleRange) {
                     _lightBarList.push_back(LightBar((contour[0] + contour[1]) / 2 + ROIoffset, (contour[2] + contour[3]) / 2 + ROIoffset, 0));
@@ -73,7 +73,7 @@ inline bool ArmorIdentifier_V2::_solveToLightbar(const std::vector<cv::Point>& a
                     return true;
                 }
             }
-            else if (diff < 0) {  //Ğı×ªÇ°£¬¾ØĞÎºá·Å
+            else if (diff < 0) {  //æ—‹è½¬å‰ï¼ŒçŸ©å½¢æ¨ªæ”¾
                 float angle = fmod(box.angle + 360 + 90, 360);
                 if (90 - angleRange < angle && angle < 90 + angleRange) {
                     _lightBarList.push_back(LightBar((contour[1] + contour[2]) / 2 + ROIoffset, (contour[0] + contour[3]) / 2 + ROIoffset, 0));
@@ -109,7 +109,7 @@ inline void ArmorIdentifier_V2::_matchArmorPlates(const Img& imgGray, std::vecto
     for (int i = 0; i < n; ++i) {
         float Isize = P2PDis(_lightBarList[i].top, _lightBarList[i].bottom);
         cv::Point2f Icenter = (_lightBarList[i].top + _lightBarList[i].bottom) / 2;
-        for (int j = i + 1; j < n; ++j) { // Ò»Ğ©É¸Ñ¡Ìõ¼ş
+        for (int j = i + 1; j < n; ++j) { // ä¸€äº›ç­›é€‰æ¡ä»¶
             float Jsize = P2PDis(_lightBarList[j].top, _lightBarList[j].bottom);
             if (max(Isize, Jsize) / min(Isize, Jsize) > maxArmorLightRatio)		continue;
             if (fabs(_lightBarList[i].angle - _lightBarList[j].angle) > maxdAngle)	continue;
@@ -118,7 +118,7 @@ inline void ArmorIdentifier_V2::_matchArmorPlates(const Img& imgGray, std::vecto
             if (fabs(Icenter.y - Jcenter.y) * 2 / (Isize + Jsize) > maxLightDy)	continue;
             if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis)	continue;
 
-            // Êı×ÖÊ¶±ğ²¿·Ö£¨ÔİÊ±·ÅÕâ£¬¿ÉÄÜ»áÅ²µ½ÔË¶¯Ä£ĞÍÄÇÈ¥£©
+            // æ•°å­—è¯†åˆ«éƒ¨åˆ†ï¼ˆæš‚æ—¶æ”¾è¿™ï¼Œå¯èƒ½ä¼šæŒªåˆ°è¿åŠ¨æ¨¡å‹é‚£å»ï¼‰
             ArmorPlate armor(_lightBarList[i], _lightBarList[j]);
             armor.id = _numberIdentifier.Identify(imgGray, armor);
             result.push_back(armor);

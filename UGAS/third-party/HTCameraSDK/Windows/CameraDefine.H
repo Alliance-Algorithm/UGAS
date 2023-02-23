@@ -7,91 +7,91 @@
 #define MAX_CROSS_LINE 9
 
 /// @ingroup MV_TYPEDEF
-/// \~chinese Ïà»úµÄ¾ä±úÀàĞÍ¶¨Òå
+/// \~chinese ç›¸æœºçš„å¥æŸ„ç±»å‹å®šä¹‰
 /// \~english Camera handle type definition
 typedef int CameraHandle;
 
 
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Í¼Ïñ²é±í±ä»»µÄ·½Ê½
+/// \~chinese å›¾åƒæŸ¥è¡¨å˜æ¢çš„æ–¹å¼
 /// \~english Image lookup table transformation
 typedef enum
 {
-    LUTMODE_PARAM_GEN=0, ///< \~chinese Í¨¹ıµ÷½Ú²ÎÊı¶¯Ì¬Éú³ÉLUT±í¡£	\~english Dynamically generate LUT tables by adjusting parameters. 
-    LUTMODE_PRESET=1,    ///< \~chinese Ê¹ÓÃÔ¤ÉèµÄLUT±í				\~english Use a preset LUT table
-    LUTMODE_USER_DEF=2	 ///< \~chinese Ê¹ÓÃÓÃ»§×Ô¶¨ÒåµÄLUT±í			\~english Use a user-defined LUT table
+    LUTMODE_PARAM_GEN=0, ///< \~chinese é€šè¿‡è°ƒèŠ‚å‚æ•°åŠ¨æ€ç”ŸæˆLUTè¡¨ã€‚	\~english Dynamically generate LUT tables by adjusting parameters. 
+    LUTMODE_PRESET=1,    ///< \~chinese ä½¿ç”¨é¢„è®¾çš„LUTè¡¨				\~english Use a preset LUT table
+    LUTMODE_USER_DEF=2	 ///< \~chinese ä½¿ç”¨ç”¨æˆ·è‡ªå®šä¹‰çš„LUTè¡¨			\~english Use a user-defined LUT table
 }emSdkLutMode;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Ïà»úµÄÊÓÆµÁ÷¿ØÖÆ
+/// \~chinese ç›¸æœºçš„è§†é¢‘æµæ§åˆ¶
 /// \~english Camera video flow control
 typedef enum
 {
-	/// \~chinese Õı³£Ô¤ÀÀ£¬²¶»ñµ½Í¼Ïñ¾ÍÏÔÊ¾¡££¨Èç¹ûÏà»ú´¦ÓÚ´¥·¢Ä£Ê½£¬Ôò»áµÈ´ı´¥·¢Ö¡µÄµ½À´£©
+	/// \~chinese æ­£å¸¸é¢„è§ˆï¼Œæ•è·åˆ°å›¾åƒå°±æ˜¾ç¤ºã€‚ï¼ˆå¦‚æœç›¸æœºå¤„äºè§¦å‘æ¨¡å¼ï¼Œåˆ™ä¼šç­‰å¾…è§¦å‘å¸§çš„åˆ°æ¥ï¼‰
 	/// \~english Normal preview, the captured image is displayed. (If the camera is in trigger mode, it will wait for the arrival of the trigger frame)
     RUNMODE_PLAY=0,
-    RUNMODE_PAUSE=1,     ///< \~chinese ÔİÍ££¬»áÔİÍ£Ïà»úµÄÍ¼ÏñÊä³ö£¬Í¬Ê±Ò²²»»áÈ¥²¶»ñÍ¼Ïñ	\~english Pause, will pause the camera's image output, and will not capture the image.
-    RUNMODE_STOP=2       ///< \~chinese Í£Ö¹Ïà»ú¹¤×÷¡£·´³õÊ¼»¯ºó£¬Ïà»ú¾Í´¦ÓÚÍ£Ö¹Ä£Ê½		\~english Stop the camera. Camera is in stop mode after deinitialization.
+    RUNMODE_PAUSE=1,     ///< \~chinese æš‚åœï¼Œä¼šæš‚åœç›¸æœºçš„å›¾åƒè¾“å‡ºï¼ŒåŒæ—¶ä¹Ÿä¸ä¼šå»æ•è·å›¾åƒ	\~english Pause, will pause the camera's image output, and will not capture the image.
+    RUNMODE_STOP=2       ///< \~chinese åœæ­¢ç›¸æœºå·¥ä½œã€‚ååˆå§‹åŒ–åï¼Œç›¸æœºå°±å¤„äºåœæ­¢æ¨¡å¼		\~english Stop the camera. Camera is in stop mode after deinitialization.
 }emSdkRunMode;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese SDKÄÚ²¿ÏÔÊ¾½Ó¿ÚµÄÏÔÊ¾·½Ê½
+/// \~chinese SDKå†…éƒ¨æ˜¾ç¤ºæ¥å£çš„æ˜¾ç¤ºæ–¹å¼
 /// \~english How to display the internal display interface of the SDK
 typedef enum
 {
-    DISPLAYMODE_SCALE=0, ///< \~chinese Ëõ·ÅÏÔÊ¾Ä£Ê½£¬Ëõ·Åµ½ÏÔÊ¾¿Ø¼şµÄ³ß´ç \~english Zoom the display mode, zoom to the size of the display control
-    DISPLAYMODE_REAL=1,  ///< \~chinese 1:1ÏÔÊ¾Ä£Ê½£¬µ±Í¼Ïñ³ß´ç´óÓÚÏÔÊ¾¿Ø¼şµÄ³ß´çÊ±£¬Ö»ÏÔÊ¾¾Ö²¿  \~english 1:1 display mode, when the image size is larger than the size of the display control, only the local display
-	DISPLAYMODE_2X=2,	 ///< \~chinese ·Å´ó2X	\~english Zoom in 2X
-	DISPLAYMODE_4X=3,	 ///< \~chinese ·Å´ó4X	\~english Zoom in 4X
-	DISPLAYMODE_8X=4,    ///< \~chinese ·Å´ó8X	\~english Zoom in 8X
-	DISPLAYMODE_16X=5,	 ///< \~chinese ·Å´ó16X	\~english Zoom in 16X
-	DISPLAYMODE_SCALE_FIT=6	///< \~chinese À­ÉìËõ·Å£¬ÌîÂúÏÔÊ¾ÇøÓò	\~english Stretch zoom to fill the display area
+    DISPLAYMODE_SCALE=0, ///< \~chinese ç¼©æ”¾æ˜¾ç¤ºæ¨¡å¼ï¼Œç¼©æ”¾åˆ°æ˜¾ç¤ºæ§ä»¶çš„å°ºå¯¸ \~english Zoom the display mode, zoom to the size of the display control
+    DISPLAYMODE_REAL=1,  ///< \~chinese 1:1æ˜¾ç¤ºæ¨¡å¼ï¼Œå½“å›¾åƒå°ºå¯¸å¤§äºæ˜¾ç¤ºæ§ä»¶çš„å°ºå¯¸æ—¶ï¼Œåªæ˜¾ç¤ºå±€éƒ¨  \~english 1:1 display mode, when the image size is larger than the size of the display control, only the local display
+	DISPLAYMODE_2X=2,	 ///< \~chinese æ”¾å¤§2X	\~english Zoom in 2X
+	DISPLAYMODE_4X=3,	 ///< \~chinese æ”¾å¤§4X	\~english Zoom in 4X
+	DISPLAYMODE_8X=4,    ///< \~chinese æ”¾å¤§8X	\~english Zoom in 8X
+	DISPLAYMODE_16X=5,	 ///< \~chinese æ”¾å¤§16X	\~english Zoom in 16X
+	DISPLAYMODE_SCALE_FIT=6	///< \~chinese æ‹‰ä¼¸ç¼©æ”¾ï¼Œå¡«æ»¡æ˜¾ç¤ºåŒºåŸŸ	\~english Stretch zoom to fill the display area
 }emSdkDisplayMode;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Â¼Ïñ×´Ì¬
+/// \~chinese å½•åƒçŠ¶æ€
 /// \~english Recording status
 typedef enum 
 {
-  RECORD_STOP=0,	///< \~chinese Í£Ö¹		\~english Stop
-  RECORD_START=1,   ///< \~chinese Â¼ÏñÖĞ	\~english Start
-  RECORD_PAUSE=2    ///< \~chinese ÔİÍ£		\~english Pause
+  RECORD_STOP=0,	///< \~chinese åœæ­¢		\~english Stop
+  RECORD_START=1,   ///< \~chinese å½•åƒä¸­	\~english Start
+  RECORD_PAUSE=2    ///< \~chinese æš‚åœ		\~english Pause
 }emSdkRecordMode;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Í¼ÏñµÄ¾µÏñ²Ù×÷
+/// \~chinese å›¾åƒçš„é•œåƒæ“ä½œ
 /// \~english Image mirroring operation
 typedef enum
 {
-    MIRROR_DIRECTION_HORIZONTAL=0,		///< \~chinese Ë®Æ½¾µÏñ	\~english Horizontal mirroring
-    MIRROR_DIRECTION_VERTICAL=1			///< \~chinese ´¹Ö±¾µÏñ	\~english Vertical mirroring
+    MIRROR_DIRECTION_HORIZONTAL=0,		///< \~chinese æ°´å¹³é•œåƒ	\~english Horizontal mirroring
+    MIRROR_DIRECTION_VERTICAL=1			///< \~chinese å‚ç›´é•œåƒ	\~english Vertical mirroring
 }emSdkMirrorDirection;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Í¼ÏñµÄĞı×ª²Ù×÷
+/// \~chinese å›¾åƒçš„æ—‹è½¬æ“ä½œ
 /// \~english Rotation of the image
 typedef enum
 {
-	ROTATE_DIRECTION_0=0,		///< \~chinese ²»Ğı×ª		\~english Do not rotate
-	ROTATE_DIRECTION_90=1,		///< \~chinese ÄæÊ±Õë90¶È	\~english Counterclockwise 90 degrees
-	ROTATE_DIRECTION_180=2,		///< \~chinese ÄæÊ±Õë180¶È	\~english Counterclockwise 180 degrees
-	ROTATE_DIRECTION_270=3,		///< \~chinese ÄæÊ±Õë270¶È	\~english Counterclockwise 270 degrees
+	ROTATE_DIRECTION_0=0,		///< \~chinese ä¸æ—‹è½¬		\~english Do not rotate
+	ROTATE_DIRECTION_90=1,		///< \~chinese é€†æ—¶é’ˆ90åº¦	\~english Counterclockwise 90 degrees
+	ROTATE_DIRECTION_180=2,		///< \~chinese é€†æ—¶é’ˆ180åº¦	\~english Counterclockwise 180 degrees
+	ROTATE_DIRECTION_270=3,		///< \~chinese é€†æ—¶é’ˆ270åº¦	\~english Counterclockwise 270 degrees
 }emSdkRotateDirection;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Ïà»úÊÓÆµµÄÖ¡ÂÊ
+/// \~chinese ç›¸æœºè§†é¢‘çš„å¸§ç‡
 /// \~english Camera video frame rate
 typedef enum
 {
-    FRAME_SPEED_LOW=0,		///< \~chinese µÍËÙÄ£Ê½	\~english Low Speed
-    FRAME_SPEED_NORMAL=1,   ///< \~chinese ÆÕÍ¨Ä£Ê½	\~english Normal Speed
-    FRAME_SPEED_HIGH=2,     ///< \~chinese ¸ßËÙÄ£Ê½(ĞèÒª½Ï¸ßµÄ´«Êä´ø¿í,¶àÉè±¸¹²Ïí´«Êä´ø¿íÊ±»á¶ÔÖ¡ÂÊµÄÎÈ¶¨ĞÔÓĞÓ°Ïì)	\~english High Speed
-    FRAME_SPEED_SUPER=3     ///< \~chinese ³¬¸ßËÙÄ£Ê½(ĞèÒª½Ï¸ßµÄ´«Êä´ø¿í,¶àÉè±¸¹²Ïí´«Êä´ø¿íÊ±»á¶ÔÖ¡ÂÊµÄÎÈ¶¨ĞÔÓĞÓ°Ïì)	\~english Super Speed
+    FRAME_SPEED_LOW=0,		///< \~chinese ä½é€Ÿæ¨¡å¼	\~english Low Speed
+    FRAME_SPEED_NORMAL=1,   ///< \~chinese æ™®é€šæ¨¡å¼	\~english Normal Speed
+    FRAME_SPEED_HIGH=2,     ///< \~chinese é«˜é€Ÿæ¨¡å¼(éœ€è¦è¾ƒé«˜çš„ä¼ è¾“å¸¦å®½,å¤šè®¾å¤‡å…±äº«ä¼ è¾“å¸¦å®½æ—¶ä¼šå¯¹å¸§ç‡çš„ç¨³å®šæ€§æœ‰å½±å“)	\~english High Speed
+    FRAME_SPEED_SUPER=3     ///< \~chinese è¶…é«˜é€Ÿæ¨¡å¼(éœ€è¦è¾ƒé«˜çš„ä¼ è¾“å¸¦å®½,å¤šè®¾å¤‡å…±äº«ä¼ è¾“å¸¦å®½æ—¶ä¼šå¯¹å¸§ç‡çš„ç¨³å®šæ€§æœ‰å½±å“)	\~english Super Speed
 }emSdkFrameSpeed;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese ±£´æÎÄ¼şµÄ¸ñÊ½ÀàĞÍ
+/// \~chinese ä¿å­˜æ–‡ä»¶çš„æ ¼å¼ç±»å‹
 /// \~english Save file format type
 typedef enum
 {
@@ -105,68 +105,68 @@ typedef enum
 }emSdkFileType;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Ïà»úÖĞµÄÍ¼Ïñ´«¸ĞÆ÷µÄ¹¤×÷Ä£Ê½
+/// \~chinese ç›¸æœºä¸­çš„å›¾åƒä¼ æ„Ÿå™¨çš„å·¥ä½œæ¨¡å¼
 /// \~english Image Sensor Operation Mode in Camera
 typedef enum 
 {
-	/// \~chinese Á¬Ğø²É¼¯Ä£Ê½
+	/// \~chinese è¿ç»­é‡‡é›†æ¨¡å¼
 	/// \~english Continuous acquisition mode
     CONTINUATION=0,
 
-	/// \~chinese Èí¼ş´¥·¢Ä£Ê½£¬ÓÉÈí¼ş·¢ËÍÖ¸Áîºó£¬´«¸ĞÆ÷¿ªÊ¼²É¼¯Ö¸¶¨Ö¡ÊıµÄÍ¼Ïñ£¬²É¼¯Íê³Éºó£¬Í£Ö¹Êä³ö
+	/// \~chinese è½¯ä»¶è§¦å‘æ¨¡å¼ï¼Œç”±è½¯ä»¶å‘é€æŒ‡ä»¤åï¼Œä¼ æ„Ÿå™¨å¼€å§‹é‡‡é›†æŒ‡å®šå¸§æ•°çš„å›¾åƒï¼Œé‡‡é›†å®Œæˆåï¼Œåœæ­¢è¾“å‡º
 	/// \~english Software trigger mode. After the software sends the instruction, the sensor starts to capture the image of the specified frame number. After the acquisition is completed, the output is stopped.
     SOFT_TRIGGER=1,
 
-	/// \~chinese Ó²¼ş´¥·¢Ä£Ê½£¬µ±½ÓÊÕµ½Íâ²¿ĞÅºÅ£¬´«¸ĞÆ÷¿ªÊ¼²É¼¯Ö¸¶¨Ö¡ÊıµÄÍ¼Ïñ£¬²É¼¯Íê³Éºó£¬Í£Ö¹Êä³ö
+	/// \~chinese ç¡¬ä»¶è§¦å‘æ¨¡å¼ï¼Œå½“æ¥æ”¶åˆ°å¤–éƒ¨ä¿¡å·ï¼Œä¼ æ„Ÿå™¨å¼€å§‹é‡‡é›†æŒ‡å®šå¸§æ•°çš„å›¾åƒï¼Œé‡‡é›†å®Œæˆåï¼Œåœæ­¢è¾“å‡º
 	/// \~english In the hardware trigger mode, when receiving an external signal, the sensor starts to capture the image of the specified frame number. After the acquisition is completed, the output is stopped.
     EXTERNAL_TRIGGER=2,
 
-	/// \~chinese ±àÂëÆ÷´¥·¢Ä£Ê½£¨½öÓÃÓÚÏßÕóÏà»ú£©
+	/// \~chinese ç¼–ç å™¨è§¦å‘æ¨¡å¼ï¼ˆä»…ç”¨äºçº¿é˜µç›¸æœºï¼‰
 	/// \~english Encoder trigger mode (only for line scan cameras)
 	ROTARYENC_TRIGGER=3,
 
-	/// \~chinese ±àÂëÆ÷Ìõ¼ş´¥·¢Ä£Ê½£¨½öÓÃÓÚÏßÕóÏà»ú£©
+	/// \~chinese ç¼–ç å™¨æ¡ä»¶è§¦å‘æ¨¡å¼ï¼ˆä»…ç”¨äºçº¿é˜µç›¸æœºï¼‰
 	/// \~english Encoder condition trigger mode (only for line scan cameras)
 	ROTARYENC_COND_TRIGGER=4,
 } emSdkSnapMode;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese ×Ô¶¯ÆØ¹âÊ±¿¹ÆµÉÁµÄÆµÂÊ
+/// \~chinese è‡ªåŠ¨æ›å…‰æ—¶æŠ—é¢‘é—ªçš„é¢‘ç‡
 /// \~english Anti-strobe frequency at auto exposure
 typedef enum
 {
-	/// \~chinese 50HZ,Ò»°ãµÄµÆ¹â¶¼ÊÇ50HZ
+	/// \~chinese 50HZ,ä¸€èˆ¬çš„ç¯å…‰éƒ½æ˜¯50HZ
 	/// \~english 50HZ, the general lighting is 50HZ
     LIGHT_FREQUENCY_50HZ=0,
 
-	/// \~chinese 60HZ,Ö÷ÒªÊÇÖ¸ÏÔÊ¾Æ÷µÄ
+	/// \~chinese 60HZ,ä¸»è¦æ˜¯æŒ‡æ˜¾ç¤ºå™¨çš„
 	/// \~english 60HZ, mainly refers to the monitor
     LIGHT_FREQUENCY_60HZ=1
 }emSdkLightFrequency;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Ïà»úµÄÅäÖÃ²ÎÊı£¬·ÖÎªA,B,C,D 4×é½øĞĞ±£´æ¡£
+/// \~chinese ç›¸æœºçš„é…ç½®å‚æ•°ï¼Œåˆ†ä¸ºA,B,C,D 4ç»„è¿›è¡Œä¿å­˜ã€‚
 /// \~english The camera configuration parameters are divided into groups A, B, C, and D for preservation.
 typedef enum
 {
-	PARAMETER_TEAM_DEFAULT = 0xff,	///< \~chinese Ä¬ÈÏ²ÎÊı \~english Default parameters
-    PARAMETER_TEAM_A = 0,	///< \~chinese ²ÎÊıA \~english parametersA
-    PARAMETER_TEAM_B = 1,	///< \~chinese ²ÎÊıB \~english parametersB
-    PARAMETER_TEAM_C = 2,	///< \~chinese ²ÎÊıC \~english parametersC
-    PARAMETER_TEAM_D = 3	///< \~chinese ²ÎÊıD \~english parametersD
+	PARAMETER_TEAM_DEFAULT = 0xff,	///< \~chinese é»˜è®¤å‚æ•° \~english Default parameters
+    PARAMETER_TEAM_A = 0,	///< \~chinese å‚æ•°A \~english parametersA
+    PARAMETER_TEAM_B = 1,	///< \~chinese å‚æ•°B \~english parametersB
+    PARAMETER_TEAM_C = 2,	///< \~chinese å‚æ•°C \~english parametersC
+    PARAMETER_TEAM_D = 3	///< \~chinese å‚æ•°D \~english parametersD
 }emSdkParameterTeam;
 
 
 /// @ingroup MV_ENUM_TYPE
 /// \~chinese
-/// \brief Ïà»ú²ÎÊı¼ÓÔØÄ£Ê½
-/// \note Äú¿ÉÒÔ¸ù¾İ×Ô¼ºµÄÊ¹ÓÃ»·¾³£¬Áé»îÊ¹ÓÃÒÔÉÏ¼¸ÖÖ·½Ê½¼ÓÔØ²ÎÊı¡£ÀıÈç£¬ÒÔ
-/// \note MV-U300ÎªÀı£¬ÄúÏ£Íû¶àÌ¨¸ÃĞÍºÅµÄÏà»úÔÚÄúµÄ µçÄÔÉÏ¶¼¹²ÓÃ4×é²ÎÊı£¬ÄÇÃ´¾Í
-/// \note Ê¹ÓÃPARAM_MODE_BY_MODEL·½Ê½;Èç¹ûÄúÏ£ÍûÆäÖĞÄ³Ò»Ì¨»òÕßÄ³¼¸Ì¨MV-U300ÄÜ
-/// \note Ê¹ÓÃ×Ô¼º²ÎÊıÎÄ¼ş¶øÆäÓàµÄMV-U300ÓÖÒªÊ¹ÓÃÏàÍ¬µÄ²ÎÊıÎÄ¼ş£¬ÄÇÃ´Ê¹ÓÃ
-/// \note PARAM_MODE_BY_NAME·½Ê½;Èç¹ûÄúÏ£ÍûÃ¿Ì¨MV-U300¶¼Ê¹ÓÃ²»Í¬µÄ²ÎÊıÎÄ¼ş£¬ÄÇÃ´
-/// \note Ê¹ÓÃPARAM_MODE_BY_SN·½Ê½¡£
-/// \note ²ÎÊıÎÄ¼ş´æÔÚ°²×°Ä¿Â¼µÄ \\Camera\\Configs Ä¿Â¼ÏÂ£¬ÒÔconfigÎªºó×ºÃûµÄÎÄ¼ş¡£
+/// \brief ç›¸æœºå‚æ•°åŠ è½½æ¨¡å¼
+/// \note æ‚¨å¯ä»¥æ ¹æ®è‡ªå·±çš„ä½¿ç”¨ç¯å¢ƒï¼Œçµæ´»ä½¿ç”¨ä»¥ä¸Šå‡ ç§æ–¹å¼åŠ è½½å‚æ•°ã€‚ä¾‹å¦‚ï¼Œä»¥
+/// \note MV-U300ä¸ºä¾‹ï¼Œæ‚¨å¸Œæœ›å¤šå°è¯¥å‹å·çš„ç›¸æœºåœ¨æ‚¨çš„ ç”µè„‘ä¸Šéƒ½å…±ç”¨4ç»„å‚æ•°ï¼Œé‚£ä¹ˆå°±
+/// \note ä½¿ç”¨PARAM_MODE_BY_MODELæ–¹å¼;å¦‚æœæ‚¨å¸Œæœ›å…¶ä¸­æŸä¸€å°æˆ–è€…æŸå‡ å°MV-U300èƒ½
+/// \note ä½¿ç”¨è‡ªå·±å‚æ•°æ–‡ä»¶è€Œå…¶ä½™çš„MV-U300åˆè¦ä½¿ç”¨ç›¸åŒçš„å‚æ•°æ–‡ä»¶ï¼Œé‚£ä¹ˆä½¿ç”¨
+/// \note PARAM_MODE_BY_NAMEæ–¹å¼;å¦‚æœæ‚¨å¸Œæœ›æ¯å°MV-U300éƒ½ä½¿ç”¨ä¸åŒçš„å‚æ•°æ–‡ä»¶ï¼Œé‚£ä¹ˆ
+/// \note ä½¿ç”¨PARAM_MODE_BY_SNæ–¹å¼ã€‚
+/// \note å‚æ•°æ–‡ä»¶å­˜åœ¨å®‰è£…ç›®å½•çš„ \\Camera\\Configs ç›®å½•ä¸‹ï¼Œä»¥configä¸ºåç¼€åçš„æ–‡ä»¶ã€‚
 /// \~english
 /// \brief Camera parameter loading mode
 /// \note You can use the above several ways to load parameters according to your own environment. For example, with
@@ -178,18 +178,18 @@ typedef enum
 /// \note The parameter file exists in the \\Camera\\Configs directory of the installation directory, with a config extension file.
 typedef enum 
 {
-	/// \~chinese ¸ù¾İÏà»úĞÍºÅÃû´ÓÎÄ¼şÖĞ¼ÓÔØ²ÎÊı£¬ÀıÈçMV-U300
-	/// \note ËùÓĞÍ¬ĞÍºÅµÄÏà»ú¹²ÓÃABCDËÄ×é²ÎÊıÎÄ¼ş¡£ĞŞ¸ÄÒ»Ì¨Ïà»úµÄ²ÎÊıÎÄ¼ş£¬»áÓ°Ïìµ½Õû¸öÍ¬ĞÍºÅµÄÏà»ú²ÎÊı¼ÓÔØ¡£
+	/// \~chinese æ ¹æ®ç›¸æœºå‹å·åä»æ–‡ä»¶ä¸­åŠ è½½å‚æ•°ï¼Œä¾‹å¦‚MV-U300
+	/// \note æ‰€æœ‰åŒå‹å·çš„ç›¸æœºå…±ç”¨ABCDå››ç»„å‚æ•°æ–‡ä»¶ã€‚ä¿®æ”¹ä¸€å°ç›¸æœºçš„å‚æ•°æ–‡ä»¶ï¼Œä¼šå½±å“åˆ°æ•´ä¸ªåŒå‹å·çš„ç›¸æœºå‚æ•°åŠ è½½ã€‚
 	/// \~english Load parameters from a file based on the camera model name, such as the MV-U300
 	/// \note All ABCD four-group parameter files are shared by all cameras of the same model. Modifying a camera's parameter file will affect the entire camera model parameter loading.
 	PARAM_MODE_BY_MODEL=0,
 
-	/// \~chinese ¸ù¾İÉè±¸êÇ³Æ(tSdkCameraDevInfo.acFriendlyName)´ÓÎÄ¼şÖĞ¼ÓÔØ²ÎÊı£¬ÀıÈçMV-U300,¸ÃêÇ³Æ¿É×Ô¶¨Òå
-	/// \note ËùÓĞÉè±¸ÃûÏàÍ¬µÄÏà»ú£¬¹²ÓÃABCDËÄ×é²ÎÊıÎÄ¼ş¡£
-	/// \note Ä¬ÈÏÇé¿öÏÂ£¬µ±µçÄÔÉÏÖ»½ÓÁËÄ³ĞÍºÅÒ»Ì¨Ïà»úÊ±£¬
-	/// \note Éè±¸Ãû¶¼ÊÇÒ»ÑùµÄ£¬¶øÄúÏ£ÍûÄ³Ò»Ì¨Ïà»úÄÜ¹»¼ÓÔØ
-	/// \note ²»Í¬µÄ²ÎÊıÎÄ¼ş£¬Ôò¿ÉÒÔÍ¨¹ıĞŞ¸ÄÆäÉè±¸ÃûµÄ·½Ê½
-	/// \note À´ÈÃÆä¼ÓÔØÖ¸¶¨µÄ²ÎÊıÎÄ¼ş¡£
+	/// \~chinese æ ¹æ®è®¾å¤‡æ˜µç§°(tSdkCameraDevInfo.acFriendlyName)ä»æ–‡ä»¶ä¸­åŠ è½½å‚æ•°ï¼Œä¾‹å¦‚MV-U300,è¯¥æ˜µç§°å¯è‡ªå®šä¹‰
+	/// \note æ‰€æœ‰è®¾å¤‡åç›¸åŒçš„ç›¸æœºï¼Œå…±ç”¨ABCDå››ç»„å‚æ•°æ–‡ä»¶ã€‚
+	/// \note é»˜è®¤æƒ…å†µä¸‹ï¼Œå½“ç”µè„‘ä¸Šåªæ¥äº†æŸå‹å·ä¸€å°ç›¸æœºæ—¶ï¼Œ
+	/// \note è®¾å¤‡åéƒ½æ˜¯ä¸€æ ·çš„ï¼Œè€Œæ‚¨å¸Œæœ›æŸä¸€å°ç›¸æœºèƒ½å¤ŸåŠ è½½
+	/// \note ä¸åŒçš„å‚æ•°æ–‡ä»¶ï¼Œåˆ™å¯ä»¥é€šè¿‡ä¿®æ”¹å…¶è®¾å¤‡åçš„æ–¹å¼
+	/// \note æ¥è®©å…¶åŠ è½½æŒ‡å®šçš„å‚æ•°æ–‡ä»¶ã€‚
 	/// \~english Load parameters from a file based on device nickname (tSdkCameraDevInfo.acFriendlyName), such as MV-U300, which can be customized
 	/// \note All cameras with the same device name share the four ABCD parameter files.
 	/// \note By default, when only one model of a camera is connected to the computer,
@@ -198,234 +198,234 @@ typedef enum
 	/// \note to have it load the specified parameter file.
 	PARAM_MODE_BY_NAME=1,
 
-	/// \~chinese ¸ù¾İÉè±¸µÄÎ¨Ò»ĞòÁĞºÅ´ÓÎÄ¼şÖĞ¼ÓÔØ²ÎÊı£¬ĞòÁĞºÅÔÚ³ö³§Ê±ÒÑ¾­Ğ´ÈëÉè±¸£¬Ã¿Ì¨Ïà»úÓµÓĞ²»Í¬µÄĞòÁĞºÅ¡£
-	/// \note Ïà»ú°´ÕÕ×Ô¼ºµÄÎ¨Ò»ĞòÁĞºÅÀ´¼ÓÔØABCDËÄ×é²ÎÊıÎÄ¼ş£¬
-	/// \note ĞòÁĞºÅÔÚ³ö³§Ê±ÒÑ¾­¹Ì»¯ÔÚÏà»úÄÚ£¬Ã¿Ì¨Ïà»úµÄĞòÁĞºÅ
-	/// \note ¶¼²»ÏàÍ¬£¬Í¨¹ıÕâÖÖ·½Ê½£¬Ã¿Ì¨Ïà»úµÄ²ÎÊıÎÄ¼ş¶¼ÊÇ¶ÀÁ¢µÄ¡£
+	/// \~chinese æ ¹æ®è®¾å¤‡çš„å”¯ä¸€åºåˆ—å·ä»æ–‡ä»¶ä¸­åŠ è½½å‚æ•°ï¼Œåºåˆ—å·åœ¨å‡ºå‚æ—¶å·²ç»å†™å…¥è®¾å¤‡ï¼Œæ¯å°ç›¸æœºæ‹¥æœ‰ä¸åŒçš„åºåˆ—å·ã€‚
+	/// \note ç›¸æœºæŒ‰ç…§è‡ªå·±çš„å”¯ä¸€åºåˆ—å·æ¥åŠ è½½ABCDå››ç»„å‚æ•°æ–‡ä»¶ï¼Œ
+	/// \note åºåˆ—å·åœ¨å‡ºå‚æ—¶å·²ç»å›ºåŒ–åœ¨ç›¸æœºå†…ï¼Œæ¯å°ç›¸æœºçš„åºåˆ—å·
+	/// \note éƒ½ä¸ç›¸åŒï¼Œé€šè¿‡è¿™ç§æ–¹å¼ï¼Œæ¯å°ç›¸æœºçš„å‚æ•°æ–‡ä»¶éƒ½æ˜¯ç‹¬ç«‹çš„ã€‚
 	/// \~english The parameters are loaded from the file according to the unique serial number of the device. The serial number is already written to the device at the factory and each camera has a different serial number.
 	/// \note The camera loads ABCD four sets of parameter files according to their unique serial number.
 	/// \note The serial number has been fixed in the camera at the factory, the serial number of each camera
 	/// \note is not the same. In this way, the parameter files for each camera are independent.
 	PARAM_MODE_BY_SN=2,
 
-	/// \~chinese ´ÓÉè±¸µÄ¹ÌÌ¬´æ´¢Æ÷ÖĞ¼ÓÔØ²ÎÊı¡£²»ÊÇËùÓĞµÄĞÍºÅ¶¼Ö§³Ö´ÓÏà»úÖĞ¶ÁĞ´²ÎÊı×é£¬ÓÉtSdkCameraCapbility.bParamInDevice¾ö¶¨
+	/// \~chinese ä»è®¾å¤‡çš„å›ºæ€å­˜å‚¨å™¨ä¸­åŠ è½½å‚æ•°ã€‚ä¸æ˜¯æ‰€æœ‰çš„å‹å·éƒ½æ”¯æŒä»ç›¸æœºä¸­è¯»å†™å‚æ•°ç»„ï¼Œç”±tSdkCameraCapbility.bParamInDeviceå†³å®š
 	/// \~english Load parameters from the device's solid-state memory. Not all models support reading and writing parameters from the camera, as determined by tSdkCameraCapbility.bParamInDevice
 	PARAM_MODE_IN_DEVICE=3      
 }emSdkParameterMode;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese SDKÉú³ÉµÄÏà»úÅäÖÃÒ³ÃæÑÚÂëÖµ
+/// \~chinese SDKç”Ÿæˆçš„ç›¸æœºé…ç½®é¡µé¢æ©ç å€¼
 /// \~english SDK generated camera configuration page mask values
 typedef enum 
 {
-  PROP_SHEET_INDEX_EXPOSURE=0,			///< \~chinese ÆØ¹âÉèÖÃ \~english Exposure Settings
-  PROP_SHEET_INDEX_ISP_COLOR=1,			///< \~chinese ÑÕÉ«¾ØÕóÉèÖÃ \~english Color Matrix Settings
-  PROP_SHEET_INDEX_ISP_LUT=2,			///< \~chinese LUTÉèÖÃ \~english LUT setting
-  PROP_SHEET_INDEX_ISP_SHAPE=3,			///< \~chinese ±ä»»ÉèÖÃ \~english transform settings
-  PROP_SHEET_INDEX_VIDEO_FORMAT=4,		///< \~chinese ¸ñÊ½ÉèÖÃ \~english Formatting
-  PROP_SHEET_INDEX_RESOLUTION=5,		///< \~chinese ·Ö±æÂÊÉèÖÃ \~english resolution setting
-  PROP_SHEET_INDEX_IO_CTRL=6,			///< \~chinese IO¿ØÖÆ \~english IO control
-  PROP_SHEET_INDEX_TRIGGER_SET=7,		///< \~chinese ´¥·¢Ä£Ê½ \~english trigger setting
-  PROP_SHEET_INDEX_OVERLAY=8,			///< \~chinese Ê®×ÖÏß \~english Crosshair
-  PROP_SHEET_INDEX_DEVICE_INFO=9,		///< \~chinese Éè±¸ĞÅÏ¢ \~english Device Information
-  PROP_SHEET_INDEX_WDR=10,				///< \~chinese ¿í¶¯Ì¬ \~english Wide Dynamic
-  PROP_SHEET_INDEX_MULTI_EXPOSURE=11,	///< \~chinese ¶àÖØÆØ¹â \~english Multi exposure
-  PROP_SHEET_INDEX_SPECIAL=12,			///< \~chinese ÌØÊâÉèÖÃ \~english Special settings
+  PROP_SHEET_INDEX_EXPOSURE=0,			///< \~chinese æ›å…‰è®¾ç½® \~english Exposure Settings
+  PROP_SHEET_INDEX_ISP_COLOR=1,			///< \~chinese é¢œè‰²çŸ©é˜µè®¾ç½® \~english Color Matrix Settings
+  PROP_SHEET_INDEX_ISP_LUT=2,			///< \~chinese LUTè®¾ç½® \~english LUT setting
+  PROP_SHEET_INDEX_ISP_SHAPE=3,			///< \~chinese å˜æ¢è®¾ç½® \~english transform settings
+  PROP_SHEET_INDEX_VIDEO_FORMAT=4,		///< \~chinese æ ¼å¼è®¾ç½® \~english Formatting
+  PROP_SHEET_INDEX_RESOLUTION=5,		///< \~chinese åˆ†è¾¨ç‡è®¾ç½® \~english resolution setting
+  PROP_SHEET_INDEX_IO_CTRL=6,			///< \~chinese IOæ§åˆ¶ \~english IO control
+  PROP_SHEET_INDEX_TRIGGER_SET=7,		///< \~chinese è§¦å‘æ¨¡å¼ \~english trigger setting
+  PROP_SHEET_INDEX_OVERLAY=8,			///< \~chinese åå­—çº¿ \~english Crosshair
+  PROP_SHEET_INDEX_DEVICE_INFO=9,		///< \~chinese è®¾å¤‡ä¿¡æ¯ \~english Device Information
+  PROP_SHEET_INDEX_WDR=10,				///< \~chinese å®½åŠ¨æ€ \~english Wide Dynamic
+  PROP_SHEET_INDEX_MULTI_EXPOSURE=11,	///< \~chinese å¤šé‡æ›å…‰ \~english Multi exposure
+  PROP_SHEET_INDEX_SPECIAL=12,			///< \~chinese ç‰¹æ®Šè®¾ç½® \~english Special settings
 }emSdkPropSheetMask;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese SDKÉú³ÉµÄÏà»úÅäÖÃÒ³ÃæµÄ»Øµ÷ÏûÏ¢ÀàĞÍ
+/// \~chinese SDKç”Ÿæˆçš„ç›¸æœºé…ç½®é¡µé¢çš„å›è°ƒæ¶ˆæ¯ç±»å‹
 /// \~english SDK callback camera configuration page callback message type
 typedef enum 
 {
-  SHEET_MSG_LOAD_PARAM_DEFAULT=0,	///< \~chinese ²ÎÊı±»»Ö¸´³ÉÄ¬ÈÏºó£¬´¥·¢¸ÃÏûÏ¢ \~english After the parameter is restored to the default, the message is triggered
-  SHEET_MSG_LOAD_PARAM_GROUP=1,     ///< \~chinese ¼ÓÔØÖ¸¶¨²ÎÊı×é£¬´¥·¢¸ÃÏûÏ¢ \~english Load the specified parameter group and trigger the message
-  SHEET_MSG_LOAD_PARAM_FROMFILE=2,  ///< \~chinese ´ÓÖ¸¶¨ÎÄ¼ş¼ÓÔØ²ÎÊıºó£¬´¥·¢¸ÃÏûÏ¢ \~english Fires the message after loading parameters from the specified file
-  SHEET_MSG_SAVE_PARAM_GROUP=3      ///< \~chinese µ±Ç°²ÎÊı×é±»±£´æÊ±£¬´¥·¢¸ÃÏûÏ¢ \~english Trigger this message when the current parameter group is saved
+  SHEET_MSG_LOAD_PARAM_DEFAULT=0,	///< \~chinese å‚æ•°è¢«æ¢å¤æˆé»˜è®¤åï¼Œè§¦å‘è¯¥æ¶ˆæ¯ \~english After the parameter is restored to the default, the message is triggered
+  SHEET_MSG_LOAD_PARAM_GROUP=1,     ///< \~chinese åŠ è½½æŒ‡å®šå‚æ•°ç»„ï¼Œè§¦å‘è¯¥æ¶ˆæ¯ \~english Load the specified parameter group and trigger the message
+  SHEET_MSG_LOAD_PARAM_FROMFILE=2,  ///< \~chinese ä»æŒ‡å®šæ–‡ä»¶åŠ è½½å‚æ•°åï¼Œè§¦å‘è¯¥æ¶ˆæ¯ \~english Fires the message after loading parameters from the specified file
+  SHEET_MSG_SAVE_PARAM_GROUP=3      ///< \~chinese å½“å‰å‚æ•°ç»„è¢«ä¿å­˜æ—¶ï¼Œè§¦å‘è¯¥æ¶ˆæ¯ \~english Trigger this message when the current parameter group is saved
 }emSdkPropSheetMsg;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese ¿ÉÊÓ»¯Ñ¡Ôñ²Î¿¼´°¿ÚµÄÀàĞÍ
+/// \~chinese å¯è§†åŒ–é€‰æ‹©å‚è€ƒçª—å£çš„ç±»å‹
 /// \~english Visualize the type of reference window
 typedef enum 
 {
-  REF_WIN_AUTO_EXPOSURE=0,	///< \~chinese ×Ô¶¯ÆØ¹â´°¿Ú \~english Automatic exposure window
-  REF_WIN_WHITE_BALANCE=1,	///< \~chinese °×Æ½ºâ´°¿Ú \~english White balance window
+  REF_WIN_AUTO_EXPOSURE=0,	///< \~chinese è‡ªåŠ¨æ›å…‰çª—å£ \~english Automatic exposure window
+  REF_WIN_WHITE_BALANCE=1,	///< \~chinese ç™½å¹³è¡¡çª—å£ \~english White balance window
 }emSdkRefWinType;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese ¿ÉÊÓ»¯Ñ¡Ôñ²Î¿¼´°¿ÚµÄÀàĞÍ
+/// \~chinese å¯è§†åŒ–é€‰æ‹©å‚è€ƒçª—å£çš„ç±»å‹
 /// \~english Visualize the type of reference window
 typedef enum 
 {
-  RES_MODE_PREVIEW=0,	///< \~chinese Ô¤ÀÀ \~english Preview
-  RES_MODE_SNAPSHOT=1,	///< \~chinese ×¥ÅÄ \~english Snapshot
+  RES_MODE_PREVIEW=0,	///< \~chinese é¢„è§ˆ \~english Preview
+  RES_MODE_SNAPSHOT=1,	///< \~chinese æŠ“æ‹ \~english Snapshot
 }emSdkResolutionMode;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese °×Æ½ºâÊ±É«ÎÂÄ£Ê½
+/// \~chinese ç™½å¹³è¡¡æ—¶è‰²æ¸©æ¨¡å¼
 /// \~english White balance color temperature mode
 typedef enum 
 {
-  CT_MODE_AUTO=0,		///< \~chinese ×Ô¶¯Ê¶±ğÉ«ÎÂ \~english Automatically recognize color temperature
-  CT_MODE_PRESET=1,		///< \~chinese Ê¹ÓÃÖ¸¶¨µÄÔ¤ÉèÉ«ÎÂ \~english Use the specified preset color temperature
-  CT_MODE_USER_DEF=2	///< \~chinese ×Ô¶¨ÒåÉ«ÎÂ(ÔöÒæºÍ¾ØÕó) \~english Custom color temperature (gain and matrix)
+  CT_MODE_AUTO=0,		///< \~chinese è‡ªåŠ¨è¯†åˆ«è‰²æ¸© \~english Automatically recognize color temperature
+  CT_MODE_PRESET=1,		///< \~chinese ä½¿ç”¨æŒ‡å®šçš„é¢„è®¾è‰²æ¸© \~english Use the specified preset color temperature
+  CT_MODE_USER_DEF=2	///< \~chinese è‡ªå®šä¹‰è‰²æ¸©(å¢ç›Šå’ŒçŸ©é˜µ) \~english Custom color temperature (gain and matrix)
 }emSdkClrTmpMode;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese LUTµÄÑÕÉ«Í¨µÀ
+/// \~chinese LUTçš„é¢œè‰²é€šé“
 /// \~english LUT color channel
 typedef enum 
 {
-  LUT_CHANNEL_ALL=0,	///< \~chinese R,B,GÈıÍ¨µÀÍ¬Ê±µ÷½Ú \~english R, B, G simultaneous adjustment of three channels
-  LUT_CHANNEL_RED=1,	///< \~chinese ºìÉ«Í¨µÀ \~english Red channel
-  LUT_CHANNEL_GREEN=2,	///< \~chinese ÂÌÉ«Í¨µÀ \~english Green channel
-  LUT_CHANNEL_BLUE=3,	///< \~chinese À¶É«Í¨µÀ \~english Blue channel
+  LUT_CHANNEL_ALL=0,	///< \~chinese R,B,Gä¸‰é€šé“åŒæ—¶è°ƒèŠ‚ \~english R, B, G simultaneous adjustment of three channels
+  LUT_CHANNEL_RED=1,	///< \~chinese çº¢è‰²é€šé“ \~english Red channel
+  LUT_CHANNEL_GREEN=2,	///< \~chinese ç»¿è‰²é€šé“ \~english Green channel
+  LUT_CHANNEL_BLUE=3,	///< \~chinese è“è‰²é€šé“ \~english Blue channel
 }emSdkLutChannel;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese ISP´¦Àíµ¥Ôª
+/// \~chinese ISPå¤„ç†å•å…ƒ
 /// \~english ISP processing unit
 typedef enum 
 {
-  ISP_PROCESSSOR_PC=0,		///< \~chinese Ê¹ÓÃPCµÄÈí¼şISPÄ£¿é \~english Use software ISP module of PC
-  ISP_PROCESSSOR_DEVICE=1	///< \~chinese Ê¹ÓÃÏà»ú×Ô´øµÄÓ²¼şISPÄ£¿é \~english Use the camera's own hardware ISP module
+  ISP_PROCESSSOR_PC=0,		///< \~chinese ä½¿ç”¨PCçš„è½¯ä»¶ISPæ¨¡å— \~english Use software ISP module of PC
+  ISP_PROCESSSOR_DEVICE=1	///< \~chinese ä½¿ç”¨ç›¸æœºè‡ªå¸¦çš„ç¡¬ä»¶ISPæ¨¡å— \~english Use the camera's own hardware ISP module
 }emSdkIspProcessor;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese ÉÁ¹âµÆĞÅºÅ¿ØÖÆ·½Ê½
+/// \~chinese é—ªå…‰ç¯ä¿¡å·æ§åˆ¶æ–¹å¼
 /// \~english Strobe signal control method
 typedef enum 
 {
-  STROBE_SYNC_WITH_TRIG_AUTO=0,		///< \~chinese ºÍ´¥·¢ĞÅºÅÍ¬²½£¬´¥·¢ºó£¬Ïà»ú½øĞĞÆØ¹âÊ±£¬×Ô¶¯Éú³ÉSTROBEĞÅºÅ¡£´ËÊ±£¬ÓĞĞ§¼«ĞÔ¿ÉÉèÖÃ(@link #CameraSetStrobePolarity @endlink)¡£ \~english Synchronized with the trigger signal, the STROBE signal is automatically generated when the camera performs exposure. At this point, the effective polarity can be set (@link #CameraSetStrobePolarity @endlink).
-  STROBE_SYNC_WITH_TRIG_MANUAL=1,   ///< \~chinese ºÍ´¥·¢ĞÅºÅÍ¬²½£¬´¥·¢ºó£¬STROBEÑÓÊ±Ö¸¶¨µÄÊ±¼äºó(@link #CameraSetStrobeDelayTime @endlink)£¬ÔÙ³ÖĞøÖ¸¶¨Ê±¼äµÄÂö³å(@link #CameraSetStrobePulseWidth @endlink)£¬ÓĞĞ§¼«ĞÔ¿ÉÉèÖÃ(@link #CameraSetStrobePolarity @endlink)¡£ \~english Synchronized with the trigger signal. After the trigger, STROBE is delayed by the specified time (@link #CameraSetStrobeDelayTime @endlink) and continues for the specified time (@link #CameraSetStrobePulseWidth @endlink). The effective polarity can be set (@link #CameraSetStrobePolarity @endlink).
-  STROBE_ALWAYS_HIGH=2,             ///< \~chinese Ê¼ÖÕÎª¸ß£¬ºöÂÔSTROBEĞÅºÅµÄÆäËûÉèÖÃ \~english Always high, ignoring other settings of the STROBE signal
-  STROBE_ALWAYS_LOW=3               ///< \~chinese Ê¼ÖÕÎªµÍ£¬ºöÂÔSTROBEĞÅºÅµÄÆäËûÉèÖÃ \~english Always low, ignoring other settings of the STROBE signal
+  STROBE_SYNC_WITH_TRIG_AUTO=0,		///< \~chinese å’Œè§¦å‘ä¿¡å·åŒæ­¥ï¼Œè§¦å‘åï¼Œç›¸æœºè¿›è¡Œæ›å…‰æ—¶ï¼Œè‡ªåŠ¨ç”ŸæˆSTROBEä¿¡å·ã€‚æ­¤æ—¶ï¼Œæœ‰æ•ˆææ€§å¯è®¾ç½®(@link #CameraSetStrobePolarity @endlink)ã€‚ \~english Synchronized with the trigger signal, the STROBE signal is automatically generated when the camera performs exposure. At this point, the effective polarity can be set (@link #CameraSetStrobePolarity @endlink).
+  STROBE_SYNC_WITH_TRIG_MANUAL=1,   ///< \~chinese å’Œè§¦å‘ä¿¡å·åŒæ­¥ï¼Œè§¦å‘åï¼ŒSTROBEå»¶æ—¶æŒ‡å®šçš„æ—¶é—´å(@link #CameraSetStrobeDelayTime @endlink)ï¼Œå†æŒç»­æŒ‡å®šæ—¶é—´çš„è„‰å†²(@link #CameraSetStrobePulseWidth @endlink)ï¼Œæœ‰æ•ˆææ€§å¯è®¾ç½®(@link #CameraSetStrobePolarity @endlink)ã€‚ \~english Synchronized with the trigger signal. After the trigger, STROBE is delayed by the specified time (@link #CameraSetStrobeDelayTime @endlink) and continues for the specified time (@link #CameraSetStrobePulseWidth @endlink). The effective polarity can be set (@link #CameraSetStrobePolarity @endlink).
+  STROBE_ALWAYS_HIGH=2,             ///< \~chinese å§‹ç»ˆä¸ºé«˜ï¼Œå¿½ç•¥STROBEä¿¡å·çš„å…¶ä»–è®¾ç½® \~english Always high, ignoring other settings of the STROBE signal
+  STROBE_ALWAYS_LOW=3               ///< \~chinese å§‹ç»ˆä¸ºä½ï¼Œå¿½ç•¥STROBEä¿¡å·çš„å…¶ä»–è®¾ç½® \~english Always low, ignoring other settings of the STROBE signal
 }emStrobeControl;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Ó²¼şÍâ´¥·¢µÄĞÅºÅÖÖÀà
+/// \~chinese ç¡¬ä»¶å¤–è§¦å‘çš„ä¿¡å·ç§ç±»
 /// \~english Signal types triggered by hardware
 typedef enum 
 {
-	EXT_TRIG_LEADING_EDGE=0,		///< \~chinese ÉÏÉıÑØ´¥·¢£¬Ä¬ÈÏÎª¸Ã·½Ê½ \~english	Rising edge trigger, default is this method
-	EXT_TRIG_TRAILING_EDGE=1,		///< \~chinese ÏÂ½µÑØ´¥·¢ \~english	Falling edge trigger
-	EXT_TRIG_HIGH_LEVEL=2,			///< \~chinese ¸ßµçÆ½´¥·¢,µçÆ½¿í¶È¾ö¶¨ÆØ¹âÊ±¼ä£¬½ö²¿·ÖĞÍºÅµÄÏà»úÖ§³ÖµçÆ½´¥·¢·½Ê½¡£ \~english The high level triggers, the level width determines the exposure time, only some models of cameras support level triggering.
-	EXT_TRIG_LOW_LEVEL=3,			///< \~chinese µÍµçÆ½´¥·¢ \~english	Low level trigger
-	EXT_TRIG_DOUBLE_EDGE=4,			///< \~chinese Ë«±ßÑØ´¥·¢ \~english	Bilateral trigger
+	EXT_TRIG_LEADING_EDGE=0,		///< \~chinese ä¸Šå‡æ²¿è§¦å‘ï¼Œé»˜è®¤ä¸ºè¯¥æ–¹å¼ \~english	Rising edge trigger, default is this method
+	EXT_TRIG_TRAILING_EDGE=1,		///< \~chinese ä¸‹é™æ²¿è§¦å‘ \~english	Falling edge trigger
+	EXT_TRIG_HIGH_LEVEL=2,			///< \~chinese é«˜ç”µå¹³è§¦å‘,ç”µå¹³å®½åº¦å†³å®šæ›å…‰æ—¶é—´ï¼Œä»…éƒ¨åˆ†å‹å·çš„ç›¸æœºæ”¯æŒç”µå¹³è§¦å‘æ–¹å¼ã€‚ \~english The high level triggers, the level width determines the exposure time, only some models of cameras support level triggering.
+	EXT_TRIG_LOW_LEVEL=3,			///< \~chinese ä½ç”µå¹³è§¦å‘ \~english	Low level trigger
+	EXT_TRIG_DOUBLE_EDGE=4,			///< \~chinese åŒè¾¹æ²¿è§¦å‘ \~english	Bilateral trigger
 }emExtTrigSignal;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Ó²¼şÍâ´¥·¢Ê±µÄ¿ìÃÅ·½Ê½
+/// \~chinese ç¡¬ä»¶å¤–è§¦å‘æ—¶çš„å¿«é—¨æ–¹å¼
 /// \~english Shutter mode when triggered by hardware
 typedef enum 
 {
-  EXT_TRIG_EXP_STANDARD=0,			///< \~chinese ±ê×¼·½Ê½£¬Ä¬ÈÏÎª¸Ã·½Ê½¡£ \~english	Standard mode, the default is this mode.
-  EXT_TRIG_EXP_GRR=1,				///< \~chinese È«¾Ö¸´Î»·½Ê½£¬²¿·Ö¹ö¶¯¿ìÃÅµÄCMOSĞÍºÅµÄÏà»úÖ§³Ö¸Ã·½Ê½£¬ÅäºÏÍâ²¿»úĞµ¿ìÃÅ£¬¿ÉÒÔ´ïµ½È«¾Ö¿ìÃÅµÄĞ§¹û£¬ÊÊºÏÅÄ¸ßËÙÔË¶¯µÄÎïÌå \~english Global reset mode, part of the rolling shutter CMOS model camera supports this method, with the external mechanical shutter, you can achieve the effect of a global shutter, suitable for shooting high-speed objects
+  EXT_TRIG_EXP_STANDARD=0,			///< \~chinese æ ‡å‡†æ–¹å¼ï¼Œé»˜è®¤ä¸ºè¯¥æ–¹å¼ã€‚ \~english	Standard mode, the default is this mode.
+  EXT_TRIG_EXP_GRR=1,				///< \~chinese å…¨å±€å¤ä½æ–¹å¼ï¼Œéƒ¨åˆ†æ»šåŠ¨å¿«é—¨çš„CMOSå‹å·çš„ç›¸æœºæ”¯æŒè¯¥æ–¹å¼ï¼Œé…åˆå¤–éƒ¨æœºæ¢°å¿«é—¨ï¼Œå¯ä»¥è¾¾åˆ°å…¨å±€å¿«é—¨çš„æ•ˆæœï¼Œé€‚åˆæ‹é«˜é€Ÿè¿åŠ¨çš„ç‰©ä½“ \~english Global reset mode, part of the rolling shutter CMOS model camera supports this method, with the external mechanical shutter, you can achieve the effect of a global shutter, suitable for shooting high-speed objects
 }emExtTrigShutterMode;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese ÇåÎú¶ÈÆÀ¹ÀËã·¨
+/// \~chinese æ¸…æ™°åº¦è¯„ä¼°ç®—æ³•
 /// \~english Sharpness assessment algorithm
 typedef enum
 {
-	EVALUATE_DEFINITION_DEVIATION=0,	///< \~chinese ·½²î·¨ \~english	Variance method
-	EVALUATE_DEFINITION_SMD=1,			///< \~chinese ÏàÁÚÏñËØ»Ò¶È·½²î·¨ \~english Adjacent Pixel Gray Difference Method
-	EVALUATE_DEFINITION_GRADIENT=2,		///< \~chinese Ìİ¶ÈÍ³¼Æ \~english Gradient statistics
+	EVALUATE_DEFINITION_DEVIATION=0,	///< \~chinese æ–¹å·®æ³• \~english	Variance method
+	EVALUATE_DEFINITION_SMD=1,			///< \~chinese ç›¸é‚»åƒç´ ç°åº¦æ–¹å·®æ³• \~english Adjacent Pixel Gray Difference Method
+	EVALUATE_DEFINITION_GRADIENT=2,		///< \~chinese æ¢¯åº¦ç»Ÿè®¡ \~english Gradient statistics
 	EVALUATE_DEFINITION_SOBEL=3,		///< \~chinese Sobel \~english Sobel
 	EVALUATE_DEFINITION_ROBERT=4,		///< \~chinese Robert \~english Robert
 	EVALUATE_DEFINITION_LAPLACE=5,		///< \~chinese Laplace \~english Laplace
 
-	EVALUATE_DEFINITION_ALG_MAX=6,		///< \~chinese Ëã·¨¸öÊı \~english The number of algorithms
+	EVALUATE_DEFINITION_ALG_MAX=6,		///< \~chinese ç®—æ³•ä¸ªæ•° \~english The number of algorithms
 }emEvaluateDefinitionAlgorith;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese ÎÄ×ÖÊä³ö±êÖ¾
+/// \~chinese æ–‡å­—è¾“å‡ºæ ‡å¿—
 /// \~english Text output flag
 typedef enum
 {
-	CAMERA_DT_VCENTER		= 0x1,		///< \~chinese ´¹Ö±¾ÓÖĞ \~english Vertically centered
-	CAMERA_DT_BOTTOM		= 0x2,		///< \~chinese µ×²¿¶ÔÆë \~english Bottom alignment
-	CAMERA_DT_HCENTER		= 0x4,		///< \~chinese Ë®Æ½¾ÓÖĞ \~english Horizontally centered
-	CAMERA_DT_RIGHT			= 0x8,		///< \~chinese ÓÒ¶ÔÆë \~english	Right alignment
-	CAMERA_DT_SINGLELINE	= 0x10,		///< \~chinese µ¥ĞĞÏÔÊ¾ \~english Single-line display
-	CAMERA_DT_ALPHA_BLEND	= 0x20,		///< \~chinese Alpha»ìºÏ \~english Alpha blend
-	CAMERA_DT_ANTI_ALIASING = 0x40,		///< \~chinese ¿¹¾â³İ \~english	Anti-aliasing
+	CAMERA_DT_VCENTER		= 0x1,		///< \~chinese å‚ç›´å±…ä¸­ \~english Vertically centered
+	CAMERA_DT_BOTTOM		= 0x2,		///< \~chinese åº•éƒ¨å¯¹é½ \~english Bottom alignment
+	CAMERA_DT_HCENTER		= 0x4,		///< \~chinese æ°´å¹³å±…ä¸­ \~english Horizontally centered
+	CAMERA_DT_RIGHT			= 0x8,		///< \~chinese å³å¯¹é½ \~english	Right alignment
+	CAMERA_DT_SINGLELINE	= 0x10,		///< \~chinese å•è¡Œæ˜¾ç¤º \~english Single-line display
+	CAMERA_DT_ALPHA_BLEND	= 0x20,		///< \~chinese Alphaæ··åˆ \~english Alpha blend
+	CAMERA_DT_ANTI_ALIASING = 0x40,		///< \~chinese æŠ—é”¯é½¿ \~english	Anti-aliasing
 }emCameraDrawTextFlags;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese GPIOÄ£Ê½
+/// \~chinese GPIOæ¨¡å¼
 /// \~english GPIO Mode
 typedef enum 
 {
-	IOMODE_TRIG_INPUT=0,		///< \~chinese ´¥·¢ÊäÈë \~english Trigger input
-	IOMODE_STROBE_OUTPUT=1,		///< \~chinese ÉÁ¹âµÆÊä³ö \~english Strobe output
-	IOMODE_GP_INPUT=2,			///< \~chinese Í¨ÓÃĞÍÊäÈë \~english Universal input
-	IOMODE_GP_OUTPUT=3,			///< \~chinese Í¨ÓÃĞÍÊä³ö \~english Universal output
-	IOMODE_PWM_OUTPUT=4,		///< \~chinese PWMĞÍÊä³ö \~english PWM output
-	IOMODE_ROTARYENC_INPUT=5,   ///< \~chinese ±àÂëÆ÷ÊäÈë \~english rotary input
+	IOMODE_TRIG_INPUT=0,		///< \~chinese è§¦å‘è¾“å…¥ \~english Trigger input
+	IOMODE_STROBE_OUTPUT=1,		///< \~chinese é—ªå…‰ç¯è¾“å‡º \~english Strobe output
+	IOMODE_GP_INPUT=2,			///< \~chinese é€šç”¨å‹è¾“å…¥ \~english Universal input
+	IOMODE_GP_OUTPUT=3,			///< \~chinese é€šç”¨å‹è¾“å‡º \~english Universal output
+	IOMODE_PWM_OUTPUT=4,		///< \~chinese PWMå‹è¾“å‡º \~english PWM output
+	IOMODE_ROTARYENC_INPUT=5,   ///< \~chinese ç¼–ç å™¨è¾“å…¥ \~english rotary input
 }emCameraGPIOMode;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese GPIO ¸ñÊ½
+/// \~chinese GPIO æ ¼å¼
 /// \~english GPIO Format
 typedef enum 
 {
-	IOFORMAT_SINGLE=0,			///< \~chinese µ¥¶Ë  \~english single ended
-	IOFORMAT_RS422=1,			///< \~chinese ²î·ÖRS422 \~english Differential RS422
-	IOFORMAT_RS422_TERM=2,		///< \~chinese ²î·ÖRS422´øÖÕ¶Ëµç×è \~english Differential RS422 and Termination Enable
+	IOFORMAT_SINGLE=0,			///< \~chinese å•ç«¯  \~english single ended
+	IOFORMAT_RS422=1,			///< \~chinese å·®åˆ†RS422 \~english Differential RS422
+	IOFORMAT_RS422_TERM=2,		///< \~chinese å·®åˆ†RS422å¸¦ç»ˆç«¯ç”µé˜» \~english Differential RS422 and Termination Enable
 }emCameraGPIOFormat;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese È¡Í¼ÓÅÏÈ¼¶
+/// \~chinese å–å›¾ä¼˜å…ˆçº§
 /// \~english Get Image priority
 typedef enum
 {
-	CAMERA_GET_IMAGE_PRIORITY_OLDEST=0,		///< \~chinese »ñÈ¡»º´æÖĞ×î¾ÉµÄÒ»Ö¡ \~english	Get the oldest frame in the cache
-	CAMERA_GET_IMAGE_PRIORITY_NEWEST=1,		///< \~chinese »ñÈ¡»º´æÖĞ×îĞÂµÄÒ»Ö¡£¨±È´ËÖ¡¾ÉµÄ½«È«²¿¶ªÆú£© \~english Get the latest frame in the cache (older than this frame will be discarded)
+	CAMERA_GET_IMAGE_PRIORITY_OLDEST=0,		///< \~chinese è·å–ç¼“å­˜ä¸­æœ€æ—§çš„ä¸€å¸§ \~english	Get the oldest frame in the cache
+	CAMERA_GET_IMAGE_PRIORITY_NEWEST=1,		///< \~chinese è·å–ç¼“å­˜ä¸­æœ€æ–°çš„ä¸€å¸§ï¼ˆæ¯”æ­¤å¸§æ—§çš„å°†å…¨éƒ¨ä¸¢å¼ƒï¼‰ \~english Get the latest frame in the cache (older than this frame will be discarded)
 
-	/// \~chinese ¶ªÆú»º´æÖĞµÄËùÓĞÖ¡£¬²¢ÇÒÈç¹û´Ë¿ÌÏà»úÕıÔÚÆØ¹â»ò´«Êä½«»á±»Á¢¼´´ò¶Ï£¬µÈ´ı½ÓÊÕÏÂÒ»Ö¡
-	/// \note Ä³Ğ©ĞÍºÅµÄÏà»ú²»Ö§³Ö´Ë¹¦ÄÜ£¬¶ÔÓÚ²»Ö§³Ö´Ë¹¦ÄÜµÄÏà»úÕâ¸ö±êÖ¾Ïàµ±ÓÚ@link #CAMERA_GET_IMAGE_PRIORITY_OLDEST @endlink
+	/// \~chinese ä¸¢å¼ƒç¼“å­˜ä¸­çš„æ‰€æœ‰å¸§ï¼Œå¹¶ä¸”å¦‚æœæ­¤åˆ»ç›¸æœºæ­£åœ¨æ›å…‰æˆ–ä¼ è¾“å°†ä¼šè¢«ç«‹å³æ‰“æ–­ï¼Œç­‰å¾…æ¥æ”¶ä¸‹ä¸€å¸§
+	/// \note æŸäº›å‹å·çš„ç›¸æœºä¸æ”¯æŒæ­¤åŠŸèƒ½ï¼Œå¯¹äºä¸æ”¯æŒæ­¤åŠŸèƒ½çš„ç›¸æœºè¿™ä¸ªæ ‡å¿—ç›¸å½“äº@link #CAMERA_GET_IMAGE_PRIORITY_OLDEST @endlink
 	/// \~english All frames in the cache are discarded, and if the camera is now being exposed or transmitted it will be immediately interrupted, waiting to receive the next frame
 	/// \note Some models do not support this feature. For cameras that do not support this feature this flag is equivalent to @link #CAMERA_GET_IMAGE_PRIORITY_OLDEST @endlink
 	CAMERA_GET_IMAGE_PRIORITY_NEXT=2,
 }emCameraGetImagePriority;
 
 /// @ingroup MV_ENUM_TYPE
-/// \~chinese Èí´¥·¢¹¦ÄÜ±êÖ¾
+/// \~chinese è½¯è§¦å‘åŠŸèƒ½æ ‡å¿—
 /// \~english Soft trigger function flag
 typedef enum
 {
-	CAMERA_ST_CLEAR_BUFFER_BEFORE	= 0x1,	///< \~chinese ÔÚÈí´¥·¢Ö®Ç°ÏÈÇå¿ÕÏà»úÒÑ»º´æµÄÖ¡ \~english Empty camera-cached frames before soft triggering
+	CAMERA_ST_CLEAR_BUFFER_BEFORE	= 0x1,	///< \~chinese åœ¨è½¯è§¦å‘ä¹‹å‰å…ˆæ¸…ç©ºç›¸æœºå·²ç¼“å­˜çš„å¸§ \~english Empty camera-cached frames before soft triggering
 }emCameraSoftTriggerExFlags;
 
-/// \~chinese Ïà»úµÄÉè±¸ĞÅÏ¢
+/// \~chinese ç›¸æœºçš„è®¾å¤‡ä¿¡æ¯
 /// \~english Camera device information
 typedef struct
 {
-    char acProductSeries[32];	///< \~chinese ²úÆ·ÏµÁĞ \~english Product Series
-    char acProductName[32];		///< \~chinese ²úÆ·Ãû³Æ \~english product name
+    char acProductSeries[32];	///< \~chinese äº§å“ç³»åˆ— \~english Product Series
+    char acProductName[32];		///< \~chinese äº§å“åç§° \~english product name
 
-	/// \~chinese ²úÆ·êÇ³Æ£¬ÓÃ»§¿É×Ô¶¨Òå¸ÄêÇ³Æ£¬±£´æÔÚÏà»úÄÚ£¬ÓÃÓÚÇø·Ö¶à¸öÏà»úÍ¬Ê±Ê¹ÓÃ,¿ÉÒÔÓÃ@link #CameraSetFriendlyName @endlink½Ó¿Ú¸Ä±ä¸ÃêÇ³Æ£¬Éè±¸ÖØÆôºóÉúĞ§¡£ 
+	/// \~chinese äº§å“æ˜µç§°ï¼Œç”¨æˆ·å¯è‡ªå®šä¹‰æ”¹æ˜µç§°ï¼Œä¿å­˜åœ¨ç›¸æœºå†…ï¼Œç”¨äºåŒºåˆ†å¤šä¸ªç›¸æœºåŒæ—¶ä½¿ç”¨,å¯ä»¥ç”¨@link #CameraSetFriendlyName @endlinkæ¥å£æ”¹å˜è¯¥æ˜µç§°ï¼Œè®¾å¤‡é‡å¯åç”Ÿæ•ˆã€‚ 
 	/// \~english Product nicknames, users can customize the nickname, saved in the camera, used to distinguish between multiple cameras at the same time, you can use the @link #CameraSetFriendlyName @endlink interface to change the nickname, the device takes effect after restart.
     char acFriendlyName[32];
-    char acLinkName[32];		///< \~chinese ÄÚºË·ûºÅÁ¬½ÓÃû£¬ÄÚ²¿Ê¹ÓÃ \~english	Kernel symbolic connection name, internal use
-    char acDriverVersion[32];	///< \~chinese Çı¶¯°æ±¾ \~english Driver version
-    char acSensorType[32];		///< \~chinese sensorÀàĞÍ \~english	Sensor type
-    char acPortType[32];		///< \~chinese ½Ó¿ÚÀàĞÍ \~english Interface Type
-    char acSn[32];				///< \~chinese ²úÆ·Î¨Ò»ĞòÁĞºÅ \~english Product unique serial number
-    UINT uInstance;				///< \~chinese ¸ÃĞÍºÅÏà»úÔÚ¸ÃµçÄÔÉÏµÄÊµÀıË÷ÒıºÅ£¬ÓÃÓÚÇø·ÖÍ¬ĞÍºÅ¶àÏà»ú \~english The example index number of this model camera on this computer, used to distinguish the same model multiple cameras
+    char acLinkName[32];		///< \~chinese å†…æ ¸ç¬¦å·è¿æ¥åï¼Œå†…éƒ¨ä½¿ç”¨ \~english	Kernel symbolic connection name, internal use
+    char acDriverVersion[32];	///< \~chinese é©±åŠ¨ç‰ˆæœ¬ \~english Driver version
+    char acSensorType[32];		///< \~chinese sensorç±»å‹ \~english	Sensor type
+    char acPortType[32];		///< \~chinese æ¥å£ç±»å‹ \~english Interface Type
+    char acSn[32];				///< \~chinese äº§å“å”¯ä¸€åºåˆ—å· \~english Product unique serial number
+    UINT uInstance;				///< \~chinese è¯¥å‹å·ç›¸æœºåœ¨è¯¥ç”µè„‘ä¸Šçš„å®ä¾‹ç´¢å¼•å·ï¼Œç”¨äºåŒºåˆ†åŒå‹å·å¤šç›¸æœº \~english The example index number of this model camera on this computer, used to distinguish the same model multiple cameras
 } tSdkCameraDevInfo;
 
 /// @ingroup MV_MACRO_TYPE 
 /// @{
-#define EXT_TRIG_MASK_GRR_SHUTTER  1	///< \~chinese ¿ìÃÅÖ§³ÖGRRÄ£Ê½ \~english Shutter supports GRR mode
-#define EXT_TRIG_MASK_LEVEL_MODE   2	///< \~chinese Ö§³ÖµçÆ½´¥·¢ \~english Support level trigger
-#define EXT_TRIG_MASK_DOUBLE_EDGE  4	///< \~chinese Ö§³ÖË«±ßÑØ´¥·¢ \~english Supports bilateral triggering
-#define EXT_TRIG_MASK_BUFFERED_DELAY 8	///< \~chinese Ö§³ÖĞÅºÅºóÑÓ \~english Supports signal delayed activation
+#define EXT_TRIG_MASK_GRR_SHUTTER  1	///< \~chinese å¿«é—¨æ”¯æŒGRRæ¨¡å¼ \~english Shutter supports GRR mode
+#define EXT_TRIG_MASK_LEVEL_MODE   2	///< \~chinese æ”¯æŒç”µå¹³è§¦å‘ \~english Support level trigger
+#define EXT_TRIG_MASK_DOUBLE_EDGE  4	///< \~chinese æ”¯æŒåŒè¾¹æ²¿è§¦å‘ \~english Supports bilateral triggering
+#define EXT_TRIG_MASK_BUFFERED_DELAY 8	///< \~chinese æ”¯æŒä¿¡å·åå»¶ \~english Supports signal delayed activation
 
-//tSdkResolutionRange½á¹¹ÌåÖĞSKIP¡¢ BIN¡¢RESAMPLEÄ£Ê½µÄÑÚÂëÖµ
-#define MASK_2X2_HD     (1<<0)    //Ó²¼şSKIP¡¢BIN¡¢ÖØ²ÉÑù 2X2
+//tSdkResolutionRangeç»“æ„ä½“ä¸­SKIPã€ BINã€RESAMPLEæ¨¡å¼çš„æ©ç å€¼
+#define MASK_2X2_HD     (1<<0)    //ç¡¬ä»¶SKIPã€BINã€é‡é‡‡æ · 2X2
 #define MASK_3X3_HD     (1<<1)
 #define MASK_4X4_HD     (1<<2)
 #define MASK_5X5_HD     (1<<3)
@@ -441,7 +441,7 @@ typedef struct
 #define MASK_15X15_HD   (1<<13)
 #define MASK_16X16_HD   (1<<14)
 #define MASK_17X17_HD   (1<<15)
-#define MASK_2X2_SW     (1<<16)   //Èí¼şSKIP¡¢BIN¡¢ÖØ²ÉÑù 2X2
+#define MASK_2X2_SW     (1<<16)   //è½¯ä»¶SKIPã€BINã€é‡é‡‡æ · 2X2
 #define MASK_3X3_SW     (1<<17)
 #define MASK_4X4_SW     (1<<18)
 #define MASK_5X5_SW     (1<<19)
@@ -459,319 +459,319 @@ typedef struct
 #define MASK_17X17_SW   (1<<31)
 /// @}
 
-/// \~chinese Ïà»úµÄ·Ö±æÂÊÉè¶¨·¶Î§£¬¿ÉÓÃÓÚ¹¹¼şUI
+/// \~chinese ç›¸æœºçš„åˆ†è¾¨ç‡è®¾å®šèŒƒå›´ï¼Œå¯ç”¨äºæ„ä»¶UI
 /// \~english Camera resolution setting range, can be used for component UI
 typedef struct
 {
-  INT iHeightMax;			///< \~chinese Í¼Ïñ×î´ó¸ß¶È \~english Maximum image height
-  INT iHeightMin;           ///< \~chinese Í¼Ïñ×îĞ¡¸ß¶È \~english Image minimum height
-  INT iWidthMax;            ///< \~chinese Í¼Ïñ×î´ó¿í¶È \~english The maximum width of the image
-  INT iWidthMin;            ///< \~chinese Í¼Ïñ×îĞ¡¿í¶È \~english The minimum width of the image
-  UINT uSkipModeMask;       ///< \~chinese SKIPÄ£Ê½ÑÚÂë£¬Îª0£¬±íÊ¾²»Ö§³ÖSKIP ¡£bit0Îª1,±íÊ¾Ö§³ÖSKIP 2x2 ;bit1Îª1£¬±íÊ¾Ö§³ÖSKIP 3x3.... \~english The SKIP mode mask, which is 0, indicates that SKIP is not supported. Bit0 is 1 to indicate that SKIP 2x2 is supported; bit1 is 1 to indicate that SKIP 3x3 is supported....
-  UINT uBinSumModeMask;     ///< \~chinese BIN(ÇóºÍ)Ä£Ê½ÑÚÂë£¬Îª0£¬±íÊ¾²»Ö§³ÖBIN ¡£bit0Îª1,±íÊ¾Ö§³ÖBIN 2x2 ;bit1Îª1£¬±íÊ¾Ö§³ÖBIN 3x3.... \~english The BIN (sum) pattern mask, which is 0, indicates that BIN is not supported. Bit0 is 1, indicating that BIN 2x2 is supported; bit1 is 1, indicating that BIN 3x3 is supported....
-  UINT uBinAverageModeMask; ///< \~chinese BIN(Çó¾ùÖµ)Ä£Ê½ÑÚÂë£¬Îª0£¬±íÊ¾²»Ö§³ÖBIN ¡£bit0Îª1,±íÊ¾Ö§³ÖBIN 2x2 ;bit1Îª1£¬±íÊ¾Ö§³ÖBIN 3x3.... \~english The BIN (mean value) mode mask, which is 0, indicates that BIN is not supported. Bit0 is 1, indicating that BIN 2x2 is supported; bit1 is 1, indicating that BIN 3x3 is supported....
-  UINT uResampleMask;       ///< \~chinese Ó²¼şÖØ²ÉÑùµÄÑÚÂë \~english Hardware resampling mask
+  INT iHeightMax;			///< \~chinese å›¾åƒæœ€å¤§é«˜åº¦ \~english Maximum image height
+  INT iHeightMin;           ///< \~chinese å›¾åƒæœ€å°é«˜åº¦ \~english Image minimum height
+  INT iWidthMax;            ///< \~chinese å›¾åƒæœ€å¤§å®½åº¦ \~english The maximum width of the image
+  INT iWidthMin;            ///< \~chinese å›¾åƒæœ€å°å®½åº¦ \~english The minimum width of the image
+  UINT uSkipModeMask;       ///< \~chinese SKIPæ¨¡å¼æ©ç ï¼Œä¸º0ï¼Œè¡¨ç¤ºä¸æ”¯æŒSKIP ã€‚bit0ä¸º1,è¡¨ç¤ºæ”¯æŒSKIP 2x2 ;bit1ä¸º1ï¼Œè¡¨ç¤ºæ”¯æŒSKIP 3x3.... \~english The SKIP mode mask, which is 0, indicates that SKIP is not supported. Bit0 is 1 to indicate that SKIP 2x2 is supported; bit1 is 1 to indicate that SKIP 3x3 is supported....
+  UINT uBinSumModeMask;     ///< \~chinese BIN(æ±‚å’Œ)æ¨¡å¼æ©ç ï¼Œä¸º0ï¼Œè¡¨ç¤ºä¸æ”¯æŒBIN ã€‚bit0ä¸º1,è¡¨ç¤ºæ”¯æŒBIN 2x2 ;bit1ä¸º1ï¼Œè¡¨ç¤ºæ”¯æŒBIN 3x3.... \~english The BIN (sum) pattern mask, which is 0, indicates that BIN is not supported. Bit0 is 1, indicating that BIN 2x2 is supported; bit1 is 1, indicating that BIN 3x3 is supported....
+  UINT uBinAverageModeMask; ///< \~chinese BIN(æ±‚å‡å€¼)æ¨¡å¼æ©ç ï¼Œä¸º0ï¼Œè¡¨ç¤ºä¸æ”¯æŒBIN ã€‚bit0ä¸º1,è¡¨ç¤ºæ”¯æŒBIN 2x2 ;bit1ä¸º1ï¼Œè¡¨ç¤ºæ”¯æŒBIN 3x3.... \~english The BIN (mean value) mode mask, which is 0, indicates that BIN is not supported. Bit0 is 1, indicating that BIN 2x2 is supported; bit1 is 1, indicating that BIN 3x3 is supported....
+  UINT uResampleMask;       ///< \~chinese ç¡¬ä»¶é‡é‡‡æ ·çš„æ©ç  \~english Hardware resampling mask
 } tSdkResolutionRange;
 
-/// \~chinese Ïà»úµÄ·Ö±æÂÊÃèÊö
+/// \~chinese ç›¸æœºçš„åˆ†è¾¨ç‡æè¿°
 /// \~english Camera resolution description
 typedef struct
 {
-  INT     iIndex;				///< \~chinese Ë÷ÒıºÅ£¬[0,N]±íÊ¾Ô¤ÉèµÄ·Ö±æÂÊ(N ÎªÔ¤Éè·Ö±æÂÊµÄ×î´ó¸öÊı£¬Ò»°ã²»³¬¹ı20),OXFF ±íÊ¾×Ô¶¨Òå·Ö±æÂÊ(ROI) \~english Index number, [0, N] indicates the preset resolution (N is the maximum number of preset resolutions, generally no more than 20), OXFF indicates custom resolution (ROI)
-  char    acDescription[32];	///< \~chinese ¸Ã·Ö±æÂÊµÄÃèÊöĞÅÏ¢¡£½öÔ¤Éè·Ö±æÂÊÊ±¸ÃĞÅÏ¢ÓĞĞ§¡£×Ô¶¨Òå·Ö±æÂÊ¿ÉºöÂÔ¸ÃĞÅÏ¢ \~english The description of the resolution. This information is valid only when the resolution is preset. Custom resolution ignores this information
-  UINT    uBinSumMode;			///< \~chinese BIN(ÇóºÍ)µÄÄ£Ê½,·¶Î§²»ÄÜ³¬¹ıtSdkResolutionRange.uBinSumModeMask \~english The BIN (sum) mode cannot exceed the tSdkResolutionRange.uBinSumModeMask
-  UINT    uBinAverageMode;		///< \~chinese BIN(Çó¾ùÖµ)µÄÄ£Ê½,·¶Î§²»ÄÜ³¬¹ıtSdkResolutionRange.uBinAverageModeMask \~english BIN (average) mode, the range cannot exceed tSdkResolutionRange.uBinAverageModeMask 
-  UINT    uSkipMode;			///< \~chinese ÊÇ·ñSKIPµÄ³ß´ç£¬Îª0±íÊ¾½ûÖ¹SKIPÄ£Ê½£¬·¶Î§²»ÄÜ³¬¹ıtSdkResolutionRange.uSkipModeMask \~english Whether the SKIP size is 0 indicates that the SKIP mode is disabled and the range cannot exceed the tSdkResolutionRange.uSkipModeMask
-  UINT    uResampleMask;		///< \~chinese Ó²¼şÖØ²ÉÑùµÄÑÚÂë \~english Hardware resampling mask
-  INT     iHOffsetFOV;			///< \~chinese ²É¼¯ÊÓ³¡Ïà¶ÔÓÚSensor×î´óÊÓ³¡×óÉÏ½ÇµÄË®Æ½Æ«ÒÆ \~english The horizontal offset of the acquisition field of view relative to the top left corner of the Sensor's largest field of view
-  INT     iVOffsetFOV;			///< \~chinese ²É¼¯ÊÓ³¡Ïà¶ÔÓÚSensor×î´óÊÓ³¡×óÉÏ½ÇµÄ´¹Ö±Æ«ÒÆ \~english The vertical offset of the acquisition field of view relative to the upper left corner of the Sensor's largest field of view
-  INT     iWidthFOV;			///< \~chinese ²É¼¯ÊÓ³¡µÄ¿í¶È \~english The width of the field of view
-  INT     iHeightFOV;			///< \~chinese ²É¼¯ÊÓ³¡µÄ¸ß¶È \~english The height of the field of view
-  INT     iWidth;				///< \~chinese Ïà»ú×îÖÕÊä³öµÄÍ¼ÏñµÄ¿í¶È \~english The width of the final output image of the camera
-  INT     iHeight;				///< \~chinese Ïà»ú×îÖÕÊä³öµÄÍ¼ÏñµÄ¸ß¶È \~english The height of the final output image of the camera
-  INT     iWidthZoomHd;			///< \~chinese Ó²¼şËõ·ÅµÄ¿í¶È,²»ĞèÒª½øĞĞ´Ë²Ù×÷µÄ·Ö±æÂÊ£¬´Ë±äÁ¿ÉèÖÃÎª0. \~english The width of the hardware zoom, resolution that does not require this operation, this variable is set to 0.
-  INT     iHeightZoomHd;		///< \~chinese Ó²¼şËõ·ÅµÄ¸ß¶È,²»ĞèÒª½øĞĞ´Ë²Ù×÷µÄ·Ö±æÂÊ£¬´Ë±äÁ¿ÉèÖÃÎª0. \~english The height of the hardware zoom, resolution that does not require this operation, this variable is set to 0.
-  INT     iWidthZoomSw;			///< \~chinese Èí¼şËõ·ÅµÄ¿í¶È,²»ĞèÒª½øĞĞ´Ë²Ù×÷µÄ·Ö±æÂÊ£¬´Ë±äÁ¿ÉèÖÃÎª0. \~english The width of the software's zoom, which does not require the resolution of this operation, this variable is set to 0.
-  INT     iHeightZoomSw;		///< \~chinese Èí¼şËõ·ÅµÄ¸ß¶È,²»ĞèÒª½øĞĞ´Ë²Ù×÷µÄ·Ö±æÂÊ£¬´Ë±äÁ¿ÉèÖÃÎª0. \~english The height of the software's zoom, which does not require the resolution of this operation, this variable is set to 0.
+  INT     iIndex;				///< \~chinese ç´¢å¼•å·ï¼Œ[0,N]è¡¨ç¤ºé¢„è®¾çš„åˆ†è¾¨ç‡(N ä¸ºé¢„è®¾åˆ†è¾¨ç‡çš„æœ€å¤§ä¸ªæ•°ï¼Œä¸€èˆ¬ä¸è¶…è¿‡20),OXFF è¡¨ç¤ºè‡ªå®šä¹‰åˆ†è¾¨ç‡(ROI) \~english Index number, [0, N] indicates the preset resolution (N is the maximum number of preset resolutions, generally no more than 20), OXFF indicates custom resolution (ROI)
+  char    acDescription[32];	///< \~chinese è¯¥åˆ†è¾¨ç‡çš„æè¿°ä¿¡æ¯ã€‚ä»…é¢„è®¾åˆ†è¾¨ç‡æ—¶è¯¥ä¿¡æ¯æœ‰æ•ˆã€‚è‡ªå®šä¹‰åˆ†è¾¨ç‡å¯å¿½ç•¥è¯¥ä¿¡æ¯ \~english The description of the resolution. This information is valid only when the resolution is preset. Custom resolution ignores this information
+  UINT    uBinSumMode;			///< \~chinese BIN(æ±‚å’Œ)çš„æ¨¡å¼,èŒƒå›´ä¸èƒ½è¶…è¿‡tSdkResolutionRange.uBinSumModeMask \~english The BIN (sum) mode cannot exceed the tSdkResolutionRange.uBinSumModeMask
+  UINT    uBinAverageMode;		///< \~chinese BIN(æ±‚å‡å€¼)çš„æ¨¡å¼,èŒƒå›´ä¸èƒ½è¶…è¿‡tSdkResolutionRange.uBinAverageModeMask \~english BIN (average) mode, the range cannot exceed tSdkResolutionRange.uBinAverageModeMask 
+  UINT    uSkipMode;			///< \~chinese æ˜¯å¦SKIPçš„å°ºå¯¸ï¼Œä¸º0è¡¨ç¤ºç¦æ­¢SKIPæ¨¡å¼ï¼ŒèŒƒå›´ä¸èƒ½è¶…è¿‡tSdkResolutionRange.uSkipModeMask \~english Whether the SKIP size is 0 indicates that the SKIP mode is disabled and the range cannot exceed the tSdkResolutionRange.uSkipModeMask
+  UINT    uResampleMask;		///< \~chinese ç¡¬ä»¶é‡é‡‡æ ·çš„æ©ç  \~english Hardware resampling mask
+  INT     iHOffsetFOV;			///< \~chinese é‡‡é›†è§†åœºç›¸å¯¹äºSensoræœ€å¤§è§†åœºå·¦ä¸Šè§’çš„æ°´å¹³åç§» \~english The horizontal offset of the acquisition field of view relative to the top left corner of the Sensor's largest field of view
+  INT     iVOffsetFOV;			///< \~chinese é‡‡é›†è§†åœºç›¸å¯¹äºSensoræœ€å¤§è§†åœºå·¦ä¸Šè§’çš„å‚ç›´åç§» \~english The vertical offset of the acquisition field of view relative to the upper left corner of the Sensor's largest field of view
+  INT     iWidthFOV;			///< \~chinese é‡‡é›†è§†åœºçš„å®½åº¦ \~english The width of the field of view
+  INT     iHeightFOV;			///< \~chinese é‡‡é›†è§†åœºçš„é«˜åº¦ \~english The height of the field of view
+  INT     iWidth;				///< \~chinese ç›¸æœºæœ€ç»ˆè¾“å‡ºçš„å›¾åƒçš„å®½åº¦ \~english The width of the final output image of the camera
+  INT     iHeight;				///< \~chinese ç›¸æœºæœ€ç»ˆè¾“å‡ºçš„å›¾åƒçš„é«˜åº¦ \~english The height of the final output image of the camera
+  INT     iWidthZoomHd;			///< \~chinese ç¡¬ä»¶ç¼©æ”¾çš„å®½åº¦,ä¸éœ€è¦è¿›è¡Œæ­¤æ“ä½œçš„åˆ†è¾¨ç‡ï¼Œæ­¤å˜é‡è®¾ç½®ä¸º0. \~english The width of the hardware zoom, resolution that does not require this operation, this variable is set to 0.
+  INT     iHeightZoomHd;		///< \~chinese ç¡¬ä»¶ç¼©æ”¾çš„é«˜åº¦,ä¸éœ€è¦è¿›è¡Œæ­¤æ“ä½œçš„åˆ†è¾¨ç‡ï¼Œæ­¤å˜é‡è®¾ç½®ä¸º0. \~english The height of the hardware zoom, resolution that does not require this operation, this variable is set to 0.
+  INT     iWidthZoomSw;			///< \~chinese è½¯ä»¶ç¼©æ”¾çš„å®½åº¦,ä¸éœ€è¦è¿›è¡Œæ­¤æ“ä½œçš„åˆ†è¾¨ç‡ï¼Œæ­¤å˜é‡è®¾ç½®ä¸º0. \~english The width of the software's zoom, which does not require the resolution of this operation, this variable is set to 0.
+  INT     iHeightZoomSw;		///< \~chinese è½¯ä»¶ç¼©æ”¾çš„é«˜åº¦,ä¸éœ€è¦è¿›è¡Œæ­¤æ“ä½œçš„åˆ†è¾¨ç‡ï¼Œæ­¤å˜é‡è®¾ç½®ä¸º0. \~english The height of the software's zoom, which does not require the resolution of this operation, this variable is set to 0.
 } tSdkImageResolution;
 
-/// \~chinese Ïà»ú°×Æ½ºâÉ«ÎÂÄ£Ê½ÃèÊöĞÅÏ¢
+/// \~chinese ç›¸æœºç™½å¹³è¡¡è‰²æ¸©æ¨¡å¼æè¿°ä¿¡æ¯
 /// \~english Camera white balance color temperature mode description information
 typedef struct
 {
-    INT  iIndex;			///< \~chinese Ä£Ê½Ë÷ÒıºÅ \~english	Mode index number
-    char acDescription[32];	///< \~chinese ÃèÊöĞÅÏ¢ \~english Description
+    INT  iIndex;			///< \~chinese æ¨¡å¼ç´¢å¼•å· \~english	Mode index number
+    char acDescription[32];	///< \~chinese æè¿°ä¿¡æ¯ \~english Description
 } tSdkColorTemperatureDes;
 
-/// \~chinese Ïà»úÖ¡ÂÊÃèÊöĞÅÏ¢
+/// \~chinese ç›¸æœºå¸§ç‡æè¿°ä¿¡æ¯
 /// \~english Camera frame rate description information
 typedef struct
 {
-    INT  iIndex;             ///< \~chinese Ö¡ÂÊË÷ÒıºÅ£¬Ò»°ã0¶ÔÓ¦ÓÚµÍËÙÄ£Ê½£¬1¶ÔÓ¦ÓÚÆÕÍ¨Ä£Ê½£¬2¶ÔÓ¦ÓÚ¸ßËÙÄ£Ê½ \~english Frame rate index number, generally 0 corresponds to low speed mode, 1 corresponds to normal mode, 2 corresponds to high speed mode
-    char acDescription[32];  ///< \~chinese ÃèÊöĞÅÏ¢ \~english Description
+    INT  iIndex;             ///< \~chinese å¸§ç‡ç´¢å¼•å·ï¼Œä¸€èˆ¬0å¯¹åº”äºä½é€Ÿæ¨¡å¼ï¼Œ1å¯¹åº”äºæ™®é€šæ¨¡å¼ï¼Œ2å¯¹åº”äºé«˜é€Ÿæ¨¡å¼ \~english Frame rate index number, generally 0 corresponds to low speed mode, 1 corresponds to normal mode, 2 corresponds to high speed mode
+    char acDescription[32];  ///< \~chinese æè¿°ä¿¡æ¯ \~english Description
 } tSdkFrameSpeed;
 
-/// \~chinese Ïà»úÆØ¹â¹¦ÄÜ·¶Î§¶¨Òå
+/// \~chinese ç›¸æœºæ›å…‰åŠŸèƒ½èŒƒå›´å®šä¹‰
 /// \see tSdkCameraCapbility.sExposeDesc
 /// \~english Camera exposure function scope definition
 /// \see tSdkCameraCapbility.sExposeDesc
 typedef struct
 {           
-    UINT  uiTargetMin;		///< \~chinese ×Ô¶¯ÆØ¹âÁÁ¶ÈÄ¿±ê×îĞ¡Öµ	\~english Auto exposure brightness target minimum
-    UINT  uiTargetMax;		///< \~chinese ×Ô¶¯ÆØ¹âÁÁ¶ÈÄ¿±ê×î´óÖµ	\~english Auto exposure brightness target maximum
-    UINT  uiAnalogGainMin;	///< \~chinese Ä£ÄâÔöÒæµÄ×îĞ¡Öµ£¬µ¥Î»ÎªfAnalogGainStepÖĞ¶¨Òå \~english	The minimum value of the analog gain in fAnalog defined in GainStep
-    UINT  uiAnalogGainMax;	///< \~chinese Ä£ÄâÔöÒæµÄ×î´óÖµ£¬µ¥Î»ÎªfAnalogGainStepÖĞ¶¨Òå \~english The maximum value of the analog gain in fAnalog defined in GainStep
-    float fAnalogGainStep;	///< \~chinese Ä£ÄâÔöÒæÃ¿Ôö¼Ó1£¬¶ÔÓ¦µÄÔö¼ÓµÄ·Å´ó±¶Êı¡£ÀıÈç£¬uiAnalogGainMinÒ»°ãÎª16£¬fAnalogGainStepÒ»°ãÎª0.125£¬ÄÇÃ´×îĞ¡·Å´ó±¶Êı¾ÍÊÇ16*0.125 = 2±¶ \~english Each increase in analog gain corresponds to an increased amplification factor. For example, uiAnalogGainMin is generally 16 and fAnalogGainStep is generally 0.125, so the minimum magnification is 16*0.125 = 2 times
-    UINT  uiExposeTimeMin;	///< \~chinese ÊÖ¶¯Ä£Ê½ÏÂ£¬ÆØ¹âÊ±¼äµÄ×îĞ¡Öµ£¬µ¥Î»:ĞĞ¡£¸ù¾İCameraGetExposureLineTime¿ÉÒÔ»ñµÃÒ»ĞĞ¶ÔÓ¦µÄÊ±¼ä(Î¢Ãë),´Ó¶øµÃµ½ÕûÖ¡µÄÆØ¹âÊ±¼ä \~english The minimum exposure time in manual mode, unit: line. According to CameraGetExposureLineTime can get a row of corresponding time (microseconds) to get the entire frame exposure time
-    UINT  uiExposeTimeMax;	///< \~chinese ÊÖ¶¯Ä£Ê½ÏÂ£¬ÆØ¹âÊ±¼äµÄ×î´óÖµ£¬µ¥Î»:ĞĞ \~english Maximum exposure time in manual mode, unit: line
+    UINT  uiTargetMin;		///< \~chinese è‡ªåŠ¨æ›å…‰äº®åº¦ç›®æ ‡æœ€å°å€¼	\~english Auto exposure brightness target minimum
+    UINT  uiTargetMax;		///< \~chinese è‡ªåŠ¨æ›å…‰äº®åº¦ç›®æ ‡æœ€å¤§å€¼	\~english Auto exposure brightness target maximum
+    UINT  uiAnalogGainMin;	///< \~chinese æ¨¡æ‹Ÿå¢ç›Šçš„æœ€å°å€¼ï¼Œå•ä½ä¸ºfAnalogGainStepä¸­å®šä¹‰ \~english	The minimum value of the analog gain in fAnalog defined in GainStep
+    UINT  uiAnalogGainMax;	///< \~chinese æ¨¡æ‹Ÿå¢ç›Šçš„æœ€å¤§å€¼ï¼Œå•ä½ä¸ºfAnalogGainStepä¸­å®šä¹‰ \~english The maximum value of the analog gain in fAnalog defined in GainStep
+    float fAnalogGainStep;	///< \~chinese æ¨¡æ‹Ÿå¢ç›Šæ¯å¢åŠ 1ï¼Œå¯¹åº”çš„å¢åŠ çš„æ”¾å¤§å€æ•°ã€‚ä¾‹å¦‚ï¼ŒuiAnalogGainMinä¸€èˆ¬ä¸º16ï¼ŒfAnalogGainStepä¸€èˆ¬ä¸º0.125ï¼Œé‚£ä¹ˆæœ€å°æ”¾å¤§å€æ•°å°±æ˜¯16*0.125 = 2å€ \~english Each increase in analog gain corresponds to an increased amplification factor. For example, uiAnalogGainMin is generally 16 and fAnalogGainStep is generally 0.125, so the minimum magnification is 16*0.125 = 2 times
+    UINT  uiExposeTimeMin;	///< \~chinese æ‰‹åŠ¨æ¨¡å¼ä¸‹ï¼Œæ›å…‰æ—¶é—´çš„æœ€å°å€¼ï¼Œå•ä½:è¡Œã€‚æ ¹æ®CameraGetExposureLineTimeå¯ä»¥è·å¾—ä¸€è¡Œå¯¹åº”çš„æ—¶é—´(å¾®ç§’),ä»è€Œå¾—åˆ°æ•´å¸§çš„æ›å…‰æ—¶é—´ \~english The minimum exposure time in manual mode, unit: line. According to CameraGetExposureLineTime can get a row of corresponding time (microseconds) to get the entire frame exposure time
+    UINT  uiExposeTimeMax;	///< \~chinese æ‰‹åŠ¨æ¨¡å¼ä¸‹ï¼Œæ›å…‰æ—¶é—´çš„æœ€å¤§å€¼ï¼Œå•ä½:è¡Œ \~english Maximum exposure time in manual mode, unit: line
 } tSdkExpose;
 
-/// \~chinese ´¥·¢Ä£Ê½ÃèÊö
+/// \~chinese è§¦å‘æ¨¡å¼æè¿°
 /// \~english Trigger mode description
 typedef struct
 {
-  INT   iIndex;            ///< \~chinese Ä£Ê½Ë÷ÒıºÅ \~english Mode index number
-  char  acDescription[32]; ///< \~chinese ¸ÃÄ£Ê½µÄÃèÊöĞÅÏ¢ \~english Description information of this mode
+  INT   iIndex;            ///< \~chinese æ¨¡å¼ç´¢å¼•å· \~english Mode index number
+  char  acDescription[32]; ///< \~chinese è¯¥æ¨¡å¼çš„æè¿°ä¿¡æ¯ \~english Description information of this mode
 } tSdkTrigger;
 
-/// \~chinese ´«Êä·Ö°ü´óĞ¡ÃèÊö(Õë¶ÔÄ³Ğ©ÍøÂçÏà»úÓĞĞ§)
+/// \~chinese ä¼ è¾“åˆ†åŒ…å¤§å°æè¿°(é’ˆå¯¹æŸäº›ç½‘ç»œç›¸æœºæœ‰æ•ˆ)
 /// \~english Transmission packet size description (valid for some web cameras)
 typedef struct
 {
-    INT  iIndex;              ///< \~chinese ·Ö°ü´óĞ¡Ë÷ÒıºÅ \~english Packet size index number
-    char acDescription[32];   ///< \~chinese ¶ÔÓ¦µÄÃèÊöĞÅÏ¢ \~english Corresponding description information
-    UINT iPackSize;			  ///< \~chinese °ü´óĞ¡ \~english Packet size
+    INT  iIndex;              ///< \~chinese åˆ†åŒ…å¤§å°ç´¢å¼•å· \~english Packet size index number
+    char acDescription[32];   ///< \~chinese å¯¹åº”çš„æè¿°ä¿¡æ¯ \~english Corresponding description information
+    UINT iPackSize;			  ///< \~chinese åŒ…å¤§å° \~english Packet size
 } tSdkPackLength;
 
-/// \~chinese Ô¤ÉèµÄLUT±íÃèÊö
+/// \~chinese é¢„è®¾çš„LUTè¡¨æè¿°
 /// \~english Preset LUT Table Description
 typedef struct
 {
-    INT  iIndex;                ///< \~chinese Ë÷Òı \~english index
-    char acDescription[32];     ///< \~chinese ÃèÊöĞÅÏ¢ \~english description
+    INT  iIndex;                ///< \~chinese ç´¢å¼• \~english index
+    char acDescription[32];     ///< \~chinese æè¿°ä¿¡æ¯ \~english description
 } tSdkPresetLut;
 
-/// \~chinese AEËã·¨ÃèÊö
+/// \~chinese AEç®—æ³•æè¿°
 /// \~english AE algorithm description
 typedef struct
 {
-    INT  iIndex;                ///< \~chinese Ë÷Òı \~english index  
-    char acDescription[32];     ///< \~chinese ÃèÊöĞÅÏ¢ \~english description
+    INT  iIndex;                ///< \~chinese ç´¢å¼• \~english index  
+    char acDescription[32];     ///< \~chinese æè¿°ä¿¡æ¯ \~english description
 } tSdkAeAlgorithm;
 
-/// \~chinese RAW×ªRGBËã·¨ÃèÊö
+/// \~chinese RAWè½¬RGBç®—æ³•æè¿°
 /// \~english RAW to RGB algorithm description
 typedef struct
 {
-    INT  iIndex;                ///< \~chinese Ë÷Òı \~english index
-    char acDescription[32];     ///< \~chinese ÃèÊöĞÅÏ¢ \~english description
+    INT  iIndex;                ///< \~chinese ç´¢å¼• \~english index
+    char acDescription[32];     ///< \~chinese æè¿°ä¿¡æ¯ \~english description
 } tSdkBayerDecodeAlgorithm;
 
-/// \~chinese Ö¡Í³¼ÆĞÅÏ¢
+/// \~chinese å¸§ç»Ÿè®¡ä¿¡æ¯
 /// \~english Frame statistics
 typedef struct
 {
-  INT iTotal;           ///< \~chinese µ±Ç°²É¼¯µÄ×ÜÖ¡Êı£¨°üÀ¨´íÎóÖ¡£© \~english The current total number of frames collected (including error frames)
-    INT iCapture;       ///< \~chinese µ±Ç°²É¼¯µÄÓĞĞ§Ö¡µÄÊıÁ¿ \~english The number of valid frames currently collected
-    INT iLost;          ///< \~chinese µ±Ç°¶ªÖ¡µÄÊıÁ¿ \~english Current number of dropped frames
+  INT iTotal;           ///< \~chinese å½“å‰é‡‡é›†çš„æ€»å¸§æ•°ï¼ˆåŒ…æ‹¬é”™è¯¯å¸§ï¼‰ \~english The current total number of frames collected (including error frames)
+    INT iCapture;       ///< \~chinese å½“å‰é‡‡é›†çš„æœ‰æ•ˆå¸§çš„æ•°é‡ \~english The number of valid frames currently collected
+    INT iLost;          ///< \~chinese å½“å‰ä¸¢å¸§çš„æ•°é‡ \~english Current number of dropped frames
 } tSdkFrameStatistic;
 
-/// \~chinese Ïà»úÊä³öµÄÍ¼ÏñÊı¾İ¸ñÊ½
+/// \~chinese ç›¸æœºè¾“å‡ºçš„å›¾åƒæ•°æ®æ ¼å¼
 /// \~english Camera output image data format
 typedef struct
 {
-  INT     iIndex;             ///< \~chinese ¸ñÊ½ÖÖÀà±àºÅ \~english Format type number
-  char    acDescription[32];  ///< \~chinese ÃèÊöĞÅÏ¢ \~english description
-  UINT    iMediaType;         ///< \~chinese ¶ÔÓ¦µÄÍ¼Ïñ¸ñÊ½±àÂë£¬ÈçCAMERA_MEDIA_TYPE_BAYGR8¡£ \~english Corresponding image format encoding, such as CAMERA_MEDIA_TYPE_BAYGR8.
+  INT     iIndex;             ///< \~chinese æ ¼å¼ç§ç±»ç¼–å· \~english Format type number
+  char    acDescription[32];  ///< \~chinese æè¿°ä¿¡æ¯ \~english description
+  UINT    iMediaType;         ///< \~chinese å¯¹åº”çš„å›¾åƒæ ¼å¼ç¼–ç ï¼Œå¦‚CAMERA_MEDIA_TYPE_BAYGR8ã€‚ \~english Corresponding image format encoding, such as CAMERA_MEDIA_TYPE_BAYGR8.
 } tSdkMediaType;
 
-/// \~chinese Ù¤ÂíµÄÉè¶¨·¶Î§
+/// \~chinese ä¼½é©¬çš„è®¾å®šèŒƒå›´
 /// \~english Gamma setting range
 typedef struct 
 {
-  INT iMin;       ///< \~chinese ×îĞ¡Öµ \~english min
-  INT iMax;       ///< \~chinese ×î´óÖµ \~english max
+  INT iMin;       ///< \~chinese æœ€å°å€¼ \~english min
+  INT iMax;       ///< \~chinese æœ€å¤§å€¼ \~english max
 } tGammaRange;
 
-/// \~chinese ¶Ô±È¶ÈµÄÉè¶¨·¶Î§
+/// \~chinese å¯¹æ¯”åº¦çš„è®¾å®šèŒƒå›´
 /// \~english Contrast setting range
 typedef struct 
 {
-    INT iMin;   ///< \~chinese ×îĞ¡Öµ \~english min
-    INT iMax;   ///< \~chinese ×î´óÖµ \~english max
+    INT iMin;   ///< \~chinese æœ€å°å€¼ \~english min
+    INT iMax;   ///< \~chinese æœ€å¤§å€¼ \~english max
 } tContrastRange;
 
-/// \~chinese RGBÈıÍ¨µÀÊı×ÖÔöÒæµÄÉè¶¨·¶Î§
+/// \~chinese RGBä¸‰é€šé“æ•°å­—å¢ç›Šçš„è®¾å®šèŒƒå›´
 /// \~english RGB three channel digital gain setting range
 typedef struct 
 { 
-    INT iRGainMin;    ///< \~chinese ºìÉ«ÔöÒæµÄ×îĞ¡Öµ \~english Red gain minimum
-    INT iRGainMax;    ///< \~chinese ºìÉ«ÔöÒæµÄ×î´óÖµ \~english Red gain maximum
-    INT iGGainMin;    ///< \~chinese ÂÌÉ«ÔöÒæµÄ×îĞ¡Öµ \~english Green gain minimum
-    INT iGGainMax;    ///< \~chinese ÂÌÉ«ÔöÒæµÄ×î´óÖµ \~english Green gain maximum
-    INT iBGainMin;    ///< \~chinese À¶É«ÔöÒæµÄ×îĞ¡Öµ \~english Blue gain minimum
-    INT iBGainMax;    ///< \~chinese À¶É«ÔöÒæµÄ×î´óÖµ \~english blue gain maximum
+    INT iRGainMin;    ///< \~chinese çº¢è‰²å¢ç›Šçš„æœ€å°å€¼ \~english Red gain minimum
+    INT iRGainMax;    ///< \~chinese çº¢è‰²å¢ç›Šçš„æœ€å¤§å€¼ \~english Red gain maximum
+    INT iGGainMin;    ///< \~chinese ç»¿è‰²å¢ç›Šçš„æœ€å°å€¼ \~english Green gain minimum
+    INT iGGainMax;    ///< \~chinese ç»¿è‰²å¢ç›Šçš„æœ€å¤§å€¼ \~english Green gain maximum
+    INT iBGainMin;    ///< \~chinese è“è‰²å¢ç›Šçš„æœ€å°å€¼ \~english Blue gain minimum
+    INT iBGainMax;    ///< \~chinese è“è‰²å¢ç›Šçš„æœ€å¤§å€¼ \~english blue gain maximum
 } tRgbGainRange;
 
-/// \~chinese ±¥ºÍ¶ÈÉè¶¨µÄ·¶Î§
+/// \~chinese é¥±å’Œåº¦è®¾å®šçš„èŒƒå›´
 /// \~english Saturation setting range
 typedef struct 
 {  
-    INT iMin;   ///< \~chinese ×îĞ¡Öµ \~english min
-    INT iMax;   ///< \~chinese ×î´óÖµ \~english max
+    INT iMin;   ///< \~chinese æœ€å°å€¼ \~english min
+    INT iMax;   ///< \~chinese æœ€å¤§å€¼ \~english max
 } tSaturationRange;
 
-/// \~chinese Èñ»¯µÄÉè¶¨·¶Î§
+/// \~chinese é”åŒ–çš„è®¾å®šèŒƒå›´
 /// \~english Sharpening setting range
 typedef struct 
 {  
-  INT iMin;   ///< \~chinese ×îĞ¡Öµ \~english min
-  INT iMax;   ///< \~chinese ×î´óÖµ \~english max
+  INT iMin;   ///< \~chinese æœ€å°å€¼ \~english min
+  INT iMax;   ///< \~chinese æœ€å¤§å€¼ \~english max
 } tSharpnessRange;
 
-/// \~chinese ISPÄ£¿éµÄÊ¹ÄÜĞÅÏ¢
+/// \~chinese ISPæ¨¡å—çš„ä½¿èƒ½ä¿¡æ¯
 /// \~english ISP module enable information
 typedef struct
 {
-    BOOL bMonoSensor;       ///< \~chinese ±íÊ¾¸ÃĞÍºÅÏà»úÊÇ·ñÎªºÚ°×Ïà»ú,Èç¹ûÊÇºÚ°×Ïà»ú£¬ÔòÑÕÉ«Ïà¹ØµÄ¹¦ÄÜ¶¼ÎŞ·¨µ÷½Ú \~english Indicates whether this model is a black-and-white camera. If it is a black-and-white camera, color-related functions cannot be adjusted.
-    BOOL bWbOnce;           ///< \~chinese ±íÊ¾¸ÃĞÍºÅÏà»úÊÇ·ñÖ§³ÖÊÖ¶¯°×Æ½ºâ¹¦ÄÜ \~english Indicates whether this model camera supports manual white balance function
-    BOOL bAutoWb;           ///< \~chinese ±íÊ¾¸ÃĞÍºÅÏà»úÊÇ·ñÖ§³Ö×Ô¶¯°×Æ½ºâ¹¦ÄÜ \~english Indicates whether this model camera supports automatic white balance function
-    BOOL bAutoExposure;     ///< \~chinese ±íÊ¾¸ÃĞÍºÅÏà»úÊÇ·ñÖ§³Ö×Ô¶¯ÆØ¹â¹¦ÄÜ \~english Indicates whether this model camera supports auto exposure function
-    BOOL bManualExposure;   ///< \~chinese ±íÊ¾¸ÃĞÍºÅÏà»úÊÇ·ñÖ§³ÖÊÖ¶¯ÆØ¹â¹¦ÄÜ \~english Indicates whether this model camera supports manual exposure function
-    BOOL bAntiFlick;        ///< \~chinese ±íÊ¾¸ÃĞÍºÅÏà»úÊÇ·ñÖ§³Ö¿¹ÆµÉÁ¹¦ÄÜ \~english Indicates whether this model camera supports anti-strobe function
-    BOOL bDeviceIsp;        ///< \~chinese ±íÊ¾¸ÃĞÍºÅÏà»úÊÇ·ñÖ§³ÖÓ²¼şISP¹¦ÄÜ \~english Indicates whether this model camera supports hardware ISP function
-    BOOL bForceUseDeviceIsp;///< \~chinese bDeviceIspºÍbForceUseDeviceIspÍ¬Ê±ÎªTRUEÊ±£¬±íÊ¾Ç¿ÖÆÖ»ÓÃÓ²¼şISP£¬²»¿ÉÈ¡Ïû¡£ \~english When both bDeviceIsp and bForceUseDeviceIsp are TRUE, this means that only the hardware ISP is forced and cannot be cancelled.
-    BOOL bZoomHD;           ///< \~chinese Ïà»úÓ²¼şÊÇ·ñÖ§³ÖÍ¼ÏñËõ·ÅÊä³ö(Ö»ÄÜÊÇËõĞ¡)¡£ \~english Whether the camera hardware supports image scaling output (can only be reduced).
+    BOOL bMonoSensor;       ///< \~chinese è¡¨ç¤ºè¯¥å‹å·ç›¸æœºæ˜¯å¦ä¸ºé»‘ç™½ç›¸æœº,å¦‚æœæ˜¯é»‘ç™½ç›¸æœºï¼Œåˆ™é¢œè‰²ç›¸å…³çš„åŠŸèƒ½éƒ½æ— æ³•è°ƒèŠ‚ \~english Indicates whether this model is a black-and-white camera. If it is a black-and-white camera, color-related functions cannot be adjusted.
+    BOOL bWbOnce;           ///< \~chinese è¡¨ç¤ºè¯¥å‹å·ç›¸æœºæ˜¯å¦æ”¯æŒæ‰‹åŠ¨ç™½å¹³è¡¡åŠŸèƒ½ \~english Indicates whether this model camera supports manual white balance function
+    BOOL bAutoWb;           ///< \~chinese è¡¨ç¤ºè¯¥å‹å·ç›¸æœºæ˜¯å¦æ”¯æŒè‡ªåŠ¨ç™½å¹³è¡¡åŠŸèƒ½ \~english Indicates whether this model camera supports automatic white balance function
+    BOOL bAutoExposure;     ///< \~chinese è¡¨ç¤ºè¯¥å‹å·ç›¸æœºæ˜¯å¦æ”¯æŒè‡ªåŠ¨æ›å…‰åŠŸèƒ½ \~english Indicates whether this model camera supports auto exposure function
+    BOOL bManualExposure;   ///< \~chinese è¡¨ç¤ºè¯¥å‹å·ç›¸æœºæ˜¯å¦æ”¯æŒæ‰‹åŠ¨æ›å…‰åŠŸèƒ½ \~english Indicates whether this model camera supports manual exposure function
+    BOOL bAntiFlick;        ///< \~chinese è¡¨ç¤ºè¯¥å‹å·ç›¸æœºæ˜¯å¦æ”¯æŒæŠ—é¢‘é—ªåŠŸèƒ½ \~english Indicates whether this model camera supports anti-strobe function
+    BOOL bDeviceIsp;        ///< \~chinese è¡¨ç¤ºè¯¥å‹å·ç›¸æœºæ˜¯å¦æ”¯æŒç¡¬ä»¶ISPåŠŸèƒ½ \~english Indicates whether this model camera supports hardware ISP function
+    BOOL bForceUseDeviceIsp;///< \~chinese bDeviceIspå’ŒbForceUseDeviceIspåŒæ—¶ä¸ºTRUEæ—¶ï¼Œè¡¨ç¤ºå¼ºåˆ¶åªç”¨ç¡¬ä»¶ISPï¼Œä¸å¯å–æ¶ˆã€‚ \~english When both bDeviceIsp and bForceUseDeviceIsp are TRUE, this means that only the hardware ISP is forced and cannot be cancelled.
+    BOOL bZoomHD;           ///< \~chinese ç›¸æœºç¡¬ä»¶æ˜¯å¦æ”¯æŒå›¾åƒç¼©æ”¾è¾“å‡º(åªèƒ½æ˜¯ç¼©å°)ã€‚ \~english Whether the camera hardware supports image scaling output (can only be reduced).
 } tSdkIspCapacity;
 
-/// \~chinese ¶¨ÒåÕûºÏµÄÉè±¸ÃèÊöĞÅÏ¢£¬ÕâĞ©ĞÅÏ¢¿ÉÒÔÓÃÓÚ¶¯Ì¬¹¹½¨UI
-/// \note µ÷ÓÃ@link #CameraGetCapability @endlink»ñÈ¡±¾½á¹¹
+/// \~chinese å®šä¹‰æ•´åˆçš„è®¾å¤‡æè¿°ä¿¡æ¯ï¼Œè¿™äº›ä¿¡æ¯å¯ä»¥ç”¨äºåŠ¨æ€æ„å»ºUI
+/// \note è°ƒç”¨@link #CameraGetCapability @endlinkè·å–æœ¬ç»“æ„
 /// \~english Define integrated device description information that can be used to dynamically build UI
 /// \note call @link #CameraGetCapability @endlink to get this structure
 typedef struct
 {
     
-  tSdkTrigger   *pTriggerDesc;          ///< \~chinese ´¥·¢Ä£Ê½ \~english trigger mode
-  INT           iTriggerDesc;           ///< \~chinese ´¥·¢Ä£Ê½µÄ¸öÊı£¬¼´pTriggerDescÊı×éµÄ´óĞ¡ \~english The number of trigger modes, that is, the size of the pTriggerDesc array
+  tSdkTrigger   *pTriggerDesc;          ///< \~chinese è§¦å‘æ¨¡å¼ \~english trigger mode
+  INT           iTriggerDesc;           ///< \~chinese è§¦å‘æ¨¡å¼çš„ä¸ªæ•°ï¼Œå³pTriggerDescæ•°ç»„çš„å¤§å° \~english The number of trigger modes, that is, the size of the pTriggerDesc array
   
-  tSdkImageResolution   *pImageSizeDesc;///< \~chinese Ô¤Éè·Ö±æÂÊ \~english Preset resolution
-  INT                   iImageSizeDesc; ///< \~chinese Ô¤Éè·Ö±æÂÊµÄ¸öÊı£¬¼´pImageSizeDescÊı×éµÄ´óĞ¡ \~english The number of preset resolutions, that is, the size of the pImageSizeDesc array
+  tSdkImageResolution   *pImageSizeDesc;///< \~chinese é¢„è®¾åˆ†è¾¨ç‡ \~english Preset resolution
+  INT                   iImageSizeDesc; ///< \~chinese é¢„è®¾åˆ†è¾¨ç‡çš„ä¸ªæ•°ï¼Œå³pImageSizeDescæ•°ç»„çš„å¤§å° \~english The number of preset resolutions, that is, the size of the pImageSizeDesc array
   
-  tSdkColorTemperatureDes *pClrTempDesc;///< \~chinese Ô¤ÉèÉ«ÎÂ£¬ÓÃÓÚ°×Æ½ºâ \~english Preset color temperature for white balance
-  INT                     iClrTempDesc; ///< \~chinese Ô¤ÉèÉ«ÎÂ¸öÊı \~english The number of preset color temperatures
+  tSdkColorTemperatureDes *pClrTempDesc;///< \~chinese é¢„è®¾è‰²æ¸©ï¼Œç”¨äºç™½å¹³è¡¡ \~english Preset color temperature for white balance
+  INT                     iClrTempDesc; ///< \~chinese é¢„è®¾è‰²æ¸©ä¸ªæ•° \~english The number of preset color temperatures
   
-  tSdkMediaType     *pMediaTypeDesc;    ///< \~chinese Ïà»úÊä³öÍ¼Ïñ¸ñÊ½ \~english Camera output image format
-  INT               iMediaTypdeDesc;    ///< \~chinese Ïà»úÊä³öÍ¼Ïñ¸ñÊ½µÄÖÖÀà¸öÊı£¬¼´pMediaTypeDescÊı×éµÄ´óĞ¡¡£ \~english The number of types of camera output image formats, that is, the size of the pMediaTypeDesc array.
+  tSdkMediaType     *pMediaTypeDesc;    ///< \~chinese ç›¸æœºè¾“å‡ºå›¾åƒæ ¼å¼ \~english Camera output image format
+  INT               iMediaTypdeDesc;    ///< \~chinese ç›¸æœºè¾“å‡ºå›¾åƒæ ¼å¼çš„ç§ç±»ä¸ªæ•°ï¼Œå³pMediaTypeDescæ•°ç»„çš„å¤§å°ã€‚ \~english The number of types of camera output image formats, that is, the size of the pMediaTypeDesc array.
 
-  tSdkFrameSpeed    *pFrameSpeedDesc;   ///< \~chinese ¿Éµ÷½ÚÖ¡ËÙÀàĞÍ£¬¶ÔÓ¦½çÃæÉÏÆÕÍ¨ ¸ßËÙ ºÍ³¬¼¶ÈıÖÖËÙ¶ÈÉèÖÃ \~english Adjustable frame rate type, normal high speed and super three speed settings on the corresponding interface
-  INT               iFrameSpeedDesc;    ///< \~chinese ¿Éµ÷½ÚÖ¡ËÙÀàĞÍµÄ¸öÊı£¬¼´pFrameSpeedDescÊı×éµÄ´óĞ¡¡£ \~english The number of frame rate types that can be adjusted, that is, the size of the pFrameSpeedDesc array.
+  tSdkFrameSpeed    *pFrameSpeedDesc;   ///< \~chinese å¯è°ƒèŠ‚å¸§é€Ÿç±»å‹ï¼Œå¯¹åº”ç•Œé¢ä¸Šæ™®é€š é«˜é€Ÿ å’Œè¶…çº§ä¸‰ç§é€Ÿåº¦è®¾ç½® \~english Adjustable frame rate type, normal high speed and super three speed settings on the corresponding interface
+  INT               iFrameSpeedDesc;    ///< \~chinese å¯è°ƒèŠ‚å¸§é€Ÿç±»å‹çš„ä¸ªæ•°ï¼Œå³pFrameSpeedDescæ•°ç»„çš„å¤§å°ã€‚ \~english The number of frame rate types that can be adjusted, that is, the size of the pFrameSpeedDesc array.
   
-  tSdkPackLength    *pPackLenDesc;      ///< \~chinese ´«Êä°ü³¤¶È£¬Ò»°ãÓÃÓÚÍøÂçÉè±¸ \~english Transmission packet length, generally used for network equipment
-  INT               iPackLenDesc;       ///< \~chinese ¿É¹©Ñ¡ÔñµÄ´«Êä·Ö°ü³¤¶ÈµÄ¸öÊı£¬¼´pPackLenDescÊı×éµÄ´óĞ¡¡£  \~english The number of transmission packetization lengths available for selection, which is the size of the pPackLenDesc array.
+  tSdkPackLength    *pPackLenDesc;      ///< \~chinese ä¼ è¾“åŒ…é•¿åº¦ï¼Œä¸€èˆ¬ç”¨äºç½‘ç»œè®¾å¤‡ \~english Transmission packet length, generally used for network equipment
+  INT               iPackLenDesc;       ///< \~chinese å¯ä¾›é€‰æ‹©çš„ä¼ è¾“åˆ†åŒ…é•¿åº¦çš„ä¸ªæ•°ï¼Œå³pPackLenDescæ•°ç»„çš„å¤§å°ã€‚  \~english The number of transmission packetization lengths available for selection, which is the size of the pPackLenDesc array.
   
-  INT           iOutputIoCounts;        ///< \~chinese ¿É±à³ÌÊä³öIOµÄ¸öÊı \~english Number of programmable output IOs
-  INT           iInputIoCounts;         ///< \~chinese ¿É±à³ÌÊäÈëIOµÄ¸öÊı \~english Number of programmable input IOs
+  INT           iOutputIoCounts;        ///< \~chinese å¯ç¼–ç¨‹è¾“å‡ºIOçš„ä¸ªæ•° \~english Number of programmable output IOs
+  INT           iInputIoCounts;         ///< \~chinese å¯ç¼–ç¨‹è¾“å…¥IOçš„ä¸ªæ•° \~english Number of programmable input IOs
 
-  tSdkPresetLut  *pPresetLutDesc;       ///< \~chinese Ïà»úÔ¤ÉèµÄLUT±í \~english Camera preset LUT table
-  INT            iPresetLut;            ///< \~chinese Ïà»úÔ¤ÉèµÄLUT±íµÄ¸öÊı£¬¼´pPresetLutDescÊı×éµÄ´óĞ¡ \~english The number of LUT tables preset by the camera, that is, the size of the pPresetLutDesc array
+  tSdkPresetLut  *pPresetLutDesc;       ///< \~chinese ç›¸æœºé¢„è®¾çš„LUTè¡¨ \~english Camera preset LUT table
+  INT            iPresetLut;            ///< \~chinese ç›¸æœºé¢„è®¾çš„LUTè¡¨çš„ä¸ªæ•°ï¼Œå³pPresetLutDescæ•°ç»„çš„å¤§å° \~english The number of LUT tables preset by the camera, that is, the size of the pPresetLutDesc array
 
-  INT           iUserDataMaxLen;        ///< \~chinese Ö¸Ê¾¸ÃÏà»úÖĞÓÃÓÚ±£´æÓÃ»§Êı¾İÇøµÄ×î´ó³¤¶È¡£Îª0±íÊ¾ÎŞ¡£ \~english Indicates the maximum length in the camera used to save the user data area. 0 means no.
-  BOOL          bParamInDevice;         ///< \~chinese Ö¸Ê¾¸ÃÉè±¸ÊÇ·ñÖ§³Ö´ÓÉè±¸ÖĞ¶ÁĞ´²ÎÊı×é¡£1ÎªÖ§³Ö£¬0²»Ö§³Ö¡£ \~english Indicates whether the device supports reading and writing parameter groups from the device. 1 is supported, 0 is not supported.
+  INT           iUserDataMaxLen;        ///< \~chinese æŒ‡ç¤ºè¯¥ç›¸æœºä¸­ç”¨äºä¿å­˜ç”¨æˆ·æ•°æ®åŒºçš„æœ€å¤§é•¿åº¦ã€‚ä¸º0è¡¨ç¤ºæ— ã€‚ \~english Indicates the maximum length in the camera used to save the user data area. 0 means no.
+  BOOL          bParamInDevice;         ///< \~chinese æŒ‡ç¤ºè¯¥è®¾å¤‡æ˜¯å¦æ”¯æŒä»è®¾å¤‡ä¸­è¯»å†™å‚æ•°ç»„ã€‚1ä¸ºæ”¯æŒï¼Œ0ä¸æ”¯æŒã€‚ \~english Indicates whether the device supports reading and writing parameter groups from the device. 1 is supported, 0 is not supported.
 
-  tSdkAeAlgorithm   *pAeAlmSwDesc;      ///< \~chinese Èí¼ş×Ô¶¯ÆØ¹âËã·¨ÃèÊö \~english Software auto exposure algorithm description
-  int                iAeAlmSwDesc;      ///< \~chinese Èí¼ş×Ô¶¯ÆØ¹âËã·¨¸öÊı \~english Software automatic exposure algorithm number
+  tSdkAeAlgorithm   *pAeAlmSwDesc;      ///< \~chinese è½¯ä»¶è‡ªåŠ¨æ›å…‰ç®—æ³•æè¿° \~english Software auto exposure algorithm description
+  int                iAeAlmSwDesc;      ///< \~chinese è½¯ä»¶è‡ªåŠ¨æ›å…‰ç®—æ³•ä¸ªæ•° \~english Software automatic exposure algorithm number
 
-  tSdkAeAlgorithm    *pAeAlmHdDesc;     ///< \~chinese Ó²¼ş×Ô¶¯ÆØ¹âËã·¨ÃèÊö£¬ÎªNULL±íÊ¾²»Ö§³ÖÓ²¼ş×Ô¶¯ÆØ¹â \~english Hardware auto exposure algorithm description, NULL means hardware auto exposure is not supported
-  int                iAeAlmHdDesc;      ///< \~chinese Ó²¼ş×Ô¶¯ÆØ¹âËã·¨¸öÊı£¬Îª0±íÊ¾²»Ö§³ÖÓ²¼ş×Ô¶¯ÆØ¹â \~english Number of hardware auto exposure algorithms, 0 means hardware auto exposure is not supported
+  tSdkAeAlgorithm    *pAeAlmHdDesc;     ///< \~chinese ç¡¬ä»¶è‡ªåŠ¨æ›å…‰ç®—æ³•æè¿°ï¼Œä¸ºNULLè¡¨ç¤ºä¸æ”¯æŒç¡¬ä»¶è‡ªåŠ¨æ›å…‰ \~english Hardware auto exposure algorithm description, NULL means hardware auto exposure is not supported
+  int                iAeAlmHdDesc;      ///< \~chinese ç¡¬ä»¶è‡ªåŠ¨æ›å…‰ç®—æ³•ä¸ªæ•°ï¼Œä¸º0è¡¨ç¤ºä¸æ”¯æŒç¡¬ä»¶è‡ªåŠ¨æ›å…‰ \~english Number of hardware auto exposure algorithms, 0 means hardware auto exposure is not supported
 
-  tSdkBayerDecodeAlgorithm   *pBayerDecAlmSwDesc; ///< \~chinese Èí¼şBayer×ª»»ÎªRGBÊı¾İµÄËã·¨ÃèÊö \~english Algorithm Description of Software Bayer Conversion to RGB Data
-  int                        iBayerDecAlmSwDesc;  ///< \~chinese Èí¼şBayer×ª»»ÎªRGBÊı¾İµÄËã·¨¸öÊı \~english The number of algorithms that Bayer converts to RGB data
+  tSdkBayerDecodeAlgorithm   *pBayerDecAlmSwDesc; ///< \~chinese è½¯ä»¶Bayerè½¬æ¢ä¸ºRGBæ•°æ®çš„ç®—æ³•æè¿° \~english Algorithm Description of Software Bayer Conversion to RGB Data
+  int                        iBayerDecAlmSwDesc;  ///< \~chinese è½¯ä»¶Bayerè½¬æ¢ä¸ºRGBæ•°æ®çš„ç®—æ³•ä¸ªæ•° \~english The number of algorithms that Bayer converts to RGB data
 
-  tSdkBayerDecodeAlgorithm   *pBayerDecAlmHdDesc; ///< \~chinese Ó²¼şBayer×ª»»ÎªRGBÊı¾İµÄËã·¨ÃèÊö£¬ÎªNULL±íÊ¾²»Ö§³Ö \~english Hardware Bayer converts to RGB data algorithm description, is not supported for NULL representation
-  int                        iBayerDecAlmHdDesc;  ///< \~chinese Ó²¼şBayer×ª»»ÎªRGBÊı¾İµÄËã·¨¸öÊı£¬Îª0±íÊ¾²»Ö§³Ö \~english The number of algorithms that hardware Bayer converts to RGB data, 0 means not supported
+  tSdkBayerDecodeAlgorithm   *pBayerDecAlmHdDesc; ///< \~chinese ç¡¬ä»¶Bayerè½¬æ¢ä¸ºRGBæ•°æ®çš„ç®—æ³•æè¿°ï¼Œä¸ºNULLè¡¨ç¤ºä¸æ”¯æŒ \~english Hardware Bayer converts to RGB data algorithm description, is not supported for NULL representation
+  int                        iBayerDecAlmHdDesc;  ///< \~chinese ç¡¬ä»¶Bayerè½¬æ¢ä¸ºRGBæ•°æ®çš„ç®—æ³•ä¸ªæ•°ï¼Œä¸º0è¡¨ç¤ºä¸æ”¯æŒ \~english The number of algorithms that hardware Bayer converts to RGB data, 0 means not supported
   
-  /* Í¼Ïñ²ÎÊıµÄµ÷½Ú·¶Î§¶¨Òå,ÓÃÓÚ¶¯Ì¬¹¹½¨UI*/
-  tSdkExpose            sExposeDesc;      ///< \~chinese ÆØ¹âµÄ·¶Î§Öµ \~english Exposure range value
-  tSdkResolutionRange   sResolutionRange; ///< \~chinese ·Ö±æÂÊ·¶Î§ÃèÊö \~english Resolution range description
-  tRgbGainRange         sRgbGainRange;    ///< \~chinese Í¼ÏñÊı×ÖÔöÒæ·¶Î§ÃèÊö \~english Image digital gain range description
-  tSaturationRange      sSaturationRange; ///< \~chinese ±¥ºÍ¶È·¶Î§ÃèÊö \~english Saturation range description
-  tGammaRange           sGammaRange;      ///< \~chinese Ù¤Âí·¶Î§ÃèÊö \~english Gamma range description
-  tContrastRange        sContrastRange;   ///< \~chinese ¶Ô±È¶È·¶Î§ÃèÊö \~english Contrast range description
-  tSharpnessRange       sSharpnessRange;  ///< \~chinese Èñ»¯·¶Î§ÃèÊö \~english Sharpening range description
-  tSdkIspCapacity       sIspCapacity;     ///< \~chinese ISPÄÜÁ¦ÃèÊö \~english ISP capability description
+  /* å›¾åƒå‚æ•°çš„è°ƒèŠ‚èŒƒå›´å®šä¹‰,ç”¨äºåŠ¨æ€æ„å»ºUI*/
+  tSdkExpose            sExposeDesc;      ///< \~chinese æ›å…‰çš„èŒƒå›´å€¼ \~english Exposure range value
+  tSdkResolutionRange   sResolutionRange; ///< \~chinese åˆ†è¾¨ç‡èŒƒå›´æè¿° \~english Resolution range description
+  tRgbGainRange         sRgbGainRange;    ///< \~chinese å›¾åƒæ•°å­—å¢ç›ŠèŒƒå›´æè¿° \~english Image digital gain range description
+  tSaturationRange      sSaturationRange; ///< \~chinese é¥±å’Œåº¦èŒƒå›´æè¿° \~english Saturation range description
+  tGammaRange           sGammaRange;      ///< \~chinese ä¼½é©¬èŒƒå›´æè¿° \~english Gamma range description
+  tContrastRange        sContrastRange;   ///< \~chinese å¯¹æ¯”åº¦èŒƒå›´æè¿° \~english Contrast range description
+  tSharpnessRange       sSharpnessRange;  ///< \~chinese é”åŒ–èŒƒå›´æè¿° \~english Sharpening range description
+  tSdkIspCapacity       sIspCapacity;     ///< \~chinese ISPèƒ½åŠ›æè¿° \~english ISP capability description
 
     
 } tSdkCameraCapbility;
 
 
-/// \~chinese Í¼ÏñÖ¡Í·ĞÅÏ¢
+/// \~chinese å›¾åƒå¸§å¤´ä¿¡æ¯
 /// \~english Image frame header information
 typedef struct 
 {
-  UINT    uiMediaType;    ///< \~chinese Í¼Ïñ¸ñÊ½ \~english Image Format
-  UINT    uBytes;         ///< \~chinese Í¼ÏñÊı¾İ×Ö½ÚÊı \~english Total bytes
-  INT     iWidth;         ///< \~chinese Í¼ÏñµÄ¿í¶È£¬µ÷ÓÃÍ¼Ïñ´¦Àíº¯Êıºó£¬¸Ã±äÁ¿¿ÉÄÜ±»¶¯Ì¬ĞŞ¸Ä£¬À´Ö¸Ê¾´¦ÀíºóµÄÍ¼Ïñ³ß´ç \~english The width of the image, after calling the image processing function, the variable may be dynamically modified to indicate the image size after processing
-  INT     iHeight;        ///< \~chinese Í¼ÏñµÄ¸ß¶È£¬µ÷ÓÃÍ¼Ïñ´¦Àíº¯Êıºó£¬¸Ã±äÁ¿¿ÉÄÜ±»¶¯Ì¬ĞŞ¸Ä£¬À´Ö¸Ê¾´¦ÀíºóµÄÍ¼Ïñ³ß´ç \~english The height of the image, after calling the image processing function, the variable may be dynamically modified to indicate the image size after processing
-  INT     iWidthZoomSw;   ///< \~chinese Èí¼şËõ·ÅµÄ¿í¶È,²»ĞèÒª½øĞĞÈí¼ş²Ã¼ôµÄÍ¼Ïñ£¬´Ë±äÁ¿ÉèÖÃÎª0. \~english The width of the software zoom, which does not require software cropping. This variable is set to 0.
-  INT     iHeightZoomSw;  ///< \~chinese Èí¼şËõ·ÅµÄ¸ß¶È,²»ĞèÒª½øĞĞÈí¼ş²Ã¼ôµÄÍ¼Ïñ£¬´Ë±äÁ¿ÉèÖÃÎª0. \~english Software zoom height, no software cropped image is required. This variable is set to 0.
-  BOOL    bIsTrigger;     ///< \~chinese Ö¸Ê¾ÊÇ·ñÎª´¥·¢Ö¡ \~english is trigger 
-  UINT    uiTimeStamp;    ///< \~chinese ¸ÃÖ¡µÄ²É¼¯Ê±¼ä£¬µ¥Î»0.1ºÁÃë \~english The frame acquisition time, in units of 0.1 milliseconds
-  UINT    uiExpTime;      ///< \~chinese µ±Ç°Í¼ÏñµÄÆØ¹âÖµ£¬µ¥Î»ÎªÎ¢Ãëus \~english Exposure of the current image in microseconds us
-  float   fAnalogGain;    ///< \~chinese µ±Ç°Í¼ÏñµÄÄ£ÄâÔöÒæ±¶Êı \~english The current image's analog gain multiplier
-  INT     iGamma;         ///< \~chinese ¸ÃÖ¡Í¼ÏñµÄÙ¤ÂíÉè¶¨Öµ£¬½öµ±LUTÄ£Ê½Îª¶¯Ì¬²ÎÊıÉú³ÉÊ±ÓĞĞ§£¬ÆäÓàÄ£Ê½ÏÂÎª-1 \~english The gamma setting value of the frame image is valid only when the LUT mode is a dynamic parameter generation, and is -1 in other modes.
-  INT     iContrast;      ///< \~chinese ¸ÃÖ¡Í¼ÏñµÄ¶Ô±È¶ÈÉè¶¨Öµ£¬½öµ±LUTÄ£Ê½Îª¶¯Ì¬²ÎÊıÉú³ÉÊ±ÓĞĞ§£¬ÆäÓàÄ£Ê½ÏÂÎª-1 \~english The contrast setting value of the frame image is only valid when the LUT mode is generated by the dynamic parameter, and is -1 in other modes.
-  INT     iSaturation;    ///< \~chinese ¸ÃÖ¡Í¼ÏñµÄ±¥ºÍ¶ÈÉè¶¨Öµ£¬¶ÔÓÚºÚ°×Ïà»úÎŞÒâÒå£¬Îª0 \~english The saturation value of the frame image, which is meaningless for a black and white camera, is 0
-  float   fRgain;         ///< \~chinese ¸ÃÖ¡Í¼Ïñ´¦ÀíµÄºìÉ«Êı×ÖÔöÒæ±¶Êı£¬¶ÔÓÚºÚ°×Ïà»úÎŞÒâÒå£¬Îª1 \~english The red digital gain multiple of this frame image processing is meaningless for a black and white camera and is 1
-  float   fGgain;         ///< \~chinese ¸ÃÖ¡Í¼Ïñ´¦ÀíµÄÂÌÉ«Êı×ÖÔöÒæ±¶Êı£¬¶ÔÓÚºÚ°×Ïà»úÎŞÒâÒå£¬Îª1 \~english The green digital gain multiplier for this frame image processing, meaning no significance for black and white cameras, is 1
-  float   fBgain;         ///< \~chinese ¸ÃÖ¡Í¼Ïñ´¦ÀíµÄÀ¶É«Êı×ÖÔöÒæ±¶Êı£¬¶ÔÓÚºÚ°×Ïà»úÎŞÒâÒå£¬Îª1 \~english The blue digital gain multiplier for this frame image processing, meaning no significance for black and white cameras, is 1
+  UINT    uiMediaType;    ///< \~chinese å›¾åƒæ ¼å¼ \~english Image Format
+  UINT    uBytes;         ///< \~chinese å›¾åƒæ•°æ®å­—èŠ‚æ•° \~english Total bytes
+  INT     iWidth;         ///< \~chinese å›¾åƒçš„å®½åº¦ï¼Œè°ƒç”¨å›¾åƒå¤„ç†å‡½æ•°åï¼Œè¯¥å˜é‡å¯èƒ½è¢«åŠ¨æ€ä¿®æ”¹ï¼Œæ¥æŒ‡ç¤ºå¤„ç†åçš„å›¾åƒå°ºå¯¸ \~english The width of the image, after calling the image processing function, the variable may be dynamically modified to indicate the image size after processing
+  INT     iHeight;        ///< \~chinese å›¾åƒçš„é«˜åº¦ï¼Œè°ƒç”¨å›¾åƒå¤„ç†å‡½æ•°åï¼Œè¯¥å˜é‡å¯èƒ½è¢«åŠ¨æ€ä¿®æ”¹ï¼Œæ¥æŒ‡ç¤ºå¤„ç†åçš„å›¾åƒå°ºå¯¸ \~english The height of the image, after calling the image processing function, the variable may be dynamically modified to indicate the image size after processing
+  INT     iWidthZoomSw;   ///< \~chinese è½¯ä»¶ç¼©æ”¾çš„å®½åº¦,ä¸éœ€è¦è¿›è¡Œè½¯ä»¶è£å‰ªçš„å›¾åƒï¼Œæ­¤å˜é‡è®¾ç½®ä¸º0. \~english The width of the software zoom, which does not require software cropping. This variable is set to 0.
+  INT     iHeightZoomSw;  ///< \~chinese è½¯ä»¶ç¼©æ”¾çš„é«˜åº¦,ä¸éœ€è¦è¿›è¡Œè½¯ä»¶è£å‰ªçš„å›¾åƒï¼Œæ­¤å˜é‡è®¾ç½®ä¸º0. \~english Software zoom height, no software cropped image is required. This variable is set to 0.
+  BOOL    bIsTrigger;     ///< \~chinese æŒ‡ç¤ºæ˜¯å¦ä¸ºè§¦å‘å¸§ \~english is trigger 
+  UINT    uiTimeStamp;    ///< \~chinese è¯¥å¸§çš„é‡‡é›†æ—¶é—´ï¼Œå•ä½0.1æ¯«ç§’ \~english The frame acquisition time, in units of 0.1 milliseconds
+  UINT    uiExpTime;      ///< \~chinese å½“å‰å›¾åƒçš„æ›å…‰å€¼ï¼Œå•ä½ä¸ºå¾®ç§’us \~english Exposure of the current image in microseconds us
+  float   fAnalogGain;    ///< \~chinese å½“å‰å›¾åƒçš„æ¨¡æ‹Ÿå¢ç›Šå€æ•° \~english The current image's analog gain multiplier
+  INT     iGamma;         ///< \~chinese è¯¥å¸§å›¾åƒçš„ä¼½é©¬è®¾å®šå€¼ï¼Œä»…å½“LUTæ¨¡å¼ä¸ºåŠ¨æ€å‚æ•°ç”Ÿæˆæ—¶æœ‰æ•ˆï¼Œå…¶ä½™æ¨¡å¼ä¸‹ä¸º-1 \~english The gamma setting value of the frame image is valid only when the LUT mode is a dynamic parameter generation, and is -1 in other modes.
+  INT     iContrast;      ///< \~chinese è¯¥å¸§å›¾åƒçš„å¯¹æ¯”åº¦è®¾å®šå€¼ï¼Œä»…å½“LUTæ¨¡å¼ä¸ºåŠ¨æ€å‚æ•°ç”Ÿæˆæ—¶æœ‰æ•ˆï¼Œå…¶ä½™æ¨¡å¼ä¸‹ä¸º-1 \~english The contrast setting value of the frame image is only valid when the LUT mode is generated by the dynamic parameter, and is -1 in other modes.
+  INT     iSaturation;    ///< \~chinese è¯¥å¸§å›¾åƒçš„é¥±å’Œåº¦è®¾å®šå€¼ï¼Œå¯¹äºé»‘ç™½ç›¸æœºæ— æ„ä¹‰ï¼Œä¸º0 \~english The saturation value of the frame image, which is meaningless for a black and white camera, is 0
+  float   fRgain;         ///< \~chinese è¯¥å¸§å›¾åƒå¤„ç†çš„çº¢è‰²æ•°å­—å¢ç›Šå€æ•°ï¼Œå¯¹äºé»‘ç™½ç›¸æœºæ— æ„ä¹‰ï¼Œä¸º1 \~english The red digital gain multiple of this frame image processing is meaningless for a black and white camera and is 1
+  float   fGgain;         ///< \~chinese è¯¥å¸§å›¾åƒå¤„ç†çš„ç»¿è‰²æ•°å­—å¢ç›Šå€æ•°ï¼Œå¯¹äºé»‘ç™½ç›¸æœºæ— æ„ä¹‰ï¼Œä¸º1 \~english The green digital gain multiplier for this frame image processing, meaning no significance for black and white cameras, is 1
+  float   fBgain;         ///< \~chinese è¯¥å¸§å›¾åƒå¤„ç†çš„è“è‰²æ•°å­—å¢ç›Šå€æ•°ï¼Œå¯¹äºé»‘ç™½ç›¸æœºæ— æ„ä¹‰ï¼Œä¸º1 \~english The blue digital gain multiplier for this frame image processing, meaning no significance for black and white cameras, is 1
 }tSdkFrameHead;
 
-/// \~chinese Í¼ÏñÖ¡ÃèÊö
+/// \~chinese å›¾åƒå¸§æè¿°
 /// \~english Image frame description
 typedef struct sCameraFrame
 {
-  tSdkFrameHead   head;     ///< \~chinese Ö¡Í· \~english Frame Head
-  BYTE *          pBuffer;  ///< \~chinese Êı¾İÇø \~english Image Data
+  tSdkFrameHead   head;     ///< \~chinese å¸§å¤´ \~english Frame Head
+  BYTE *          pBuffer;  ///< \~chinese æ•°æ®åŒº \~english Image Data
 }tSdkFrame;
 
-/// \~chinese Ö¡ÊÂ¼ş
+/// \~chinese å¸§äº‹ä»¶
 /// \~english Frame Event
 typedef struct tSdkFrameEvent_
 {
-	UINT 	uType;			///< \~chinese ÊÂ¼şÀàĞÍ(1:Ö¡¿ªÊ¼   2:Ö¡½áÊø) \~english Event type (1:frame start   2:frame end)
-	UINT	uStatus;		///< \~chinese ×´Ì¬(0:³É¹¦  ·Ç0:´íÎó) \~english Status (0:success, non-zero:error)
-	UINT 	uFrameID;		///< \~chinese Ö¡ID \~english Frame ID
-	UINT	uWidth;			///< \~chinese ¿í¶È \~english Width
-	UINT	uHeight;		///< \~chinese ¸ß¶È \~english Height
-	UINT	uPixelFormat;	///< \~chinese Í¼Ïñ¸ñÊ½ \~english Image Format 
-	UINT	TimeStampL;		///< \~chinese Ê±¼ä´ÁµÍ32Î» \~english Lower 32 bits of timestamp
-	UINT	TimeStampH;		///< \~chinese Ê±¼ä´Á¸ß32Î» \~english High 32 bits of timestamp
+	UINT 	uType;			///< \~chinese äº‹ä»¶ç±»å‹(1:å¸§å¼€å§‹   2:å¸§ç»“æŸ) \~english Event type (1:frame start   2:frame end)
+	UINT	uStatus;		///< \~chinese çŠ¶æ€(0:æˆåŠŸ  é0:é”™è¯¯) \~english Status (0:success, non-zero:error)
+	UINT 	uFrameID;		///< \~chinese å¸§ID \~english Frame ID
+	UINT	uWidth;			///< \~chinese å®½åº¦ \~english Width
+	UINT	uHeight;		///< \~chinese é«˜åº¦ \~english Height
+	UINT	uPixelFormat;	///< \~chinese å›¾åƒæ ¼å¼ \~english Image Format 
+	UINT	TimeStampL;		///< \~chinese æ—¶é—´æˆ³ä½32ä½ \~english Lower 32 bits of timestamp
+	UINT	TimeStampH;		///< \~chinese æ—¶é—´æˆ³é«˜32ä½ \~english High 32 bits of timestamp
 }tSdkFrameEvent;
 
 /// @ingroup API_GRAB_CB
-/// \~chinese Í¼Ïñ²¶»ñµÄ»Øµ÷º¯Êı¶¨Òå
+/// \~chinese å›¾åƒæ•è·çš„å›è°ƒå‡½æ•°å®šä¹‰
 /// \~english Callback function definition for image capture
 typedef void (WINAPI* CAMERA_SNAP_PROC)(CameraHandle hCamera, BYTE *pFrameBuffer, tSdkFrameHead* pFrameHead,PVOID pContext);
 
 /// @ingroup API_SETTINGS_PAGE
-/// \~chinese Ïà»úÅäÖÃÒ³ÃæµÄÏûÏ¢»Øµ÷º¯Êı¶¨Òå
+/// \~chinese ç›¸æœºé…ç½®é¡µé¢çš„æ¶ˆæ¯å›è°ƒå‡½æ•°å®šä¹‰
 /// \~english camera configuration page message callback function definition
 typedef void (WINAPI* CAMERA_PAGE_MSG_PROC)(CameraHandle hCamera,UINT MSG,UINT uParam,PVOID pContext);
 
 /// @ingroup API_RECONNECT
-/// \~chinese Ïà»úÁ¬½Ó×´Ì¬»Øµ÷
-/// \param [in] hCamera Ïà»ú¾ä±ú
-/// \param [in] MSG ÏûÏ¢£¬0: Ïà»úÁ¬½Ó¶Ï¿ª    1: Ïà»úÁ¬½Ó»Ö¸´
-/// \param [in] uParam ¸½¼ÓĞÅÏ¢
-/// \param [in] pContext ÓÃ»§Êı¾İ
-/// \return ÎŞ
-/// \note USBÏà»úuParamÈ¡Öµ£º
-/// \note 		Î´¶¨Òå
-/// \note Íø¿ÚÏà»úuParamÈ¡Öµ£º
-/// \note		µ±MSG=0Ê±£ºÎ´¶¨Òå
-/// \note		µ±MSG=1Ê±£º
-/// \note			0£ºÉÏ´ÎµôÏßÔ­Òò£¬ÍøÂçÍ¨Ñ¶Ê§°Ü
-/// \note			1£ºÉÏ´ÎµôÏßÔ­Òò£¬Ïà»úµôµç
+/// \~chinese ç›¸æœºè¿æ¥çŠ¶æ€å›è°ƒ
+/// \param [in] hCamera ç›¸æœºå¥æŸ„
+/// \param [in] MSG æ¶ˆæ¯ï¼Œ0: ç›¸æœºè¿æ¥æ–­å¼€    1: ç›¸æœºè¿æ¥æ¢å¤
+/// \param [in] uParam é™„åŠ ä¿¡æ¯
+/// \param [in] pContext ç”¨æˆ·æ•°æ®
+/// \return æ— 
+/// \note USBç›¸æœºuParamå–å€¼ï¼š
+/// \note 		æœªå®šä¹‰
+/// \note ç½‘å£ç›¸æœºuParamå–å€¼ï¼š
+/// \note		å½“MSG=0æ—¶ï¼šæœªå®šä¹‰
+/// \note		å½“MSG=1æ—¶ï¼š
+/// \note			0ï¼šä¸Šæ¬¡æ‰çº¿åŸå› ï¼Œç½‘ç»œé€šè®¯å¤±è´¥
+/// \note			1ï¼šä¸Šæ¬¡æ‰çº¿åŸå› ï¼Œç›¸æœºæ‰ç”µ
 /// \~english Camera connection status callback
 /// \param [in] hCamera Camera handle
 /// \param [in] MSG message, 0: Camera disconnected 1: Camera connection restored
@@ -788,30 +788,30 @@ typedef void (WINAPI* CAMERA_PAGE_MSG_PROC)(CameraHandle hCamera,UINT MSG,UINT u
 typedef void (WINAPI* CAMERA_CONNECTION_STATUS_CALLBACK)(CameraHandle hCamera,UINT MSG,UINT uParam,PVOID pContext);
 
 /// @ingroup API_ADVANCE
-/// \~chinese Ö¡ÊÂ¼ş»Øµ÷º¯Êı¶¨Òå
+/// \~chinese å¸§äº‹ä»¶å›è°ƒå‡½æ•°å®šä¹‰
 /// \~english Callback function definition for frame event
 typedef void (WINAPI* CAMERA_FRAME_EVENT_CALLBACK)(CameraHandle hCamera, tSdkFrameEvent* pEvent, PVOID pContext);
 
 
 //////////////////////////////////////////////////////////////////////////
-// Grabber Ïà¹Ø
+// Grabber ç›¸å…³
 
-/// \~chinese GrabberÍ³¼ÆĞÅÏ¢
+/// \~chinese Grabberç»Ÿè®¡ä¿¡æ¯
 /// \~english Grabber statistics
 typedef struct
 {
-	int Width;			///< \~chinese Ö¡¿í¶È \~english Frame image width
-	int Height;			///< \~chinese Ö¡¸ß¶È \~english Frame image height
-	int Disp;			///< \~chinese ÏÔÊ¾Ö¡ÊıÁ¿ \~english Display frame number
-	int Capture;		///< \~chinese ²É¼¯µÄÓĞĞ§Ö¡µÄÊıÁ¿ \~english The number of valid frames collected
-	int Lost;			///< \~chinese ¶ªÖ¡µÄÊıÁ¿ \~english The number of dropped frames
-	int Error;			///< \~chinese ´íÖ¡µÄÊıÁ¿ \~english The number of error frames
-	float DispFps;		///< \~chinese ÏÔÊ¾Ö¡ÂÊ \~english Display frame rate
-	float CapFps;		///< \~chinese ²¶»ñÖ¡ÂÊ \~english Capture frame rate
+	int Width;			///< \~chinese å¸§å®½åº¦ \~english Frame image width
+	int Height;			///< \~chinese å¸§é«˜åº¦ \~english Frame image height
+	int Disp;			///< \~chinese æ˜¾ç¤ºå¸§æ•°é‡ \~english Display frame number
+	int Capture;		///< \~chinese é‡‡é›†çš„æœ‰æ•ˆå¸§çš„æ•°é‡ \~english The number of valid frames collected
+	int Lost;			///< \~chinese ä¸¢å¸§çš„æ•°é‡ \~english The number of dropped frames
+	int Error;			///< \~chinese é”™å¸§çš„æ•°é‡ \~english The number of error frames
+	float DispFps;		///< \~chinese æ˜¾ç¤ºå¸§ç‡ \~english Display frame rate
+	float CapFps;		///< \~chinese æ•è·å¸§ç‡ \~english Capture frame rate
 }tSdkGrabberStat;
 
 /// @ingroup GRABBER_CB
-/// \~chinese Í¼Ïñ²¶»ñµÄ»Øµ÷º¯Êı¶¨Òå
+/// \~chinese å›¾åƒæ•è·çš„å›è°ƒå‡½æ•°å®šä¹‰
 /// \~english Callback function definition for image capture
 typedef void (__stdcall *pfnCameraGrabberFrameCallback)(
 	void* Grabber, 
@@ -820,18 +820,18 @@ typedef void (__stdcall *pfnCameraGrabberFrameCallback)(
 	void* Context);
 
 /// @ingroup GRABBER_CB
-/// \~chinese Ö¡¼àÌıº¯Êı¶¨Òå
+/// \~chinese å¸§ç›‘å¬å‡½æ•°å®šä¹‰
 /// \param [in] Grabber
-/// \param [in] Phase Í¼Ïñ´¦Àí½×¶Î
-/// \param [in] pFrameBuffer Ö¡Êı¾İ
-/// \param [in] pFrameHead Ö¡Í·
-/// \param [in] Context ÓÃ»§Êı¾İ
-/// \return 0:Grabber½«»á¶ªÆú´ËÖ¡²¢½áÊøÕë¶Ô´ËÖ¡µÄËùÓĞºóĞø´¦Àí½×¶Î   1:¼ÌĞøÏÂÒ»½×¶Î´¦Àí
-/// \note Ã¿µ±Grabber²¶»ñµ½Ò»Ö¡Í¼ÏñÊ±£¬»á·Ö3¸ö½×¶ÎÀ´ÒÀ´Îµ÷ÓÃFrameListener
-/// \note ½×¶Î0: RAWÊı¾İ´¦Àí£¬pFrameBuffer=RawÊı¾İ
-/// \note ½×¶Î1: ½ØÍ¼Ç°´¦Àí£¬pFrameBuffer=RGBÊı¾İ
-/// \note ½×¶Î2: ÏÔÊ¾Ç°´¦Àí£¬pFrameBuffer=RGBÊı¾İ
-/// \note ÌØ±ğµÄ£¬µ±Ïà»úµôÏßºó´Ë»Øµ÷Ò²»á±»µ÷ÓÃ£¬´ËÊ±Phase=-1£¬pFrameBuffer=NULL,pFrameHead=NULL¡£
+/// \param [in] Phase å›¾åƒå¤„ç†é˜¶æ®µ
+/// \param [in] pFrameBuffer å¸§æ•°æ®
+/// \param [in] pFrameHead å¸§å¤´
+/// \param [in] Context ç”¨æˆ·æ•°æ®
+/// \return 0:Grabberå°†ä¼šä¸¢å¼ƒæ­¤å¸§å¹¶ç»“æŸé’ˆå¯¹æ­¤å¸§çš„æ‰€æœ‰åç»­å¤„ç†é˜¶æ®µ   1:ç»§ç»­ä¸‹ä¸€é˜¶æ®µå¤„ç†
+/// \note æ¯å½“Grabberæ•è·åˆ°ä¸€å¸§å›¾åƒæ—¶ï¼Œä¼šåˆ†3ä¸ªé˜¶æ®µæ¥ä¾æ¬¡è°ƒç”¨FrameListener
+/// \note é˜¶æ®µ0: RAWæ•°æ®å¤„ç†ï¼ŒpFrameBuffer=Rawæ•°æ®
+/// \note é˜¶æ®µ1: æˆªå›¾å‰å¤„ç†ï¼ŒpFrameBuffer=RGBæ•°æ®
+/// \note é˜¶æ®µ2: æ˜¾ç¤ºå‰å¤„ç†ï¼ŒpFrameBuffer=RGBæ•°æ®
+/// \note ç‰¹åˆ«çš„ï¼Œå½“ç›¸æœºæ‰çº¿åæ­¤å›è°ƒä¹Ÿä¼šè¢«è°ƒç”¨ï¼Œæ­¤æ—¶Phase=-1ï¼ŒpFrameBuffer=NULL,pFrameHead=NULLã€‚
 /// \~english Frame listening function definition
 /// \param [in] Grabber
 /// \param [in] Phase image processing phase
@@ -852,13 +852,13 @@ typedef int (__stdcall *pfnCameraGrabberFrameListener)(
 	void* Context);
 
 /// @ingroup GRABBER_SNAPSHOT
-/// \~chinese Òì²½×¥Í¼µÄ»Øµ÷º¯Êı¶¨Òå
-/// \warning ImageĞèÒªµ÷ÓÃ @link CameraImage_Destroy @endlink ÊÍ·Å
+/// \~chinese å¼‚æ­¥æŠ“å›¾çš„å›è°ƒå‡½æ•°å®šä¹‰
+/// \warning Imageéœ€è¦è°ƒç”¨ @link CameraImage_Destroy @endlink é‡Šæ”¾
 /// \~english Asynchronous snapshot callback function definition
 /// \warning Image needs to call @link CameraImage_Destroy @endlink to release
 typedef void (__stdcall *pfnCameraGrabberSaveImageComplete)(
 	void* Grabber, 
-	void* Image,	// ĞèÒªµ÷ÓÃCameraImage_DestroyÊÍ·Å
+	void* Image,	// éœ€è¦è°ƒç”¨CameraImage_Destroyé‡Šæ”¾
 	CameraSdkStatus Status,
 	void* Context
 	);
@@ -867,7 +867,7 @@ typedef void (__stdcall *pfnCameraGrabberSaveImageComplete)(
 /// @ingroup MV_MACRO_TYPE 
 /// @{
 //----------------------------IMAGE FORMAT DEFINE------------------------------------
-//----------------------------Í¼Ïñ¸ñÊ½¶¨Òå-------------------------------------------
+//----------------------------å›¾åƒæ ¼å¼å®šä¹‰-------------------------------------------
 #define CAMERA_MEDIA_TYPE_MONO                           0x01000000
 #define CAMERA_MEDIA_TYPE_RGB                            0x02000000 
 #define CAMERA_MEDIA_TYPE_COLOR                          0x02000000

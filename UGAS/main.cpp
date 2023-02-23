@@ -4,7 +4,7 @@
 UGAS ugas;
 
 int main() {
-	//初始化日志库
+	//鍒濆鍖栨棩蹇楀簱
 	LOG_INIT();
 
 	for (int restartTime = 0;; ++restartTime) {

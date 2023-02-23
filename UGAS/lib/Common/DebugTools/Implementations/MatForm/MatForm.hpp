@@ -5,7 +5,7 @@ Latest Update: 2023/1/4
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Ò»¸ö´øÓĞ¿Éµã»÷¿Ø¼ş(Control)µÄMatÀà
+- ä¸€ä¸ªå¸¦æœ‰å¯ç‚¹å‡»æ§ä»¶(Control)çš„Matç±»
 */
 #include <opencv2/opencv.hpp>
 #include "MatControl.hpp"

@@ -6,10 +6,10 @@ void ImgPretreat_V1::GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat
 		throw_with_trace(std::runtime_error, "Get empty img!");
 	cvtColor(img, imgGray, COLOR_BGR2GRAY);
 	cvtColor(img, imgThre, COLOR_BGR2HSV);
-	// ´ó·ûÑÕÉ«²ÎÊı»¹Ã»¸ã£¬ºÍµÆÌõ»ìÔÚÒ»ÆğÅªÁË£¬ÔÙÁĞ¼¸¸ö²ÎÊı¾ÍĞĞ
+	// å¤§ç¬¦é¢œè‰²å‚æ•°è¿˜æ²¡æï¼Œå’Œç¯æ¡æ··åœ¨ä¸€èµ·å¼„äº†ï¼Œå†åˆ—å‡ ä¸ªå‚æ•°å°±è¡Œ
 	if (com.Get().team == ((int)Red ^ IN_STATE(com.Get().flag, STATE_BUFF)))
 		inRange(imgThre, Scalar(BHmin, BSmin, BVmin), Scalar(BHmax, BSmax, BVmax), imgThre);
-	else { // ºìÉ«HSVµÄHÉ«¶È¸ÕºÃ·Ö²¼ÔÚÉ«¶ÈÌõÁ½Í·£¬µÃ·Ö¿ªinRangeÈ»ºóºÏ²¢£¨ºÃÂé·³£©
+	else { // çº¢è‰²HSVçš„Hè‰²åº¦åˆšå¥½åˆ†å¸ƒåœ¨è‰²åº¦æ¡ä¸¤å¤´ï¼Œå¾—åˆ†å¼€inRangeç„¶ååˆå¹¶ï¼ˆå¥½éº»çƒ¦ï¼‰
 		Mat tmp;
 		inRange(imgThre, Scalar(0     , RSmin, RVmin), Scalar(RHmaxL, RSmax, RVmax), tmp);
 		inRange(imgThre, Scalar(RHminR, RSmin, RVmin), Scalar(180   , RSmax, RVmax), imgThre);
@@ -19,7 +19,7 @@ void ImgPretreat_V1::GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat
 
 	//*///
 #if DEBUG_PARA == 0
-	static // ·Çµ÷ÊÔÄ£Ê½ÉèÖÃ¾²Ì¬ÄÚºË
+	static // éè°ƒè¯•æ¨¡å¼è®¾ç½®é™æ€å†…æ ¸
 #endif
 		Mat closeCore = getStructuringElement(MORPH_RECT, Size(closeCoreSize | 1, closeCoreSize | 1));
 	morphologyEx(imgThre, imgThre, MORPH_CLOSE, closeCore);

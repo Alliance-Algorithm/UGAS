@@ -5,9 +5,9 @@ Latest Update: 2022/10/19
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ´Ó¶à¸öÄ¿±êÖĞÑ¡ÔñÒ»¸öÒÔ¸ú×Ù
-  ÔÚ¶ªÊ§Ä¿±êºóÓĞÔ¤²â¸ú×Ù³ÙÖÍ
-  ·µ»ØÖµ±íÊ¾ÊÇ·ñÕıÔÚ¸ú×ÙÄ¿±ê
+- ä»å¤šä¸ªç›®æ ‡ä¸­é€‰æ‹©ä¸€ä¸ªä»¥è·Ÿè¸ª
+  åœ¨ä¸¢å¤±ç›®æ ‡åæœ‰é¢„æµ‹è·Ÿè¸ªè¿Ÿæ»
+  è¿”å›å€¼è¡¨ç¤ºæ˜¯å¦æ­£åœ¨è·Ÿè¸ªç›®æ ‡
 */
 #include "Common/DebugTools/DebugHeader.h"
 

@@ -5,54 +5,54 @@ Latest Update: 2022/10/13
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ¶¨ÒåËùÓĞµ÷ÊÔºê¿ª¹Ø
+- å®šä¹‰æ‰€æœ‰è°ƒè¯•å®å¼€å…³
 
-* µ÷ÊÔºêÊ¹ÓÃÊ¾Àı (µ¥±äÁ¿)
+* è°ƒè¯•å®ä½¿ç”¨ç¤ºä¾‹ (å•å˜é‡)
 * DEBUG_GRAGH(var)
-* µ÷ÊÔºêÊ¹ÓÃÊ¾Àı (¶à±äÁ¿)
+* è°ƒè¯•å®ä½¿ç”¨ç¤ºä¾‹ (å¤šå˜é‡)
 * MAKE_GRAGH_DEFAULT
 *     GRAGH_ADD_VAR(var1, COLOR_YELLOW)
 *     GRAGH_ADD_VAR(var2, COLOR_BLUE)
 * SHOW_GRAGH(Gragh_var1_var2)
 */
 
-/// debug state switches µ÷ÊÔ¿ª¹Ø
-#define VIRTUAL_GIBAL	1					// ĞéÄâÔÆÌ¨¿ª¹Ø
-#define ENABLE_ROI		1					// ÆôÓÃROIÓÅ»¯
-#define DEBUG_IMG		1					// ÏÔÊ¾µ÷ÊÔÍ¼Ïñ×Ü¿ª¹Ø
-#define DEBUG_PARA		0					// ¶¯Ì¬µ÷²ÎÍÏ¶¯Ìõ´°¿Ú
-#define DEBUG_PRETREAT	0					// Ê¹ÓÃÔ¤´¦ÀíºóµÄÍ¼Ïñ×÷Îªµ÷ÊÔÍ¼Ïñ
-#define DEBUG_LIGHTBAR	0					// »æÖÆµÆÌõÊ¶±ğÍ¼Ïñ
-#define DEBUG_ARMOR		1					// »æÖÆ×°¼×°åÊ¶±ğÍ¼Ïñ
-#define DEBUG_ARMOR_NUM 1					// »æÖÆ×°¼×°åÊı×ÖÊ¶±ğ½á¹û
-#define DEBUG_TRACK		1					// »æÖÆ¸ú×Ùµã
-#define DEBUG_PREDICT	1					// »æÖÆÔ¤²âµã
-#define DEBUG_ANGLE		0					// »æÖÆYaw¡¢PitchÇúÏß
+/// debug state switches è°ƒè¯•å¼€å…³
+#define VIRTUAL_GIBAL	1					// è™šæ‹Ÿäº‘å°å¼€å…³
+#define ENABLE_ROI		1					// å¯ç”¨ROIä¼˜åŒ–
+#define DEBUG_IMG		1					// æ˜¾ç¤ºè°ƒè¯•å›¾åƒæ€»å¼€å…³
+#define DEBUG_PARA		0					// åŠ¨æ€è°ƒå‚æ‹–åŠ¨æ¡çª—å£
+#define DEBUG_PRETREAT	0					// ä½¿ç”¨é¢„å¤„ç†åçš„å›¾åƒä½œä¸ºè°ƒè¯•å›¾åƒ
+#define DEBUG_LIGHTBAR	0					// ç»˜åˆ¶ç¯æ¡è¯†åˆ«å›¾åƒ
+#define DEBUG_ARMOR		1					// ç»˜åˆ¶è£…ç”²æ¿è¯†åˆ«å›¾åƒ
+#define DEBUG_ARMOR_NUM 1					// ç»˜åˆ¶è£…ç”²æ¿æ•°å­—è¯†åˆ«ç»“æœ
+#define DEBUG_TRACK		1					// ç»˜åˆ¶è·Ÿè¸ªç‚¹
+#define DEBUG_PREDICT	1					// ç»˜åˆ¶é¢„æµ‹ç‚¹
+#define DEBUG_ANGLE		0					// ç»˜åˆ¶Yawã€Pitchæ›²çº¿
 
 
-/// static var			 ¾²Ì¬±äÁ¿
-#define VIDEO_VAR_TYPE	const char*			// ÊÓÆµ¶ÁÈëÀàĞÍ
-#define VIDEO_VAR		"Blue_3.mp4" 		// ÊÓÆµ¶ÁÈë
-#define NUM_PARA_TYPE	const char*			// Êı×ÖÊ¶±ğ²ÎÊıÀàĞÍ
-#define NUM_PARA		"V1.pb"				// Êı×ÖÊ¶±ğ²ÎÊı
-#define FILTER_TYPE		PID::PDfilter		// Ä¿±êÔË¶¯ÂË²¨Æ÷ÀàĞÍ
+/// static var			 é™æ€å˜é‡
+#define VIDEO_VAR_TYPE	const char*			// è§†é¢‘è¯»å…¥ç±»å‹
+#define VIDEO_VAR		"Blue_3.mp4" 		// è§†é¢‘è¯»å…¥
+#define NUM_PARA_TYPE	const char*			// æ•°å­—è¯†åˆ«å‚æ•°ç±»å‹
+#define NUM_PARA		"V1.pb"				// æ•°å­—è¯†åˆ«å‚æ•°
+#define FILTER_TYPE		PID::PDfilter		// ç›®æ ‡è¿åŠ¨æ»¤æ³¢å™¨ç±»å‹
 
 
-/// debug var			 µ÷ÊÔ±äÁ¿
-#define DEFAULT_TEAM	Red 				// ĞéÄâÔÆÌ¨¶ÓÎéÑÕÉ«
-#define NUM_DEFAULT		1					// Êı×ÖÊ¶±ğÄ¬ÈÏ·µ»ØÊı×Ö(Ò»°ãÊÇ0)
-#define DEFAULT_MEM_NUM 300					// µ÷ÊÔÇúÏßÄ¬ÈÏ×î´ó²ÉÑùÊıÁ¿
+/// debug var			 è°ƒè¯•å˜é‡
+#define DEFAULT_TEAM	Red 				// è™šæ‹Ÿäº‘å°é˜Ÿä¼é¢œè‰²
+#define NUM_DEFAULT		1					// æ•°å­—è¯†åˆ«é»˜è®¤è¿”å›æ•°å­—(ä¸€èˆ¬æ˜¯0)
+#define DEFAULT_MEM_NUM 300					// è°ƒè¯•æ›²çº¿é»˜è®¤æœ€å¤§é‡‡æ ·æ•°é‡
 
 
-/// constant vars		 ³£Öµ±äÁ¿
-#define SERIAL_PORT		"\\\\.\\COM3"		// ´®¿ÚÂß¼­Ãû
-#define MAX_FPS			1000				// ×î´óÖ¡ÊıÏŞÖÆ
-#define MAX_CNT			1000000				// µ¯µÀ·ÂÕæµü´ú´ÎÊıÏŞÖÆ
-#define PI				3.1415926535897		// ¦°Öµ
-#define G				9.8					// ÖØÁ¦³£Êı
+/// constant vars		 å¸¸å€¼å˜é‡
+#define SERIAL_PORT		"\\\\.\\COM3"		// ä¸²å£é€»è¾‘å
+#define MAX_FPS			1000				// æœ€å¤§å¸§æ•°é™åˆ¶
+#define MAX_CNT			1000000				// å¼¹é“ä»¿çœŸè¿­ä»£æ¬¡æ•°é™åˆ¶
+#define PI				3.1415926535897		// Î å€¼
+#define G				9.8					// é‡åŠ›å¸¸æ•°
 
 
-/// Time cost analysis	ÔËĞĞÊ±¼ä·ÖÎöºê¶¨Òå
+/// Time cost analysis	è¿è¡Œæ—¶é—´åˆ†æå®å®šä¹‰
 #define START_COUNT	{TimeStamp __tsTmp = TimeStampCounter::GetTimeStamp();
 #define PRINT_COST	 printf("Took %llu ms | ", \
 						TimeStampCounter::GetTimeStamp() - __tsTmp);

@@ -5,7 +5,7 @@ Latest Update: 2022/10/13
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 声明并实现所有通用计算辅助函数
+- 澹版槑骞跺疄鐜版墍鏈夐�氱敤璁＄畻杈呭姪鍑芥暟
 */
 #include <opencv2/opencv.hpp>
 #include "Common/UniversalStruct.h"

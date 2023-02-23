@@ -5,8 +5,8 @@ Latest Update: 2022/10/13
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- °üº¬ËùÓĞ UGAS Ö±½ÓĞèÒªµÄÍ·ÎÄ¼ş
-  °üÀ¨Íâ²¿¿âÎÄ¼şºÍ×Ô¶¨Òå¿âÎÄ¼ş
+- åŒ…å«æ‰€æœ‰ UGAS ç›´æ¥éœ€è¦çš„å¤´æ–‡ä»¶
+  åŒ…æ‹¬å¤–éƒ¨åº“æ–‡ä»¶å’Œè‡ªå®šä¹‰åº“æ–‡ä»¶
 */
 
 // External Library Files

@@ -5,29 +5,29 @@ Latest Update: 2022/10/14
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 
-¸Ä½øÒâ¼û£ºÒıÓÃÌ«¶àÄÑÒÔ´¦Àí³õÊ¼»¯ÎÊÌâ£¨C++²»Ö§³Ö¿ÕÒıÓÃ£©
-		¿¼ÂÇÊ¹ÓÃ´øÒıÓÃ¼ÆÊıµÄ¾ä±úÀà´úÀíÒ»ÏÂ
+æ”¹è¿›æ„è§ï¼šå¼•ç”¨å¤ªå¤šéš¾ä»¥å¤„ç†åˆå§‹åŒ–é—®é¢˜ï¼ˆC++ä¸æ”¯æŒç©ºå¼•ç”¨ï¼‰
+		è€ƒè™‘ä½¿ç”¨å¸¦å¼•ç”¨è®¡æ•°çš„å¥æŸ„ç±»ä»£ç†ä¸€ä¸‹
 
 Class property:
-- ¼Ì³Ğ×Ô SendPkg ºÍ RecvPkg£¬¿ÉÖ±½ÓÀàĞÍ×ª»»Ê¹ÓÃ
+- ç»§æ‰¿è‡ª SendPkg å’Œ RecvPkgï¼Œå¯ç›´æ¥ç±»å‹è½¬æ¢ä½¿ç”¨
 
 Class public functions:
 - Open		(const char* portName):
-	´ò¿ªÃûÎªportNameµÄ´®¿Ú
+	æ‰“å¼€åä¸ºportNameçš„ä¸²å£
 - IsOpen	()
-	¼ì²é´®¿ÚÊÇ·ñ¿ÉÓÃ£¬¿ÉÓÃtrue£¬²»¿ÉÓÃfalse
+	æ£€æŸ¥ä¸²å£æ˜¯å¦å¯ç”¨ï¼Œå¯ç”¨trueï¼Œä¸å¯ç”¨false
 - Close		()
-	¹Ø±Õ´®¿Ú
+	å…³é—­ä¸²å£
 
 - Send			()
-	·¢ËÍ×ÔÉí SendPkg ²¿·ÖÊı¾İ
+	å‘é€è‡ªèº« SendPkg éƒ¨åˆ†æ•°æ®
 - RecvGimbalData()
-	½ÓÊÕÊı¾İµ½×ÔÉí RecvPkg ²¿·Ö
+	æ¥æ”¶æ•°æ®åˆ°è‡ªèº« RecvPkg éƒ¨åˆ†
 - GetGimbalData	()
-	·µ»Ø×ÔÉí RecvPkg ²¿·ÖÊı¾İ
+	è¿”å›è‡ªèº« RecvPkg éƒ¨åˆ†æ•°æ®
 
 - DebugGimbalInfo(std::ostream& os)
-	µ÷ÓÃ SendPkg ºÍ RecvPkg DebugÊä³öº¯Êı
+	è°ƒç”¨ SendPkg å’Œ RecvPkg Debugè¾“å‡ºå‡½æ•°
 */
 #include <iostream>
 #include <DebugSettings.h>
@@ -39,7 +39,7 @@ namespace serial {
 	class GimbalSerial : public SendPkg, public RecvPkg {
 	public:
 		GimbalSerial()
-		{ // ĞéÄâÔÆÌ¨´®¿ÚÊı¾İ³õÊ¼»¯
+		{ // è™šæ‹Ÿäº‘å°ä¸²å£æ•°æ®åˆå§‹åŒ–
 #if VIRTUAL_GIBAL == 1
 			memset(this, 0, sizeof(*this));
 			RecvPkg::head   = '\xFF';

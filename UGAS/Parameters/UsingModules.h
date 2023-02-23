@@ -5,8 +5,8 @@ Latest Update: 2022/10/13
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ÒıÓÃ°üº¬ËùÓĞÊ¹ÓÃµÄÄ£¿éµÄÊµÏÖ
-- ¶¨ÒåÊ¹ÓÃÀàĞÍµÄºê
+- å¼•ç”¨åŒ…å«æ‰€æœ‰ä½¿ç”¨çš„æ¨¡å—çš„å®ç°
+- å®šä¹‰ä½¿ç”¨ç±»å‹çš„å®
 */
 
 #include <GimbalSerial/GimbalSerialHandle.h>

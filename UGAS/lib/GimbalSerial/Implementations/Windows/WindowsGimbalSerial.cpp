@@ -22,7 +22,7 @@ const RecvPkg& WindowsGimbalSerial::RecvGimbalData() {
 	RecvPkg tmp;
 	recv((BYTE*)&tmp, _RecvPkgSize);
 
-	if (tmp.head != '\xFF') { // ÷ÿ–¬∂‘∆Î
+	if (tmp.head != '\xFF') { // ÈáçÊñ∞ÂØπÈΩê
 		while (tmp.head != '\xFF')
 			recv((BYTE*)&tmp, 1);
 		recv(((BYTE*)&tmp) + 1, _RecvPkgSize - 1);

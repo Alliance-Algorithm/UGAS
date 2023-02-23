@@ -5,7 +5,7 @@ Latest Update: 2022/11/19
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 定义弹道解算类的统一接口
+- 瀹氫箟寮归亾瑙ｇ畻绫荤殑缁熶竴鎺ュ彛
 */
 #include "GimbalSerial/GimbalSerialHandle.h"
 #include "Common/Robot/Robot.h"

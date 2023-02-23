@@ -5,7 +5,7 @@ Latest Update: 2022/11/18
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 定义一个描述机器人及其装甲板运动信息的数据模型
+- 瀹氫箟涓�涓弿杩版満鍣ㄤ汉鍙婂叾瑁呯敳鏉胯繍鍔ㄤ俊鎭殑鏁版嵁妯″瀷
 */
 #include <opencv2/opencv.hpp>
 #include <Common/TimeStamp/TimeStampCounter.h>

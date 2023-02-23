@@ -7,7 +7,7 @@ void LOG_INIT() {
 		//throw std::exception();
 	}
 	catch (std::exception& e) {
-		std::cout << "Logger³õÊ¼»¯Ê±³öÏÖ´íÎó£º" << typeid(e).name() << std::endl;
+		std::cout << "Loggeråˆå§‹åŒ–æ—¶å‡ºçŽ°é”™è¯¯ï¼š" << typeid(e).name() << std::endl;
 		std::cout << e.what() << std::endl;
 		throw;
 	}

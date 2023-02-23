@@ -5,7 +5,7 @@ Latest Update: 2022/11/19
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Í¨¹ıFEM(ÓĞÏŞÔªÄ£Äâ)µÄ·½Ê½Ä£Äâµ¯µÀ£¬½âËãÄ¿±ê½Ç¶È
+- é€šè¿‡FEM(æœ‰é™å…ƒæ¨¡æ‹Ÿ)çš„æ–¹å¼æ¨¡æ‹Ÿå¼¹é“ï¼Œè§£ç®—ç›®æ ‡è§’åº¦
 */
 #include "../Trajectory.h"
 
@@ -15,9 +15,9 @@ private:
 	cv::Point2f _2Dposition;
 
 	double EvaluateBulletFlightTime(const int targetID);
-	// ·ÖÎöÒÔangle½Ç¶Èµ½´ïdistanceÊ±µÄzÖá¸ß¶È
+	// åˆ†æä»¥angleè§’åº¦åˆ°è¾¾distanceæ—¶çš„zè½´é«˜åº¦
 	double Analyze(double distance, double angle, double altitudeTarget, double& flyTime);
-	// µü´úµ¯Íè·ÉĞĞÊ±¼äÔ¤²âÄ¿±êÔË¶¯Á¿
+	// è¿­ä»£å¼¹ä¸¸é£è¡Œæ—¶é—´é¢„æµ‹ç›®æ ‡è¿åŠ¨é‡
 	void Iterate(cv::Point3f position, double& pitch, double& flyTime);
 public:
 	void GetShotAngle(const int targetID, TimeStamp ImgTime, double& yaw, double& pitch);

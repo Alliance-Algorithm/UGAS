@@ -5,7 +5,7 @@ Latest Update: 2022/10/13
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Ìá¹©Ò»¸öÔİÊ±³äÊıµÄÊµÏÖ£¬¾Í½Ğ TargetSolution Ver 1.0
+- æä¾›ä¸€ä¸ªæš‚æ—¶å……æ•°çš„å®ç°ï¼Œå°±å« TargetSolution Ver 1.0
 */
 #include "../TargetSolution.h"
 

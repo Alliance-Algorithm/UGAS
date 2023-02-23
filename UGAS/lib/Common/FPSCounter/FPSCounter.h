@@ -5,7 +5,7 @@ Latest Update: 2022/10/16
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Ìá¹©Í³¼ÆÖ¡ÊıĞÅÏ¢µÄ·½·¨
+- æä¾›ç»Ÿè®¡å¸§æ•°ä¿¡æ¯çš„æ–¹æ³•
 */
 #include <DebugSettings.h>
 #include <Common/TimeStamp/TimeStampCounter.h>

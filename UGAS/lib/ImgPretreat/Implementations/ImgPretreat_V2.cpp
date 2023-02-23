@@ -107,7 +107,7 @@ void ImgPretreat_V2::GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat
     cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
 
 /*#if DEBUG_PARA == 0
-    static // ·Çµ÷ÊÔÄ£Ê½ÉèÖÃ¾²Ì¬ÄÚºË
+    static // éè°ƒè¯•æ¨¡å¼è®¾ç½®é™æ€å†…æ ¸
 #endif
         cv::Mat closeCore = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(closeCoreSize | 1, closeCoreSize | 1));
     morphologyEx(imgThre, imgThre, cv::MORPH_CLOSE, closeCore);*/

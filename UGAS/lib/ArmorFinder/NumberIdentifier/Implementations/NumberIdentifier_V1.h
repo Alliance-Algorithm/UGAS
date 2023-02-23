@@ -5,8 +5,8 @@ Latest Update: 2022/11/23
 Developer(s): 22-Qzh 22-Ljc
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 数字识别V1版本
-- 使用OTSU和CNN
+- 鏁板瓧璇嗗埆V1鐗堟湰
+- 浣跨敤OTSU鍜孋NN
 */
 #include "../NumberIdentifier.h"
 #include <opencv2/opencv.hpp>

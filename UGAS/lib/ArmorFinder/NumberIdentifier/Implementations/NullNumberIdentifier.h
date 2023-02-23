@@ -5,7 +5,7 @@ Latest Update: 2022/11/20
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 就是个充数的，有空慢慢搞数字识别，这玩意只会返回NUM_DEFAULT
+- 灏辨槸涓厖鏁扮殑锛屾湁绌烘參鎱㈡悶鏁板瓧璇嗗埆锛岃繖鐜╂剰鍙細杩斿洖NUM_DEFAULT
 */
 #include"../NumberIdentifier.h"
 

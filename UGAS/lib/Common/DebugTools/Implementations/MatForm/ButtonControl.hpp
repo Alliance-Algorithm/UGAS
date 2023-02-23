@@ -5,7 +5,7 @@ Latest Update: 2023/1/4
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 按钮类，可添加进MatForm
+- 鎸夐挳绫伙紝鍙坊鍔犺繘MatForm
 */
 #include <opencv2/opencv.hpp>
 #include "RectangleControl.hpp"

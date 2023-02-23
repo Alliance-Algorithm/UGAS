@@ -27,7 +27,7 @@ void ArmorIdentifier_V1::FindLightBars(const Img& imgThre) {
 					if (P2PDis(rectPoints[0], rectPoints[1]) > P2PDis(rectPoints[1], rectPoints[2])) {
 						_lightBars.push_back({ (rectPoints[1] + rectPoints[2]) / 2 + ROIoffset,
 							(rectPoints[0] + rectPoints[3]) / 2 + ROIoffset, angle });
-					} // ÔÚ´´½¨µÆÌõ¶ÔÏóÊ±×¢Òâ²¹³¥ROIµÄÆ«ÒÆ
+					} // åœ¨åˆ›å»ºç¯æ¡å¯¹è±¡æ—¶æ³¨æ„è¡¥å¿ROIçš„åç§»
 					else {
 						_lightBars.push_back({ (rectPoints[0] + rectPoints[1]) / 2 + ROIoffset,
 							(rectPoints[2] + rectPoints[3]) / 2 + ROIoffset, angle });
@@ -49,7 +49,7 @@ void ArmorIdentifier_V1::FindArmorPlates(const Img& imgGray, std::vector<ArmorPl
 	for (int i = 0; i < n; ++i) {
 		float Isize = P2PDis(_lightBars[i].top, _lightBars[i].bottom);
 		Point2f Icenter = (_lightBars[i].top + _lightBars[i].bottom) / 2;
-		for (int j = i + 1; j < n; ++j) { // Ò»Ğ©É¸Ñ¡Ìõ¼ş
+		for (int j = i + 1; j < n; ++j) { // ä¸€äº›ç­›é€‰æ¡ä»¶
 			float Jsize = P2PDis(_lightBars[j].top, _lightBars[j].bottom);
 			if (max(Isize, Jsize) / min(Isize, Jsize) > maxArmorLightRatio)		continue;
 			if (fabs(_lightBars[i].angle - _lightBars[j].angle) > maxdAngle)	continue;
@@ -58,7 +58,7 @@ void ArmorIdentifier_V1::FindArmorPlates(const Img& imgGray, std::vector<ArmorPl
 			if (fabs(Icenter.y - Jcenter.y) * 2 / (Isize + Jsize) > maxLightDy)	continue;
 			if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis)	continue;
 
-			// Êı×ÖÊ¶±ğ
+			// æ•°å­—è¯†åˆ«
 			ArmorPlate armor(_lightBars[i], _lightBars[j]);
 			armor.id = _numberIdentifier.Identify(imgGray, armor);
 			result.push_back(armor);

@@ -15,7 +15,7 @@ Class public functions:
 // main progress for UGAS
 class UGAS {
 private:
-	// Ö÷¹ı³Ì¹¦ÄÜÄ£¿é
+	// ä¸»è¿‡ç¨‹åŠŸèƒ½æ¨¡å—
 	ImgCapture&					_imgCapture;
 	ImgPretreat&				_pretreater;
 	ArmorIdentifier&			_armorIdentifier;
@@ -23,7 +23,7 @@ private:
 	TrackingStrategy&			_trackingStrategy;
 	Trajectory&					_trajectory;
 
-	// ¸½Êô¹¦ÄÜÄ£¿é
+	// é™„å±åŠŸèƒ½æ¨¡å—
 	FPSCounter					_fps;
 public:
 	UGAS();

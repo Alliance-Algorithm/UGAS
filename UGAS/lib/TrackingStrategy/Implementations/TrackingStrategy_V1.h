@@ -5,7 +5,7 @@ Latest Update: 2022/11/19
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Ìá¹©Ò»¸öÔİÊ±³äÊıµÄÊµÏÖ£¬¾Í½Ğ TrackingStrategy Ver 1.0
+- æä¾›ä¸€ä¸ªæš‚æ—¶å……æ•°çš„å®ç°ï¼Œå°±å« TrackingStrategy Ver 1.0
 */
 #include "../TrackingStrategy.h"
 
@@ -13,7 +13,7 @@ class TrackingStrategy_V1 : public TrackingStrategy {
 public:
 	int GetTargetID() {
 		int res = 0;
-		double maxPossibility = 10.; // ÔİÊ±Ëæ±ã¸ø¸öÖµ
+		double maxPossibility = 10.; // æš‚æ—¶éšä¾¿ç»™ä¸ªå€¼
 		for (int i = 1; i < 10; ++i) {
 			double possibility = robots[i].GetPossibility();
 			if (possibility > maxPossibility) {

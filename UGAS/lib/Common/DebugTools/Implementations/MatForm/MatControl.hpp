@@ -5,7 +5,7 @@ Latest Update: 2023/1/4
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 控件基类，可添加进MatForm
+- 鎺т欢鍩虹被锛屽彲娣诲姞杩汳atForm
 */
 #include "MatForm.hpp"
 

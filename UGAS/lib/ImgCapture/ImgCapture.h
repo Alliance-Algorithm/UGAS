@@ -5,12 +5,12 @@ Latest Update: 2022/10/12
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ¶¨Òå»ñÈ¡Í¼ÏñÀàµÄÍ¨ÓÃ½Ó¿Ú
+- å®šä¹‰è·å–å›¾åƒç±»çš„é€šç”¨æ¥å£
 Class public functions:
 - init(void*)
-	³õÊ¼»¯Í¼ÏñÊäÈë
+	åˆå§‹åŒ–å›¾åƒè¾“å…¥
 - read(Img&)
-	¶ÁÈ¡Ò»Ö¡Í¼Ïñ£¬Í¨¹ıĞŞ¸ÄÒıÓÃµÄ·½Ê½·µ»Ø½á¹û
+	è¯»å–ä¸€å¸§å›¾åƒï¼Œé€šè¿‡ä¿®æ”¹å¼•ç”¨çš„æ–¹å¼è¿”å›ç»“æœ
 */
 #include <opencv2/opencv.hpp>
 #include <Common/UniversalStruct.h>

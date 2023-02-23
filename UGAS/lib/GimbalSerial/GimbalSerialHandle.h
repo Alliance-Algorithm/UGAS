@@ -5,7 +5,7 @@ Latest Update: 2022/11/19
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ÔÆÌ¨´®¿ÚµÄ¾ä±úÀà£¬½«´®¿ÚÀà±äÎªµ¥ÀıÀà£¬½â¾ö³õÊ¼»¯Óë¸´ÓÃÎÊÌâ
+- äº‘å°ä¸²å£çš„å¥æŸ„ç±»ï¼Œå°†ä¸²å£ç±»å˜ä¸ºå•ä¾‹ç±»ï¼Œè§£å†³åˆå§‹åŒ–ä¸å¤ç”¨é—®é¢˜
 */
 #ifdef _WIN32
 #include <GimbalSerial/Implementations/Windows/WindowsGimbalSerial.h>
@@ -19,7 +19,7 @@ namespace serial {
 	class GimbalSerialHandle {
 	private:
 		GimbalSerial* _com;
-		int* _use; // ÒıÓÃ¼ÆÊı
+		int* _use; // å¼•ç”¨è®¡æ•°
 	public:
 		GimbalSerialHandle() : _use(new int(1)),
 			_com(new GIMBAL_SERIAL()) {}

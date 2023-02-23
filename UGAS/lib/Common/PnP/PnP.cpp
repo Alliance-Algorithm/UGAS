@@ -14,7 +14,7 @@ void PnP::GetTransMat() {
 	_pitch = com.Get().pitchA * PI / 180;
 	_roll  = com.Get().rollA  * PI / 180;
 	_yaw   = com.Get().yawA   * PI / 180;
-	// Ã»¿¼ÂÇrollÖá
+	// æ²¡è€ƒè™‘rollè½´
 	_transMat = (cv::Mat_<float>(3, 3) <<
 		-sin(_yaw),  sin(_pitch)* cos(_yaw), cos(_pitch)* cos(_yaw),
 		 cos(_yaw),  sin(_pitch)* sin(_yaw), cos(_pitch)* sin(_yaw),
@@ -45,7 +45,7 @@ cv::Point3f PnP::SolvePnP(const ArmorPlate& armor) {
 	result.z = position.at<float>(2);
 
 	cv::Rodrigues(rvec, rvec);
-	// Õâ»¹ÓĞÅ·À­½Ç½âËã»¹Ã»Ğ´£¬Ò²Ã»Áô½Ó¿Ú£¬ÒªÓÃÔÙËµ
+	// è¿™è¿˜æœ‰æ¬§æ‹‰è§’è§£ç®—è¿˜æ²¡å†™ï¼Œä¹Ÿæ²¡ç•™æ¥å£ï¼Œè¦ç”¨å†è¯´
 
 	return result;
 }

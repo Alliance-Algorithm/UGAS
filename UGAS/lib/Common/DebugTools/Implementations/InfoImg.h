@@ -5,7 +5,7 @@ Latest Update: 2023/1/4
 Developer(s): 21-THY 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ÓÃÓÚ¹ÜÀí¡¢ÏÔÊ¾µ÷ÊÔÍ¼Ïñ
+- ç”¨äºç®¡ç†ã€æ˜¾ç¤ºè°ƒè¯•å›¾åƒ
 */
 #include <opencv2/opencv.hpp>
 #include <DebugSettings.h>
@@ -78,7 +78,7 @@ public:
 	void Load(const Mat& img, const cv::Rect& roiRect) {
 		MatForm::LoadMat(img);
 		if (_lastFrameRows != rows || _lastFrameRows != cols) {
-			//¸üĞÂ°´Å¥Î»ÖÃ
+			//æ›´æ–°æŒ‰é’®ä½ç½®
 			_btnForward10Frame.BoundRect = cv::Rect(cols - 300, rows - 60, 60, 60);
 			_btnForwardFrame.BoundRect = cv::Rect(cols - 240, rows - 60, 60, 60);
 			_btnPause.BoundRect = cv::Rect(cols - 180, rows - 60, 60, 60);

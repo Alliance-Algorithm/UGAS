@@ -5,7 +5,7 @@ Latest Update: 2023/1/4
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 矩形类，可添加进MatForm
+- 鐭╁舰绫伙紝鍙坊鍔犺繘MatForm
 */
 #include <opencv2/opencv.hpp>
 #include "MatControl.hpp"

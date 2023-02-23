@@ -5,7 +5,7 @@ Latest Update: 2022/11/23
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- »æÖÆ±äÁ¿ÇúÏßÍ¼Ïñ
+- ç»˜åˆ¶å˜é‡æ›²çº¿å›¾åƒ
 */
 #include <opencv2/opencv.hpp>
 #include "Common/TimeStamp/TimeStampCounter.h"
@@ -50,7 +50,7 @@ public:
 template<class ValType, size_t Size>
 inline void ValueGraghPrinter<ValType, Size>::draw(ValueGragh& img, cv::Scalar color, bool followRatio) {
 	if (!img._initialized || !followRatio)
-	{ // ×ÔÈ·¶¨XY¶ÈÁ¿Öµ
+	{ // è‡ªç¡®å®šXYåº¦é‡å€¼
 		TimeStamp minTim = ULLONG_MAX, maxTim = 0;
 		double	  minVal = DBL_MAX,    maxVal = DBL_MIN;
 		for (const auto& valWithTp : _queue) {
@@ -63,14 +63,14 @@ inline void ValueGraghPrinter<ValType, Size>::draw(ValueGragh& img, cv::Scalar c
 		img.minY = minVal; img.maxY = maxVal;
 		img._initialized = true;
 	}
-	// else ¸ù¾İÒÑÈ·¶¨µÄ¶ÈÁ¿Öµ»æÖÆ
+	// else æ ¹æ®å·²ç¡®å®šçš„åº¦é‡å€¼ç»˜åˆ¶
 	double Xratio = static_cast<double>(img.cols) / (img.maxX - img.minX + 1);
 	double Yratio = static_cast<double>(img.rows) / (img.maxY - img.minY + 1);
-	//*/// »æÖÆ×ø±êÖá¿Ì¶ÈÏß
+	//*/// ç»˜åˆ¶åæ ‡è½´åˆ»åº¦çº¿
 	if (!img._initialized && followRatio) {
-		// Ã»»­£¬ºÙºÙ(^V^)
+		// æ²¡ç”»ï¼Œå˜¿å˜¿(^V^)
 	}
-	//*/// »æÖÆ±äÁ¿ÇúÏß
+	//*/// ç»˜åˆ¶å˜é‡æ›²çº¿
 	cv::Point2f lastPoint((_queue.first().tim - img.minX) * Xratio,
 		(_queue.first().val - img.minY) * Yratio);
 	for (const auto& valWithTp : _queue) {
@@ -82,20 +82,20 @@ inline void ValueGraghPrinter<ValType, Size>::draw(ValueGragh& img, cv::Scalar c
 	//*///
 }
 
-// ######################## Éú³É(Ä¬ÈÏ)µ÷ÊÔÓÃÍ¼Ïñ #
+// ######################## ç”Ÿæˆ(é»˜è®¤)è°ƒè¯•ç”¨å›¾åƒ #
 #define MAKE_GRAGH(width, height) { ValueGragh __img(width, height);
 #define MAKE_GRAGH_DEFAULT		  MAKE_GRAGH(1000, 500)
-// ########################## ÏÔÊ¾µ÷ÊÔÍ¼Ïñ #
+// ########################## æ˜¾ç¤ºè°ƒè¯•å›¾åƒ #
 #define SHOW_GRAGH(imgName)		  cv::imshow(#imgName, __img); cv::waitKey(1);}
-// #################### ½«±äÁ¿ÇúÏß²åÈëÍ¼Ïñ #
+// #################### å°†å˜é‡æ›²çº¿æ’å…¥å›¾åƒ #
 #define DEBUG_GRAGH_IMG(x, img, color, maxSize) \
 			{ static ValueGraghPrinter<decltype(x), maxSize> __gragh; \
 			__gragh.push_back(x); \
 			__gragh.draw(img, color);}
-// ######## ½«±äÁ¿ÇúÏß²åÈëºêÉú³ÉµÄµ÷ÊÔÍ¼Ïñ #
+// ######## å°†å˜é‡æ›²çº¿æ’å…¥å®ç”Ÿæˆçš„è°ƒè¯•å›¾åƒ #
 #define GRAGH_ADD_VAR_SIZED(x, color, maxSize) DEBUG_GRAGH_IMG(x, __img, color, maxSize)
 #define GRAGH_ADD_VAR(x, color) DEBUG_GRAGH_IMG(x, __img, color, DEFAULT_MEM_NUM)
-// ############ ÏÔÊ¾´ø²ÎÊıµ÷½ÚµÄµ¥±äÁ¿ÇúÏß #
+// ############ æ˜¾ç¤ºå¸¦å‚æ•°è°ƒèŠ‚çš„å•å˜é‡æ›²çº¿ #
 #define DEBUG_GRAGH_PARA(x, width, height, color, maxSize) \
 			{ static ValueGragh __img(width, height); \
 			static ValueGraghPrinter<decltype(x), maxSize> __gragh; \
@@ -103,5 +103,5 @@ inline void ValueGraghPrinter<ValType, Size>::draw(ValueGragh& img, cv::Scalar c
 			__gragh.draw(__img, color, true); \
 			cv::imshow(#x, __img); cv::waitKey(1); \
 			}
-// #################### ÏÔÊ¾Ä¬ÈÏµ¥±äÁ¿ÇúÏß #
+// #################### æ˜¾ç¤ºé»˜è®¤å•å˜é‡æ›²çº¿ #
 #define DEBUG_GRAGH(x) DEBUG_GRAGH_PARA(x, 1000, 500, Scalar(0, 0, 255), DEFAULT_MEM_NUM)

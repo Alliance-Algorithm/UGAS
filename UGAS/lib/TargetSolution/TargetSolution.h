@@ -5,7 +5,7 @@ Latest Update: 2022/11/19
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ¸üÐÂrobots
+- æ›´æ–°robots
 */
 #include <Common/UniversalStruct.h>
 #include <Common/Robot/Robot.h>

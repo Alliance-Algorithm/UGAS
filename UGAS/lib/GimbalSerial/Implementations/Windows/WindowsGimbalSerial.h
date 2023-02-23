@@ -5,7 +5,7 @@ Latest Update: 2022/10/11
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 封装Windows环境下云台通信有关功能
+- 灏佽Windows鐜涓嬩簯鍙伴�氫俊鏈夊叧鍔熻兘
 */
 #ifdef _WIN32
 //#include <thread>
@@ -17,7 +17,7 @@ namespace serial {
 	protected:
 		static void VerifyRecvData(RecvPkg& recvPkg);
 
-		// 禁止复制
+		// 绂佹澶嶅埗
 		WindowsGimbalSerial(WindowsGimbalSerial&) = default;
 		WindowsGimbalSerial& operator=(WindowsGimbalSerial&) = default;
 	public:

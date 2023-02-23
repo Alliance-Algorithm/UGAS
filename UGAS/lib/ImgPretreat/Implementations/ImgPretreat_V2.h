@@ -5,8 +5,8 @@ Latest Update: 2022/10/23
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ����HSL��˼���opencvԴ����п��ٴ�ѡɫ����ֵ��
-- ��ȥ����Ҫ�ļ������ӿ�������
+- 基于HSL的思想和opencv源码进行快速带选色的三值化
+- 剪去不需要的计算大幅加快了性能
 */
 #include "../ImgPretreat.h"
 

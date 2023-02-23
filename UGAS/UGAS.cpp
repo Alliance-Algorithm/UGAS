@@ -23,43 +23,43 @@ UGAS::~UGAS() {
 void UGAS::initial() {
 	try {
 		//
-		// ³õÊ¼»¯²¿·Ö
+		// åˆå§‹åŒ–éƒ¨åˆ†
 		destroyAllWindows();
 		com.Get().Open(SERIAL_PORT);
 		com.Get().RecvGimbalData();
 		_imgCapture.init(&video);
 		ParametersInit(static_cast<Team>(com.Get().team));
 	}
-	catch (const char* str) { // ÖØ°ü×°Òì³£
+	catch (const char* str) { // é‡åŒ…è£…å¼‚å¸¸
 		throw_with_trace(std::runtime_error, str);
 	}
 }
 
 void UGAS::always() {
-	// ÖĞ¼ä¹ı³Ì±äÁ¿
+	// ä¸­é—´è¿‡ç¨‹å˜é‡
 	Img					img, imgThre, imgGray;
 	Rect				ROIregion;
 	vector<ArmorPlate>	armors;
 	int					targetID;
 	double				yaw, pitch;
 
-	// »ñÈ¡Í¼Ïñ´óĞ¡
+	// è·å–å›¾åƒå¤§å°
 	_imgCapture.read(img);
 	frameWidth = img.cols; frameHeight = img.rows;
-	// ³õÊ¼»¯ROI
+	// åˆå§‹åŒ–ROI
 	ROIregion = Rect(0, 0, frameWidth, frameHeight);
 
 	while (true) {
 		try {
-			/// =============== Ö÷Òª¹¤×÷Ñ­»·¿ªÊ¼ ===============
+			/// =============== ä¸»è¦å·¥ä½œå¾ªç¯å¼€å§‹ ===============
 			com.Get().RecvGimbalData();
 			_imgCapture.read(img);
 
-#if		DEBUG_IMG == 1 // ¼ÓÔØµ÷ÊÔÊä³öÍ¼Ïñ
+#if		DEBUG_IMG == 1 // åŠ è½½è°ƒè¯•è¾“å‡ºå›¾åƒ
 			debugImg.Load(img, ROIregion);
 #endif	// DEBUG_IMG
 
-#if ENABLE_ROI == 1 // È¡ROIÇøÓò
+#if ENABLE_ROI == 1 // å–ROIåŒºåŸŸ
 			img.SetROI(ROIregion);
 			ROIoffset = ROIregion.tl();
 #endif // ENABLE_ROI == 1
@@ -76,13 +76,13 @@ void UGAS::always() {
 			else com.Get().SetAngle(yaw = .0, pitch = .0);
 			com.Get().Send();
 
-#if ENABLE_ROI == 1 // ¸üĞÂROI
+#if ENABLE_ROI == 1 // æ›´æ–°ROI
 			if (targetID)
 				ROIregion = robots[targetID].ROIregion(img.timeStamp);
 			else ROIregion = Rect(0, 0, frameWidth, frameHeight);
 #endif // ENABLE_ROI == 1
 
-			/// =============== Ò»Ğ©µ÷ÊÔĞÅÏ¢ ===============
+			/// =============== ä¸€äº›è°ƒè¯•ä¿¡æ¯ ===============
 #if		DEBUG_PRETREAT == 1
 			imshow("Pretreat", imgThre);
 #endif
@@ -94,17 +94,17 @@ void UGAS::always() {
 			SHOW_GRAGH(Gragh_Yaw_Pitch)
 #endif // DEBUG_ANGLE == 1
 
-#if		DEBUG_IMG == 1 //Êä³öÖÁÍ¼Ïñ
+#if		DEBUG_IMG == 1 //è¾“å‡ºè‡³å›¾åƒ
 			_fps.Count();
 			_fps.PrintFPS(debugImg);
 			debugImg.Show();
-#else		//Ö±½Ó´òÓ¡ÔÚ¿ØÖÆÌ¨ÉÏ
+#else		//ç›´æ¥æ‰“å°åœ¨æ§åˆ¶å°ä¸Š
 			printf("\rNow time stamp:%llu | Fps: %3d     ",
 				TimeStampCounter::GetTimeStamp(), _fps.Count());
 #endif	// DEBUG_IMG == 1
-			/// =============== Ö÷Òª¹¤×÷Ñ­»·½áÊø ===============
+			/// =============== ä¸»è¦å·¥ä½œå¾ªç¯ç»“æŸ ===============
 		}
-		catch (const char* str) { // ÖØ°ü×°Òì³£
+		catch (const char* str) { // é‡åŒ…è£…å¼‚å¸¸
 			throw_with_trace(std::runtime_error, str);
 		}
 	}

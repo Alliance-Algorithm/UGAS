@@ -5,7 +5,7 @@ Latest Update: 2022/10/11
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 提供Windows串口通讯基本函数
+- 鎻愪緵Windows涓插彛閫氳鍩烘湰鍑芥暟
 */
 #ifdef _WIN32
 #include <iostream>

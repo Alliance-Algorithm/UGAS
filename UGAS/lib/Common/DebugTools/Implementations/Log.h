@@ -5,8 +5,8 @@ Latest Update: 2022/10/18
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ��https://github.com/amrayn/easyloggingpp(Easylogging++)�ļ򵥷�װ
-- �ṩLOG_TRACE�꣬��ÿ��catchʱ��¼
+- 对https://github.com/amrayn/easyloggingpp(Easylogging++)的简单封装
+- 提供LOG_TRACE宏，在每次catch时记录
 */
 #include "Easylogging++.h"
 

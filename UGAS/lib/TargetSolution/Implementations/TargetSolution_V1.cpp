@@ -17,26 +17,26 @@ void TargetSolution_V1::Solve(TimeStamp ImgTime, std::vector<ArmorPlate>& armors
 			robots[armor.id].Update(ImgTime, armor);
 		}
 		else
-		{ // Ò»¸öÀ¬»øÍ°»úÖÆ
+		{ // ä¸€ä¸ªåƒåœ¾æ¡¶æœºåˆ¶
 			bin.push_back(armor);
 		}
 	}
 	if (bin.empty()) return;
 
-	// ³¢ÊÔ»ØÊÕÀ¬»ø×°¼×°å
+	// å°è¯•å›æ”¶åƒåœ¾è£…ç”²æ¿
 	for (auto& robot : robots) {
 		if (robot.LatestUpdate() != ImgTime &&
 			ImgTime - robot.LatestUpdate() < keep_tracking * 1000)
-		{ // Ò»¸öÓĞÓĞĞ§ĞÅÏ¢ÇÒÎ´¼°Ê±¸üĞÂµÄ¶ÔÏó
-			// »ñÈ¡Æä¶şÎ¬Í¼ÏñÔ¤²âµã
+		{ // ä¸€ä¸ªæœ‰æœ‰æ•ˆä¿¡æ¯ä¸”æœªåŠæ—¶æ›´æ–°çš„å¯¹è±¡
+			// è·å–å…¶äºŒç»´å›¾åƒé¢„æµ‹ç‚¹
 			cv::Point2f prediction = PnPsolver.RevertPnP(
 				robot.Predict(ImgTime - robot.LatestUpdate())
 			);
-			// ¼ì²é¾àÀë
+			// æ£€æŸ¥è·ç¦»
 			for (auto& armor : bin) {
 				if (P2PDis(armor.center(), prediction) < maxArmorTrackDis)
 					//(LOG(INFO) << "recycle!\n"),
-					robot.Update(ImgTime, armor); // »ØÊÕ³É¹¦
+					robot.Update(ImgTime, armor); // å›æ”¶æˆåŠŸ
 			}
 		}
 	}

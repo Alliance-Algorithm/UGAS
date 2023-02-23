@@ -27,8 +27,8 @@ public:
 void AddTrackbar(const cv::String& trackbarname,
 	double* value, int div, int count, const cv::String& winname)
 {
-	// ÒòÎªÖ»´´½¨Ò»´Î£¬ÉúÃüÖÜÆÚÎªÕû¸ö³ÌĞòÔËĞĞÖÜÆÚ£¬Õâ¸önewÃ»ÓĞ¶ÔÓ¦µÄdelete
-	// ÈçĞèĞŞ¸Ä£¬ĞèÒª¼ÓÈëºó¼´²»±äÎïÀíµØÖ·µÄÈİÆ÷À´¹ÜÀíÄÚ´æ£¬·ñÔòTrackBarÄÃµ½µÄÖ¸ÕëµØÖ·²»°²È«
+	// å› ä¸ºåªåˆ›å»ºä¸€æ¬¡ï¼Œç”Ÿå‘½å‘¨æœŸä¸ºæ•´ä¸ªç¨‹åºè¿è¡Œå‘¨æœŸï¼Œè¿™ä¸ªnewæ²¡æœ‰å¯¹åº”çš„delete
+	// å¦‚éœ€ä¿®æ”¹ï¼Œéœ€è¦åŠ å…¥åå³ä¸å˜ç‰©ç†åœ°å€çš„å®¹å™¨æ¥ç®¡ç†å†…å­˜ï¼Œå¦åˆ™TrackBaræ‹¿åˆ°çš„æŒ‡é’ˆåœ°å€ä¸å®‰å…¨
 	DoubleTrackBarCB* doubleCB = new DoubleTrackBarCB(value, div, *value * div);
 	createTrackbar(trackbarname, winname, &doubleCB->_setValue, count * div,
 		DoubleTrackBarCB::CallBackFunc, doubleCB);
@@ -110,7 +110,7 @@ double maxArmorLightRatio = 1.5, maxdAngle = 9.5, \
 
 /* PNP Parameters */
 bool isLargeArmor[10];
-// ×¢ÒâÁ½¸öÏà»ú¾ØÕóµÄÖØ±ê¶¨
+// æ³¨æ„ä¸¤ä¸ªç›¸æœºçŸ©é˜µçš„é‡æ ‡å®š
 double CameraMatrixData[3][3] = {	1867.490995615071, 0, 469.7628091162226, \
 									0, 1873.208292955122, 464.9909258534828, \
 									0, 0, 1 };

@@ -5,7 +5,7 @@ Latest Update: 2022/10/12
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- 提供获取系统时间戳的方法
+- 鎻愪緵鑾峰彇绯荤粺鏃堕棿鎴崇殑鏂规硶
 */
 #include "Common/UniversalStruct.h"
 
