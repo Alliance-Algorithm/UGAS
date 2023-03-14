@@ -13,5 +13,7 @@ Header Functions:
 
 class TrackingStrategy {
 public:
+	virtual ~TrackingStrategy() = default;
+
 	virtual int GetTargetID() = 0;
 };

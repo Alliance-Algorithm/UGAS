@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,12 +138,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="lib\Common\DebugTools\Implementations\MatForm\MatForm.cpp" />
     <ClCompile Include="lib\ImgCapture\Implementations\HTCameraCapture.cpp" />
-    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.cpp" />
     <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.cpp" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp" />
-    <ClCompile Include="lib\Common\DebugTools\Implementations\InfoImg.cpp" />
+    <ClCompile Include="lib\Common\DebugTools\Implementations\DebugCanvas.cpp" />
     <ClCompile Include="lib\Common\Filter\Filter.cpp" />
     <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp" />
     <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp" />
@@ -152,7 +152,6 @@
     <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.cpp" />
     <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp" />
-    <ClCompile Include="lib\ImgCapture\Implementations\CVCameraCapture.cpp" />
     <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp" />
     <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp" />
     <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp" />
@@ -166,6 +165,7 @@
     <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp" />
     <ClCompile Include="lib\Common\Robot\Robot.cpp" />
     <ClCompile Include="lib\Common\PnP\PnP.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\ResizeCapture.cpp" />
     <ClCompile Include="UGAS.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,14 +173,13 @@
     <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\MatControl.hpp" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\MatForm.hpp" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\RectangleControl.hpp" />
-    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.h" />
     <ClInclude Include="lib\Common\DebugTools\DebugHeader.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\InfoImg.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\DebugCanvas.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\FastStruct.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastArray2d.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastBucketMap.h" />
@@ -198,7 +197,6 @@
     <ClInclude Include="lib\ImgCapture\Implementations\HTCameraCapture.h" />
     <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h" />
     <ClInclude Include="lib\ImgPretreat\ImgPretreat.h" />
-    <ClInclude Include="lib\ImgCapture\Implementations\CVCameraCapture.h" />
     <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h" />
     <ClInclude Include="lib\GimbalSerial\CRC\CRC.h" />
     <ClInclude Include="lib\GimbalSerial\GimbalSerial.h" />
@@ -220,6 +218,7 @@
     <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h" />
     <ClInclude Include="lib\Common\Robot\Robot.h" />
     <ClInclude Include="lib\Common\PnP\PnP.h" />
+    <ClInclude Include="lib\ImgCapture\Implementations\ResizeCapture.h" />
     <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApi.h" />
     <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApiLoad.h" />
     <ClInclude Include="third-party\HTCameraSDK\Windows\CameraDefine.H" />

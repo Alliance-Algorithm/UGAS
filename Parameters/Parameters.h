@@ -30,7 +30,7 @@ void ParametersInit(const Team team);
 extern Team team;
 extern VIDEO_VAR_TYPE video;
 extern NUM_PARA_TYPE numberIdPara;
-extern int frameWidth, frameHeight;
+//extern int frameWidth, frameHeight;
 extern cv::Point2f ROIoffset;
 
 /* Pretreat Parameters */

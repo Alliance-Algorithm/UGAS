@@ -16,5 +16,5 @@ private:
 	cv::dnn::Net _net;
 public:
 	void init(void* model);
-	short Identify(const Img& imgGray, const ArmorPlate& region);
+	short Identify(const cv::Mat& imgGray, const ArmorPlate& region);
 };

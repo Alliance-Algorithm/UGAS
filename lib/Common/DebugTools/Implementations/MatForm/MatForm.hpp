@@ -6,6 +6,8 @@ Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
 - 一个带有可点击控件(Control)的Mat类
+- 带有一个全局链表，可以通过MatForm::ShowAll显示所有实例
+- 由于全局链表存在，构造和析构函数并非线程安全，只能在同一线程内构造和析构所有实例
 */
 #include <opencv2/opencv.hpp>
 #include "MatControl.hpp"
@@ -14,36 +16,60 @@ class MatControl;
 
 class MatForm : public cv::Mat {
 private:
-	cv::String _title;
+	static std::list<MatForm*> _instantiatedList;
+
+	std::string _title;
+	std::list<MatForm*>::const_iterator _self;
+
 	std::vector<MatControl*> _controls;
 
 	inline void Draw() {
-		for (auto control : _controls) {
+		for (const auto& control : _controls) {
 			control->Draw();
 		}
 	}
 
 public:
+	MatForm() = delete;
+
 	MatForm(const char* title) {
+		std::cout << title << std::endl;
 		_title = title;
+		_instantiatedList.push_back(this);
+		_self = _instantiatedList.cend();
+		--_self;
+	}
+
+	~MatForm() {
+		_instantiatedList.erase(_self);
 	}
 
 	const std::vector<MatControl*>& Controls = _controls;
 
-	inline void LoadMat(const Mat& img) {
-		static_cast<cv::Mat&>(*this) = img.clone();
+	void LoadMat(Mat& img) {
+		static_cast<cv::Mat&>(*this) = img;
 	}
 
-	inline void AddControl(MatControl* control) {
+	void LoadMat(Mat&& img) {
+		//Note: cv::Mat自带引用计数，因此Copy assignment和Move assignment在代码上无区别
+		static_cast<cv::Mat&>(*this) = img;
+	}
+
+	void AddControl(MatControl* control) {
 		control->SetParent(this);
 		_controls.push_back(control);
 	}
 
-	inline void Show() {
+	void Show() {
 		Draw();
 		cv::imshow(_title, *this);
 		cv::setMouseCallback(_title, OnMouse, (void*)this);
-		cv::waitKey(1);
+	}
+
+	static void ShowAll() {
+		for (const auto& it : _instantiatedList) {
+			it->Show();
+		}
 	}
 
 	static void OnMouse(int event, int x, int y, int flags, void* param) {

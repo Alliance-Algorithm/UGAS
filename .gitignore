@@ -5,4 +5,5 @@ resources
 .idea
 x64
 dockerBase
+cmake-build-debug
 myeasylog.log

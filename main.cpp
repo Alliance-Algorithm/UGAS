@@ -1,14 +1,17 @@
 #define _CRT_SECURE_NO_WARNINGS
+#include <chrono>
 #include "UGAS.h"
 
-UGAS ugas;
 
 int main() {
+	UGAS *ugas;
 	for (int restartTime = 0;; ++restartTime) {
 		try {
 			LOG(INFO) << "Program starts, count " << restartTime;
-			ugas.initial();
-			ugas.always();
+			ugas = new UGAS();
+			ugas->initial();
+			ugas->always();
+			delete ugas;
 		}
 		catch (std::exception& e) {
 			LOG(ERROR) << "Uncaught " << typeid(e).name() << ">: " << e.what();

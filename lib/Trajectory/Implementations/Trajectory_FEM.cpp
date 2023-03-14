@@ -67,10 +67,10 @@ void Trajectory_FEM::GetShotAngle(const int targetID, TimeStamp ImgTime, double&
 
 	// Yaw差值的解算
 	_2Dposition = PnPsolver.RevertPnP(_3Dposition);
-	yaw = _2Dposition.x - (frameWidth >> 1);
+	yaw = _2Dposition.x;// -(frameWidth >> 1);
 	//LOG(INFO) << _2Dposition << '\n';
 
-#if DEBUG_IMG == 1 && DEBUG_PREDICT == 1
-	cv::circle(debugImg, _2Dposition, 5, COLOR_RED, 2);
-#endif
+	if constexpr (debugCanvas.predict) {
+		cv::circle(debugCanvas.predict.GetMat(), _2Dposition, 5, COLOR_RED, 2);
+	}	
 }

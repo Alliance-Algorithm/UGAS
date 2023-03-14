@@ -22,16 +22,17 @@ enum Team { Red = 1, Blue = 2 };
 
 typedef unsigned long long TimeStamp;
 
-class MatWithTimeStamp :public cv::Mat {
+/*class MatWithTimeStamp :public cv::Mat {
 public:
 	TimeStamp timeStamp;
 
-	MatWithTimeStamp() :timeStamp(0) {}
-	MatWithTimeStamp(const Mat& img) :Mat(img), timeStamp(0) {}
+	MatWithTimeStamp() = delete;
+	explicit MatWithTimeStamp(TimeStamp ts) : timeStamp(ts) {}
+	explicit MatWithTimeStamp(const Mat& img, TimeStamp ts) :Mat(img), timeStamp(ts) {}
 
 	void SetROI(const cv::Rect& ROI) { static_cast<Mat&>(*this) = this->operator()(ROI); }
 };
-typedef MatWithTimeStamp Img;
+typedef MatWithTimeStamp Img;*/
 
 struct LightBar {
 	cv::Point2f top, bottom;

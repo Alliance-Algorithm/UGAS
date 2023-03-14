@@ -4,7 +4,7 @@
     <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.cpp" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc" />
     <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp" />
-    <ClCompile Include="lib\Common\DebugTools\Implementations\InfoImg.cpp" />
+    <ClCompile Include="lib\Common\DebugTools\Implementations\DebugCanvas.cpp" />
     <ClCompile Include="lib\Common\Filter\Filter.cpp" />
     <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp" />
     <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp" />
@@ -27,9 +27,9 @@
     <ClCompile Include="lib\Common\PnP\PnP.cpp" />
     <ClCompile Include="UGAS.cpp" />
     <ClCompile Include="lib\ArmorFinder\NumberIdentifier\Implementations\NumberIdentifier_V1.cpp" />
-    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.cpp" />
-    <ClCompile Include="lib\ImgCapture\Implementations\CVCameraCapture.cpp" />
     <ClCompile Include="lib\ImgCapture\Implementations\HTCameraCapture.cpp" />
+    <ClCompile Include="lib\Common\DebugTools\Implementations\MatForm\MatForm.cpp" />
+    <ClCompile Include="lib\ImgCapture\Implementations\ResizeCapture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.h" />
@@ -38,7 +38,7 @@
     <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\InfoImg.h" />
+    <ClInclude Include="lib\Common\DebugTools\Implementations\DebugCanvas.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\FastStruct.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastArray2d.h" />
     <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastBucketMap.h" />
@@ -87,12 +87,11 @@
     <ClInclude Include="UGAS.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\ValueGragh.h" />
     <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NumberIdentifier_V1.h" />
-    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoFrameCapture.h" />
-    <ClInclude Include="lib\ImgCapture\Implementations\CVCameraCapture.h" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\MatForm.hpp" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\MatControl.hpp" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\RectangleControl.hpp" />
     <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\ButtonControl.hpp" />
+    <ClInclude Include="lib\ImgCapture\Implementations\ResizeCapture.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="third-party\HTCameraSDK\Windows\MVCAMSDK.lib" />

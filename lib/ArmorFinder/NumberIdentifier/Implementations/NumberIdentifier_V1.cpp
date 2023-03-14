@@ -15,7 +15,7 @@ void NumberIdentifier_V1::init(void* model) {
 		throw_with_trace(std::runtime_error, "Cannot open model file!");
 }
 
-short NumberIdentifier_V1::Identify(const Img& imgGray, const ArmorPlate& region) {
+short NumberIdentifier_V1::Identify(const cv::Mat& imgGray, const ArmorPlate& region) {
 	// 仿射变换与预处理
 	static const std::vector<Point2f> dst = { {-4, 9}, {-4, 23}, {36, 23}, {36, 9} };
 	Mat imgWarped, imgNumber, M = getPerspectiveTransform(region.OffsetPoints(-ROIoffset), dst);
@@ -31,18 +31,18 @@ short NumberIdentifier_V1::Identify(const Img& imgGray, const ArmorPlate& region
 	minMaxLoc(pred, NULL, &maxVal, NULL, &maxLoc);
 	if (maxVal < 1.) maxLoc.x = 0;
 
-#if DEBUG_IMG == 1 && DEBUG_ARMOR_NUM == 1
-	// 绘制二值化图像
-	cv::cvtColor(imgNumber, imgNumber, cv::COLOR_GRAY2BGR);
-	cv::Point drawPos = static_cast<cv::Point>(region.center());
-	cv::Rect drawRect = cv::Rect(drawPos.x - 16, drawPos.y - 16, 32, 32);
-	imgNumber.copyTo(debugImg(drawRect));
-	// 绘制识别数字
-	cv::putText(debugImg, std::to_string(maxLoc.x), Point(drawPos.x - 12, drawPos.y + 13), 1, 2.5, COLOR_GREEN, 3);
-	// 绘制识别置信度
-	auto maxValStr = std::to_string(maxVal); maxValStr.resize(6);
-	cv::putText(debugImg, maxValStr, region.points[0], 1, 1.5, COLOR_GREEN, 1.5);
-#endif
+	/*if constexpr (debugCanvas.armorNum) {
+		// 绘制二值化图像
+		cv::cvtColor(imgNumber, imgNumber, cv::COLOR_GRAY2BGR);
+		cv::Point drawPos = static_cast<cv::Point>(region.center());
+		cv::Rect drawRect = cv::Rect(drawPos.x - 16, drawPos.y - 16, 32, 32);
+		imgNumber.copyTo(debugCanvas.armorNum.GetMat()(drawRect));
+		// 绘制识别数字
+		cv::putText(debugCanvas.armorNum.GetMat(), std::to_string(maxLoc.x), Point(drawPos.x - 12, drawPos.y + 13), 1, 2.5, COLOR_GREEN, 3);
+		// 绘制识别置信度
+		auto maxValStr = std::to_string(maxVal); maxValStr.resize(6);
+		cv::putText(debugCanvas.armorNum.GetMat(), maxValStr, region.points[0], 1, 1.5, COLOR_GREEN, 1.5);
+	}*/
 
 	return maxLoc.x;
 }

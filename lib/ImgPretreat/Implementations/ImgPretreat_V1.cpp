@@ -1,9 +1,12 @@
 #include "ImgPretreat_V1.h"
 using namespace cv;
 
-void ImgPretreat_V1::GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat& imgGray) {
+std::tuple<cv::Mat, cv::Mat> ImgPretreat_V1::GetPretreated(const cv::Mat& img) {
 	if (img.empty())
 		throw_with_trace(std::runtime_error, "Get empty img!");
+
+	std::tuple<cv::Mat, cv::Mat> result;
+	auto& [imgThre, imgGray] = result;
 	cvtColor(img, imgGray, COLOR_BGR2GRAY);
 	cvtColor(img, imgThre, COLOR_BGR2HSV);
 	// 大符颜色参数还没搞，和灯条混在一起弄了，再列几个参数就行
@@ -24,4 +27,6 @@ void ImgPretreat_V1::GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat
 		Mat closeCore = getStructuringElement(MORPH_RECT, Size(closeCoreSize | 1, closeCoreSize | 1));
 	morphologyEx(imgThre, imgThre, MORPH_CLOSE, closeCore);
 	//*///
+
+	return result;
 }

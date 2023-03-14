@@ -4,7 +4,7 @@
 using namespace std;
 using namespace cv;
 
-void ArmorIdentifier_V1::FindLightBars(const Img& imgThre) {
+void ArmorIdentifier_V1::FindLightBars(const Mat& imgThre) {
 	static vector< vector<Point> > contours;
 
 	contours.clear();
@@ -38,8 +38,8 @@ void ArmorIdentifier_V1::FindLightBars(const Img& imgThre) {
 	}
 }
 
-void ArmorIdentifier_V1::FindArmorPlates(const Img& imgGray, std::vector<ArmorPlate>& result) {
-	result.clear();
+std::vector<ArmorPlate> ArmorIdentifier_V1::FindArmorPlates(const Mat& imgGray) {
+	std::vector<ArmorPlate> result;
 	sort(_lightBars.begin(), _lightBars.end(),
 		[&](LightBar& a, LightBar& b) {
 			return a.top.x < b.top.x;
@@ -64,30 +64,33 @@ void ArmorIdentifier_V1::FindArmorPlates(const Img& imgGray, std::vector<ArmorPl
 			result.push_back(armor);
 		}
 	}
+	return result;
 }
 
-void ArmorIdentifier_V1::Identify(const Img& imgThre, const Img& imgGray, std::vector<ArmorPlate>& result) {
+std::vector<ArmorPlate> ArmorIdentifier_V1::Identify(const cv::Mat& imgThre, const cv::Mat& imgGray) {
 	FindLightBars(imgThre);
-	FindArmorPlates(imgGray, result);
-#if DEBUG_IMG == 1 && DEBUG_LIGHTBAR == 1
-	for (const auto& lightBar : _lightBars) {
-		line(debugImg, lightBar.top, lightBar.bottom, COLOR_BLUE, 5);
-		circle(debugImg, lightBar.top, 2, COLOR_ORANGE, 2);
-		circle(debugImg, lightBar.bottom, 2, COLOR_PINK, 2);
-		auto angle = to_string(lightBar.angle); angle.resize(4);
-		//TextFormat(angle).SetFontScale(0.5)
-		//	.Draw(img, lightBar._bottom, COLOR_YELLOW, Direction::BOTTOM_RIGHT);
-		putText(debugImg, angle, lightBar.bottom, 0, 0.5, COLOR_YELLOW);
+	auto result = FindArmorPlates(imgGray);
+	if constexpr (debugCanvas.lightbar) {
+		for (const auto& lightBar : _lightBars) {
+			line(debugCanvas.lightbar.GetMat(), lightBar.top, lightBar.bottom, COLOR_BLUE, 5);
+			circle(debugCanvas.lightbar.GetMat(), lightBar.top, 2, COLOR_ORANGE, 2);
+			circle(debugCanvas.lightbar.GetMat(), lightBar.bottom, 2, COLOR_PINK, 2);
+			auto angle = to_string(lightBar.angle); angle.resize(4);
+			//TextFormat(angle).SetFontScale(0.5)
+			//	.Draw(img, lightBar._bottom, COLOR_YELLOW, Direction::BOTTOM_RIGHT);
+			putText(debugCanvas.lightbar.GetMat(), angle, lightBar.bottom, 0, 0.5, COLOR_YELLOW);
+		}
 	}
-#endif
-#if DEBUG_IMG == 1 && DEBUG_ARMOR == 1
-	for (const auto& armorPlate : result) {
-		const vector<Point2f>& points = armorPlate.points;
-		line(debugImg, points[0], points[1], COLOR_WHITE);
-		line(debugImg, points[1], points[2], COLOR_LIGHTGRAY);
-		line(debugImg, points[2], points[3], COLOR_DARKGRAY);
-		line(debugImg, points[3], points[0], COLOR_RED);
-		circle(debugImg, armorPlate.center(), 3, COLOR_GREEN, 2);
+	if constexpr (debugCanvas.armor) {
+		for (const auto& armorPlate : result) {
+			const vector<Point2f>& points = armorPlate.points;
+			line(debugCanvas.lightbar.GetMat(), points[0], points[1], COLOR_WHITE);
+			line(debugCanvas.lightbar.GetMat(), points[1], points[2], COLOR_LIGHTGRAY);
+			line(debugCanvas.lightbar.GetMat(), points[2], points[3], COLOR_DARKGRAY);
+			line(debugCanvas.lightbar.GetMat(), points[3], points[0], COLOR_RED);
+			circle(debugCanvas.lightbar.GetMat(), armorPlate.center(), 3, COLOR_GREEN, 2);
+		}
 	}
-#endif
+
+	return result;
 }

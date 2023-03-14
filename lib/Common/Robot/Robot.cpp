@@ -25,10 +25,9 @@ void Robot::Update(TimeStamp ImgTime, const ArmorPlate& armor) {
 			cv::Point2f prediction = PnPsolver.RevertPnP(
 				this->Predict(ImgTime - _latestUpdate)
 			);
-
-#if DEBUG_IMG == 1 && DEBUG_TRACK == 1
-			cv::circle(debugImg, prediction, 5, COLOR_YELLOW, 2);
-#endif
+			if constexpr (debugCanvas.track) {
+				cv::circle(debugCanvas.track.GetMat(), prediction, 5, COLOR_YELLOW, 2);
+			}
 
 			// 计算新的三维中心
 			cv::Point3f lastPostion = _armorCenter;
@@ -106,6 +105,7 @@ cv::Point3f Robot::Predict(int millisec) const {
 }
 
 cv::Rect Robot::ROIregion(TimeStamp ImgTime) {
+#if ENABLE_ROI == 1
 	if (_latestUpdate == ImgTime) {
 		cv::Point2f center = _armor.center();
 		cv::Size robotSize = cv::boundingRect(_armor.points).size();
@@ -120,4 +120,5 @@ cv::Rect Robot::ROIregion(TimeStamp ImgTime) {
 		return cv::Rect(tl, br);
 	}
 	return cv::Rect(0, 0, frameWidth, frameHeight);
+#endif
 }

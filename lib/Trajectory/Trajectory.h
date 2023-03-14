@@ -14,5 +14,7 @@ Header Functions:
 
 class Trajectory {
 public:
+	virtual ~Trajectory() = default;
+
 	virtual void GetShotAngle(const int targetID, TimeStamp ImgTime, double& yaw, double& pitch) = 0;
 };

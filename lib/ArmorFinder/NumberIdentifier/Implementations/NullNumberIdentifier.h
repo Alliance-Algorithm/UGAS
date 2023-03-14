@@ -12,7 +12,7 @@ Header Functions:
 class NullNumberIdentifier : public NumberIdentifier {
 public:
 	void init(void*) {}
-	short Identify(const Img& imgGray, const ArmorPlate& region) {
+	short Identify(const cv::Mat& imgGray, const ArmorPlate& region) {
 		return static_cast<short>(NUM_DEFAULT);
 	}
 };

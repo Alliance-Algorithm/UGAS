@@ -1,10 +1,10 @@
 #include "CVVideoCapture.h"
 #include <Common/TimeStamp/TimeStampCounter.h>
 
-void CVVideoCapture::init(void* fileName) {
-	VideoCapture::open(*(const char**)fileName);
+CVVideoCapture::CVVideoCapture(const std::string& fileName) {
+	VideoCapture::open(fileName);
 	if (!isOpened()) {
-		VideoCapture::open(std::string("resources/") + *(const char**)fileName);
+		VideoCapture::open(std::string("resources/") + fileName);
 		if (!isOpened())
 			throw_with_trace(std::runtime_error, "Fail to open.");
 	}
@@ -13,17 +13,19 @@ void CVVideoCapture::init(void* fileName) {
 		throw_with_trace(std::runtime_error, "Read empty video!")
 }
 
-void CVVideoCapture::read(Img& img) {
-	int frameAdjust = debugImg.DebugFrameHandler.FrameAdjust;
-	debugImg.DebugFrameHandler.FrameAdjust = 0;
-	if (debugImg.DebugFrameHandler.Paused)
-		--frameAdjust;
+std::tuple<cv::Mat, TimeStamp> CVVideoCapture::Read() {
+	int frameAdjust = 0;// debugImg.DebugFrameHandler.FrameAdjust;
+	//debugImg.DebugFrameHandler.FrameAdjust = 0;
+	//if (debugImg.DebugFrameHandler.Paused)
+	//	--frameAdjust;
 	if (frameAdjust != 0) {
 		int frameIndex = static_cast<int>(VideoCapture::get(cv::CAP_PROP_POS_FRAMES)) + frameAdjust;
 		frameIndex %= _frameCount;
 		VideoCapture::set(cv::CAP_PROP_POS_FRAMES, frameIndex);
 	}	
 
+	std::tuple<cv::Mat, TimeStamp> result;
+	auto& [img, timestamp] = result;
 	VideoCapture::read(img);
 	if (img.empty()) {
 		VideoCapture::set(cv::CAP_PROP_POS_FRAMES, 0);
@@ -32,5 +34,6 @@ void CVVideoCapture::read(Img& img) {
 			throw_with_trace(std::runtime_error, "Read empty frame!")
 		}
 	}
-	img.timeStamp = TimeStampCounter::GetTimeStamp();
+	timestamp = TimeStampCounter::GetTimeStamp();
+	return result;
 }

@@ -11,5 +11,5 @@ Header Functions:
 
 class ImgPretreat_V1 : public ImgPretreat {
 public:
-	void GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat& imgGray);
+	std::tuple<cv::Mat, cv::Mat> GetPretreated(const cv::Mat& img);
 };

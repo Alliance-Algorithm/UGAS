@@ -7,7 +7,7 @@ Developer(s): 21-THY
 Class public functions:
 - initial:
 	Initialize for UGAS
-- always:
+- always:W
 	Working process in an endless loop
 */
 #include "UGAS_Headers.h"
@@ -16,15 +16,15 @@ Class public functions:
 class UGAS {
 private:
 	// 主过程功能模块
-	ImgCapture&					_imgCapture;
-	ImgPretreat&				_pretreater;
-	ArmorIdentifier&			_armorIdentifier;
-	TargetSolution&				_targetSolution;
-	TrackingStrategy&			_trackingStrategy;
-	Trajectory&					_trajectory;
+	std::unique_ptr<ImgCapture>			_imgCapture;
+	std::unique_ptr<ImgPretreat>		_pretreater;
+	std::unique_ptr<ArmorIdentifier>	_armorIdentifier;
+	std::unique_ptr<TargetSolution>		_targetSolution;
+	std::unique_ptr<TrackingStrategy>	_trackingStrategy;
+	std::unique_ptr<Trajectory>			_trajectory;
 
 	// 附属功能模块
-	FPSCounter					_fps;
+	FPSCounter							_fps;
 public:
 	UGAS();
 	virtual ~UGAS();

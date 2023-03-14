@@ -20,7 +20,7 @@ public:
 
 	using RectangleControl::RectangleControl;
 
-	void Draw() {
+	void Draw() const {
 		RectangleControl::Draw();
 		int baseLine;
 		cv::Size textSize = cv::getTextSize(Text, FontFace, FontScale, Thickness, &baseLine);

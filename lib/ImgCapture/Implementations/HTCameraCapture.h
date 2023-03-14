@@ -38,10 +38,8 @@ private:
 	BYTE* _pFrameBuffer;         //用于将原始图像数据转换为RGB的缓冲区
 
 public:
-	HTCameraCapture() = default;
+	HTCameraCapture();
 	~HTCameraCapture();
 
-	//always let useLess = nullptr
-	virtual void init(void* useLess);
-	virtual void read(Img& img);
+	std::tuple<cv::Mat, TimeStamp> Read();
 };

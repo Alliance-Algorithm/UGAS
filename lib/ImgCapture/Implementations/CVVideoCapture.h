@@ -15,6 +15,6 @@ private:
 	int _frameCount;
 
 public:
-	virtual void init(void* fileName);
-	virtual void read(Img& img);
+	CVVideoCapture(const std::string& fileName);
+	std::tuple<cv::Mat, TimeStamp> Read();
 };

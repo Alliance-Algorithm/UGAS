@@ -18,6 +18,7 @@ Class public functions:
 
 class ImgCapture {
 public:
-	virtual void init(void*) = 0;
-	virtual void read(Img&) = 0;
+	virtual ~ImgCapture() = default;
+
+	virtual std::tuple<cv::Mat, TimeStamp> Read() = 0;
 };

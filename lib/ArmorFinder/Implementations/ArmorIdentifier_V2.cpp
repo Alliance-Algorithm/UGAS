@@ -3,7 +3,7 @@
 #include <Common/Color.h>
 #include <Common/UniversalFunctions/UniversalFunctions.h>
 
-inline std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(const cv::Mat& img, int areaVal, int floodVal, bool borderEngulfment) {
+std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(const cv::Mat& img, int areaVal, int floodVal, bool borderEngulfment) {
     std::queue<cv::Point> emptyQueue;
     std::swap(emptyQueue, _dfsQueue);
     _disjointSet.Reset(img.rows * img.cols);
@@ -39,7 +39,7 @@ inline std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(c
     return _disjointSet.GetGroups(splitIndex);
 }
 
-inline void ArmorIdentifier_V2::_floodPixel(const cv::Mat& grayImg, int floodVal, FastDisjointSet<cv::Point>::Node* source, int fy, int fx) {
+void ArmorIdentifier_V2::_floodPixel(const cv::Mat& grayImg, int floodVal, FastDisjointSet<cv::Point>::Node* source, int fy, int fx) {
     if (grayImg.at<uchar>(fy, fx) > 0) {
         if (_floodMap.At(fy, fx) == nullptr) {
             _floodMap.At(fy, fx) = _disjointSet.Add(cv::Point(fx, fy));
@@ -51,7 +51,7 @@ inline void ArmorIdentifier_V2::_floodPixel(const cv::Mat& grayImg, int floodVal
     }
 }
 
-inline bool ArmorIdentifier_V2::_solveToLightbar(const std::vector<cv::Point>& area) {
+bool ArmorIdentifier_V2::_solveToLightbar(const std::vector<cv::Point>& area) {
     if (area.size() > 3) {
         static const int angleRange = 30;
         auto box = cv::minAreaRect(area);
@@ -89,7 +89,7 @@ inline bool ArmorIdentifier_V2::_solveToLightbar(const std::vector<cv::Point>& a
     return false;
 }
 
-inline void ArmorIdentifier_V2::_matchArmorPlates(const Img& imgGray, std::vector<ArmorPlate>& result) {
+std::vector<ArmorPlate> ArmorIdentifier_V2::_matchArmorPlates(const cv::Mat& imgGray) {
     /*result.clear();
     std::sort(_lightBarList.begin(), _lightBarList.end(),
         [&](LightBar& a, LightBar& b) {
@@ -99,7 +99,7 @@ inline void ArmorIdentifier_V2::_matchArmorPlates(const Img& imgGray, std::vecto
         for (auto i = _lightBarList.begin() + 1; i != _lightBarList.end(); ++i) {
             result.push_back(ArmorPlate(*(i - 1), *i, 3));
         }*/
-    result.clear();
+    std::vector<ArmorPlate> result;
     std::sort(_lightBarList.begin(), _lightBarList.end(),
         [&](LightBar& a, LightBar& b) {
         return a.top.x < b.top.x;
@@ -124,34 +124,37 @@ inline void ArmorIdentifier_V2::_matchArmorPlates(const Img& imgGray, std::vecto
             result.push_back(armor);
         }
     }
+    return result;
 }
 
-void ArmorIdentifier_V2::Identify(const Img& imgThre, const Img& imgGray, std::vector<ArmorPlate>& result) {
+std::vector<ArmorPlate> ArmorIdentifier_V2::Identify(const cv::Mat& imgThre, const cv::Mat& imgGray) {
     auto areaList = _floodFindAreas(imgThre, 250, 120, true);
     _lightBarList.clear();
-    for (auto i = areaList.begin(); i != areaList.end(); ++i)
-        _solveToLightbar(*i);
-    _matchArmorPlates(imgGray, result);
+    for (const auto& area: areaList)
+        _solveToLightbar(area);
+    auto result = _matchArmorPlates(imgGray);
 
-#if DEBUG_LIGHTBAR == 1
-    for (const auto& lightBar : _lightBarList) {
-        line(debugImg, lightBar.top, lightBar.bottom, COLOR_BLUE, 5);
-        circle(debugImg, lightBar.top, 2, COLOR_ORANGE, 2);
-        circle(debugImg, lightBar.bottom, 2, COLOR_PINK, 2);
-        auto angle = std::to_string(lightBar.angle); angle.resize(4);
-        //TextFormat(angle).SetFontScale(0.5)
-        //	.Draw(img, lightBar._bottom, COLOR_YELLOW, Direction::BOTTOM_RIGHT);
-        putText(debugImg, angle, lightBar.bottom, 0, 0.5, COLOR_YELLOW);
+    if constexpr (debugCanvas.lightbar) {
+        for (const auto& lightBar : _lightBarList) {
+            line(debugCanvas.lightbar.GetMat(), lightBar.top, lightBar.bottom, COLOR_BLUE, 5);
+            circle(debugCanvas.lightbar.GetMat(), lightBar.top, 2, COLOR_ORANGE, 2);
+            circle(debugCanvas.lightbar.GetMat(), lightBar.bottom, 2, COLOR_PINK, 2);
+            auto angle = std::to_string(lightBar.angle); angle.resize(4);
+            //TextFormat(angle).SetFontScale(0.5)
+            //	.Draw(img, lightBar._bottom, COLOR_YELLOW, Direction::BOTTOM_RIGHT);
+            putText(debugCanvas.lightbar.GetMat(), angle, lightBar.bottom, 0, 0.5, COLOR_YELLOW);
+        }
     }
-#endif
-#if DEBUG_ARMOR == 1
-    for (const auto& armorPlate : result) {
-        const std::vector<cv::Point2f>& points = armorPlate.points;
-        line(debugImg, points[0], points[1], COLOR_WHITE);
-        line(debugImg, points[1], points[2], COLOR_LIGHTGRAY);
-        line(debugImg, points[2], points[3], COLOR_DARKGRAY);
-        line(debugImg, points[3], points[0], COLOR_RED);
-        circle(debugImg, armorPlate.center(), 3, COLOR_GREEN, 2);
+    if constexpr (debugCanvas.armor) {
+        for (const auto& armorPlate : result) {
+            const std::vector<cv::Point2f>& points = armorPlate.points;
+            line(debugCanvas.lightbar.GetMat(), points[0], points[1], COLOR_WHITE);
+            line(debugCanvas.lightbar.GetMat(), points[1], points[2], COLOR_LIGHTGRAY);
+            line(debugCanvas.lightbar.GetMat(), points[2], points[3], COLOR_DARKGRAY);
+            line(debugCanvas.lightbar.GetMat(), points[3], points[0], COLOR_RED);
+            circle(debugCanvas.lightbar.GetMat(), armorPlate.center(), 3, COLOR_GREEN, 2);
+        }
     }
-#endif
+
+    return result;
 }

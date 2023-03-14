@@ -13,5 +13,7 @@ Header Functions:
 
 class TargetSolution {
 public:
+	virtual ~TargetSolution() = default;
+
 	virtual void Solve(TimeStamp ImgTime, std::vector<ArmorPlate>& armors) = 0;
 };

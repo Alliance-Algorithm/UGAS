@@ -100,15 +100,12 @@ inline void ImgPretreat_V2::Threshold(const cv::Mat& src, cv::Mat& dst) const {
         LoopPixel(srcBuf, dstBuf, sz.width);
 }
 
-void ImgPretreat_V2::GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat& imgGray) {
+std::tuple<cv::Mat, cv::Mat> ImgPretreat_V2::GetPretreated(const cv::Mat& img) {
+    std::tuple<cv::Mat, cv::Mat> result;
+    auto& [imgThre, imgGray] = result;
 	if (imgThre.empty())
         imgThre.create(img.size(), CV_8UC1);
 	Threshold(img, imgThre);
     cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
-
-/*#if DEBUG_PARA == 0
-    static // 非调试模式设置静态内核
-#endif
-        cv::Mat closeCore = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(closeCoreSize | 1, closeCoreSize | 1));
-    morphologyEx(imgThre, imgThre, cv::MORPH_CLOSE, closeCore);*/
+    return result;
 }

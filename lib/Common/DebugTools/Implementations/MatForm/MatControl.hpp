@@ -33,11 +33,13 @@ public:
 		BoundRect = cv::Rect(x, y, w, h);
 	}
 
+	virtual ~MatControl() { }
+
 	inline void SetParent(MatForm* parent) {
 		_parent = parent;
 	}
 
-	virtual void Draw() = 0;
+	virtual void Draw() const = 0;
 
 	std::function<void()> OnMouseDown;
 	std::function<void()> OnMouseUp;

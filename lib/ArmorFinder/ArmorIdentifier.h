@@ -18,6 +18,7 @@ public:
 	ArmorIdentifier(NumberIdentifier& numberIdentifier) :
 		_numberIdentifier(numberIdentifier)
 		{ numberIdentifier.init(static_cast<void*>(&numberIdPara)); }
+	virtual ~ArmorIdentifier() = default;
 
-	virtual void Identify(const Img& imgThre, const Img& imgGray, std::vector<ArmorPlate>& result) = 0;
+	virtual std::vector<ArmorPlate> Identify(const cv::Mat& imgThre, const cv::Mat& imgGray) = 0;
 };

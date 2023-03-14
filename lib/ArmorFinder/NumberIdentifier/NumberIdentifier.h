@@ -11,6 +11,8 @@ Header Functions:
 
 class NumberIdentifier {
 public:
+	virtual ~NumberIdentifier() = default;
+
 	virtual void init(void*) = 0;
-	virtual short Identify(const Img& imgGray, const ArmorPlate& region) = 0;
+	virtual short Identify(const cv::Mat& imgGray, const ArmorPlate& region) = 0;
 };

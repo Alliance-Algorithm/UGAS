@@ -12,5 +12,7 @@ Header Functions:
 
 class ImgPretreat {
 public:
-	virtual void GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat& imgGray) = 0;
+	virtual ~ImgPretreat() = default;
+
+	virtual std::tuple<cv::Mat, cv::Mat> GetPretreated(const cv::Mat& img) = 0;
 };

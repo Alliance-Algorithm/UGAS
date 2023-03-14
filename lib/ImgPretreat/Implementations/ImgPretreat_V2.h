@@ -16,5 +16,5 @@ private:
 	inline void Threshold(const cv::Mat& src, cv::Mat& dst) const;
 public:
 	using ImgPretreat::ImgPretreat;
-	void GetPretreated(const cv::Mat& img, cv::Mat& imgThre, cv::Mat& imgGray);
+	std::tuple<cv::Mat, cv::Mat> GetPretreated(const cv::Mat& img);
 };

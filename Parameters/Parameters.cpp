@@ -88,7 +88,7 @@ void ParametersInit(const Team team) {
 Team team = Blue;
 VIDEO_VAR_TYPE video = VIDEO_VAR;
 NUM_PARA_TYPE numberIdPara = NUM_PARA;
-int frameWidth = 0, frameHeight = 0;
+//int frameWidth = 0, frameHeight = 0;
 cv::Point2f ROIoffset;
 
 /* Pretreat Parameters */

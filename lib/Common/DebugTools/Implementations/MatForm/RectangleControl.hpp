@@ -20,7 +20,7 @@ public:
 
 	using MatControl::MatControl;
 
-	void Draw() {
+	void Draw() const {
 		cv::rectangle(*_parent, BoundRect, ForeColor, Thickness);
 	};
 };
