@@ -73,10 +73,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)\Parameters;$(SolutionDir)\lib;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Parameters;$(SolutionDir)\lib;$(SolutionDir)\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)\Parameters;$(SolutionDir)\lib;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\Parameters;$(SolutionDir)\lib;$(SolutionDir)\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -138,101 +138,83 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="lib\Common\DebugTools\Implementations\MatForm\MatForm.cpp" />
-    <ClCompile Include="lib\ImgCapture\Implementations\HTCameraCapture.cpp" />
-    <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.cpp" />
-    <ClCompile Include="lib\Common\DebugTools\Implementations\Easylogging++.cc" />
-    <ClCompile Include="lib\Common\DebugTools\Implementations\Log.cpp" />
-    <ClCompile Include="lib\Common\DebugTools\Implementations\DebugCanvas.cpp" />
-    <ClCompile Include="lib\Common\Filter\Filter.cpp" />
-    <ClCompile Include="lib\Common\FPSCounter\FPSCounter.cpp" />
-    <ClCompile Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.cpp" />
-    <ClCompile Include="lib\Common\UniversalFunctions\UniversalFunctions.cpp" />
-    <ClCompile Include="lib\GimbalSerial\GimbalSerialHandle.cpp" />
-    <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.cpp" />
-    <ClCompile Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.cpp" />
-    <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.cpp" />
-    <ClCompile Include="lib\ImgCapture\Implementations\CVVideoCapture.cpp" />
-    <ClCompile Include="lib\GimbalSerial\CRC\CRC.cpp" />
-    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.cpp" />
-    <ClCompile Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.cpp" />
-    <ClCompile Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="lib\ArmorFinder\NumberIdentifier\Implementations\NumberIdentifier_V1.cpp" />
-    <ClCompile Include="Parameters\Parameters.cpp" />
-    <ClCompile Include="lib\Common\TimeStamp\TimeStampCounter.cpp" />
-    <ClCompile Include="lib\TargetSolution\Implementations\TargetSolution_V1.cpp" />
-    <ClCompile Include="lib\Trajectory\Implementations\Trajectory_FEM.cpp" />
-    <ClCompile Include="lib\Common\Robot\Robot.cpp" />
-    <ClCompile Include="lib\Common\PnP\PnP.cpp" />
-    <ClCompile Include="lib\ImgCapture\Implementations\ResizeCapture.cpp" />
+    <ClCompile Include="src\Control\Gimbal\Gimbal.cpp" />
+    <ClCompile Include="src\Core\Identifier\Armor\ArmorIdentifier_V1.cpp" />
+    <ClCompile Include="src\Core\Identifier\Armor\ArmorIdentifier_V2.cpp" />
+    <ClCompile Include="src\Core\Identifier\Armor\ArmorStruct.h" />
+    <ClCompile Include="src\Core\Identifier\Number\NumberIdentifier_V1.cpp" />
+    <ClCompile Include="src\Core\Pretreator\Armor\ArmorPretreator_V1.cpp" />
+    <ClCompile Include="src\Core\Pretreator\Armor\ArmorPretreator_V2.cpp" />
+    <ClCompile Include="src\ThirdParty\EasyLogging++\EasyLogging++.cc" />
+    <ClCompile Include="src\Util\Debug\Log.cpp" />
+    <ClCompile Include="src\Util\Debug\DebugCanvas.cpp" />
+    <ClCompile Include="src\Util\Debug\MatForm\MatForm.cpp" />
+    <ClCompile Include="src\Util\FPSCounter\FPSCounter.cpp" />
+    <ClCompile Include="src\Util\Parameter\Parameters.cpp" />
+    <ClCompile Include="src\Util\TimeStamp\TimeStampCounter.cpp" />
     <ClCompile Include="UGAS.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\ButtonControl.hpp" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\MatControl.hpp" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\MatForm.hpp" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\MatForm\RectangleControl.hpp" />
-    <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V2.h" />
-    <ClInclude Include="lib\Common\DebugTools\DebugHeader.h" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\CustomException.h" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\Easylogging++.h" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\ExceptionHandling.h" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\Log.h" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\DebugCanvas.h" />
-    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\FastStruct.h" />
-    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastArray2d.h" />
-    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastBucketMap.h" />
-    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastDisjointSet.h" />
-    <ClInclude Include="lib\ArmorFinder\Implementations\FastStruct\Implementations\FastStack.h" />
-    <ClInclude Include="lib\Common\Filter\Filter.h" />
-    <ClInclude Include="lib\Common\FPSCounter\FPSCounter.h" />
-    <ClInclude Include="lib\ArmorFinder\Implementations\ArmorIdentifier_V1.h" />
-    <ClInclude Include="lib\ArmorFinder\ArmorIdentifier.h" />
-    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NullNumberIdentifier.h" />
-    <ClInclude Include="lib\Common\UniversalFunctions\UniversalFunctions.h" />
-    <ClInclude Include="lib\GimbalSerial\GimbalSerialHandle.h" />
-    <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxGimbalSerial.h" />
-    <ClInclude Include="lib\GimbalSerial\Implementations\Linux\LinuxSerial.h" />
-    <ClInclude Include="lib\ImgCapture\Implementations\HTCameraCapture.h" />
-    <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V1.h" />
-    <ClInclude Include="lib\ImgPretreat\ImgPretreat.h" />
-    <ClInclude Include="lib\ImgCapture\Implementations\CVVideoCapture.h" />
-    <ClInclude Include="lib\GimbalSerial\CRC\CRC.h" />
-    <ClInclude Include="lib\GimbalSerial\GimbalSerial.h" />
-    <ClInclude Include="lib\Common\Color.h" />
-    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsGimbalSerial.h" />
-    <ClInclude Include="lib\GimbalSerial\Implementations\Windows\WindowsSerial.h" />
-    <ClInclude Include="lib\GimbalSerial\Packages.h" />
-    <ClInclude Include="lib\ImgCapture\ImgCapture.h" />
-    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\NumberIdentifier.h" />
-    <ClInclude Include="lib\ImgPretreat\Implementations\ImgPretreat_V2.h" />
-    <ClInclude Include="lib\TargetSolution\TargetSolution.h" />
-    <ClInclude Include="lib\TrackingStrategy\Implementations\TrackingStrategy_V1.h" />
-    <ClInclude Include="lib\TrackingStrategy\TrackingStrategy.h" />
-    <ClInclude Include="lib\Trajectory\Trajectory.h" />
-    <ClInclude Include="lib\ArmorFinder\NumberIdentifier\Implementations\NumberIdentifier_V1.h" />
-    <ClInclude Include="Parameters\UsingModules.h" />
-    <ClInclude Include="lib\Common\TimeStamp\TimeStampCounter.h" />
-    <ClInclude Include="lib\TargetSolution\Implementations\TargetSolution_V1.h" />
-    <ClInclude Include="lib\Trajectory\Implementations\Trajectory_FEM.h" />
-    <ClInclude Include="lib\Common\Robot\Robot.h" />
-    <ClInclude Include="lib\Common\PnP\PnP.h" />
-    <ClInclude Include="lib\ImgCapture\Implementations\ResizeCapture.h" />
-    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApi.h" />
-    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraApiLoad.h" />
-    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraDefine.H" />
-    <ClInclude Include="third-party\HTCameraSDK\Windows\CameraStatus.h" />
+    <ClInclude Include="src\Control\Gimbal\Gimbal.h" />
+    <ClInclude Include="src\Core\Identifier\Armor\ArmorIdentifier_V1.h" />
+    <ClInclude Include="src\Core\Identifier\Armor\ArmorIdentifier_V2.h" />
+    <ClInclude Include="src\Core\Identifier\ArmorIdentifierInterface.h" />
+    <ClInclude Include="src\Core\Identifier\Armor\ArmorIdentifier_V3.h" />
+    <ClInclude Include="src\Core\Identifier\Armor\FastStruct\FastStruct.h" />
+    <ClInclude Include="src\Core\Identifier\Armor\FastStruct\Implementations\FastArray2d.h" />
+    <ClInclude Include="src\Core\Identifier\Armor\FastStruct\Implementations\FastBucketMap.h" />
+    <ClInclude Include="src\Core\Identifier\Armor\FastStruct\Implementations\FastDisjointSet.h" />
+    <ClInclude Include="src\Core\Identifier\Armor\FastStruct\Implementations\FastStack.h" />
+    <ClInclude Include="src\Core\Identifier\ColorIdentifierInterface.h" />
+    <ClInclude Include="src\Core\Identifier\Color\ColorIdentifier_V1.h" />
+    <ClInclude Include="src\Core\Identifier\NumberIdentifierInterface.h" />
+    <ClInclude Include="src\Core\Identifier\Number\NullNumberIdentifier.h" />
+    <ClInclude Include="src\Core\Identifier\Number\NumberIdentifier_V1.h" />
+    <ClInclude Include="src\Core\Identifier\StandaloneArmorIdentifierInterface.h" />
+    <ClInclude Include="src\Core\ImgCapture\Common\CVVideoCapture.h" />
+    <ClInclude Include="src\Core\ImgCapture\Common\HikCameraCapture.h" />
+    <ClInclude Include="src\Core\ImgCapture\Common\HTCameraCapture.h" />
+    <ClInclude Include="src\Core\ImgCapture\Common\RotateCapture.h" />
+    <ClInclude Include="src\Core\ImgCapture\ImgCaptureInterface.h" />
+    <ClInclude Include="src\Core\ImgCapture\Common\ResizeCapture.h" />
+    <ClInclude Include="src\Core\PnPSolver\ArmorPnPSolverInterface.h" />
+    <ClInclude Include="src\Core\PnPSolver\Armor\ArmorPnPSolver_V1.h" />
+    <ClInclude Include="src\Core\Pretreator\Armor\ArmorPretreator_V1.h" />
+    <ClInclude Include="src\Core\Pretreator\Armor\ArmorPretreator_V2.h" />
+    <ClInclude Include="src\Core\Pretreator\PretreatorInterface.h" />
+    <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\CameraParams.h" />
+    <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\MvCameraControl.h" />
+    <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\MvErrorDefine.h" />
+    <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\MvISPErrorDefine.h" />
+    <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\MvObsoleteInterfaces.h" />
+    <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\MvSdkExport.h" />
+    <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\ObsoleteCamParams.h" />
+    <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\PixelType.h" />
+    <ClInclude Include="src\ThirdParty\HTCameraSDK\Windows\CameraApi.h" />
+    <ClInclude Include="src\ThirdParty\HTCameraSDK\Windows\CameraApiLoad.h" />
+    <ClInclude Include="src\ThirdParty\HTCameraSDK\Windows\CameraDefine.H" />
+    <ClInclude Include="src\ThirdParty\HTCameraSDK\Windows\CameraStatus.h" />
+    <ClInclude Include="src\Util\Debug\CustomException.h" />
+    <ClInclude Include="src\Util\Debug\DebugCanvas.h" />
+    <ClInclude Include="src\ThirdParty\EasyLogging++\EasyLogging++.h" />
+    <ClInclude Include="src\Util\Debug\DebugSettings.h" />
+    <ClInclude Include="src\Util\Debug\Log.h" />
+    <ClInclude Include="src\Util\Debug\MatForm\ButtonControl.hpp" />
+    <ClInclude Include="src\Util\Debug\MatForm\MatControl.hpp" />
+    <ClInclude Include="src\Util\Debug\MatForm\MatForm.hpp" />
+    <ClInclude Include="src\Util\Debug\MatForm\RectangleControl.hpp" />
+    <ClInclude Include="src\Util\Debug\ValueGragh.h" />
+    <ClInclude Include="src\Util\FPSCounter\FPSCounter.h" />
+    <ClInclude Include="src\Util\Parameter\Parameters.h" />
+    <ClInclude Include="src\Util\TimeStamp\TimeStampCounter.h" />
     <ClInclude Include="UGAS_Headers.h" />
-    <ClInclude Include="lib\Common\UniversalStruct.h" />
-    <ClInclude Include="Parameters\DebugSettings.h" />
-    <ClInclude Include="Parameters\Parameters.h" />
     <ClInclude Include="UGAS.h" />
-    <ClInclude Include="lib\Common\DebugTools\Implementations\ValueGragh.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="third-party\HTCameraSDK\Windows\MVCAMSDK.lib" />
-    <Library Include="third-party\HTCameraSDK\Windows\MVCAMSDK_X64.lib" />
+    <Library Include="src\ThirdParty\HikCameraSDK\Windows\MvCameraControl.lib" />
+    <Library Include="src\ThirdParty\HTCameraSDK\Windows\MVCAMSDK.lib" />
+    <Library Include="src\ThirdParty\HTCameraSDK\Windows\MVCAMSDK_X64.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

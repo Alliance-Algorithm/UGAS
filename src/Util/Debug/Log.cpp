@@ -1,0 +1,3 @@
+#include "Log.h"
+
+INITIALIZE_EASYLOGGINGPP

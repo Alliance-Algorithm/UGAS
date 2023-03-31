@@ -10,12 +10,12 @@ Class public functions:
 - always:W
 	Working process in an endless loop
 */
-#include "UGAS_Headers.h"
+//#include "UGAS_Headers.h"
 
 // main progress for UGAS
 class UGAS {
 private:
-	// 主过程功能模块
+	/*// 主过程功能模块
 	std::unique_ptr<ImgCapture>			_imgCapture;
 	std::unique_ptr<ImgPretreat>		_pretreater;
 	std::unique_ptr<ArmorIdentifier>	_armorIdentifier;
@@ -30,5 +30,5 @@ public:
 	virtual ~UGAS();
 
 	void initial();
-	void always();
+	void always();*/
 };

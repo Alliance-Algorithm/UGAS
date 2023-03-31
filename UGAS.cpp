@@ -1,7 +1,7 @@
 #include "UGAS.h"
 using namespace std;
-using namespace cv;
-
+//using namespace cv;
+/*
 UGAS::UGAS() :
 	_imgCapture(new ResizeCapture<CVVideoCapture>(0.5, "Blue_4.mp4")),
 	_pretreater(new ImgPretreat_V1()),
@@ -105,3 +105,4 @@ void UGAS::always() {
 		}
 	}
 }
+*/
