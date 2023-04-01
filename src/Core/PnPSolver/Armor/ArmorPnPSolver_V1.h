@@ -51,7 +51,7 @@ public:
 			// TODO: 欧拉角解算还没写
 		}
 
-		return {};
+		return std::nullopt;
 	}
 };
 

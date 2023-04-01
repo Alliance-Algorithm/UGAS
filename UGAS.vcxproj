@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\Control\Gimbal\Gimbal.cpp" />
+    <ClCompile Include="src\Control\Serial\CRC\CRC.cpp" />
     <ClCompile Include="src\Core\Identifier\Armor\ArmorIdentifier_V1.cpp" />
     <ClCompile Include="src\Core\Identifier\Armor\ArmorIdentifier_V2.cpp" />
     <ClCompile Include="src\Core\Identifier\Armor\ArmorStruct.h" />
@@ -157,6 +158,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Control\Gimbal\Gimbal.h" />
+    <ClInclude Include="src\Control\Serial\CRC\CRC.h" />
+    <ClInclude Include="src\Control\Serial\SerialCBoard.h" />
+    <ClInclude Include="src\Control\Serial\Serial.h" />
+    <ClInclude Include="src\Control\Serial\Windows\WindowsSerial.h" />
     <ClInclude Include="src\Core\Identifier\Armor\ArmorIdentifier_V1.h" />
     <ClInclude Include="src\Core\Identifier\Armor\ArmorIdentifier_V2.h" />
     <ClInclude Include="src\Core\Identifier\ArmorIdentifierInterface.h" />
@@ -186,6 +191,7 @@
     <ClInclude Include="src\Core\Pretreator\Armor\ArmorPretreator_V1.h" />
     <ClInclude Include="src\Core\Pretreator\Armor\ArmorPretreator_V2.h" />
     <ClInclude Include="src\Core\Pretreator\PretreatorInterface.h" />
+    <ClInclude Include="src\Core\Strategy\Common\Strategy_V1.h" />
     <ClInclude Include="src\Core\Trajectory\Common\Trajectory_V1.h" />
     <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\CameraParams.h" />
     <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\MvCameraControl.h" />

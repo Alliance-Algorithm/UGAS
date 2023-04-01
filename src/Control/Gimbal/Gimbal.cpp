@@ -18,12 +18,13 @@
 #include "Core/Identifier/Color/ColorIdentifier_V1.h"
 #include "Core/PnPSolver/Armor/ArmorPnPSolver_V1.h"
 #include "Core/Predictor/Armor/ArmorPredictor_V1.h"
+#include "Core/Strategy/Common/Strategy_V1.h"
 #include "Core/Trajectory/Common/Trajectory_V1.h"
+#include "Control/Serial/SerialCBoard.h"
 #include "Util/Debug/DebugCanvas.h"
 #include "Util/Debug/DebugSettings.h"
 #include "Util/FPSCounter/FPSCounter.h"
 #include "Util/Debug/MatForm/RectangleControl.hpp"
-
 
 void Gimbal::Always() const {
 	auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
@@ -32,8 +33,11 @@ void Gimbal::Always() const {
 	auto pnpSolver = ArmorPnPSolver_V1();
 	auto armorPredictor = ArmorPredictor_V1();
 
+	auto strategy = Strategy_V1();
 	auto trajectory = Trajectory_V1();
-	auto _fps = FPSCounter();
+
+	auto fps = FPSCounter();
+	auto cboard = SerialCBoard("COM3");
 
 	/*auto panel = std::unique_ptr<RectangleControl>();
 	cv::Mat imghsv;
@@ -69,28 +73,25 @@ void Gimbal::Always() const {
 					armors3d.push_back(*armor3d);
 
 			const auto& targets = armorPredictor.Update(armors3d, timeStamp);
-			if (!targets.empty()) {
-				auto attitude = trajectory.GetShotAngle(targets[0]);
-				std::cout << attitude << std::endl;
-			}
 			
-
-			/*if constexpr (debugCanvas.pretreat) {
-				debugCanvas.pretreat.LoadMat(imgThre);
-			}*/
+			int targetIndex = strategy.GetTargetIndex(targets);
+			if (targetIndex >= 0) {
+				auto attitude = trajectory.GetShotAngle(targets[targetIndex]);
+				cboard.Send(attitude);
+			}
 
 			if constexpr (debugCanvas.fps) {
-				_fps.Count();
-				_fps.PrintFPS(debugCanvas.fps.GetMat());
+				fps.Count();
+				fps.PrintFPS(debugCanvas.fps.GetMat());
 			}
 			else {
 				constexpr int fpsInterval = 100;
 				static int i = fpsInterval;
 				if (--i == 0) {
-					printf("\rNow time stamp:%llu | Fps: %3d       ", TimeStampCounter::GetTimeStamp(), _fps.Count());
+					printf("\rNow time stamp:%llu | Fps: %3d       ", TimeStampCounter::GetTimeStamp(), fps.Count());
 					i = fpsInterval;
 				}
-				else _fps.Count();
+				else fps.Count();
 			}
 
 			if constexpr (DEBUG_IMG) {

@@ -172,7 +172,7 @@ private:
 				}
 			}
 		}
-		return {};
+		return std::nullopt;
 	}
 
 

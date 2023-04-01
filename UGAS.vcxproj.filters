@@ -17,6 +17,7 @@
     <ClCompile Include="src\Util\FPSCounter\FPSCounter.cpp" />
     <ClCompile Include="src\Util\Debug\DebugCanvas.cpp" />
     <ClCompile Include="src\Core\Identifier\Number\NumberIdentifier_V1.cpp" />
+    <ClCompile Include="src\Control\Serial\CRC\CRC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UGAS_Headers.h" />
@@ -78,6 +79,11 @@
     <ClInclude Include="src\Core\Predictor\Armor\ArmorPredictor_V1.h" />
     <ClInclude Include="src\Util\Util.h" />
     <ClInclude Include="src\Core\Trajectory\Common\Trajectory_V1.h" />
+    <ClInclude Include="src\Core\Strategy\Common\Strategy_V1.h" />
+    <ClInclude Include="src\Control\Serial\SerialCBoard.h" />
+    <ClInclude Include="src\Control\Serial\Windows\WindowsSerial.h" />
+    <ClInclude Include="src\Control\Serial\Serial.h" />
+    <ClInclude Include="src\Control\Serial\CRC\CRC.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\ThirdParty\HTCameraSDK\Windows\MVCAMSDK.lib" />
