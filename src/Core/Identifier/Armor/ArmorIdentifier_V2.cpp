@@ -2,6 +2,7 @@
 
 #include "Util/Debug/DebugCanvas.h"
 #include "Util/Parameter/Parameters.h"
+#include "Util/Util.h"
 
 std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(const cv::Mat& img, int areaVal, int floodVal, bool borderEngulfment) {
     std::queue<cv::Point> emptyQueue;

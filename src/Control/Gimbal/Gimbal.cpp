@@ -17,6 +17,8 @@
 #include "Core/Identifier/Number/NumberIdentifier_V1.h"
 #include "Core/Identifier/Color/ColorIdentifier_V1.h"
 #include "Core/PnPSolver/Armor/ArmorPnPSolver_V1.h"
+#include "Core/Predictor/Armor/ArmorPredictor_V1.h"
+#include "Core/Trajectory/Common/Trajectory_V1.h"
 #include "Util/Debug/DebugCanvas.h"
 #include "Util/Debug/DebugSettings.h"
 #include "Util/FPSCounter/FPSCounter.h"
@@ -26,11 +28,11 @@
 void Gimbal::Always() const {
 	auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
 
-	//auto armorPretreator = ArmorPretreator_V2();
 	auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV0.pb");
-	//auto armorIdentifier = ArmorIdentifier_V3<NullNumberIdentifier>();
 	auto pnpSolver = ArmorPnPSolver_V1();
+	auto armorPredictor = ArmorPredictor_V1();
 
+	auto trajectory = Trajectory_V1();
 	auto _fps = FPSCounter();
 
 	/*auto panel = std::unique_ptr<RectangleControl>();
@@ -60,14 +62,18 @@ void Gimbal::Always() const {
 			}
 
 			auto armors = armorIdentifier.Identify(img);
+			auto armors3d = std::vector<ArmorPlate3d>();
 
-			//auto [imgThre, imgGray] = armorPretreator.GetPretreated(img);
-			//auto armors = armorIdentifier.Identify(img);
+			for (const auto& armor : armors)
+				if (auto&& armor3d = pnpSolver.Solve(armor, false))
+					armors3d.push_back(*armor3d);
 
-			if (!armors.empty()) {
-				pnpSolver.Solve(armors[0], false);
-				//std::cout << pnpSolver.Solve(armors[0], false) << std::endl;
+			const auto& targets = armorPredictor.Update(armors3d, timeStamp);
+			if (!targets.empty()) {
+				auto attitude = trajectory.GetShotAngle(targets[0]);
+				std::cout << attitude << std::endl;
 			}
+			
 
 			/*if constexpr (debugCanvas.pretreat) {
 				debugCanvas.pretreat.LoadMat(imgThre);

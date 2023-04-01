@@ -140,7 +140,7 @@ int maxArmorTrackDis = 10;
 double keep_tracking = 0.3, rotation_validity = 0.2;
 
 /* Trajectory Parameters */
-const int iterations = 2, Trajc_iterate = 2;
-const double Trajc_k = 0.00001, Trajc_dertaT = 0.0001;
-const double angleLowest = -30.0, angleHighest = 45.0, angleEPS = 1e-2;
-const double staticReactionTime = 0.05;
+constexpr int iterations = 2, Trajc_iterate = 2;
+constexpr double Trajc_k = 0.00001, Trajc_dertaT = 0.0001;
+constexpr double angleLowest = -30.0, angleHighest = 45.0, angleEPS = 1e-2;
+constexpr double staticReactionTime = 0.05;

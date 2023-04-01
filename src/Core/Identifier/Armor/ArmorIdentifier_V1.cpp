@@ -2,6 +2,7 @@
 
 #include "Util/Debug/DebugCanvas.h"
 #include "Util/Parameter/Parameters.h"
+#include "Util/Util.h"
 
 using namespace std;
 using namespace cv;

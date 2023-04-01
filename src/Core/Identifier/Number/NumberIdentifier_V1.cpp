@@ -28,7 +28,7 @@ short NumberIdentifier_V1::Identify(const cv::Mat& imgGray, const ArmorPlate& re
 	// 获取预测结果
 	double maxVal; Point maxLoc;
 	minMaxLoc(pred, NULL, &maxVal, NULL, &maxLoc);
-	std::cout << pred << std::endl;
+	// std::cout << pred << std::endl;
 	if (maxVal < 1.) maxLoc.x = 0;
 
 	if constexpr (debugCanvas.armorNum) {
@@ -37,7 +37,8 @@ short NumberIdentifier_V1::Identify(const cv::Mat& imgGray, const ArmorPlate& re
 		cv::Point drawPos = static_cast<cv::Point>(region.center());
 		// cv::Rect drawRect = cv::Rect(drawPos.x - 16, drawPos.y - 48, 32, 32);
 		cv::Rect drawRect = cv::Rect(drawPos.x - 18, drawPos.y - 54, 36, 36);
-		imgNumber.copyTo(debugCanvas.armorNum.GetMat()(drawRect));
+		const auto& tl = drawRect.tl();
+		if (tl.x >= 0 && tl.y >= 0) imgNumber.copyTo(debugCanvas.armorNum.GetMat()(drawRect));
 		// 绘制识别数字
 		cv::putText(debugCanvas.armorNum.GetMat(), std::to_string(maxLoc.x), Point(drawPos.x - 12, drawPos.y + 13), 1, 2.5, COLOR_GREEN, 3);
 		// 绘制识别置信度

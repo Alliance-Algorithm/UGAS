@@ -8,6 +8,7 @@
 #include "Core/Identifier/Number/NullNumberIdentifier.h"
 #include "Util/Parameter/Parameters.h"
 #include "Util/Debug/DebugCanvas.h"
+#include "Util/Util.h"
 
 template <typename NumberIdentifierType>
 class ArmorIdentifier_V3 : StandaloneArmorIdentifierInterface {

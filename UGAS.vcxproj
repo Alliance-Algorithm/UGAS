@@ -180,9 +180,13 @@
     <ClInclude Include="src\Core\ImgCapture\Common\ResizeCapture.h" />
     <ClInclude Include="src\Core\PnPSolver\ArmorPnPSolverInterface.h" />
     <ClInclude Include="src\Core\PnPSolver\Armor\ArmorPnPSolver_V1.h" />
+    <ClInclude Include="src\Core\Predictor\ArmorPredictorInterface.h" />
+    <ClInclude Include="src\Core\Predictor\Armor\ArmorPredictor_V1.h" />
+    <ClInclude Include="src\Core\Predictor\TargetInterface.h" />
     <ClInclude Include="src\Core\Pretreator\Armor\ArmorPretreator_V1.h" />
     <ClInclude Include="src\Core\Pretreator\Armor\ArmorPretreator_V2.h" />
     <ClInclude Include="src\Core\Pretreator\PretreatorInterface.h" />
+    <ClInclude Include="src\Core\Trajectory\Common\Trajectory_V1.h" />
     <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\CameraParams.h" />
     <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\MvCameraControl.h" />
     <ClInclude Include="src\ThirdParty\HikCameraSDK\Windows\MvErrorDefine.h" />
@@ -208,6 +212,7 @@
     <ClInclude Include="src\Util\FPSCounter\FPSCounter.h" />
     <ClInclude Include="src\Util\Parameter\Parameters.h" />
     <ClInclude Include="src\Util\TimeStamp\TimeStampCounter.h" />
+    <ClInclude Include="src\Util\Util.h" />
     <ClInclude Include="UGAS_Headers.h" />
     <ClInclude Include="UGAS.h" />
   </ItemGroup>

@@ -67,6 +67,11 @@ extern const double Trajc_k, Trajc_dertaT;
 extern const double angleLowest, angleHighest, angleEPS;
 extern const double staticReactionTime;
 
+namespace MathConsts {
+	constexpr double Pi = 3.1415926535897;
+	constexpr double G = 9.8;
+};
+
 /* Colors */
 #define COLOR_RED				cv::Scalar(0	,0		,255)
 #define COLOR_PINK				cv::Scalar(196	,196	,255)

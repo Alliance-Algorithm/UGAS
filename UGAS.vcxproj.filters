@@ -73,6 +73,11 @@
     <ClInclude Include="src\Core\Identifier\Armor\ArmorIdentifier_V3.h" />
     <ClInclude Include="src\Core\Identifier\ColorIdentifierInterface.h" />
     <ClInclude Include="src\Core\Identifier\Color\ColorIdentifier_V1.h" />
+    <ClInclude Include="src\Core\Predictor\ArmorPredictorInterface.h" />
+    <ClInclude Include="src\Core\Predictor\TargetInterface.h" />
+    <ClInclude Include="src\Core\Predictor\Armor\ArmorPredictor_V1.h" />
+    <ClInclude Include="src\Util\Util.h" />
+    <ClInclude Include="src\Core\Trajectory\Common\Trajectory_V1.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\ThirdParty\HTCameraSDK\Windows\MVCAMSDK.lib" />
