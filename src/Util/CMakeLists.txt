@@ -6,7 +6,8 @@ add_library(${NAME} ${SRC_LIST})
 target_link_libraries(${NAME} ${OpenCV_LIBS})
 
 file(GLOB_RECURSE INC_LIST *.h)
-
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include
-        FILES_MATCHING
-        PATTERN "*.h*" )
+if (CMAKE_BUILD_TYPE STREQUAL Release)
+    install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include
+            FILES_MATCHING
+            PATTERN "*.h*")
+endif ()

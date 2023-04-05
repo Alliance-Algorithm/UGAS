@@ -53,38 +53,38 @@ target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${MODULES} ${HikCameraSDK_L
 #################
 # Install Part
 #################
+if (CMAKE_BUILD_TYPE STREQUAL Release)
+    include(GNUInstallDirs)
 
-include(GNUInstallDirs)
+    install(TARGETS ${PROJECT_NAME} ${MODULES}
+            EXPORT ${PROJECT_NAME}Targets
+            LIBRARY DESTINATION bin
+            ARCHIVE DESTINATION lib
+            RUNTIME DESTINATION bin
+            PUBLIC_HEADER DESTINATION include
+            PRIVATE_HEADER DESTINATION include)
 
-install(TARGETS ${PROJECT_NAME} ${MODULES}
-        EXPORT ${PROJECT_NAME}Targets
-        LIBRARY DESTINATION bin
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
-        PUBLIC_HEADER DESTINATION include
-        PRIVATE_HEADER DESTINATION include)
+    install(DIRECTORY ${PROJECT_SOURCE_DIR}/docs
+            DESTINATION .)
+    install(DIRECTORY ${PROJECT_SOURCE_DIR}/models
+            DESTINATION .)
+    install(FILES ${PROJECT_SOURCE_DIR}/README.md
+            DESTINATION .)
 
-install(DIRECTORY  ${PROJECT_SOURCE_DIR}/docs
-        DESTINATION .)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/models
-        DESTINATION .)
-install(FILES ${PROJECT_SOURCE_DIR}/README.md
-        DESTINATION .)
+    include(CMakePackageConfigHelpers)
+    write_basic_package_version_file(
+            ${PROJECT_NAME}Config-version.cmake
+            VERSION ${PACKAGE_VERSION}
+            COMPATIBILITY AnyNewerVersion  # 表示该函数库向下兼容
+    )
+    install(EXPORT ${PROJECT_NAME}Targets
+            FILE ${PROJECT_NAME}Targets.cmake
+            DESTINATION cmake
+            )
 
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-        ${PROJECT_NAME}Config-version.cmake
-        VERSION ${PACKAGE_VERSION}
-        COMPATIBILITY AnyNewerVersion  # 表示该函数库向下兼容
-)
-install(EXPORT ${PROJECT_NAME}Targets
-        FILE ${PROJECT_NAME}Targets.cmake
-        DESTINATION cmake
-        )
-
-configure_file(${PROJECT_NAME}Config.cmake.in ${PROJECT_NAME}Config.cmake @ONLY)
-install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config-version.cmake
-        DESTINATION cmake)
-
+    configure_file(${PROJECT_NAME}Config.cmake.in ${PROJECT_NAME}Config.cmake @ONLY)
+    install(FILES
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config-version.cmake
+            DESTINATION cmake)
+endif ()
