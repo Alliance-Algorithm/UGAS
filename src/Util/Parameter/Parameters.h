@@ -45,6 +45,7 @@ extern int minLightAngle, maxLightAngle;
 /* Armor Parameters */
 extern double maxArmorLightRatio, maxdAngle,
 	maxMalposition, maxLightDy, bigArmorDis;
+constexpr char modelPath[] = "../models/NumberIdentifyModelV0.pb";
 
 /* Buff Parameters */
 
@@ -71,6 +72,14 @@ namespace MathConsts {
 	constexpr double Pi = 3.1415926535897;
 	constexpr double G = 9.8;
 };
+
+/* Serial Parameters */
+#ifdef _WIN32
+constexpr char serialName[] = "COM3";
+#elif __linux__
+constexpr char serialName[] = "/dev/ttyUSB0";
+#endif
+
 
 /* Colors */
 #define COLOR_RED				cv::Scalar(0	,0		,255)

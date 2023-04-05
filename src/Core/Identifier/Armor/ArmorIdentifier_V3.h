@@ -26,8 +26,8 @@ public:
 		cv::threshold(imgGray, imgThre, 150, 255, cv::THRESH_BINARY);
 		//static cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
 		//cv::morphologyEx(imgThre, imgThre, cv::MORPH_CLOSE, element);
-
-		if constexpr (debugCanvas.pretreat) {
+//TODO： fix constexpr related bug, temporally delete this
+		if (debugCanvas.pretreat) {
 			debugCanvas.pretreat.LoadMat(imgThre);
 		}
 
@@ -45,8 +45,8 @@ public:
 					[](LightBar& a, LightBar& b) {
 					return a.top.x < b.top.x;
 				});
-
-				if constexpr (debugCanvas.lightbar) {
+//TODO： fix constexpr related bug, temporally delete this
+				if (debugCanvas.lightbar) {
 					auto& lightBar = *lightBarOpt;
 					cv::drawContours(debugCanvas.lightbar.GetMat(), contours, i, COLOR_RED, 2);
 					line(debugCanvas.lightbar.GetMat(), lightBar.top, lightBar.bottom, COLOR_BLUE, 5);
@@ -81,8 +81,8 @@ public:
 		auto lightBarR = LightBar(cv::Point2f(840, 260), cv::Point2f(840, 360), 0);
 		auto armor = ArmorPlate(lightBarL, lightBarR, 3);
 		result.push_back(armor);*/
-
-		if constexpr (debugCanvas.armor) {
+//TODO： fix constexpr related bug, temporally delete this
+		if (debugCanvas.armor) {
 			for (const auto& armorPlate : result) {
 				const std::vector<cv::Point2f>& points = armorPlate.points;
 				line(debugCanvas.armor.GetMat(), points[0], points[1], COLOR_WHITE);
@@ -143,8 +143,8 @@ private:
 			if (confidence > 0.5f) {
 				constexpr int angleRange = 30;
 				auto box = cv::minAreaRect(contour);
-
-				if constexpr (debugCanvas.lightbar) {
+//TODO： fix constexpr related bug, temporally delete this
+				if (debugCanvas.lightbar) {
 					auto&& angle = std::to_string(static_cast<int>(confidence * 100 + 0.5));
 					putText(debugCanvas.lightbar.GetMat(), angle, cv::Point2f(box.center.x + 10, box.center.y), 0, 0.5, COLOR_YELLOW);
 				}

@@ -8,7 +8,7 @@ Header Functions:
 - 控件基类，可添加进MatForm
 */
 #include "MatForm.hpp"
-
+#include <functional>
 class MatForm;
 
 class MatControl {

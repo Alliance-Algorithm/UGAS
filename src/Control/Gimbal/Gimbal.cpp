@@ -29,7 +29,7 @@
 void Gimbal::Always() const {
 	auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
 
-	auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV0.pb");
+	auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>(modelPath);
 	auto pnpSolver = ArmorPnPSolver_V1();
 	auto armorPredictor = ArmorPredictor_V1();
 
@@ -37,7 +37,7 @@ void Gimbal::Always() const {
 	auto trajectory = Trajectory_V1();
 
 	auto fps = FPSCounter();
-	auto cboard = SerialCBoard("COM3");
+	auto cboard = SerialCBoard(serialName);
 
 	/*auto panel = std::unique_ptr<RectangleControl>();
 	cv::Mat imghsv;

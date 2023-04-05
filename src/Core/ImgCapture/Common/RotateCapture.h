@@ -15,26 +15,28 @@ Header Functions:
 template<typename CaptureType>
 class RotateCapture : public CaptureType {
 public:
-	cv::RotateFlags _rotateFlag;
+    cv::RotateFlags _rotateFlag;
 
-	RotateCapture() = delete;
+    RotateCapture() = delete;
 
-	template<typename... Types>
-	RotateCapture(cv::RotateFlags rotateFlag, Types&&... args) : CaptureType(std::forward<Types>(args)...) {
-		_rotateFlag = rotateFlag;
-	}
+    template<typename... Types>
+    RotateCapture(cv::RotateFlags rotateFlag, Types &&... args) : CaptureType(std::forward<Types>(args)...) {
+        _rotateFlag = rotateFlag;
+    }
 
-	RotateCapture(const RotateCapture&) = delete;
-	RotateCapture(RotateCapture&&) = delete;
+    RotateCapture(const RotateCapture &) = delete;
 
-	std::tuple<cv::Mat, TimeStamp> Read() override {
-		auto tuple = CaptureType::Read();
-		if constexpr (debugCanvas.master) {
-			if (debugCanvas.master.DebugFrameHandler.Paused)
-				return tuple;
-		}
-		auto& [mat, timestamp] = tuple;
-		cv::rotate(mat, mat, _rotateFlag);
-		return tuple;
-	}
+    RotateCapture(RotateCapture &&) = delete;
+
+    std::tuple<cv::Mat, TimeStamp> Read() override {
+        auto tuple = CaptureType::Read();
+//TODO£º fix constexpr related bug, temporally delete this
+        if (debugCanvas.master) {
+            if (debugCanvas.master.DebugFrameHandler.Paused)
+                return tuple;
+        }
+        auto &[mat, timestamp] = tuple;
+        cv::rotate(mat, mat, _rotateFlag);
+        return tuple;
+    }
 };
