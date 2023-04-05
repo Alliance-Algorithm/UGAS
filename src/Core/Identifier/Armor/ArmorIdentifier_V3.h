@@ -61,10 +61,10 @@ public:
 		for (size_t i = 0; i < lightBarsSize; ++i) {
 			float Isize = P2PDis(lightBars[i].top, lightBars[i].bottom);
 			cv::Point2f Icenter = (lightBars[i].top + lightBars[i].bottom) / 2;
-			for (size_t j = i + 1; j < lightBarsSize; ++j) { // Ò»Ð©É¸Ñ¡Ìõ¼þ
+			for (size_t j = i + 1; j < lightBarsSize; ++j) { // Ò»Ð©É¸Ñ¡ï¿½ï¿½ï¿½ï¿½
 
 				float Jsize = P2PDis(lightBars[j].top, lightBars[j].bottom);
-				if (max(Isize, Jsize) / min(Isize, Jsize) > maxArmorLightRatio) continue;
+				if (fmax(Isize, Jsize) / fmin(Isize, Jsize) > maxArmorLightRatio) continue;
 				if (fabs(lightBars[i].angle - lightBars[j].angle) > maxdAngle) continue;
 				if (malposition(lightBars[i], lightBars[j]) > maxMalposition) continue;
 				cv::Point2f Jcenter = (lightBars[j].top + lightBars[j].bottom) / 2;
@@ -152,7 +152,7 @@ private:
 				cv::Point2f contour[4];
 				box.points(contour);
 				auto diff = box.size.width - box.size.height;
-				if (diff > 0) {     //Ðý×ªÇ°£¬¾ØÐÎºá·Å
+				if (diff > 0) {     //ï¿½ï¿½×ªÇ°ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½
 					float angle = fmod(box.angle + 360, 360);
 					if (90 - angleRange < angle && angle < 90 + angleRange) {
 						return LightBar((contour[0] + contour[1]) / 2 + ROIoffset, (contour[2] + contour[3]) / 2 + ROIoffset, 0);
@@ -161,7 +161,7 @@ private:
 						return LightBar((contour[2] + contour[3]) / 2 + ROIoffset, (contour[0] + contour[1]) / 2 + ROIoffset, 0);
 					}
 				}
-				else if (diff < 0) {  //Ðý×ªÇ°£¬¾ØÐÎºá·Å
+				else if (diff < 0) {  //ï¿½ï¿½×ªÇ°ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½
 					float angle = fmod(box.angle + 360 + 90, 360);
 					if (90 - angleRange < angle && angle < 90 + angleRange) {
 						return LightBar((contour[1] + contour[2]) / 2 + ROIoffset, (contour[0] + contour[3]) / 2 + ROIoffset, 0);
@@ -187,7 +187,7 @@ private:
 		for (int i = 0; i < n; ++i) {
 			float Isize = P2PDis(lightBarList[i].top, lightBarList[i].bottom);
 			cv::Point2f Icenter = (lightBarList[i].top + lightBarList[i].bottom) / 2;
-			for (int j = i + 1; j < n; ++j) { // Ò»Ð©É¸Ñ¡Ìõ¼þ
+			for (int j = i + 1; j < n; ++j) { // Ò»Ð©É¸Ñ¡ï¿½ï¿½ï¿½ï¿½
 				float Jsize = P2PDis(lightBarList[j].top, lightBarList[j].bottom);
 				if (max(Isize, Jsize) / min(Isize, Jsize) > maxArmorLightRatio)		continue;
 				if (fabs(lightBarList[i].angle - lightBarList[j].angle) > maxdAngle)	continue;
@@ -196,7 +196,7 @@ private:
 				if (fabs(Icenter.y - Jcenter.y) * 2 / (Isize + Jsize) > maxLightDy)	continue;
 				if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis)	continue;
 
-				// Êý×ÖÊ¶±ð²¿·Ö£¨ÔÝÊ±·ÅÕâ£¬¿ÉÄÜ»áÅ²µ½ÔË¶¯Ä£ÐÍÄÇÈ¥£©
+				// ï¿½ï¿½ï¿½ï¿½Ê¶ï¿½ð²¿·Ö£ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½â£¬ï¿½ï¿½ï¿½Ü»ï¿½Å²ï¿½ï¿½ï¿½Ë¶ï¿½Ä£ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½
 				ArmorPlate armor(lightBarList[i], lightBarList[j]);
 				armor.id = 3; //_numberIdentifier.Identify(imgGray, armor);
 				result.push_back(armor);

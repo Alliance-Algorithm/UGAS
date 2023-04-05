@@ -65,7 +65,7 @@ public:
 			if (iter != groups.end())
 				iter->second.Items.push_back(_dataArray[i].Data);
 			else
-				groups.insert(std::map<Node*, Group>::value_type(node, { {_dataArray[i].Data}, node->Level }));
+				groups.insert(std::pair<Node*,Group>(node, { {_dataArray[i].Data}, node->Level }));
 		}
 
 		std::vector<std::vector<T>> result;

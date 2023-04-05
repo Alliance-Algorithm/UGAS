@@ -13,7 +13,7 @@ Header Functions:
 #include <opencv2/opencv.hpp>
 
 #include "Core/Identifier/ColorIdentifierInterface.h"
-
+#include "Util/Debug/Log.h"
 class ColorIdentifier_V1 {
 public:
 	ColorIdentifier_V1(float hue360) {
@@ -167,7 +167,7 @@ private:
 			cv::flip(imgDisplay, imgDisplay, 0);
 			cv::imshow("debug", imgDisplay);
 			cv::waitKey(0);
-			throw(std::exception("render size != 256, enable debugging..."));
+			throw_with_trace(std::runtime_error, "render size != 256, enable debugging...");
 		}
 	}
 };

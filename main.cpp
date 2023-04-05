@@ -1,8 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <chrono>
-
-#include "Control/Gimbal/Gimbal.h";
+#include <thread>
+#include "Control/Gimbal/Gimbal.h"
 #include "Util/Debug/DebugCanvas.h"
 #include "Util/Debug/DebugSettings.h"
 #include "Util/FPSCounter/FPSCounter.h"

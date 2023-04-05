@@ -5,7 +5,13 @@
 #ifndef UGAS_SERIALDEFINES_H
 #define UGAS_SERIALDEFINES_H
 
-
+#ifdef _WIN32
+#include <Windows.h>
+#elif __linux__
+#include <unistd.h>
+#include <fcntl.h>
+#include <termios.h>
+#endif
 
 enum Boudrate {
 #ifdef _WIN32

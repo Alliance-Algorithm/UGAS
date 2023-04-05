@@ -11,9 +11,9 @@ public:
 
 #pragma pack(push, 1)
 	struct PackageSend {
-		char	head;					// 0xFF
+		uint8_t 	head;					// 0xFF
 		float	yaw, pitch;				// Angle Deviation
-		char	crc8;					// CRC8
+		uint8_t 	crc8;					// CRC8
 		PackageSend(GimbalAttitude attitude) {
 			head = 0xff; yaw = attitude.yaw; pitch = attitude.pitch;
 			crc8 = Get_CRC8_Check_Sum((unsigned char*)this, sizeof(decltype(this)) - 1, 0xff);
