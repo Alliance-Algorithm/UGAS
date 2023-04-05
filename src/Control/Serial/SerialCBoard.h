@@ -2,7 +2,7 @@
 
 #include <chrono>
 
-#include "Control/Serial/Windows/WindowsSerial.h"
+#include "Control/Serial/Serial.h"
 #include "Control/Serial/CRC/CRC.h"
 #include "Control/Gimbal/Gimbal.h"
 
@@ -21,7 +21,7 @@ public:
 	};
 #pragma pack(pop)
 
-	SerialCBoard(const char* portName) : _serial(portName, CBR_115200, NOPARITY, 8, ONESTOPBIT, true) { }
+	SerialCBoard(const char* portName) : _serial(portName, UGAS_115200, NOPARITY, 8, ONESTOPBIT, true) { }
 
 	void Send(GimbalAttitude attitude) {
 		auto pkg = PackageSend(attitude);
@@ -29,5 +29,5 @@ public:
 	}
 
 private:
-	WindowsSerial _serial;
+	Serial _serial;
 };

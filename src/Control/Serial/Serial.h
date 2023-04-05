@@ -1,13 +1,12 @@
 #pragma once
 
-#include "Control/Serial/Windows/WindowsSerial.h"
+#include "SerialDefines.h"
+#include "Util/Debug/Log.h"
 
-class Serial {
-public:
-	Serial(const char* portName) : _serial(portName, CBR_115200, NOPARITY, 8, ONESTOPBIT, true) {
+#ifdef _WIN32
+#include "Impl/Windows.h"
+#elif __linux__
 
-	}
+#include "Impl/Linux.h"
 
-private:
-	WindowsSerial _serial;
-};
+#endif
