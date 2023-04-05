@@ -99,7 +99,7 @@ void Gimbal::Always() const {
 				cv::waitKey(1);
 			}
 		}
-		catch (const char* str) { // 重包装异常
+		catch (const char* str) { // 锟截帮拷装锟届常
 			throw_with_trace(std::runtime_error, str);
 		}
 	}

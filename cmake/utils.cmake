@@ -1,0 +1,11 @@
+macro(ITER_SUBDIRECTORY dir subdirectories)
+    file(GLOB children ${dir}/*)
+    set(subdirectories "")
+    foreach(child ${children})
+        file(RELATIVE_PATH child_name ${dir} ${child})
+        if(IS_DIRECTORY ${dir}/${child_name})
+            list(APPEND ${subdirectories} ${child_name})
+        endif()
+    endforeach()
+
+endmacro()
