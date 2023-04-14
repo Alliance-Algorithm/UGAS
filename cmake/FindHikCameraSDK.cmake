@@ -12,7 +12,10 @@ if (CMAKE_SIZEOF_VOID_P EQUAL 8)
 else ()
     set(HikCameraSDK_LIB_DIR ${SDK_ROOT}/lib/32)
 endif ()
+
+include_directories(${SDK_ROOT}/include)
 link_directories(${HikCameraSDK_LIB_DIR})
+
 set(HikCameraSDK_LIB MvCameraControl)
 
 
