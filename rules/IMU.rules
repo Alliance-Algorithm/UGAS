@@ -1,0 +1,3 @@
+# this file is used to bind imu to serial port but parameters are not correct
+
+KERNEL=="1-*", SUBSYSTEMS=="usb", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", MODE:="0777", SYMLINK+="IMU"

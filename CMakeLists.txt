@@ -4,6 +4,7 @@
 
 cmake_minimum_required(VERSION 3.0)
 project(UGAS VERSION 1.0 LANGUAGES C CXX)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
@@ -34,6 +35,7 @@ else ()
 endif ()
 
 iter_directories(${CMAKE_CURRENT_SOURCE_DIR}/src MODULES)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${OpenCV_INCLUDES})
 
@@ -45,7 +47,6 @@ endforeach (MODULE)
 file(GLOB_RECURSE SRC_LIST src/*.c*)
 
 add_executable(${PROJECT_NAME} main.cpp ${SRC_LIST})
-
 
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${MODULES} ${HikCameraSDK_LIB})
 
@@ -64,14 +65,25 @@ if (CMAKE_BUILD_TYPE STREQUAL Release)
             PUBLIC_HEADER DESTINATION include
             PRIVATE_HEADER DESTINATION include)
 
+    file(GLOB RULES_FILES ${PROJECT_SOURCE_DIR}/rules/*.rules)
+
+    install(FILES ${RULES_FILES} DESTINATION rules)
+
+    install(FILES ${RULES_FILES} DESTINATION /etc/udev/rules.d)
+
     install(DIRECTORY ${PROJECT_SOURCE_DIR}/docs
             DESTINATION .)
+
     install(DIRECTORY ${PROJECT_SOURCE_DIR}/models
             DESTINATION .)
+
     install(FILES ${PROJECT_SOURCE_DIR}/README.md
             DESTINATION .)
 
+
+
     include(CMakePackageConfigHelpers)
+
     write_basic_package_version_file(
             ${PROJECT_NAME}Config-version.cmake
             VERSION ${PACKAGE_VERSION}
@@ -83,6 +95,7 @@ if (CMAKE_BUILD_TYPE STREQUAL Release)
             )
 
     configure_file(${PROJECT_NAME}Config.cmake.in ${PROJECT_NAME}Config.cmake @ONLY)
+
     install(FILES
             ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
             ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config-version.cmake
