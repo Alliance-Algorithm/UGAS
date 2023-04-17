@@ -6,20 +6,21 @@
 class Serial {
 
 protected:
-    bool _synState;
     int _handle;
 
 public:
-    Serial(const char *portName, uint32_t baudrate, uint8_t parity, uint8_t databit, uint8_t stopbit, bool synFlag) {
+    Serial(const char *portName, uint32_t baudrate=UGAS_115200, uint8_t parity=NOPARITY, uint8_t databit=8, uint8_t stopbit=ONESTOPBIT, bool synFlag=true) {
 
         _handle = open(portName, O_RDWR | O_NOCTTY);
-        if (!_handle) {
-            std::cout << "Serial " << portName << "start success" << std::endl;
+        if (_handle >=0) {
+            std::cout << "Serial[" << _handle << "] " << portName << "start success" << std::endl;
+        }else{
+            throw_with_trace(std::runtime_error, "can not open serial");
         }
 
         fcntl(_handle, F_SETFL, 0);
 
-        struct termios options{};
+        termios options{};
         cfmakeraw(&options);
         options.c_cflag |= (CLOCAL | CREAD);
         switch (parity) {
@@ -79,30 +80,21 @@ public:
 
     ~Serial() { close(_handle); }
 
+    uint32_t Send(void *data, int dataLenth) const {
+        uint32_t ret = write(_handle, data, dataLenth);
+        if (ret <= 0) {
+            throw_with_trace(std::runtime_error, "can not send msg successfully");
 
-    bool Send(void *data, int dataLenth) {
-        if (_synState) {
-            DWORD sended;
-
-            if (!write(_handle, data, dataLenth))
-                return false;
-
-            LOG(INFO) << "sended " << dataLenth << " bits";
-            return dataLenth == sended;
-        } else throw_with_trace(std::runtime_error, "Undefined synState");
+        } else {
+            LOG(INFO) << "sent " << ret << " bits";
+        }
+        return ret;
     }
 
-    DWORD Recv(BYTE *data, int dataMaxLenth) {
-        if (_synState) {
-            DWORD received;
-
-            if (!read(_handle, data, dataMaxLenth))
-                return 0;
-
-            return received;
-        } else throw_with_trace(std::runtime_error, "Undefined synState");
-        return 0;
+    uint32_t Recv(uint8_t *data, int dataMaxLenth) const {
+        return read(_handle, data, dataMaxLenth);
     }
+
 };
 
 
