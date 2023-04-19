@@ -9,12 +9,16 @@ protected:
     int _handle;
 
 public:
-    Serial(const char *portName, uint32_t baudrate=UGAS_115200, uint8_t parity=NOPARITY, uint8_t databit=8, uint8_t stopbit=ONESTOPBIT, bool synFlag=true) {
+    Serial() = default;
 
-        _handle = open(portName, O_RDWR | O_NOCTTY);
-        if (_handle >=0) {
+
+    Serial(const char *portName, uint32_t baudrate = UGAS_115200, uint8_t parity = NOPARITY, uint8_t databit = 8,
+           uint8_t stopbit = ONESTOPBIT, bool synFlag = true) {
+
+        _handle = open(portName, O_RDWR | O_NOCTTY | O_NONBLOCK);
+        if (_handle >= 0) {
             std::cout << "Serial[" << _handle << "] " << portName << "start success" << std::endl;
-        }else{
+        } else {
             throw_with_trace(std::runtime_error, "can not open serial");
         }
 
@@ -23,6 +27,8 @@ public:
         termios options{};
         cfmakeraw(&options);
         options.c_cflag |= (CLOCAL | CREAD);
+        cfsetispeed(&options, baudrate);
+        cfsetospeed(&options, baudrate);
         switch (parity) {
             // 无校验
             case 0:
@@ -62,7 +68,10 @@ public:
                 options.c_cflag &= ~CSIZE;//屏蔽其它标志位
                 options.c_cflag |= CS8;
                 break;
-            default: throw_with_trace(std::runtime_error, "unkown databit.");
+            default: {
+                throw_with_trace(std::runtime_error, "unkown databit.");
+
+            }
         }
 
         switch (stopbit) {
@@ -72,10 +81,13 @@ public:
             case 2:
                 options.c_cflag |= CSTOPB;//CSTOPB：使用2位停止位
                 break;
-            default: throw_with_trace(std::runtime_error, "unkown stopbit.")
+            default: {
+                throw_with_trace(std::runtime_error, "unkown stopbit.");
+                return -1;
+            }
         }
         tcsetattr(_handle, TCSANOW, &options);
-
+        return 0;
     }
 
     ~Serial() { close(_handle); }
