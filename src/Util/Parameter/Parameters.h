@@ -45,7 +45,7 @@ extern int minLightAngle, maxLightAngle;
 /* Armor Parameters */
 extern double maxArmorLightRatio, maxdAngle,
 	maxMalposition, maxLightDy, bigArmorDis;
-constexpr char modelPath[] = "../models/NumberIdentifyModelV0.pb";
+constexpr char modelPath[] = "../models/NumberIdentifyModelV3.pb";
 
 /* Buff Parameters */
 
