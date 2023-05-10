@@ -1,14 +1,18 @@
 #pragma once
 /*
 Creation Date: 2022/10/11
-Latest Update: 2022/10/13
-Developer(s): 21-THY
+Latest Update: 2023/05/09
+Developer(s): 21-THY 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
 - 声明并初始化所有参数
 - 根据 "DebugSettings.h" 创建 Debug 拖动条
 - 提供调试性函数
+- 此文件未来可能被废弃或重组
 */
+
+#include <cstdint>
+
 #include <vector>
 
 #include <opencv2/opencv.hpp>
@@ -49,7 +53,6 @@ extern double maxArmorLightRatio, maxdAngle,
 /* Buff Parameters */
 
 /* PNP Parameters */
-extern bool isLargeArmor[10];
 extern double CameraMatrixData[3][3], DistCoeffsData[1][5];
 extern const cv::Mat CameraMatrix, DistCoeffs;
 // TL -> BL -> BR -> TR
@@ -70,6 +73,10 @@ extern const double staticReactionTime;
 namespace MathConsts {
 	constexpr double Pi = 3.1415926535897;
 	constexpr double G = 9.8;
+};
+
+enum class ArmorColor : uint8_t {
+	Blue = 0, Red = 1
 };
 
 /* Colors */

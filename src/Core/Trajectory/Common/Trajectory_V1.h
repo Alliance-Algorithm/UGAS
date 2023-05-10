@@ -13,7 +13,7 @@
 class Trajectory_V1 {
 private:
 	//静靶
-	double State_traget(const cv::Point3f tragetPoint, float& pitch) const {
+	double StateTraget(const cv::Point3f tragetPoint, float& pitch) const {
 		double dis_x = sqrt(tragetPoint.x * tragetPoint.x + tragetPoint.y * tragetPoint.y) / 1000;//水平距离
 		double dis_h = tragetPoint.z / 1000;//高度，坐标轴待统一
 		double now_pitch = atan(dis_h / dis_x);
@@ -43,17 +43,17 @@ public:
 		GimbalAttitude attitude;
 
 		cv::Point3f position = target.position;
-		double flyTimeSec = State_traget(position, attitude.pitch);
+		double flyTimeSec = StateTraget(position, attitude.pitch);
 
 		for (int i = Trajc_iterate; i-- > 0;) {
 			position = target.Predict(flyTimeSec);
-			flyTimeSec = State_traget(position, attitude.pitch);
+			flyTimeSec = StateTraget(position, attitude.pitch);
 		}
 
 		
 		attitude.pitch -= target.gimbalAttitude.pitch;
 		attitude.yaw = atan2(target.position.y, target.position.x) * 180 / MathConsts::Pi; // -target.gimbalAttitude.yaw;
-		std::cout << target.position << " " << attitude << std::endl;
+		//std::cout << target.position << " " << attitude << std::endl;
 
 		return attitude;
 		// cv::circle(debugImg, _2Dposition, 5, COLOR_RED, 2);

@@ -2,7 +2,7 @@
 
 #include "Util/Debug/DebugCanvas.h"
 #include "Util/Parameter/Parameters.h"
-#include "Util/Util.h"
+#include "Util/UtilFunctions.h"
 
 std::vector<std::vector<cv::Point>> ArmorIdentifier_V2::_floodFindAreas(const cv::Mat& img, int areaVal, int floodVal, bool borderEngulfment) {
     std::queue<cv::Point> emptyQueue;
@@ -121,8 +121,8 @@ std::vector<ArmorPlate> ArmorIdentifier_V2::_matchArmorPlates(const cv::Mat& img
 
             // 数字识别部分（暂时放这，可能会挪到运动模型那去）
             ArmorPlate armor(_lightBarList[i], _lightBarList[j]);
-            armor.id = _numberIdentifier.Identify(imgGray, armor);
-            result.push_back(armor);
+            if (_numberIdentifier.Identify(imgGray, armor));
+                result.push_back(armor);
         }
     }
     return result;

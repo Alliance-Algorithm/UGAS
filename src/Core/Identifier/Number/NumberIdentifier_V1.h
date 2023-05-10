@@ -14,7 +14,7 @@ Header Functions:
 #include "Core/Identifier/Armor/ArmorStruct.h"
 #include "Core/Identifier/NumberIdentifierInterface.h"
 
-class NumberIdentifier_V1 : public NumberIdentifierInterface {
+class NumberIdentifier_V1 {
 private:
 	cv::dnn::Net _net;
 public:
@@ -22,5 +22,5 @@ public:
 	NumberIdentifier_V1(const NumberIdentifier_V1&) = delete;
 	NumberIdentifier_V1(NumberIdentifier_V1&&) = delete;
 
-	short Identify(const cv::Mat& imgGray, const ArmorPlate& region) override;
+	bool Identify(const cv::Mat& imgGray, ArmorPlate& armor);
 };

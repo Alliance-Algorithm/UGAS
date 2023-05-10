@@ -46,7 +46,7 @@ namespace serial {
 		char	team=1;					// team id
 		float	yawA, pitchA, rollA=1;	// Angle
 		float	yawW, pitchW, rollW=1;	// Angular Velocity
-		float	speed=1;					// Bullet Speed
+		float	speed=1;				// Bullet Speed
 		char	flag=1;					// State flag
 		char	crc8;					// CRC8
 

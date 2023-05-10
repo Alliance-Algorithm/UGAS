@@ -17,10 +17,13 @@
 #include "Core/Identifier/Number/NumberIdentifier_V1.h"
 #include "Core/Identifier/Color/ColorIdentifier_V1.h"
 #include "Core/PnPSolver/Armor/ArmorPnPSolver_V1.h"
+#include "Core/PnPSolver/Armor/ArmorPnPSolver_V2.h"
 #include "Core/Predictor/Armor/ArmorPredictor_V1.h"
 #include "Core/Strategy/Common/Strategy_V1.h"
 #include "Core/Trajectory/Common/Trajectory_V1.h"
-#include "Control/Serial/SerialCBoard.h"
+#include "Control/Serial/CBoardInfantry.h"
+#include "Control/Serial/GYH1.h"
+#include "Control/Serial/HiPNUC.h"
 #include "Util/Debug/DebugCanvas.h"
 #include "Util/Debug/DebugSettings.h"
 #include "Util/FPSCounter/FPSCounter.h"
@@ -28,79 +31,64 @@
 
 void Gimbal::Always() const {
 	auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
+	// auto imgCapture = CVVideoCapture("Blue_4.mp4");
 
-	auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV0.pb");
+	auto hipnuc = HiPNUC("COM14");
+	auto cboard = CBoardInfantry("COM16");
+
+	auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV3.pb");
+
 	auto pnpSolver = ArmorPnPSolver_V1();
+	// auto pnpSolver = ArmorPnPSolver_V2<HiPNUC>(hipnuc);
 	auto armorPredictor = ArmorPredictor_V1();
-
 	auto strategy = Strategy_V1();
 	auto trajectory = Trajectory_V1();
 
-	auto fps = FPSCounter();
-	auto cboard = SerialCBoard("COM3");
+	auto fps = FPSCounter_V2();
 
-	/*auto panel = std::unique_ptr<RectangleControl>();
-	cv::Mat imghsv;
-	if constexpr (debugCanvas.master) {
-		panel = std::make_unique<RectangleControl>();
-		auto& matform = debugCanvas.master.GetMatForm();
-		panel->OnMouseDown = [&imghsv](auto arg) {
-			std::cout << imghsv.at<cv::Vec3b>(arg.y, arg.x) << std::endl;
-			std::cout << debugCanvas.master.GetMat().at<cv::Vec3b>(arg.y, arg.x) << std::endl;
-		};
-		panel->ForeColor = COLOR_YELLOW;
-		matform.AddControl(panel.get());
-	}*/
+	GimbalAttitude attitude;
 
 	while (true) {
 		try {
+
+			cboard.Receive();
 			auto [img, timeStamp] = imgCapture.Read();
-			//cv::Mat img2;
-			//cv::undistort(img, img2, CameraMatrix, DistCoeffs);
-			//imgCapture.Test();
 
 			if constexpr (debugCanvas.master) {
 				debugCanvas.master.LoadMat(img);
-				//panel->BoundRect = cv::Rect(0, 0, img.cols, img.rows);
-				//cv::cvtColor(img, imghsv, cv::COLOR_BGR2HSV_FULL);
 			}
 
-			auto armors = armorIdentifier.Identify(img);
+			auto armors = armorIdentifier.Identify(img, cboard.GetEnemyColor());
 			auto armors3d = std::vector<ArmorPlate3d>();
 
 			for (const auto& armor : armors)
-				if (auto&& armor3d = pnpSolver.Solve(armor, false))
+				if (auto&& armor3d = pnpSolver.Solve(armor))
 					armors3d.push_back(*armor3d);
 
 			const auto& targets = armorPredictor.Update(armors3d, timeStamp);
 			
 			int targetIndex = strategy.GetTargetIndex(targets);
 			if (targetIndex >= 0) {
-				auto attitude = trajectory.GetShotAngle(targets[targetIndex]);
+				attitude = trajectory.GetShotAngle(targets[targetIndex]);
 				cboard.Send(attitude);
 			}
-
-			if constexpr (debugCanvas.fps) {
-				fps.Count();
-				fps.PrintFPS(debugCanvas.fps.GetMat());
-			}
 			else {
-				constexpr int fpsInterval = 100;
-				static int i = fpsInterval;
-				if (--i == 0) {
-					printf("\rNow time stamp:%llu | Fps: %3d       ", TimeStampCounter::GetTimeStamp(), fps.Count());
-					i = fpsInterval;
-				}
-				else fps.Count();
+				cboard.Send({0, 0});
 			}
 
 			if constexpr (DEBUG_IMG) {
 				debugCanvas.ShowAll();
 				cv::waitKey(1);
 			}
+
+			if (fps.Count()) {
+				std::cout << "Fps: " << fps.GetFPS() << '\n';
+			}
+
 		}
 		catch (const char* str) { // 重包装异常
 			throw_with_trace(std::runtime_error, str);
 		}
 	}
+
 }

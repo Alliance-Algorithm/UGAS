@@ -24,10 +24,10 @@ Header Functions:
   坐标系z轴竖直向上，xy轴仅与机器人启动时的云台指向有关，云台旋转不影响xyz轴
 */
 struct ArmorPlate3d {
-	short id;
+	ArmorID id;
 	GimbalAttitude gimbalAttitude;
 	cv::Point3f position;
-	ArmorPlate3d(short _id, const GimbalAttitude& _gimbalAttitude, const cv::Point3f& _position)
+	ArmorPlate3d(ArmorID _id, const GimbalAttitude& _gimbalAttitude, const cv::Point3f& _position)
 		: id(_id), gimbalAttitude(_gimbalAttitude), position(_position) { }
 };
 

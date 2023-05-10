@@ -21,25 +21,17 @@ Header Functions:
 #include "Control/Gimbal/Gimbal.h"
 
 
-class ArmorPnPSolver_V1 : public ArmorPnPSolverInterface {
-private:
-
+class ArmorPnPSolver_V1 {
 public:
-	ArmorPnPSolver_V1() {
-		UpdateGimbalAttitude(.0, .0);
-	}
+	ArmorPnPSolver_V1() { }
 	ArmorPnPSolver_V1(const ArmorPnPSolver_V1&) = delete;
 	ArmorPnPSolver_V1(ArmorPnPSolver_V1&&) = delete;
 
-	void UpdateGimbalAttitude(double pitch, double yaw) override { }
-
-	std::optional<ArmorPlate3d> Solve(const ArmorPlate& armor, bool isLargeArmor) override {
+	std::optional<ArmorPlate3d> Solve(const ArmorPlate& armor) {
 		cv::Mat rvec, tvec;
 
-		auto& objectPoints = isLargeArmor ? LargeArmor3f : NormalArmor3f;
-		if (cv::solvePnP(objectPoints, armor.points,
-			CameraMatrix, DistCoeffs,
-			rvec, tvec, false, cv::SOLVEPNP_IPPE)) {
+		auto& objectPoints = armor.is_large_armor ? LargeArmor3f : NormalArmor3f;
+		if (cv::solvePnP(objectPoints, armor.points, CameraMatrix, DistCoeffs, rvec, tvec, false, cv::SOLVEPNP_IPPE)) {
 
 			auto &x = tvec.at<double>(2), &y = tvec.at<double>(0), &z = tvec.at<double>(1);
 			auto&& x2 = sqrt(x * x + z * z);

@@ -2,7 +2,7 @@
 
 #include "Util/Debug/DebugCanvas.h"
 #include "Util/Parameter/Parameters.h"
-#include "Util/Util.h"
+#include "Util/UtilFunctions.h"
 
 using namespace std;
 using namespace cv;
@@ -64,8 +64,8 @@ std::vector<ArmorPlate> ArmorIdentifier_V1::FindArmorPlates(const Mat& imgGray) 
 
 			// 数字识别
 			ArmorPlate armor(_lightBars[i], _lightBars[j]);
-			armor.id = _numberIdentifier.Identify(imgGray, armor);
-			result.push_back(armor);
+			if (_numberIdentifier.Identify(imgGray, armor));
+				result.push_back(armor);
 		}
 	}
 	return result;

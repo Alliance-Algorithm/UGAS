@@ -1,7 +1,7 @@
 #pragma once
 /*
 Creation Date: 2022/10/16
-Latest Update: 2022/10/16
+Latest Update: 2023/05/08
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
@@ -11,7 +11,8 @@ Header Functions:
 #include "Util/Parameter/Parameters.h"
 #include "Util/Debug/Log.h"
 
-class FPSCounter {
+
+class FPSCounter_V1 {
 private:
 	template <class valType, int Size>
 	class CircularQueue {
@@ -67,4 +68,51 @@ private:
 public:
 	int Count();
 	void PrintFPS(cv::Mat& img);
+};
+
+inline int FPSCounter_V1::Count() {
+	if (!_timeStamps.empty()) {
+		int _millisecDif = 1000. / MaxFps - (TimeStampCounter::GetTimeStamp() - _timeStamps.last());
+		if (_millisecDif > 0) cv::waitKey(_millisecDif);
+	}
+
+	TimeStamp _presentTime = TimeStampCounter::GetTimeStamp();
+	_timeStamps.push_back(_presentTime);
+	while (!_timeStamps.empty() &&
+		_presentTime - _timeStamps.first() > 1000)
+		_timeStamps.pop();
+	return _timeStamps.size();
+}
+
+inline void FPSCounter_V1::PrintFPS(cv::Mat& img) {
+	cv::putText(img, "Fps : " + std::to_string(_timeStamps.size()),
+		cv::Point(0, img.rows - 10), 0, 1, COLOR_LIME);
+}
+
+
+class FPSCounter_V2 {
+public:
+	bool Count() {
+		if (_count == 0) {
+			_count = 1;
+			_timingStart = std::chrono::steady_clock::now();
+		}
+		else {
+			++_count;
+			if (std::chrono::steady_clock::now() - _timingStart >= std::chrono::seconds(1)) {
+				_lastFPS = _count;
+				_count = 0;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	int GetFPS() {
+		return _lastFPS;
+	}
+
+private:
+	int _count = 0, _lastFPS;
+	std::chrono::steady_clock::time_point _timingStart;
 };

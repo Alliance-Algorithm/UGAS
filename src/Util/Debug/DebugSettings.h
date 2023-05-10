@@ -17,7 +17,7 @@ Header Functions:
 */
 
 /// debug state switches 调试开关
-#define VIRTUAL_GIBAL	1					// 虚拟云台开关
+#define VIRTUAL_GIBAL	0					// 虚拟云台开关
 #define ENABLE_ROI		0					// 启用ROI优化
 #define DEBUG_IMG		1					// 调试图像总开关
 #define DEBUG_PARA		0					// 动态调参拖动条窗口

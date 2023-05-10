@@ -8,27 +8,26 @@
 #include "Core/Identifier/Number/NullNumberIdentifier.h"
 #include "Util/Parameter/Parameters.h"
 #include "Util/Debug/DebugCanvas.h"
-#include "Util/Util.h"
+#include "Util/UtilFunctions.h"
 
 template <typename NumberIdentifierType>
-class ArmorIdentifier_V3 : StandaloneArmorIdentifierInterface {
+class ArmorIdentifier_V3 {
 public:
 	template <typename... Types>
-	ArmorIdentifier_V3(Types&&... args) : _colorIdentifier(228.0f), _numberIdentifier(std::forward<Types>(args)...) { }
+	ArmorIdentifier_V3(Types&&... args) :
+		_blueIdentifier(228.0f), _redIdentifier(11.0f), _numberIdentifier(std::forward<Types>(args)...) { }
 
 	ArmorIdentifier_V3(const ArmorIdentifier_V3&) = delete;
 	ArmorIdentifier_V3(ArmorIdentifier_V3&&) = delete;
 
-	std::vector<ArmorPlate> Identify(const cv::Mat& img) override {
+	std::vector<ArmorPlate> Identify(const cv::Mat& img, ArmorColor targetColor) {
 		cv::Mat imgThre, imgGray;
 		cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
-
 		cv::threshold(imgGray, imgThre, 150, 255, cv::THRESH_BINARY);
-		//static cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
-		//cv::morphologyEx(imgThre, imgThre, cv::MORPH_CLOSE, element);
 
 		if constexpr (debugCanvas.pretreat) {
-			debugCanvas.pretreat.LoadMat(imgThre);
+			auto imgColor = _pretreat(img, targetColor);
+			debugCanvas.pretreat.LoadMat(imgColor);
 		}
 
 		std::vector<std::vector<cv::Point>> contours;
@@ -38,7 +37,7 @@ public:
 
 		int i = 0;
 		for (const auto& contour : contours) {
-			if (auto&& lightBarOpt = _solveToLightbar(img, contour)) {
+			if (auto&& lightBarOpt = _solveToLightbar(img, contour, targetColor)) {
 				lightBars.push_back(*lightBarOpt);
 
 				std::sort(lightBars.begin(), lightBars.end(),
@@ -72,15 +71,10 @@ public:
 				if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis) continue;
 
 				ArmorPlate armor(lightBars[i], lightBars[j]);
-				if (armor.id = _numberIdentifier.Identify(imgGray, armor))
+				if (_numberIdentifier.Identify(imgGray, armor))
 					result.push_back(armor);
 			}
 		}
-
-		/*auto lightBarL = LightBar(cv::Point2f(600, 260), cv::Point2f(600, 360), 0);
-		auto lightBarR = LightBar(cv::Point2f(840, 260), cv::Point2f(840, 360), 0);
-		auto armor = ArmorPlate(lightBarL, lightBarR, 3);
-		result.push_back(armor);*/
 
 		if constexpr (debugCanvas.armor) {
 			for (const auto& armorPlate : result) {
@@ -95,11 +89,12 @@ public:
 
 		return result;
 	}
+
 private:
-	ColorIdentifier_V1 _colorIdentifier;
+	ColorIdentifier_V1 _blueIdentifier, _redIdentifier;
 	NumberIdentifierType _numberIdentifier;
 
-	cv::Mat _pretreat(const cv::Mat& src) const {
+	cv::Mat _pretreat(const cv::Mat& src, ArmorColor targetColor) const {
 		cv::Mat dst;
 		dst.create(src.size(), CV_8UC1);
 
@@ -113,11 +108,12 @@ private:
 			sz.height = 1;
 		}
 
+		auto& colorIdentifier = targetColor == ArmorColor::Blue ? _blueIdentifier : _redIdentifier;
 		for (; sz.height--; srcBuf += srcstep, dstBuf += dststep) {
 			auto src = srcBuf;
 			auto dst = dstBuf;
 			for (int i = 0; i < sz.width; i += 1, src += 3) {
-				dst[i] = static_cast<uchar>(_colorIdentifier.Identify(src));
+				dst[i] = static_cast<uchar>(colorIdentifier.Identify(src));
 			}
 		}
 
@@ -125,7 +121,7 @@ private:
 	}
 
 
-	std::optional<LightBar> _solveToLightbar(const cv::Mat& img, const std::vector<cv::Point>& contour) {
+	std::optional<LightBar> _solveToLightbar(const cv::Mat& img, const std::vector<cv::Point>& contour, ArmorColor targetColor) {
 		auto&& contourSize = contour.size();
 		if (contourSize >= 5) {
 
@@ -135,9 +131,11 @@ private:
 			scoreMap[static_cast<size_t>(ColorConfidence::CredibleOneChannelOverexposure)] = 1.0f / contourSize;
 			scoreMap[static_cast<size_t>(ColorConfidence::CredibleTwoChannelOverexposure)] = 0.5f / contourSize;
 			scoreMap[static_cast<size_t>(ColorConfidence::CredibleThreeChannelOverexposure)] = 0.2f / contourSize;
+
+			auto& colorIdentifier = targetColor == ArmorColor::Blue ? _blueIdentifier : _redIdentifier;
 			for (const auto& point : contour) {
-				auto color = reinterpret_cast<const uchar*>(&img.at<cv::Vec3b>(point));
-				confidence += scoreMap[static_cast<size_t>(_colorIdentifier.Identify(color))];
+				auto c = reinterpret_cast<const uchar*>(&img.at<cv::Vec3b>(point));
+				confidence += scoreMap[static_cast<size_t>(colorIdentifier.Identify(c))];
 			}
 
 			if (confidence > 0.5f) {
@@ -174,34 +172,4 @@ private:
 		}
 		return std::nullopt;
 	}
-
-
-	/*std::vector<ArmorPlate> _matchArmorPlates(const cv::Mat& imgGray) {
-		std::vector<ArmorPlate> result;
-		std::sort(lightBarList.begin(), lightBarList.end(),
-			[](LightBar& a, LightBar& b) {
-			return a.top.x < b.top.x;
-		}
-		);
-		int n = lightBarList.size();
-		for (int i = 0; i < n; ++i) {
-			float Isize = P2PDis(lightBarList[i].top, lightBarList[i].bottom);
-			cv::Point2f Icenter = (lightBarList[i].top + lightBarList[i].bottom) / 2;
-			for (int j = i + 1; j < n; ++j) { // 一些筛选条件
-				float Jsize = P2PDis(lightBarList[j].top, lightBarList[j].bottom);
-				if (max(Isize, Jsize) / min(Isize, Jsize) > maxArmorLightRatio)		continue;
-				if (fabs(lightBarList[i].angle - lightBarList[j].angle) > maxdAngle)	continue;
-				if (malposition(lightBarList[i], lightBarList[j]) > maxMalposition)		continue;
-				cv::Point2f Jcenter = (lightBarList[j].top + lightBarList[j].bottom) / 2;
-				if (fabs(Icenter.y - Jcenter.y) * 2 / (Isize + Jsize) > maxLightDy)	continue;
-				if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis)	continue;
-
-				// 数字识别部分（暂时放这，可能会挪到运动模型那去）
-				ArmorPlate armor(lightBarList[i], lightBarList[j]);
-				armor.id = 3; //_numberIdentifier.Identify(imgGray, armor);
-				result.push_back(armor);
-			}
-		}
-		return result;
-	}*/
 };

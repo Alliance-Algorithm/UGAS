@@ -109,7 +109,6 @@ maxMalposition = 0.7, maxLightDy = 0.9, bigArmorDis = 4.5;
 /* Buff Parameters */
 
 /* PNP Parameters */
-bool isLargeArmor[10];
 // 注意两个相机矩阵的重标定
 //double CameraMatrixData[3][3] = {	1867.490995615071, 0, 469.7628091162226, \
 //									0, 1873.208292955122, 464.9909258534828, \
