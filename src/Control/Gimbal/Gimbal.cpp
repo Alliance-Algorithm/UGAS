@@ -8,6 +8,7 @@
 #include "Core/ImgCapture/Common/HikCameraCapture.h"
 #include "Core/ImgCapture/Common/ResizeCapture.h"
 #include "Core/ImgCapture/Common/RotateCapture.h"
+#include "Core/ImgCapture/Common/UDPVideoCapture.h"
 #include "Core/Pretreator/Armor/ArmorPretreator_V1.h"
 #include "Core/Pretreator/Armor/ArmorPretreator_V2.h"
 #include "Core/Identifier/Armor/ArmorIdentifier_V1.h"
@@ -32,6 +33,7 @@
 void Gimbal::Always() const {
 	auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
 	// auto imgCapture = CVVideoCapture("Blue_4.mp4");
+	// auto imgCapture = UDPVideoCapture(8848);
 
 	auto hipnuc = HiPNUC("COM14");
 	auto cboard = CBoardInfantry("COM16");
@@ -59,6 +61,7 @@ void Gimbal::Always() const {
 			}
 
 			auto armors = armorIdentifier.Identify(img, cboard.GetEnemyColor());
+			// auto armors = armorIdentifier.Identify(img, ArmorColor::Blue);
 			auto armors3d = std::vector<ArmorPlate3d>();
 
 			for (const auto& armor : armors)
