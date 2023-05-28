@@ -14,7 +14,6 @@ Header Functions:
 #include <vector>
 #include <optional>
 
-#include "Core/Predictor/Armor/ArmorPredictor_V1.h"
 #include "Util/Parameter/Parameters.h"
 
 class Strategy_V1 {
@@ -26,7 +25,7 @@ public:
 			// 击打距离最近的
 			float distanceMin;
 			for (const auto& target : targets) {
-				const auto& x = target.position.x, & y = target.position.y, & z = target.position.z;
+				const auto& x = target.position.x(), & y = target.position.y(), & z = target.position.z();
 				const auto distance = sqrt(x * x + y * y + z * z);
 				if (i == 0 || distanceMin > distance) {
 					targetIndex = i;

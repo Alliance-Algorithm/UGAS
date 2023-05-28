@@ -128,7 +128,7 @@ private:
 							nRet = MV_CC_SetEnumValue(_handle, "ExposureAuto", MV_EXPOSURE_AUTO_MODE_OFF);
 							if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set auto exposure. nRet [" << nRet << "]";
 
-							nRet = MV_CC_SetFloatValue(_handle, "ExposureTime", false ? 3000 : 1000);
+							nRet = MV_CC_SetFloatValue(_handle, "ExposureTime", true ? 2000 : 1000);
 							if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set exposure time. nRet [" << nRet << "]";
 
 							nRet = MV_CC_SetFloatValue(_handle, "Gain", true ? 16.9807f : 0.0f);

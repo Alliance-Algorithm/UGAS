@@ -1,7 +1,7 @@
 #pragma once
 /*
 Creation Date: 2023/05/05
-Latest Update: 2023/05/05
+Latest Update: 2023/05/26
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
@@ -10,17 +10,19 @@ Header Functions:
 
 #include <chrono>
 #include <thread>
+#include <chrono>
+#include <optional>
 
 #include <Eigen/Dense>
 
 #include "Util/Serial/SerialUtil.h"
 #include "Util/FPSCounter/FPSCounter.h"
+#include "Core/Transformer/IMUTransformer.h"
 
 class HiPNUC {
 public:
 	HiPNUC(const char* portName) :
-		_serial(portName, 115200, serial::Timeout::simpleTimeout(1000)),
-		_receiver(_serial),
+		_portName(portName),
 		_destructed(false),
 		_thread(&HiPNUC::_serialMain, this) {
 	}
@@ -32,29 +34,10 @@ public:
 		_thread.join();
 	}
 
-	void Receive() {
-		bool received = false;
-		while (true) {
-			auto result = _receiver.Receive();
-			if (result == SerialUtil::ReceiveResult::Success)
-				received = true;
-			else if (result == SerialUtil::ReceiveResult::Timeout)
-				break;
-			else if (result == SerialUtil::ReceiveResult::InvaildHeader)
-				LOG(WARNING) << "HiPNUC: Invaild Header!";
-			else if (result == SerialUtil::ReceiveResult::InvaildVerifyDegit)
-				LOG(WARNING) << "HiPNUC: Invaild Verify Degit!";
-		}
-		if (received) {
-
-		}
-	}
-
-	Eigen::Vector3f Transform(const Eigen::Vector3f& pos) const {
+	IMUTransformer GetTransformer() {
 		const float* quatPtr = _transQuat;
 		auto q = Eigen::Quaternionf{ quatPtr[0], quatPtr[1], quatPtr[2], quatPtr[3] };
-		auto tranPos = q * Eigen::Quaternionf{0, pos.x() + 118.05f, -(pos.y() - 67.5f), pos.z() - 41.7f} * q.inverse();
-		return { tranPos.x(), -tranPos.y(), tranPos.z() };
+		return IMUTransformer(q, _available);
 	}
 
 private:
@@ -124,55 +107,74 @@ private:
 	};
 
 	void _serialMain() {
-		double vx = 0, vy = 0, vz = 0;
-		double x = 0, y = 0, z = 0;
-		int interval = 100;
-
-		auto fps = FPSCounter_V2();
+		FPSCounter_V2 imuFps, errorFps;
 
 		while (!_destructed) {
-			auto result = _receiver.Receive();
-			if (result == SerialUtil::ReceiveResult::Success) {
-				const auto& data = _receiver.GetReceivedData();
+			try {
 
-				// 每次GetReceivedData得到的数据，其生命周期持续到下次Receive成功后，再次调用Receive前。
-				_transQuat = &(data.quat[0]);
+				serial::Serial serial(_portName, 115200, serial::Timeout::simpleTimeout(100));
 
-				if (fps.Count()) {
-					std::cout << "HiPNUC IMU Fps: " << fps.GetFPS() << '\n';
+				while (true) {
+					if (_destructed) return;
+					try {
+						SerialUtil::SerialReceiver<DataD1, SerialUtil::Head<uint16_t, 0xa55a>, DataCRC16Calculator> receiver(serial);
+
+						auto result = receiver.Receive();
+						if (result == SerialUtil::ReceiveResult::Success) {
+							const auto& data = receiver.GetReceivedData();
+
+							// 每次GetReceivedData得到的数据，其生命周期持续到下次Receive成功后，再次调用Receive前。
+							// TODO: 这里使用指针存储四元数实现无锁，有极小概率在读取时获得错误数据。
+							_transQuat = &(data.quat[0]);
+
+							if (imuFps.Count()) {
+								_available = imuFps.GetFPS() > 100;
+								std::cout << "HiPNUC IMU Fps: " << imuFps.GetFPS() << '\n';
+							}
+						}
+						else if (result == SerialUtil::ReceiveResult::InvaildHeader)
+							LOG(WARNING) << "HiPNUC: Invaild Header!";
+						else if (result == SerialUtil::ReceiveResult::InvaildVerifyDegit)
+							LOG(WARNING) << "HiPNUC: Invaild Verify Degit!";
+					}
+					catch (serial::IOException& e) {
+						// windows下的串口会偶发性的抛出IOException，大部分时候可以忽略此异常
+						LOG(ERROR) << "HiPNUC: Unexpected serial::IOException: " << e.what();
+						errorFps.Count();
+						if (errorFps.GetFPS() > 10) throw std::runtime_error("HiPNUC: Exceptions are thrown too frequently.");
+					}
+					catch (serial::SerialException& e) {
+						// linux下的串口会抛出SerialException，一般在串口断开连接时弹出，暂时不清楚会不会偶发性抛出，优先选择忽略此异常
+						LOG(ERROR) << "HiPNUC: Unexpected serial::SerialException: " << e.what();
+						errorFps.Count();
+						if (errorFps.GetFPS() > 10) throw std::runtime_error("HiPNUC: Exceptions are thrown too frequently.");
+					}
 				}
-
-				//auto q = Eigen::Quaterniond{ data.quat[0], data.quat[1], data.quat[2], data.quat[3] }.normalized();
-
-				//auto euler = q.toRotationMatrix().eulerAngles(2, 0, 1);
-				//float q2eul[3] = { euler.z() * 180 / MathConsts::Pi, euler.y() * 180 / MathConsts::Pi, euler.x() * 180 / MathConsts::Pi };
-				/*auto acc = q * Eigen::Quaterniond{ 0, data.acc[0], data.acc[1], data.acc[2] } *q.inverse();
-				double ax = acc.x(), ay = acc.y(), az = acc.z();
-				if (ax < 0.1) ax = 0;
-				if (ay < 0.1) ay = 0;
-				if (az < 0.1) az = 0;
-
-				vx += ax * MathConsts::G * 0.002, vy += ay * MathConsts::G * 0.002, vz += az * MathConsts::G * 0.002;
-
-				x += vx * 0.002, y += vy * 0.002, z += vz * 0.002;
-
-				if (abs(ay) > 0.1) {
-					std::cout << ax << ' ' << ay << ' ' << az << '\n';
-				}*/
-
+				
 			}
-			else if (result == SerialUtil::ReceiveResult::InvaildHeader)
-				LOG(WARNING) << "HiPNUC: Invaild Header!";
-			else if (result == SerialUtil::ReceiveResult::InvaildVerifyDegit)
-				LOG(WARNING) << "HiPNUC: Invaild Verify Degit!";
+			catch (serial::IOException& e) {
+				LOG(ERROR) << "HiPNUC: Caught serial::IOException when serial init: " << e.what();
+			}
+			catch (std::exception& e) {
+				LOG(ERROR) << "HiPNUC: Uncaught " << typeid(e).name() << ": " << e.what();
+			}
+
+			_available = false;
+			LOG(ERROR) << "HiPNUC: Will reconnect in 1 second.";
+			auto timingStart = std::chrono::steady_clock::now();
+			while (std::chrono::steady_clock::now() - timingStart < std::chrono::seconds(1)) {
+				if (_destructed) return;
+				std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			}
 		}
 	}
 
-	serial::Serial _serial;
-	SerialUtil::SerialReceiver<DataD1, SerialUtil::Head<uint16_t, 0xa55a>, DataCRC16Calculator> _receiver;
+	const char* _portName;
 	std::atomic<bool> _destructed;
 	std::thread _thread;
 
-	const float _defaultTransQuat[4] = {1, 0, 0, 0};
+	std::atomic<bool> _available = false;
+
+	const float _defaultTransQuat[4] = { 1, 0, 0, 0 };
 	std::atomic<const float*> _transQuat = _defaultTransQuat;
 };

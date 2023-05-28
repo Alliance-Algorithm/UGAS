@@ -71,13 +71,18 @@ extern const double angleLowest, angleHighest, angleEPS;
 extern const double staticReactionTime;
 
 namespace MathConsts {
-	constexpr double Pi = 3.1415926535897;
-	constexpr double G = 9.8;
+	inline constexpr double Pi = 3.1415926535897;
+	inline constexpr double G = 9.8;
 };
 
 enum class ArmorColor : uint8_t {
 	Blue = 0, Red = 1
 };
+
+namespace Parameters {
+	inline constexpr ArmorColor DefaultEnemyColor = ArmorColor::Blue;
+	inline constexpr double DefaultBulletSpeed = 28.2;
+}
 
 /* Colors */
 #define COLOR_RED				cv::Scalar(0	,0		,255)

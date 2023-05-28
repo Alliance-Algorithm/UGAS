@@ -21,9 +21,7 @@ class Gimbal {
 
 public:
 
-	Gimbal() {
+	Gimbal() { }
 
-	}
-
-	void Always() const;
+	void Always();
 };

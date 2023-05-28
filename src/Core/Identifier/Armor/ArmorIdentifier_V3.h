@@ -23,7 +23,7 @@ public:
 	std::vector<ArmorPlate> Identify(const cv::Mat& img, ArmorColor targetColor) {
 		cv::Mat imgThre, imgGray;
 		cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
-		cv::threshold(imgGray, imgThre, 150, 255, cv::THRESH_BINARY);
+		cv::threshold(imgGray, imgThre, 120, 255, cv::THRESH_BINARY);
 
 		if constexpr (debugCanvas.pretreat) {
 			auto imgColor = _pretreat(img, targetColor);
@@ -55,7 +55,7 @@ public:
 			}
 			++i;
 		}
-
+		
 		size_t&& lightBarsSize = lightBars.size();
 		for (size_t i = 0; i < lightBarsSize; ++i) {
 			float Isize = P2PDis(lightBars[i].top, lightBars[i].bottom);
@@ -138,7 +138,7 @@ private:
 				confidence += scoreMap[static_cast<size_t>(colorIdentifier.Identify(c))];
 			}
 
-			if (confidence > 0.5f) {
+			if (confidence > 0.2f) {
 				constexpr int angleRange = 30;
 				auto box = cv::minAreaRect(contour);
 

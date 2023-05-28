@@ -104,7 +104,7 @@ int minLightAngle = 0, maxLightAngle = 40;
 
 /* Armor Parameters */
 double maxArmorLightRatio = 1.5, maxdAngle = 9.5, \
-maxMalposition = 0.7, maxLightDy = 0.9, bigArmorDis = 4.5;
+maxMalposition = 0.7, maxLightDy = 0.9, bigArmorDis = 3.5;
 
 /* Buff Parameters */
 

@@ -33,7 +33,7 @@ int main() {
 			gimbal.Always();
 		}
 		catch (std::exception& e) {
-			LOG(ERROR) << "Uncaught " << typeid(e).name() << ">: " << e.what();
+			LOG(ERROR) << "Uncaught " << typeid(e).name() << ": " << e.what();
 		}
 		catch (...) {
 			LOG(ERROR) << "Uncaught unknown error";

@@ -5,7 +5,7 @@ Latest Update: 2023/05/05
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-串口工具
+- 串口工具
 */
 
 #include <cstdint>

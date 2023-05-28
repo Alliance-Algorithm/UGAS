@@ -23,7 +23,9 @@ class CBoardInfantry {
 public:
 
 #pragma pack(push, 1)
-	using DataSend = GimbalAttitude;
+	struct DataSend {
+		float yaw, pitch;
+	};
 	struct DataReceive {
 		uint8_t selfColor;             // 自身队伍颜色：1-红，2-蓝
 		uint8_t presetBulletSpeed;     // 预设弹速，单位：m/s
@@ -39,19 +41,24 @@ public:
 
 	~CBoardInfantry() {	}
 
-	void Send(GimbalAttitude attitude) {
-		/*if (attitude.yaw > 7) attitude.yaw = 7;
-		if (attitude.yaw < -7) attitude.yaw = -7;
-		if (attitude.pitch > 7) attitude.pitch = 7;
-		if (attitude.pitch < -7) attitude.pitch = -7;
-
-		attitude.yaw /= 57.3f;
-		attitude.pitch /= 57.3f;*/
-
-		_sender.Data = attitude;
+	/*! 向除哨兵外的地面兵种发送云台瞄准数据
+	* \param yaw pitch 单位使用弧度制，方向遵循右手定则
+	*/
+	void Send(double yaw, double pitch) {
+		_sender.Data.yaw = -yaw * 180.0 / MathConsts::Pi;
+		_sender.Data.pitch = -pitch * 180.0 / MathConsts::Pi;
 		_sender.Send();
 	}
 
+	/*! 向无人机发送云台瞄准数据
+	* \param yaw pitch 单位使用弧度制，方向遵循右手定则
+	*/
+	void SendUAV(double yaw, double pitch) {
+		_sender.Data.yaw = -yaw;
+		_sender.Data.pitch = -pitch;
+		_sender.Send();
+	}
+	
 	void Receive() {
 		bool received = false;
 
@@ -92,7 +99,7 @@ private:
 
 	SerialUtil::SerialSender<DataSend, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _sender;
 	SerialUtil::SerialReceiver<DataReceive, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _receiver;
-	ArmorColor _enemyColor = ArmorColor::Blue;
-	float _bulletSpeed = 25.0f;
+	ArmorColor _enemyColor = Parameters::DefaultEnemyColor;
+	float _bulletSpeed = Parameters::DefaultBulletSpeed;
 
 };

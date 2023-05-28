@@ -2,7 +2,7 @@
 /*
 Creation Date: 2022/10/11
 Latest Update: 2023/04/02
-Developer(s): DJI 21-THY 22-Qzh
+Developer(s): 22-Qzh 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
 - 对大疆官方提供的CRC8校验的C++封装
@@ -111,33 +111,4 @@ namespace CRC {
 	// 对开源陀螺仪GY-H1的CRC8算法的进一步封装，适用于CRC校验时包含包头，且校验位位于数据包尾部的简单情况。
 	// 可对整个数据包进行计算，也可作为SerialUtil的模板参数传递
 	using GyH1CRC8Calculator = SimpleChecksumCalculator<GyH1CRC8>;
-	
-	/*/template <typename AlgorithmType>
-	inline auto CalculateCRC8(const void* data, size_t size) {
-		auto ucCRC8 = AlgorithmType::init;
-		auto pch_message = static_cast<const decltype(ucCRC8)*>(data);
-		unsigned char uc_index;
-		while (size--)
-		{
-			uc_index = ucCRC8 ^ (*pch_message++);
-			ucCRC8 = AlgorithmType::table[uc_index];
-		}
-		return(ucCRC8);
-	}
-
-	template <typename AlgorithmType, typename T>
-	inline auto CalculateCRC8(const T& dataObject) {
-		return CalculateCRC8<AlgorithmType>(&dataObject, sizeof(T));
-	}
-
-	template <typename AlgorithmType, typename T>
-	inline void AppendCRC8(T& dataObject) {
-		reinterpret_cast<uint8_t*>(&dataObject)[sizeof(T) - 1] = CalculateCRC8<AlgorithmType>(&dataObject, sizeof(T) - 1);
-	}
-
-	template <typename AlgorithmType, typename T>
-	inline bool VerifyCRC8 (const T& dataObject) {
-		return reinterpret_cast<const uint8_t*>(&dataObject)[sizeof(T) - 1] == CalculateCRC8<AlgorithmType>(&dataObject, sizeof(T) - 1);
-	}
-	*/
 };

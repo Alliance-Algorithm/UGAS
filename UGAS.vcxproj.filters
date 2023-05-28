@@ -47,9 +47,7 @@
     <ClInclude Include="src\Core\ImgCapture\Common\ResizeCapture.h" />
     <ClInclude Include="src\Core\ImgCapture\Common\RotateCapture.h" />
     <ClInclude Include="src\Core\ImgCapture\ImgCaptureInterface.h" />
-    <ClInclude Include="src\Core\PnPSolver\Armor\ArmorPnPSolver_V1.h" />
     <ClInclude Include="src\Core\PnPSolver\ArmorPnPSolverInterface.h" />
-    <ClInclude Include="src\Core\Predictor\Armor\ArmorPredictor_V1.h" />
     <ClInclude Include="src\Core\Predictor\ArmorPredictorInterface.h" />
     <ClInclude Include="src\Core\Predictor\TargetInterface.h" />
     <ClInclude Include="src\Core\Pretreator\Armor\ArmorPretreator_V1.h" />
@@ -93,7 +91,11 @@
     <ClInclude Include="src\Util\TimeStamp\TimeStampCounter.h" />
     <ClInclude Include="src\Util\UtilFunctions.h" />
     <ClInclude Include="src\Control\Serial\HiPNUC.h" />
-    <ClInclude Include="src\Core\PnPSolver\Armor\ArmorPnPSolver_V2.h" />
+    <ClInclude Include="src\Core\PnPSolver\Armor\ArmorPnPSolver.h" />
+    <ClInclude Include="src\Core\Transformer\SimpleTransformer.h" />
+    <ClInclude Include="src\Core\Transformer\IMUTransformer.h" />
+    <ClInclude Include="src\Control\Serial\VirtualCBoard.h" />
+    <ClInclude Include="src\Core\Predictor\Armor\SimplePredictor.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\ThirdParty\HTCameraSDK\Windows\MVCAMSDK_X64.lib" />

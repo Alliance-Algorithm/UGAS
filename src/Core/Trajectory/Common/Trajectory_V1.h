@@ -2,60 +2,77 @@
 
 #include <cmath>
 
+#include <tuple>
+
 #include <opencv2/opencv.hpp>
+#include <Eigen/Dense>
 
-#include "Util/TimeStamp/TimeStampCounter.h"
 #include "Control/Gimbal/Gimbal.h"
+#include "Core/Transformer/SimpleTransformer.h"
 #include "Util/Parameter/Parameters.h"
-
-#include "Core/Predictor/Armor/ArmorPredictor_V1.h"
+#include "Util/TimeStamp/TimeStampCounter.h"
 
 class Trajectory_V1 {
-private:
-	//静靶
-	double StateTraget(const cv::Point3f tragetPoint, float& pitch) const {
-		double dis_x = sqrt(tragetPoint.x * tragetPoint.x + tragetPoint.y * tragetPoint.y) / 1000;//水平距离
-		double dis_h = tragetPoint.z / 1000;//高度，坐标轴待统一
-		double now_pitch = atan(dis_h / dis_x);
-		double res = 1e5;
-		double temp_h = tragetPoint.z / 1000;//目前瞄准的高度
-		double k1 = 0.13;//17mm
-		//double k2 = 0.06;//42mm
-		const double speed = 13.0f; // com.Get().speed;
-		double flytimeSec = 0;
-		double temp_time = (exp(k1 * dis_x) - 1) / k1 / speed;
-		while (res > 1e-3)//允许的误差，待调
-		{
-			flytimeSec = temp_time / cos(now_pitch);
-			double now_h = speed * sin(now_pitch) * flytimeSec - MathConsts::G * flytimeSec * flytimeSec / 2;
-			res = dis_h - now_h;
-			temp_h += res;
-			now_pitch = atan(temp_h / dis_x);
-		}
-		flytimeSec = temp_time / cos(now_pitch);
-		pitch = now_pitch * 180 / MathConsts::Pi;
-		return flytimeSec;
-	}
 public:
+	/*! 获取射击角度，不做预测处理。
+	* \return 返回云台偏移量，格式为tuple[yaw, pitch]，单位弧度制，遵循右手定则。
+	*/
+	template <typename TransformerType>
+	auto GetShotAngle(const Eigen::Vector3d& targetGimbalGyro, const double speed, const TransformerType& transformer) const {
+		std::tuple<double, double> result;
+		auto& [yaw, pitch] = result;
+
+		Eigen::Vector3d shotVec = GetShotVector(transformer.GimbalGyro2MuzzleGyro(targetGimbalGyro), speed);
+		shotVec = transformer.Gyro2Link(shotVec);
+
+		yaw = atan2(shotVec.y(), shotVec.x());
+		pitch = -atan2(shotVec.z(), sqrt(shotVec.y() * shotVec.y() + shotVec.x() + shotVec.x()));
+
+		return result;
+	}
+
+	/*! 获取射击角度，还没做预测。
+	* \return 返回云台偏移量，格式为tuple[yaw, pitch]，单位弧度制，遵循右手定则。
+	*/
+	template <typename TargetType, typename TransformerType>
+	auto GetShotAngle(const TargetType& target, const double speed, const TransformerType& transformer) const {
+		return GetShotAngle(target.Predict(0), speed, transformer);
+	}
+
 
 	template <typename TargetType>
-	GimbalAttitude GetShotAngle(const TargetType& target) const {
-		GimbalAttitude attitude;
+	auto GetShotAngle(const TargetType& target, const double speed) const {
+		auto pos = target.Predict(0);
 
-		cv::Point3f position = target.position;
-		double flyTimeSec = StateTraget(position, attitude.pitch);
 
-		for (int i = Trajc_iterate; i-- > 0;) {
-			position = target.Predict(flyTimeSec);
-			flyTimeSec = StateTraget(position, attitude.pitch);
+		auto transformer = SimpleTransformer(pos);
+		return GetShotAngle(transformer.CameraLink2GimbalLink(transformer.Link2Gyro(pos)), speed, transformer);
+	}
+
+private:
+	Eigen::Vector3d GetShotVector(const Eigen::Vector3d& targetGimbalGyro, const double speed) const {
+		// 不考虑空气阻力
+
+		double x = targetGimbalGyro.x() / 1000;
+		double y = targetGimbalGyro.y() / 1000;
+		double z = targetGimbalGyro.z() / 1000;
+
+		double hDis = sqrt(x * x + y * y);
+
+		double yaw = atan2(y, x);
+		double pitch = 0;
+
+		double a = speed * speed;                  // v0 ^ 2
+		double b = a * a;                          // v0 ^ 4
+		double c = hDis * hDis;                    // xt ^ 2
+		double d = c * c;                          // xt ^ 4
+		double e = MathConsts::G * MathConsts::G;  // g ^ 2
+
+		double f = b * d * (b - e * c - 2 * MathConsts::G * a * z);
+		if (f >= 0) {
+			pitch = -atan((b * c - sqrt(f)) / (MathConsts::G * a * c * hDis));
 		}
 
-		
-		attitude.pitch -= target.gimbalAttitude.pitch;
-		attitude.yaw = atan2(target.position.y, target.position.x) * 180 / MathConsts::Pi; // -target.gimbalAttitude.yaw;
-		//std::cout << target.position << " " << attitude << std::endl;
-
-		return attitude;
-		// cv::circle(debugImg, _2Dposition, 5, COLOR_RED, 2);
+		return { cos(pitch) * cos(yaw), cos(pitch) * sin(yaw),-sin(pitch) };
 	}
 };

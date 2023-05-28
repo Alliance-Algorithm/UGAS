@@ -16,12 +16,13 @@
 #include "Core/Identifier/Number/NullNumberIdentifier.h"
 #include "Core/Identifier/Number/NumberIdentifier_V1.h"
 #include "Core/Identifier/Color/ColorIdentifier_V1.h"
-#include "Core/PnPSolver/Armor/ArmorPnPSolver_V1.h"
-#include "Core/PnPSolver/Armor/ArmorPnPSolver_V2.h"
-#include "Core/Predictor/Armor/ArmorPredictor_V1.h"
+#include "Core/PnPSolver/Armor/ArmorPnPSolver.h"
+#include "Core/Predictor/Armor/SimplePredictor.h"
 #include "Core/Strategy/Common/Strategy_V1.h"
 #include "Core/Trajectory/Common/Trajectory_V1.h"
+#include "Core/Transformer/SimpleTransformer.h"
 #include "Control/Serial/CBoardInfantry.h"
+#include "Control/Serial/VirtualCBoard.h"
 #include "Control/Serial/GYH1.h"
 #include "Control/Serial/HiPNUC.h"
 #include "Util/Debug/DebugCanvas.h"
@@ -29,30 +30,30 @@
 #include "Util/FPSCounter/FPSCounter.h"
 #include "Util/Debug/MatForm/RectangleControl.hpp"
 
-void Gimbal::Always() const {
+void Gimbal::Always() {
 	auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
-	// auto imgCapture = CVVideoCapture("Blue_4.mp4");
+	//auto imgCapture = CVVideoCapture("Blue_4.mp4");
 
-	auto hipnuc = HiPNUC("COM14");
-	auto cboard = CBoardInfantry("COM16");
+	auto hipnuc = HiPNUC("COM10");
+	//auto cboard = CBoardInfantry("COM22");
+	auto cboard = VirtualCBoard();
 
 	auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV3.pb");
 
-	auto pnpSolver = ArmorPnPSolver_V1();
-	// auto pnpSolver = ArmorPnPSolver_V2<HiPNUC>(hipnuc);
-	auto armorPredictor = ArmorPredictor_V1();
+	//auto pnpSolver = ArmorPnPSolver_V1();
+	auto pnpSolver = ArmorPnPSolver();
+	auto armorPredictor = SimplePredictor();
 	auto strategy = Strategy_V1();
 	auto trajectory = Trajectory_V1();
 
 	auto fps = FPSCounter_V2();
-
-	GimbalAttitude attitude;
 
 	while (true) {
 		try {
 
 			cboard.Receive();
 			auto [img, timeStamp] = imgCapture.Read();
+			auto transformer = hipnuc.GetTransformer();
 
 			if constexpr (debugCanvas.master) {
 				debugCanvas.master.LoadMat(img);
@@ -61,20 +62,33 @@ void Gimbal::Always() const {
 			auto armors = armorIdentifier.Identify(img, cboard.GetEnemyColor());
 			auto armors3d = std::vector<ArmorPlate3d>();
 
-			for (const auto& armor : armors)
-				if (auto&& armor3d = pnpSolver.Solve(armor))
-					armors3d.push_back(*armor3d);
-
-			const auto& targets = armorPredictor.Update(armors3d, timeStamp);
-			
-			int targetIndex = strategy.GetTargetIndex(targets);
-			if (targetIndex >= 0) {
-				attitude = trajectory.GetShotAngle(targets[targetIndex]);
-				cboard.Send(attitude);
+			if (transformer.Available()) {
+				// 陀螺仪工作正常
+				auto armors3d = pnpSolver.SolveAll(armors, transformer);
+				if (auto target = armorPredictor.Update(armors3d, std::chrono::steady_clock::now())) {
+					auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed(), transformer);
+					yaw += 0.0 / 180.0 * MathConsts::Pi;;
+					pitch += -0.5 / 180.0 * MathConsts::Pi;
+					cboard.SendUAV(yaw, pitch);
+				}
+				else {
+					cboard.SendUAV(0, 0);
+				}
 			}
 			else {
-				cboard.Send({0, 0});
+				// 陀螺仪工作不正常，采用低保运行模式
+				auto armors3d = pnpSolver.SolveAll(armors);
+				if (auto target = armorPredictor.Update(armors3d, std::chrono::steady_clock::now())) {
+					auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed());
+					yaw += 0.0 / 180.0 * MathConsts::Pi;
+					pitch += 1.7 / 180.0 * MathConsts::Pi;
+					cboard.SendUAV(yaw, pitch);
+				}
+				else {
+					cboard.SendUAV(0, 0);
+				}
 			}
+			
 
 			if constexpr (DEBUG_IMG) {
 				debugCanvas.ShowAll();
@@ -82,9 +96,8 @@ void Gimbal::Always() const {
 			}
 
 			if (fps.Count()) {
-				std::cout << "Fps: " << fps.GetFPS() << '\n';
+				std::cout << "Fps: " << fps.GetFPS() << '\n';				
 			}
-
 		}
 		catch (const char* str) { // 重包装异常
 			throw_with_trace(std::runtime_error, str);
