@@ -1,8 +1,6 @@
 #pragma once
 
-
 #include <iostream>
-
 
 struct GimbalAttitude {
     float yaw, pitch;

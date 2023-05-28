@@ -11,7 +11,7 @@ Header Functions:
 #include <chrono>
 #include <thread>
 
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 
 #include "Control/Gimbal/Gimbal.h"
 #include "Util/Serial/CRC.h"

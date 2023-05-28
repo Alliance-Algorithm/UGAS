@@ -8,7 +8,7 @@ Header Functions:
 最基础的坐标系转换器，不使用陀螺仪，而是理想地认为相机光心水平于目标装甲板中心，理想地认为相机光心、云台中心和弹丸发射点重合。
 */
 
-#include <Eigen/Dense> 
+#include <eigen3/Eigen/Dense>
 
 
 class SimpleTransformer {

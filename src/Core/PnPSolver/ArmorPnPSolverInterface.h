@@ -13,7 +13,7 @@ Header Functions:
 #include <optional>
 
 #include <opencv2/opencv.hpp>
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 
 #include "Control/Gimbal/Gimbal.h"
 #include "Core/Identifier/Armor/ArmorStruct.h"

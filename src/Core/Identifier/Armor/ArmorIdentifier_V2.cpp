@@ -112,7 +112,7 @@ std::vector<ArmorPlate> ArmorIdentifier_V2::_matchArmorPlates(const cv::Mat& img
         cv::Point2f Icenter = (_lightBarList[i].top + _lightBarList[i].bottom) / 2;
         for (int j = i + 1; j < n; ++j) { // 一些筛选条件
             float Jsize = P2PDis(_lightBarList[j].top, _lightBarList[j].bottom);
-            if (max(Isize, Jsize) / min(Isize, Jsize) > maxArmorLightRatio)        continue;
+            if (fmax(Isize, Jsize) / fmin(Isize, Jsize) > maxArmorLightRatio)        continue;
             if (fabs(_lightBarList[i].angle - _lightBarList[j].angle) > maxdAngle)    continue;
             if (malposition(_lightBarList[i], _lightBarList[j]) > maxMalposition)        continue;
             cv::Point2f Jcenter = (_lightBarList[j].top + _lightBarList[j].bottom) / 2;

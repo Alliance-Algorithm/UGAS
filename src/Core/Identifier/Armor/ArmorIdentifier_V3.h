@@ -63,7 +63,7 @@ public:
             for (size_t j = i + 1; j < lightBarsSize; ++j) { // 一些筛选条件
 
                 float Jsize = P2PDis(lightBars[j].top, lightBars[j].bottom);
-                if (max(Isize, Jsize) / min(Isize, Jsize) > maxArmorLightRatio) continue;
+                if (fmax(Isize, Jsize) / fmin(Isize, Jsize) > maxArmorLightRatio) continue;
                 if (fabs(lightBars[i].angle - lightBars[j].angle) > maxdAngle) continue;
                 if (malposition(lightBars[i], lightBars[j]) > maxMalposition) continue;
                 cv::Point2f Jcenter = (lightBars[j].top + lightBars[j].bottom) / 2;

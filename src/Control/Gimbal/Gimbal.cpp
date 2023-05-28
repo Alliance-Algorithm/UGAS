@@ -60,7 +60,6 @@ void Gimbal::Always() {
             }
 
             auto armors = armorIdentifier.Identify(img, cboard.GetEnemyColor());
-            auto armors3d = std::vector<ArmorPlate3d>();
 
             if (transformer.Available()) {
                 // 陀螺仪工作正常
@@ -88,7 +87,6 @@ void Gimbal::Always() {
                     cboard.SendUAV(0, 0);
                 }
             }
-            
 
             if constexpr (DEBUG_IMG) {
                 debugCanvas.ShowAll();

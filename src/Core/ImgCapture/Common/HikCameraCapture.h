@@ -12,7 +12,12 @@ Header Functions:
 #include <cstring>
 
 #include <opencv2/opencv.hpp>
+
+#ifdef WIN32
 #include "ThirdParty/HikCameraSDK/Windows/MvCameraControl.h"
+#else
+#include <MvCameraControl.h>
+#endif
 
 #include "Core/ImgCapture/ImgCaptureInterface.h"
 #include "Util/Debug/Log.h"
@@ -139,6 +144,9 @@ private:
 
                             nRet = MV_CC_SetFloatValue(_handle, "DigitalShift", 5.9993f);
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set digital shift. nRet [" << nRet << "]";
+
+                            nRet = MV_CC_SetBoolValue(_handle, "AcquisitionFrameRateEnable", false);
+                            if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set acquisition frame rate enable. nRet [" << nRet << "]";
 
                             nRet = MV_CC_StartGrabbing(_handle);
                             if (MV_OK == nRet) {

@@ -1,9 +1,10 @@
 build
 resources
+cmake-build-debug
+cmake-build-release
 .vs
 .vscode
 .idea
 x64
 dockerBase
-cmake-build-debug
 myeasylog.log

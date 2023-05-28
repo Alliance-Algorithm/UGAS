@@ -15,7 +15,7 @@ Header Functions:
 #include <vector>
 
 #include <opencv2/opencv.hpp>
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 
 #include "Core/PnPSolver/ArmorPnPSolverInterface.h"
 #include "Core/Identifier/Armor/ArmorStruct.h"

@@ -182,7 +182,7 @@ private:
             cv::flip(imgDisplay, imgDisplay, 0);
             cv::imshow("debug", imgDisplay);
             cv::waitKey(-1);
-            throw(std::exception("render size != 256, enable debugging..."));
+            throw(std::runtime_error("render size != 256, enable debugging..."));
         }
     }
 };

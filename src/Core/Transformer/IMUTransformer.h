@@ -8,7 +8,7 @@ Header Functions:
 基于IMU的坐标系转换器。
 */
 
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 
 class IMUTransformer {
 public:

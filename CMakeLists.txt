@@ -1,43 +1,102 @@
 # UGAS - Alliance 2022
-# Developer(s): 21-THY
-# Latest Update: 2022/10/20
+# Developer(s): 21-THY 19-LYJ
+# Latest Update: 2023/04/03
 
 cmake_minimum_required(VERSION 3.0)
 project(UGAS VERSION 1.0 LANGUAGES C CXX)
-set(CMAKE_BUILD_TYPE RELEASE)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
-# OpenCV 库目录
-#set(OpenCV_DIR D:/opencv/build)
-find_package(OpenCV 4 REQUIRED)
+set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/release)
 
-include_directories(${PROJECT_SOURCE_DIR})
-include_directories(${PROJECT_SOURCE_DIR}/Parameters)
-include_directories(${PROJECT_SOURCE_DIR}/lib)
-include_directories(${PROJECT_SOURCE_DIR}/lib/GimbalSerial)
-include_directories(${PROJECT_SOURCE_DIR}/lib/ArmorFinder)
-include_directories(${PROJECT_SOURCE_DIR}/lib/Common)
-include_directories(${PROJECT_SOURCE_DIR}/lib/ImgCapture)
-include_directories(${PROJECT_SOURCE_DIR}/lib/ImgPretreat)
-include_directories(${PROJECT_SOURCE_DIR}/lib/TargetSolution)
-include_directories(${PROJECT_SOURCE_DIR}/lib/TrackingStrategy)
-include_directories(${PROJECT_SOURCE_DIR}/lib/Trajectory)
-include_directories(${PROJECT_SOURCE_DIR}/third-party)
-include_directories(${Opencv_INCLUDE_DIRS})
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
 
-link_directories(${PROJECT_SOURCE_DIR}/third-party/HTCameraSDK/Linux)
-# main sources
-aux_source_directory(${PROJECT_SOURCE_DIR} MAIN_SOURCES)
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
+    ADD_DEFINITIONS(-DDEBUG)
+endif ()
 
-# lib sources
-file(GLOB_RECURSE LIB_SOURCES ${PROJECT_SOURCE_DIR}/lib/*/*.c*)
+include(${PROJECT_SOURCE_DIR}/cmake/utils.cmake)
 
-# parameter sources
-file(GLOB_RECURSE PARA_SOURCES ${PROJECT_SOURCE_DIR}/Parameters/*.c*)
+find_package(OpenCV 4.7 REQUIRED)
 
-# generate exec
-add_executable(ugas ${MAIN_SOURCES} ${PARA_SOURCES} ${LIB_SOURCES})
+option(USE_HIK_CAMERA "turn on this to use hik camera" ON)
 
-# link to OpenCV lib
-target_link_libraries(ugas ${OpenCV_LIBS} MVSDK)
+if (DEFINED USE_HIK_CAMERA)
+    set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+    find_package(HikCameraSDK)
+    set(LIB_NAME ${HikCameraSDK_LIB})
+else ()
+    set(CAMERA_TYPE HT)
+    set(LIB_NAME MVSDK)
+    link_directories(${CMAKE_CURRENT_SOURCE_DIR}/${CAMERA_TYPE}CameraSDK/${CMAKE_SYSTEM_NAME})
+endif ()
 
+iter_directories(${CMAKE_CURRENT_SOURCE_DIR}/src MODULES)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+include_directories(${OpenCV_INCLUDES})
+
+foreach (MODULE ${MODULES})
+    message("Add module: " ${MODULE})
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/${MODULE})
+endforeach (MODULE)
+
+file(GLOB_RECURSE SRC_LIST src/*.c*)
+
+add_executable(${PROJECT_NAME} main.cpp ${SRC_LIST})
+
+target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS} ${MODULES} ${HikCameraSDK_LIB})
+
+
+#################
+# Install Part
+#################
+#if (CMAKE_BUILD_TYPE STREQUAL Release)
+#    include(GNUInstallDirs)
+#
+#    install(TARGETS ${PROJECT_NAME} ${MODULES}
+#            EXPORT ${PROJECT_NAME}Targets
+#            LIBRARY DESTINATION bin
+#            ARCHIVE DESTINATION lib
+#            RUNTIME DESTINATION bin
+#            PUBLIC_HEADER DESTINATION include
+#            PRIVATE_HEADER DESTINATION include)
+#
+#    file(GLOB RULES_FILES ${PROJECT_SOURCE_DIR}/rules/*.rules)
+#
+#    install(FILES ${RULES_FILES} DESTINATION rules)
+#
+#    install(FILES ${RULES_FILES} DESTINATION /etc/udev/rules.d)
+#
+#    install(DIRECTORY ${PROJECT_SOURCE_DIR}/docs
+#            DESTINATION .)
+#
+#    install(DIRECTORY ${PROJECT_SOURCE_DIR}/models
+#            DESTINATION .)
+#
+#    install(FILES ${PROJECT_SOURCE_DIR}/README.md
+#            DESTINATION .)
+#
+#
+#
+#    include(CMakePackageConfigHelpers)
+#
+#    write_basic_package_version_file(
+#            ${PROJECT_NAME}Config-version.cmake
+#            VERSION ${PACKAGE_VERSION}
+#            COMPATIBILITY AnyNewerVersion  # 表示该函数库向下兼容
+#    )
+#    install(EXPORT ${PROJECT_NAME}Targets
+#            FILE ${PROJECT_NAME}Targets.cmake
+#            DESTINATION cmake
+#            )
+#
+#    configure_file(${PROJECT_NAME}Config.cmake.in ${PROJECT_NAME}Config.cmake @ONLY)
+#
+#    install(FILES
+#            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+#            ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config-version.cmake
+#            DESTINATION cmake)
+#endif ()

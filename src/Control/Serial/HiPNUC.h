@@ -13,7 +13,7 @@ Header Functions:
 #include <chrono>
 #include <optional>
 
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 
 #include "Util/Serial/SerialUtil.h"
 #include "Util/FPSCounter/FPSCounter.h"
