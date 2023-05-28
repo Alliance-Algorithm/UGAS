@@ -5,8 +5,8 @@ Latest Update: 2023/03/17
 Developer(s): 21-THY 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ½«Í¼Ïñ×ø±ê½âËãÎª»úÆ÷ÈË±¾Ìå×ø±ê
-- Ê¹ÓÃÍÓÂİÒÇËÄÔªÊı½øĞĞ½âËã
+- å°†å›¾åƒåæ ‡è§£ç®—ä¸ºæœºå™¨äººæœ¬ä½“åæ ‡
+- ä½¿ç”¨é™€èºä»ªå››å…ƒæ•°è¿›è¡Œè§£ç®—
 */
 
 //#include <cmath>
@@ -26,47 +26,47 @@ Header Functions:
 
 class ArmorPnPSolver {
 public:
-	ArmorPnPSolver() { }
-	ArmorPnPSolver(const ArmorPnPSolver&) = delete;
-	ArmorPnPSolver(ArmorPnPSolver&&) = delete;
+    ArmorPnPSolver() { }
+    ArmorPnPSolver(const ArmorPnPSolver&) = delete;
+    ArmorPnPSolver(ArmorPnPSolver&&) = delete;
 
 
-	std::optional<Eigen::Vector3d> Solve(const ArmorPlate& armor) {
-		cv::Mat rvec, tvec;
+    std::optional<Eigen::Vector3d> Solve(const ArmorPlate& armor) {
+        cv::Mat rvec, tvec;
 
-		auto& objectPoints = armor.is_large_armor ? LargeArmor3f : NormalArmor3f;
-		if (cv::solvePnP(objectPoints, armor.points, CameraMatrix, DistCoeffs, rvec, tvec, false, cv::SOLVEPNP_IPPE)) {
-			double x = tvec.at<double>(2), y = -tvec.at<double>(0), z = -tvec.at<double>(1);
-			return Eigen::Vector3d{ x, y, z };
-		}
+        auto& objectPoints = armor.is_large_armor ? LargeArmor3f : NormalArmor3f;
+        if (cv::solvePnP(objectPoints, armor.points, CameraMatrix, DistCoeffs, rvec, tvec, false, cv::SOLVEPNP_IPPE)) {
+            double x = tvec.at<double>(2), y = -tvec.at<double>(0), z = -tvec.at<double>(1);
+            return Eigen::Vector3d{ x, y, z };
+        }
 
-		return std::nullopt;
-	}
+        return std::nullopt;
+    }
 
-	std::vector<ArmorPlate3d> SolveAll(const std::vector<ArmorPlate> armors) {
-		std::vector<ArmorPlate3d> armors3d;
+    std::vector<ArmorPlate3d> SolveAll(const std::vector<ArmorPlate> armors) {
+        std::vector<ArmorPlate3d> armors3d;
 
-		for (const auto& armor : armors) {
-			if (auto&& pos = Solve(armor)) {
-				armors3d.emplace_back(armor.id, *pos);
-			}
-		}
+        for (const auto& armor : armors) {
+            if (auto&& pos = Solve(armor)) {
+                armors3d.emplace_back(armor.id, *pos);
+            }
+        }
 
-		return armors3d;
-	}
-	
-	template <typename TransformerType>
-	std::vector<ArmorPlate3d> SolveAll(const std::vector<ArmorPlate> armors, TransformerType transformer) {
-		std::vector<ArmorPlate3d> armors3d;
+        return armors3d;
+    }
+    
+    template <typename TransformerType>
+    std::vector<ArmorPlate3d> SolveAll(const std::vector<ArmorPlate> armors, TransformerType transformer) {
+        std::vector<ArmorPlate3d> armors3d;
 
-		for (const auto& armor : armors) {
-			if (auto&& pos = Solve(armor)) {
-				auto tranPos = transformer.Link2Gyro(transformer.CameraLink2GimbalLink(*pos));
-				armors3d.emplace_back(armor.id, tranPos);
-			}
-		}
+        for (const auto& armor : armors) {
+            if (auto&& pos = Solve(armor)) {
+                auto tranPos = transformer.Link2Gyro(transformer.CameraLink2GimbalLink(*pos));
+                armors3d.emplace_back(armor.id, tranPos);
+            }
+        }
 
-		return armors3d;
-	}
+        return armors3d;
+    }
 };
 

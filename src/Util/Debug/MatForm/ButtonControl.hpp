@@ -14,19 +14,19 @@ Header Functions:
 class ButtonControl : public RectangleControl {
 private:
 public:
-	std::string Text;
-	int FontFace = cv::FONT_HERSHEY_PLAIN;
-	double FontScale = 1;
+    std::string Text;
+    int FontFace = cv::FONT_HERSHEY_PLAIN;
+    double FontScale = 1;
 
-	using RectangleControl::RectangleControl;
+    using RectangleControl::RectangleControl;
 
-	void Draw() const {
-		RectangleControl::Draw();
-		int baseLine;
-		cv::Size textSize = cv::getTextSize(Text, FontFace, FontScale, Thickness, &baseLine);
-		cv::Point origin = BoundRect.tl();
-		origin.x += BoundRect.width / 2 - textSize.width / 2;
-		origin.y += BoundRect.height / 2 + textSize.height / 2;
-		cv::putText(*_parent, Text, origin, FontFace, FontScale, ForeColor);
-	};
+    void Draw() const {
+        RectangleControl::Draw();
+        int baseLine;
+        cv::Size textSize = cv::getTextSize(Text, FontFace, FontScale, Thickness, &baseLine);
+        cv::Point origin = BoundRect.tl();
+        origin.x += BoundRect.width / 2 - textSize.width / 2;
+        origin.y += BoundRect.height / 2 + textSize.height / 2;
+        cv::putText(*_parent, Text, origin, FontFace, FontScale, ForeColor);
+    };
 };

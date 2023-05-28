@@ -5,7 +5,7 @@ Latest Update: 2023/04/21
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-Óë²½±øµÄ´®¿ÚÍ¨Ñ¶
+ä¸æ­¥å…µçš„ä¸²å£é€šè®¯
 */
 
 #include <chrono>
@@ -23,83 +23,83 @@ class CBoardInfantry {
 public:
 
 #pragma pack(push, 1)
-	struct DataSend {
-		float yaw, pitch;
-	};
-	struct DataReceive {
-		uint8_t selfColor;             // ×ÔÉí¶ÓÎéÑÕÉ«£º1-ºì£¬2-À¶
-		uint8_t presetBulletSpeed;     // Ô¤Éèµ¯ËÙ£¬µ¥Î»£ºm/s
-		float bulletSpeed;             // ÊµÊ±µ¯ËÙ£¬µ¥Î»£ºm/s
-	};
+    struct DataSend {
+        float yaw, pitch;
+    };
+    struct DataReceive {
+        uint8_t selfColor;             // è‡ªèº«é˜Ÿä¼é¢œè‰²ï¼š1-çº¢ï¼Œ2-è“
+        uint8_t presetBulletSpeed;     // é¢„è®¾å¼¹é€Ÿï¼Œå•ä½ï¼šm/s
+        float bulletSpeed;             // å®æ—¶å¼¹é€Ÿï¼Œå•ä½ï¼šm/s
+    };
 #pragma pack(pop)
 
-	CBoardInfantry(const char* portName) :
-		_serial(portName, 115200, serial::Timeout::simpleTimeout(0)),
-		_sender(_serial),
-		_receiver(_serial) {
-	}
+    CBoardInfantry(const char* portName) :
+        _serial(portName, 115200, serial::Timeout::simpleTimeout(0)),
+        _sender(_serial),
+        _receiver(_serial) {
+    }
 
-	~CBoardInfantry() {	}
+    ~CBoardInfantry() {    }
 
-	/*! Ïò³ıÉÚ±øÍâµÄµØÃæ±øÖÖ·¢ËÍÔÆÌ¨Ãé×¼Êı¾İ
-	* \param yaw pitch µ¥Î»Ê¹ÓÃ»¡¶ÈÖÆ£¬·½Ïò×ñÑ­ÓÒÊÖ¶¨Ôò
-	*/
-	void Send(double yaw, double pitch) {
-		_sender.Data.yaw = -yaw * 180.0 / MathConsts::Pi;
-		_sender.Data.pitch = -pitch * 180.0 / MathConsts::Pi;
-		_sender.Send();
-	}
+    /*! å‘é™¤å“¨å…µå¤–çš„åœ°é¢å…µç§å‘é€äº‘å°ç„å‡†æ•°æ®
+    * \param yaw pitch å•ä½ä½¿ç”¨å¼§åº¦åˆ¶ï¼Œæ–¹å‘éµå¾ªå³æ‰‹å®šåˆ™
+    */
+    void Send(double yaw, double pitch) {
+        _sender.Data.yaw = -yaw * 180.0 / MathConsts::Pi;
+        _sender.Data.pitch = -pitch * 180.0 / MathConsts::Pi;
+        _sender.Send();
+    }
 
-	/*! ÏòÎŞÈË»ú·¢ËÍÔÆÌ¨Ãé×¼Êı¾İ
-	* \param yaw pitch µ¥Î»Ê¹ÓÃ»¡¶ÈÖÆ£¬·½Ïò×ñÑ­ÓÒÊÖ¶¨Ôò
-	*/
-	void SendUAV(double yaw, double pitch) {
-		_sender.Data.yaw = -yaw;
-		_sender.Data.pitch = -pitch;
-		_sender.Send();
-	}
-	
-	void Receive() {
-		bool received = false;
+    /*! å‘æ— äººæœºå‘é€äº‘å°ç„å‡†æ•°æ®
+    * \param yaw pitch å•ä½ä½¿ç”¨å¼§åº¦åˆ¶ï¼Œæ–¹å‘éµå¾ªå³æ‰‹å®šåˆ™
+    */
+    void SendUAV(double yaw, double pitch) {
+        _sender.Data.yaw = -yaw;
+        _sender.Data.pitch = -pitch;
+        _sender.Send();
+    }
+    
+    void Receive() {
+        bool received = false;
 
-		while (true) {
-			auto result = _receiver.Receive();
-			if (result == SerialUtil::ReceiveResult::Success)
-				received = true;
-			else if (result == SerialUtil::ReceiveResult::Timeout)
-				break;
-			else if (result == SerialUtil::ReceiveResult::InvaildHeader)
-				LOG(WARNING) << "CboardInfantry: Invaild Header!";
-			else if (result == SerialUtil::ReceiveResult::InvaildVerifyDegit)
-				LOG(WARNING) << "CboardInfantry: Invaild Verify Degit!";
-		}
+        while (true) {
+            auto result = _receiver.Receive();
+            if (result == SerialUtil::ReceiveResult::Success)
+                received = true;
+            else if (result == SerialUtil::ReceiveResult::Timeout)
+                break;
+            else if (result == SerialUtil::ReceiveResult::InvaildHeader)
+                LOG(WARNING) << "CboardInfantry: Invaild Header!";
+            else if (result == SerialUtil::ReceiveResult::InvaildVerifyDegit)
+                LOG(WARNING) << "CboardInfantry: Invaild Verify Degit!";
+        }
 
-		if (received) {
-			const auto& data = _receiver.GetReceivedData();
+        if (received) {
+            const auto& data = _receiver.GetReceivedData();
 
-			if (data.selfColor == 1)        // ¼º·½ºìÉ«£¬»÷´òÀ¶É«
-				_enemyColor = ArmorColor::Blue;
-			else if (data.selfColor == 2)   // ¼º·½À¶É«£¬»÷´òºìÉ«
-				_enemyColor = ArmorColor::Red;
+            if (data.selfColor == 1)        // å·±æ–¹çº¢è‰²ï¼Œå‡»æ‰“è“è‰²
+                _enemyColor = ArmorColor::Blue;
+            else if (data.selfColor == 2)   // å·±æ–¹è“è‰²ï¼Œå‡»æ‰“çº¢è‰²
+                _enemyColor = ArmorColor::Red;
 
-			_bulletSpeed = data.presetBulletSpeed;  // ÔİÊ±²»´¦ÀíÊµÊ±µ¯ËÙ
-		}
-	}
+            _bulletSpeed = data.presetBulletSpeed;  // æš‚æ—¶ä¸å¤„ç†å®æ—¶å¼¹é€Ÿ
+        }
+    }
 
-	ArmorColor GetEnemyColor() {
-		return _enemyColor;
-	}
+    ArmorColor GetEnemyColor() {
+        return _enemyColor;
+    }
 
-	float GetBulletSpeed() {
-		return _bulletSpeed;
-	}
+    float GetBulletSpeed() {
+        return _bulletSpeed;
+    }
 
 private:
-	serial::Serial _serial;
+    serial::Serial _serial;
 
-	SerialUtil::SerialSender<DataSend, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _sender;
-	SerialUtil::SerialReceiver<DataReceive, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _receiver;
-	ArmorColor _enemyColor = Parameters::DefaultEnemyColor;
-	float _bulletSpeed = Parameters::DefaultBulletSpeed;
+    SerialUtil::SerialSender<DataSend, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _sender;
+    SerialUtil::SerialReceiver<DataReceive, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _receiver;
+    ArmorColor _enemyColor = Parameters::DefaultEnemyColor;
+    float _bulletSpeed = Parameters::DefaultBulletSpeed;
 
 };

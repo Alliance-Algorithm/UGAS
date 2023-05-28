@@ -18,12 +18,12 @@ class RectangleControl : public MatControl {
 private:
 
 public:
-	int Thickness = 1;
-	cv::Scalar ForeColor = COLOR_WHITE;
+    int Thickness = 1;
+    cv::Scalar ForeColor = COLOR_WHITE;
 
-	using MatControl::MatControl;
+    using MatControl::MatControl;
 
-	void Draw() const {
-		cv::rectangle(*_parent, BoundRect, ForeColor, Thickness);
-	}
+    void Draw() const {
+        cv::rectangle(*_parent, BoundRect, ForeColor, Thickness);
+    }
 };

@@ -240,6 +240,9 @@
     <Library Include="src\ThirdParty\HTCameraSDK\Windows\MVCAMSDK.lib" />
     <Library Include="src\ThirdParty\HTCameraSDK\Windows\MVCAMSDK_X64.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -5,8 +5,8 @@ Latest Update: 2023/03/17
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ×°¼×°åPnP½âËãµÄ½Ó¿ÚÀà
-- ½«Í¼Ïñ×ø±ê½âËãÎª»úÆ÷ÈË±¾Ìå×ø±ê
+- è£…ç”²æ¿PnPè§£ç®—çš„æ¥å£ç±»
+- å°†å›¾åƒåæ ‡è§£ç®—ä¸ºæœºå™¨äººæœ¬ä½“åæ ‡
 */
 
 
@@ -19,16 +19,16 @@ Header Functions:
 #include "Core/Identifier/Armor/ArmorStruct.h"
 
 struct ArmorPlate3d {
-	ArmorID id;
-	Eigen::Vector3d position;
-	ArmorPlate3d(ArmorID _id, const Eigen::Vector3d& _position) : id(_id), position(_position) { }
+    ArmorID id;
+    Eigen::Vector3d position;
+    ArmorPlate3d(ArmorID _id, const Eigen::Vector3d& _position) : id(_id), position(_position) { }
 };
 
 class ArmorPnPSolverInterface {
 public:
-	virtual ~ArmorPnPSolverInterface() = default;
+    virtual ~ArmorPnPSolverInterface() = default;
 
-	virtual void UpdateGimbalAttitude(double pitch, double yaw) = 0;
-	// Í¼Ïñ×ø±ê½âËãÎª»úÆ÷ÈË±¾Ìå×ø±ê
-	virtual std::optional<ArmorPlate3d> Solve(const ArmorPlate& armor, bool isLargeArmor) = 0;
+    virtual void UpdateGimbalAttitude(double pitch, double yaw) = 0;
+    // å›¾åƒåæ ‡è§£ç®—ä¸ºæœºå™¨äººæœ¬ä½“åæ ‡
+    virtual std::optional<ArmorPlate3d> Solve(const ArmorPlate& armor, bool isLargeArmor) = 0;
 };

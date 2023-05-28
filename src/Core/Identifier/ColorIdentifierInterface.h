@@ -5,24 +5,24 @@ Latest Update: 2022/03/29
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ¶Ôµ¥¸öÏñËØµã½øĞĞÑÕÉ«Ê¶±ğµÄ½Ó¿Ú
-- ¼ÆËã³öÑÕÉ«ÖÃĞÅ¶È£¨²»¿ÉĞÅ / ¿ÉĞÅ-¹ıÆØ0¸öÍ¨µÀ / ¿ÉĞÅ-¹ıÆØ1¸öÍ¨µÀ / ¿ÉĞÅ-¹ıÆØ2¸öÍ¨µÀ / ¿ÉĞÅ-¹ıÆØ3¸öÍ¨µÀ£©
+- å¯¹å•ä¸ªåƒç´ ç‚¹è¿›è¡Œé¢œè‰²è¯†åˆ«çš„æ¥å£
+- è®¡ç®—å‡ºé¢œè‰²ç½®ä¿¡åº¦ï¼ˆä¸å¯ä¿¡ / å¯ä¿¡-è¿‡æ›0ä¸ªé€šé“ / å¯ä¿¡-è¿‡æ›1ä¸ªé€šé“ / å¯ä¿¡-è¿‡æ›2ä¸ªé€šé“ / å¯ä¿¡-è¿‡æ›3ä¸ªé€šé“ï¼‰
 */
 
 
 enum class ColorConfidence : uchar {
-	NotCredible = 0,
-	CredibleZeroChannelOverexposure = 255,
-	CredibleOneChannelOverexposure = 191,
-	CredibleTwoChannelOverexposure = 127,
-	CredibleThreeChannelOverexposure = 63
+    NotCredible = 0,
+    CredibleZeroChannelOverexposure = 255,
+    CredibleOneChannelOverexposure = 191,
+    CredibleTwoChannelOverexposure = 127,
+    CredibleThreeChannelOverexposure = 63
 };
 
 
-// ÓÉÓÚĞÔÄÜÒªÇó£¬ColorIdentifier::Identify±ØĞëÊÇÄÚÁªµÄ£¬¸Ã½Ó¿Ú½ö×÷ÉùÃ÷£¬²»Ğè¼Ì³Ğ
+// ç”±äºæ€§èƒ½è¦æ±‚ï¼ŒColorIdentifier::Identifyå¿…é¡»æ˜¯å†…è”çš„ï¼Œè¯¥æ¥å£ä»…ä½œå£°æ˜ï¼Œä¸éœ€ç»§æ‰¿
 class ColorIdentifierInterface final {
 public:
-	virtual ~ColorIdentifierInterface() = default;
+    virtual ~ColorIdentifierInterface() = default;
 
-	virtual ColorConfidence Identify(cv::Vec3b color) const = 0;
+    virtual ColorConfidence Identify(cv::Vec3b color) const = 0;
 };

@@ -14,5 +14,5 @@ Header Functions:
 
 class ArmorPretreator_V1 : public PretreatorInterface {
 public:
-	std::tuple<cv::Mat, cv::Mat> GetPretreated(const cv::Mat& img) const override;
+    std::tuple<cv::Mat, cv::Mat> GetPretreated(const cv::Mat& img) const override;
 };

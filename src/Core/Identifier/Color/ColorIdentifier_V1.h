@@ -5,9 +5,9 @@ Latest Update: 2022/03/29
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Õ®π˝¥Ú±Ìº∆À„≥ˆ—’…´÷√–≈∂»
-- ±©¡¶µ´”––ß
-- ∫Û∆⁄“™∏ƒµÙ
+- ÈÄöËøáÊâìË°®ËÆ°ÁÆóÂá∫È¢úËâ≤ÁΩÆ‰ø°Â∫¶
+- Êö¥Âäõ‰ΩÜÊúâÊïà
+- ÂêéÊúüË¶ÅÊîπÊéâ
 */
 
 #include <opencv2/opencv.hpp>
@@ -16,22 +16,22 @@ Header Functions:
 
 class ColorIdentifier_V1 {
 public:
-	ColorIdentifier_V1(float hue360) {
-		if (hue360 > 180) // (temp) blue
-			_cc1 = 0, _cc2 = 1, _cc3 = 2;
-		else              // (temp) red
-			_cc1 = 2, _cc2 = 1, _cc3 = 0;
-		_minHue = hue360 - 5;
-		_maxHue = hue360 + 5;
-		_minHueUChar = _minHue / 360 * 255;
-		_maxHueUChar = _maxHue / 360 * 255;
-		_confidenceMap = GenerateMap();
-	}
+    ColorIdentifier_V1(float hue360) {
+        if (hue360 > 180) // (temp) blue
+            _cc1 = 0, _cc2 = 1, _cc3 = 2;
+        else              // (temp) red
+            _cc1 = 2, _cc2 = 1, _cc3 = 0;
+        _minHue = hue360 - 5;
+        _maxHue = hue360 + 5;
+        _minHueUChar = _minHue / 360 * 255;
+        _maxHueUChar = _maxHue / 360 * 255;
+        _confidenceMap = GenerateMap();
+    }
 
-	ColorConfidence Identify(const uchar* color) const {
-		// ≤ø∑÷¥˙¬Î¿¥◊‘ https://github.com/egonSchiele/OpenCV/blob/master/modules/imgproc/src/color.cpp
+    ColorConfidence Identify(const uchar* color) const {
+        // ÈÉ®ÂàÜ‰ª£Á†ÅÊù•Ëá™ https://github.com/egonSchiele/OpenCV/blob/master/modules/imgproc/src/color.cpp
         constexpr int bidx = 0, scn = 3;
-		constexpr int hsv_shift = 12;
+        constexpr int hsv_shift = 12;
 
         static constexpr int div_table[] = {
             0, 1044480, 522240, 348160, 261120, 208896, 174080, 149211,
@@ -67,122 +67,122 @@ public:
             4352, 4334, 4316, 4298, 4281, 4263, 4246, 4229,
             4212, 4195, 4178, 4161, 4145, 4128, 4112, 4096
         };
-		constexpr int hr = true ? 255 : 180, hscale = hr == 180 ? 15 : 21;
+        constexpr int hr = true ? 255 : 180, hscale = hr == 180 ? 15 : 21;
 
         int b = color[bidx], g = color[1], r = color[bidx ^ 2];
         int h, s, v = b;
 
-		v = v > g ? v : g; v = v > r ? v : r;
-		if (v > _minValueUchar) {
-			if (color[_cc1] >= 250) {
-				return _confidenceMap.at<ColorConfidence>(color[_cc3], color[_cc2]);
-			}
-			else {
-				int vmin = b;
-				vmin = vmin < g ? vmin : g; vmin = vmin < r ? vmin : r;
-				int diff = v - vmin;
+        v = v > g ? v : g; v = v > r ? v : r;
+        if (v > _minValueUchar) {
+            if (color[_cc1] >= 250) {
+                return _confidenceMap.at<ColorConfidence>(color[_cc3], color[_cc2]);
+            }
+            else {
+                int vmin = b;
+                vmin = vmin < g ? vmin : g; vmin = vmin < r ? vmin : r;
+                int diff = v - vmin;
 
-				int vr = v == r ? -1 : 0;
-				int vg = v == g ? -1 : 0;
+                int vr = v == r ? -1 : 0;
+                int vg = v == g ? -1 : 0;
 
-				s = diff * div_table[v] >> hsv_shift;
-				if (s > _minSaturationUChar) {
-					h = (vr & (g - b)) +
-						(~vr & ((vg & (b - r + 2 * diff)) + ((~vg) & (r - g + 4 * diff))));
-					h = (h * div_table[diff] * hscale + (1 << (hsv_shift + 6))) >> (7 + hsv_shift);
-					h += h < 0 ? hr : 0;
-					if (_minHueUChar < h && h < _maxHueUChar)
-						return ColorConfidence::CredibleZeroChannelOverexposure;
-				}
-			}
-		}
+                s = diff * div_table[v] >> hsv_shift;
+                if (s > _minSaturationUChar) {
+                    h = (vr & (g - b)) +
+                        (~vr & ((vg & (b - r + 2 * diff)) + ((~vg) & (r - g + 4 * diff))));
+                    h = (h * div_table[diff] * hscale + (1 << (hsv_shift + 6))) >> (7 + hsv_shift);
+                    h += h < 0 ? hr : 0;
+                    if (_minHueUChar < h && h < _maxHueUChar)
+                        return ColorConfidence::CredibleZeroChannelOverexposure;
+                }
+            }
+        }
 
-		return ColorConfidence::NotCredible;		
-	}
+        return ColorConfidence::NotCredible;        
+    }
 
 private:
-	// π˝∆ÿÀ≥–Ú
-	int _cc1, _cc2, _cc3;
+    // ËøáÊõùÈ°∫Â∫è
+    int _cc1, _cc2, _cc3;
 
     static constexpr float _minSaturation = 0.8, _minValue = 0.5;
-	static constexpr uchar _minSaturationUChar = _minSaturation * 255, _minValueUchar = _minValue * 255;
-	float _minHue, _maxHue;
-	uchar _minHueUChar, _maxHueUChar;
+    static constexpr uchar _minSaturationUChar = _minSaturation * 255, _minValueUchar = _minValue * 255;
+    float _minHue, _maxHue;
+    uchar _minHueUChar, _maxHueUChar;
 
-	cv::Mat _confidenceMap;
+    cv::Mat _confidenceMap;
 
-	cv::Mat GenerateMap() {
-		// ‘› ±÷ªƒ‹…˙≥…¿∂…´∫Õ∫Ï…´
-		constexpr int renderSize = 256;
+    cv::Mat GenerateMap() {
+        // ÊöÇÊó∂Âè™ËÉΩÁîüÊàêËìùËâ≤ÂíåÁ∫¢Ëâ≤
+        constexpr int renderSize = 256;
 
-		cv::Mat imgBGR, imgHSV, imgMap;
-		imgBGR.create(renderSize, renderSize, CV_32FC3);
-		imgMap.create(renderSize, renderSize, CV_8UC1);
+        cv::Mat imgBGR, imgHSV, imgMap;
+        imgBGR.create(renderSize, renderSize, CV_32FC3);
+        imgMap.create(renderSize, renderSize, CV_8UC1);
 
-		for (int i = 0; i < renderSize; ++i) {
-			for (int j = 0; j < renderSize; ++j) {
-				cv::Vec3f color;
-				color[_cc1] = 1.0f;
-				color[_cc2] = static_cast<float>(i) / renderSize;
-				color[_cc3] = static_cast<float>(j) / renderSize;
-				imgBGR.at<cv::Vec3f>(j, i) = color;
-				imgMap.at<uchar>(j, i) = static_cast<uchar>(ColorConfidence::NotCredible);
-			}
-		}
-		cv::cvtColor(imgBGR, imgHSV, cv::COLOR_BGR2HSV);
-		int cornerPointX = 0;
-		float maxSlope = 0;
-		int maxFitY[renderSize];
-		for (int i = 0; i < renderSize; ++i)
-			maxFitY[i] = -1;
-		for (int i = 0; i < renderSize; ++i) {      // x
-			for (int j = 0; j < renderSize; ++j) {  // y
-				auto& hsv = imgHSV.at<cv::Vec3f>(j, i);
-				if (_minHue < hsv[0] && hsv[0] < _maxHue && hsv[1] > _minSaturation && hsv[2] > _minValue) {
-					imgMap.at<uchar>(j, i) = static_cast<uchar>(ColorConfidence::CredibleZeroChannelOverexposure);
-					maxFitY[i] = j;
-					if (i > 0) {
-						float slope = static_cast<float>(j) / i;
-						if (slope > maxSlope) {
-							maxSlope = slope;
-							cornerPointX = i;
-						}
-					}
-				}
-				else imgBGR.at<cv::Vec3f>(j, i) = { 1.0f, 1.0f, 1.0f };
-			}
-		}
-		for (int i = 0; i < renderSize; ++i) {      // x
-			for (int j = 0; j < maxFitY[i]; ++j) {  // y
-				auto& pixel = imgMap.at<uchar>(j, i);
-				if (pixel != static_cast<uchar>(ColorConfidence::CredibleZeroChannelOverexposure))
-					pixel = static_cast<uchar>(ColorConfidence::CredibleOneChannelOverexposure);
-			}
-		}
-		for (int i = cornerPointX; i < renderSize; ++i) {
-			int maxY = maxSlope * i + 0.5;
-			for (int j = 0; j <= maxY; ++j) {
-				auto& pixel = imgMap.at<uchar>(j, i);
-				if (pixel != static_cast<uchar>(ColorConfidence::CredibleZeroChannelOverexposure))
-					pixel = static_cast<uchar>(ColorConfidence::CredibleOneChannelOverexposure);
-			}
-		}
-		for (int j = 0; j < renderSize; ++j) {
-			if (j == renderSize - 1)
-				imgMap.at<uchar>(j, renderSize - 1) = static_cast<uchar>(ColorConfidence::CredibleThreeChannelOverexposure);
-			else
-				imgMap.at<uchar>(j, renderSize - 1) = static_cast<uchar>(ColorConfidence::CredibleTwoChannelOverexposure);
-		}
+        for (int i = 0; i < renderSize; ++i) {
+            for (int j = 0; j < renderSize; ++j) {
+                cv::Vec3f color;
+                color[_cc1] = 1.0f;
+                color[_cc2] = static_cast<float>(i) / renderSize;
+                color[_cc3] = static_cast<float>(j) / renderSize;
+                imgBGR.at<cv::Vec3f>(j, i) = color;
+                imgMap.at<uchar>(j, i) = static_cast<uchar>(ColorConfidence::NotCredible);
+            }
+        }
+        cv::cvtColor(imgBGR, imgHSV, cv::COLOR_BGR2HSV);
+        int cornerPointX = 0;
+        float maxSlope = 0;
+        int maxFitY[renderSize];
+        for (int i = 0; i < renderSize; ++i)
+            maxFitY[i] = -1;
+        for (int i = 0; i < renderSize; ++i) {      // x
+            for (int j = 0; j < renderSize; ++j) {  // y
+                auto& hsv = imgHSV.at<cv::Vec3f>(j, i);
+                if (_minHue < hsv[0] && hsv[0] < _maxHue && hsv[1] > _minSaturation && hsv[2] > _minValue) {
+                    imgMap.at<uchar>(j, i) = static_cast<uchar>(ColorConfidence::CredibleZeroChannelOverexposure);
+                    maxFitY[i] = j;
+                    if (i > 0) {
+                        float slope = static_cast<float>(j) / i;
+                        if (slope > maxSlope) {
+                            maxSlope = slope;
+                            cornerPointX = i;
+                        }
+                    }
+                }
+                else imgBGR.at<cv::Vec3f>(j, i) = { 1.0f, 1.0f, 1.0f };
+            }
+        }
+        for (int i = 0; i < renderSize; ++i) {      // x
+            for (int j = 0; j < maxFitY[i]; ++j) {  // y
+                auto& pixel = imgMap.at<uchar>(j, i);
+                if (pixel != static_cast<uchar>(ColorConfidence::CredibleZeroChannelOverexposure))
+                    pixel = static_cast<uchar>(ColorConfidence::CredibleOneChannelOverexposure);
+            }
+        }
+        for (int i = cornerPointX; i < renderSize; ++i) {
+            int maxY = maxSlope * i + 0.5;
+            for (int j = 0; j <= maxY; ++j) {
+                auto& pixel = imgMap.at<uchar>(j, i);
+                if (pixel != static_cast<uchar>(ColorConfidence::CredibleZeroChannelOverexposure))
+                    pixel = static_cast<uchar>(ColorConfidence::CredibleOneChannelOverexposure);
+            }
+        }
+        for (int j = 0; j < renderSize; ++j) {
+            if (j == renderSize - 1)
+                imgMap.at<uchar>(j, renderSize - 1) = static_cast<uchar>(ColorConfidence::CredibleThreeChannelOverexposure);
+            else
+                imgMap.at<uchar>(j, renderSize - 1) = static_cast<uchar>(ColorConfidence::CredibleTwoChannelOverexposure);
+        }
 
-		if constexpr (renderSize == 256) {
-			return imgMap;
-		}
-		else {
-			auto& imgDisplay = false ? imgBGR : imgMap;
-			cv::flip(imgDisplay, imgDisplay, 0);
-			cv::imshow("debug", imgDisplay);
-			cv::waitKey(-1);
-			throw(std::exception("render size != 256, enable debugging..."));
-		}
-	}
+        if constexpr (renderSize == 256) {
+            return imgMap;
+        }
+        else {
+            auto& imgDisplay = false ? imgBGR : imgMap;
+            cv::flip(imgDisplay, imgDisplay, 0);
+            cv::imshow("debug", imgDisplay);
+            cv::waitKey(-1);
+            throw(std::exception("render size != 256, enable debugging..."));
+        }
+    }
 };

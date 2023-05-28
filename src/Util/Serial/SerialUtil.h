@@ -5,7 +5,7 @@ Latest Update: 2023/05/05
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ´®¿Ú¹¤¾ß
+- ä¸²å£å·¥å…·
 */
 
 #include <cstdint>
@@ -16,391 +16,391 @@ Header Functions:
 
 namespace SerialUtil {
 
-	void PrintByteArray(const uint8_t* array, size_t size) {
-		std::cout << std::hex << std::setfill('0');
-		for (size_t i = 0; i < size; ++i)
-			std::cout << std::setw(2) << static_cast<int>(array[i]) << ' ';
-		std::cout << std::dec << '\n';
-	}
+    void PrintByteArray(const uint8_t* array, size_t size) {
+        std::cout << std::hex << std::setfill('0');
+        for (size_t i = 0; i < size; ++i)
+            std::cout << std::setw(2) << static_cast<int>(array[i]) << ' ';
+        std::cout << std::dec << '\n';
+    }
 
-	template <typename T>
-	void PrintStructAsByteArray(const T& data) {
-		PrintByteArray(reinterpret_cast<const uint8_t*>(&data), sizeof(T));
-	}
+    template <typename T>
+    void PrintStructAsByteArray(const T& data) {
+        PrintByteArray(reinterpret_cast<const uint8_t*>(&data), sizeof(T));
+    }
 
-	// ±ê¼Ç¸ÃÏî²»´æÔÚ
-	struct None { };
+    // æ ‡è®°è¯¥é¡¹ä¸å­˜åœ¨
+    struct None { };
 
 #pragma pack(push, 1)
-	template <typename HeadDataType, HeadDataType HeadValue>
-	struct Head {
-		HeadDataType data;
+    template <typename HeadDataType, HeadDataType HeadValue>
+    struct Head {
+        HeadDataType data;
 
-		// ÁîÆäÖµÕıÈ·
-		void MakeCorrect() {
-			data = HeadValue;
-		}
+        // ä»¤å…¶å€¼æ­£ç¡®
+        void MakeCorrect() {
+            data = HeadValue;
+        }
 
-		// ÁîÆäÖµ²»ÕıÈ·
-		void MakeIncorrect() {
-			data = ~HeadValue;
-		}
+        // ä»¤å…¶å€¼ä¸æ­£ç¡®
+        void MakeIncorrect() {
+            data = ~HeadValue;
+        }
 
-		// ÅĞ¶ÏÖµÊÇ·ñÕıÈ·
-		bool IsCorrect() {
-			return data == HeadValue;
-		}
-	};
+        // åˆ¤æ–­å€¼æ˜¯å¦æ­£ç¡®
+        bool IsCorrect() {
+            return data == HeadValue;
+        }
+    };
 
-	template <typename DataType, typename HeadType, typename ChecksumResultType>
-	struct Package {
-		HeadType head;
-		DataType data;
-		ChecksumResultType crc;
-	};
+    template <typename DataType, typename HeadType, typename ChecksumResultType>
+    struct Package {
+        HeadType head;
+        DataType data;
+        ChecksumResultType crc;
+    };
 
-	template <typename DataType>
-	struct Package<DataType, None, None> {
-		DataType data;
-	};
+    template <typename DataType>
+    struct Package<DataType, None, None> {
+        DataType data;
+    };
 
-	template <typename DataType, typename HeadType>
-	struct Package<DataType, HeadType, None> {
-		HeadType head;
-		DataType data;
-	};
+    template <typename DataType, typename HeadType>
+    struct Package<DataType, HeadType, None> {
+        HeadType head;
+        DataType data;
+    };
 
-	template <typename DataType, typename ChecksumResultType>
-	struct Package<DataType, None, ChecksumResultType> {
-		DataType data;
-		ChecksumResultType crc;
-	};
+    template <typename DataType, typename ChecksumResultType>
+    struct Package<DataType, None, ChecksumResultType> {
+        DataType data;
+        ChecksumResultType crc;
+    };
 #pragma pack(pop)
 
 
-	// ÓĞÍ·ÓĞĞ£ÑéµÄ´®¿ÚÊı¾İ°ü·¢ËÍÆ÷
-	template <typename DataType, typename HeadType, typename ChecksumCalculatorType>
-	class SerialSender {
-	public:
-		SerialSender(serial::Serial& serial) : _serial(serial) {
-			_pkg.head.MakeCorrect();
-		}
-		SerialSender(const SerialSender&) = delete;
-		SerialSender(SerialSender&&) = delete;
+    // æœ‰å¤´æœ‰æ ¡éªŒçš„ä¸²å£æ•°æ®åŒ…å‘é€å™¨
+    template <typename DataType, typename HeadType, typename ChecksumCalculatorType>
+    class SerialSender {
+    public:
+        SerialSender(serial::Serial& serial) : _serial(serial) {
+            _pkg.head.MakeCorrect();
+        }
+        SerialSender(const SerialSender&) = delete;
+        SerialSender(SerialSender&&) = delete;
 
-		void Send() {
-			ChecksumCalculatorType::Append(_pkg);
-			_serial.write(reinterpret_cast<uint8_t*>(&_pkg), sizeof(_pkg));
-		}
+        void Send() {
+            ChecksumCalculatorType::Append(_pkg);
+            _serial.write(reinterpret_cast<uint8_t*>(&_pkg), sizeof(_pkg));
+        }
 
-		DataType& Data = _pkg.data;
-	private:
-		serial::Serial& _serial;
-		Package<DataType, HeadType, typename ChecksumCalculatorType::ResultType> _pkg;
-	};
+        DataType& Data = _pkg.data;
+    private:
+        serial::Serial& _serial;
+        Package<DataType, HeadType, typename ChecksumCalculatorType::ResultType> _pkg;
+    };
 
-	// ÎŞÍ·ÎŞĞ£ÑéµÄ´®¿ÚÊı¾İ°ü·¢ËÍÆ÷
-	template <typename DataType>
-	class SerialSender<DataType, None, None> {
-	public:
-		SerialSender(serial::Serial& serial) : _serial(serial) { }
-		SerialSender(const SerialSender&) = delete;
-		SerialSender(SerialSender&&) = delete;
+    // æ— å¤´æ— æ ¡éªŒçš„ä¸²å£æ•°æ®åŒ…å‘é€å™¨
+    template <typename DataType>
+    class SerialSender<DataType, None, None> {
+    public:
+        SerialSender(serial::Serial& serial) : _serial(serial) { }
+        SerialSender(const SerialSender&) = delete;
+        SerialSender(SerialSender&&) = delete;
 
-		void Send() {
-			_serial.write(reinterpret_cast<uint8_t*>(&_pkg), sizeof(_pkg));
-		}
+        void Send() {
+            _serial.write(reinterpret_cast<uint8_t*>(&_pkg), sizeof(_pkg));
+        }
 
-		DataType& Data = _pkg.data;
-	private:
-		serial::Serial& _serial;
-		Package<DataType, None, None> _pkg;
-	};
+        DataType& Data = _pkg.data;
+    private:
+        serial::Serial& _serial;
+        Package<DataType, None, None> _pkg;
+    };
 
-	// ÓĞÍ·ÎŞĞ£ÑéµÄ´®¿ÚÊı¾İ°ü·¢ËÍÆ÷
-	template <typename DataType, typename HeadType>
-	class SerialSender<DataType, HeadType, None> {
-	public:
-		SerialSender(serial::Serial& serial) : _serial(serial) {
-			_pkg.head.MakeCorrect();
-		}
-		SerialSender(const SerialSender&) = delete;
-		SerialSender(SerialSender&&) = delete;
+    // æœ‰å¤´æ— æ ¡éªŒçš„ä¸²å£æ•°æ®åŒ…å‘é€å™¨
+    template <typename DataType, typename HeadType>
+    class SerialSender<DataType, HeadType, None> {
+    public:
+        SerialSender(serial::Serial& serial) : _serial(serial) {
+            _pkg.head.MakeCorrect();
+        }
+        SerialSender(const SerialSender&) = delete;
+        SerialSender(SerialSender&&) = delete;
 
-		void Send() {
-			_serial.write(reinterpret_cast<uint8_t*>(&_pkg), sizeof(_pkg));
-		}
+        void Send() {
+            _serial.write(reinterpret_cast<uint8_t*>(&_pkg), sizeof(_pkg));
+        }
 
-		DataType& Data = _pkg.data;
-	private:
-		serial::Serial& _serial;
-		Package<DataType, HeadType, None> _pkg;
-	};
+        DataType& Data = _pkg.data;
+    private:
+        serial::Serial& _serial;
+        Package<DataType, HeadType, None> _pkg;
+    };
 
-	// ÎŞÍ·ÓĞĞ£ÑéµÄ´®¿ÚÊı¾İ°ü·¢ËÍÆ÷
-	template <typename DataType, typename ChecksumCalculatorType>
-	class SerialSender<DataType, None, ChecksumCalculatorType> {
-	public:
-		SerialSender(serial::Serial& serial) : _serial(serial) { }
-		SerialSender(const SerialSender&) = delete;
-		SerialSender(SerialSender&&) = delete;
+    // æ— å¤´æœ‰æ ¡éªŒçš„ä¸²å£æ•°æ®åŒ…å‘é€å™¨
+    template <typename DataType, typename ChecksumCalculatorType>
+    class SerialSender<DataType, None, ChecksumCalculatorType> {
+    public:
+        SerialSender(serial::Serial& serial) : _serial(serial) { }
+        SerialSender(const SerialSender&) = delete;
+        SerialSender(SerialSender&&) = delete;
 
-		void Send() {
-			ChecksumCalculatorType::Append(_pkg);
-			_serial.write(reinterpret_cast<uint8_t*>(&_pkg), sizeof(_pkg));
-		}
+        void Send() {
+            ChecksumCalculatorType::Append(_pkg);
+            _serial.write(reinterpret_cast<uint8_t*>(&_pkg), sizeof(_pkg));
+        }
 
-		DataType& Data = _pkg.data;
-	private:
-		serial::Serial& _serial;
-		Package<DataType, None, typename ChecksumCalculatorType::ResultType> _pkg;
-	};
+        DataType& Data = _pkg.data;
+    private:
+        serial::Serial& _serial;
+        Package<DataType, None, typename ChecksumCalculatorType::ResultType> _pkg;
+    };
 
 
-	enum class ReceiveResult : uint8_t {
-		Success = 0, Timeout = 1, InvaildHeader = 2, InvaildVerifyDegit = 4
-	};
+    enum class ReceiveResult : uint8_t {
+        Success = 0, Timeout = 1, InvaildHeader = 2, InvaildVerifyDegit = 4
+    };
 
-	// ÓĞÍ·ÓĞĞ£ÑéµÄ´®¿ÚÊı¾İ°ü½ÓÊÕÆ÷
-	template <typename DataType, typename HeadType, typename ChecksumCalculatorType>
-	class SerialReceiver {
-	public:
-		SerialReceiver(serial::Serial& serial) : _serial(serial) { }
-		SerialReceiver(const SerialReceiver&) = delete;
-		SerialReceiver(SerialReceiver&&) = delete;
+    // æœ‰å¤´æœ‰æ ¡éªŒçš„ä¸²å£æ•°æ®åŒ…æ¥æ”¶å™¨
+    template <typename DataType, typename HeadType, typename ChecksumCalculatorType>
+    class SerialReceiver {
+    public:
+        SerialReceiver(serial::Serial& serial) : _serial(serial) { }
+        SerialReceiver(const SerialReceiver&) = delete;
+        SerialReceiver(SerialReceiver&&) = delete;
 
-		/*! ½ÓÊÕ×î¶àÒ»¸öÊı¾İ£¬²»¶ªÆúÈÎºÎÊı¾İ£¬³ıĞ£ÑéÎ´Í¨¹ıÖ®Íâ¡£ÊÊÓÃÓÚ½ÓÊÕ·¢ËÍÆµÂÊ½ÏµÍµÄÊı¾İ¡£
-		* ¸Ã·½·¨¿ÉÒÔÔì³É×èÈû£¬ÓÉÓÚÃ¿´Îµ÷ÓÃ¸Ã·½·¨Ö»»áµ÷ÓÃÒ»´Îserial.read£¬Òò´Ë³¬Ê±Ê±¼äÈ¡¾öÓÚSerial¶ÔÏó±¾ÉíµÄ³¬Ê±Ê±¼äÉè¶¨£¬ÈôÉèÎª0Ôò²»×èÈû¡£
-		* Ê¹ÓÃGetCacheSize·½·¨¿ÉÒÔ»ñÈ¡ÒÑ»º´æÊı¾İµÄ³¤¶È£¬Ê¹ÓÃClearCache·½·¨¿ÉÒÔÇ¿ÖÆÇå¿Õ»º´æµÄÊı¾İ¡£
-		*
-		* \return ³É¹¦Ê±£¬·µ»ØSuccess
-		* µ±Î´½ÓÊÕµ½×ã¹»ÊıÁ¿Êı¾İ£¬µ¼ÖÂ´®¿Ú½ÓÊÕ³¬Ê±Ê±£¬¸Ã·½·¨·µ»ØTimeout£¬ÔÚÏÂ´Îµ÷ÓÃ¸Ã·½·¨Ê±»á³¢ÊÔ½ÓÊÕÊ£Óà²¿·Ö¡£
-		* µ±½ÓÊÕµ½µÄÊı¾İ°üÍ·Î´¶ÔÆë£¬»òĞ£ÑéÎ´Í¨¹ı£¬¸Ã·½·¨·µ»ØInvaildHeader»òInvaildVerifyDegit£¬²¢ÏòºóÑ°ÕÒÆ¥ÅäµÄÍ·£¬ÔÚÏÂ´Îµ÷ÓÃ¸Ã·½·¨Ê±³¢ÊÔ½ÓÊÕÊ£Óà²¿·Ö¡£
-		*/
-		ReceiveResult Receive() {
-			ReceiveResult result;
-			// ½ÓÊÕ¾¡¿ÉÄÜ¶àµÄÊı¾İ
-			_cacheSize += _serial.read(reinterpret_cast<uint8_t*>(&_receivePkg->head) + _cacheSize, sizeof(PackageType) - _cacheSize);
+        /*! æ¥æ”¶æœ€å¤šä¸€ä¸ªæ•°æ®ï¼Œä¸ä¸¢å¼ƒä»»ä½•æ•°æ®ï¼Œé™¤æ ¡éªŒæœªé€šè¿‡ä¹‹å¤–ã€‚é€‚ç”¨äºæ¥æ”¶å‘é€é¢‘ç‡è¾ƒä½çš„æ•°æ®ã€‚
+        * è¯¥æ–¹æ³•å¯ä»¥é€ æˆé˜»å¡ï¼Œç”±äºæ¯æ¬¡è°ƒç”¨è¯¥æ–¹æ³•åªä¼šè°ƒç”¨ä¸€æ¬¡serial.readï¼Œå› æ­¤è¶…æ—¶æ—¶é—´å–å†³äºSerialå¯¹è±¡æœ¬èº«çš„è¶…æ—¶æ—¶é—´è®¾å®šï¼Œè‹¥è®¾ä¸º0åˆ™ä¸é˜»å¡ã€‚
+        * ä½¿ç”¨GetCacheSizeæ–¹æ³•å¯ä»¥è·å–å·²ç¼“å­˜æ•°æ®çš„é•¿åº¦ï¼Œä½¿ç”¨ClearCacheæ–¹æ³•å¯ä»¥å¼ºåˆ¶æ¸…ç©ºç¼“å­˜çš„æ•°æ®ã€‚
+        *
+        * \return æˆåŠŸæ—¶ï¼Œè¿”å›Success
+        * å½“æœªæ¥æ”¶åˆ°è¶³å¤Ÿæ•°é‡æ•°æ®ï¼Œå¯¼è‡´ä¸²å£æ¥æ”¶è¶…æ—¶æ—¶ï¼Œè¯¥æ–¹æ³•è¿”å›Timeoutï¼Œåœ¨ä¸‹æ¬¡è°ƒç”¨è¯¥æ–¹æ³•æ—¶ä¼šå°è¯•æ¥æ”¶å‰©ä½™éƒ¨åˆ†ã€‚
+        * å½“æ¥æ”¶åˆ°çš„æ•°æ®åŒ…å¤´æœªå¯¹é½ï¼Œæˆ–æ ¡éªŒæœªé€šè¿‡ï¼Œè¯¥æ–¹æ³•è¿”å›InvaildHeaderæˆ–InvaildVerifyDegitï¼Œå¹¶å‘åå¯»æ‰¾åŒ¹é…çš„å¤´ï¼Œåœ¨ä¸‹æ¬¡è°ƒç”¨è¯¥æ–¹æ³•æ—¶å°è¯•æ¥æ”¶å‰©ä½™éƒ¨åˆ†ã€‚
+        */
+        ReceiveResult Receive() {
+            ReceiveResult result;
+            // æ¥æ”¶å°½å¯èƒ½å¤šçš„æ•°æ®
+            _cacheSize += _serial.read(reinterpret_cast<uint8_t*>(&_receivePkg->head) + _cacheSize, sizeof(PackageType) - _cacheSize);
 
-			if (_cacheSize >= sizeof(HeadType)) {                 // ³É¹¦½ÓÊÕµ½°üÍ·²¿·Ö
-				if (_receivePkg->head.IsCorrect()) {               // Êı¾İ°üÍ·ÕıÈ·
-					if (_cacheSize == sizeof(PackageType)) {    // Èô°üÍ·ÕıÈ·ÇÒÊı¾İ½ÓÊÕÍêÕû£¬Ôò³¢ÊÔ½øÒ»²½Ğ£Ñé
-						if (ChecksumCalculatorType::Verify(*_receivePkg)) {
-							_cacheSize = 0;
-							std::swap(_receivePkg, _resultPkg);
-							return ReceiveResult::Success;
-						}
-						result = ReceiveResult::InvaildVerifyDegit;
-					}
-					else return ReceiveResult::Timeout;                         // Èô°üÍ·ÕıÈ·µ«Êı¾İÎ´½ÓÊÕÍêÕû£¬Ôò·µ»ØTimeout£¬µÈ´ıÏÂÒ»´Î½ÓÊÕ
-				}
-				else result = ReceiveResult::InvaildHeader;
+            if (_cacheSize >= sizeof(HeadType)) {                 // æˆåŠŸæ¥æ”¶åˆ°åŒ…å¤´éƒ¨åˆ†
+                if (_receivePkg->head.IsCorrect()) {               // æ•°æ®åŒ…å¤´æ­£ç¡®
+                    if (_cacheSize == sizeof(PackageType)) {    // è‹¥åŒ…å¤´æ­£ç¡®ä¸”æ•°æ®æ¥æ”¶å®Œæ•´ï¼Œåˆ™å°è¯•è¿›ä¸€æ­¥æ ¡éªŒ
+                        if (ChecksumCalculatorType::Verify(*_receivePkg)) {
+                            _cacheSize = 0;
+                            std::swap(_receivePkg, _resultPkg);
+                            return ReceiveResult::Success;
+                        }
+                        result = ReceiveResult::InvaildVerifyDegit;
+                    }
+                    else return ReceiveResult::Timeout;                         // è‹¥åŒ…å¤´æ­£ç¡®ä½†æ•°æ®æœªæ¥æ”¶å®Œæ•´ï¼Œåˆ™è¿”å›Timeoutï¼Œç­‰å¾…ä¸‹ä¸€æ¬¡æ¥æ”¶
+                }
+                else result = ReceiveResult::InvaildHeader;
 
-				// ÈôÊı¾İ°üÍ·´íÎó£¬ÔòÏòºóÑ°ÕÒÆ¥ÅäµÄÍ·£¬ÈôÕÒµ½£¬Ôò°ÑÊı¾İÕûÌåÏòÇ°¶ÔÆë£¬ÒÔ±ãÏÂÒ»´Î½ÓÊÕÊ£Óà²¿·Ö
-				// ¼´Ê¹Ã»ÓĞÕÒµ½Æ¥ÅäµÄÍ·£¬µ±±éÀúÊ£Óà×Ö½ÚÊıµÍÓÚÍ·µÄ×Ö½ÚÊıÊ±£¬Ò²»á°ÑÊ£Óà×Ö½ÚÏòÇ°¶ÔÆë
-				--_cacheSize;
-				uint8_t* bufferHead = reinterpret_cast<uint8_t*>(&_receivePkg->head) + 1;
+                // è‹¥æ•°æ®åŒ…å¤´é”™è¯¯ï¼Œåˆ™å‘åå¯»æ‰¾åŒ¹é…çš„å¤´ï¼Œè‹¥æ‰¾åˆ°ï¼Œåˆ™æŠŠæ•°æ®æ•´ä½“å‘å‰å¯¹é½ï¼Œä»¥ä¾¿ä¸‹ä¸€æ¬¡æ¥æ”¶å‰©ä½™éƒ¨åˆ†
+                // å³ä½¿æ²¡æœ‰æ‰¾åˆ°åŒ¹é…çš„å¤´ï¼Œå½“éå†å‰©ä½™å­—èŠ‚æ•°ä½äºå¤´çš„å­—èŠ‚æ•°æ—¶ï¼Œä¹Ÿä¼šæŠŠå‰©ä½™å­—èŠ‚å‘å‰å¯¹é½
+                --_cacheSize;
+                uint8_t* bufferHead = reinterpret_cast<uint8_t*>(&_receivePkg->head) + 1;
 
-				while (true) {
-					if (_cacheSize < sizeof(HeadType) || reinterpret_cast<HeadType*>(bufferHead)->IsCorrect()) {
-						for (size_t i = 0; i < _cacheSize; ++i)
-							reinterpret_cast<uint8_t*>(&_receivePkg->head)[i] = bufferHead[i];
-						break;
-					}
-					--_cacheSize;
-					++bufferHead;
-				}
-				return result;
-			}
-			else return ReceiveResult::Timeout;                   // ÈôÁ¬°üÍ·¶¼Ã»½Óµ½£¬Ò²·µ»ØTimeout
-		}
+                while (true) {
+                    if (_cacheSize < sizeof(HeadType) || reinterpret_cast<HeadType*>(bufferHead)->IsCorrect()) {
+                        for (size_t i = 0; i < _cacheSize; ++i)
+                            reinterpret_cast<uint8_t*>(&_receivePkg->head)[i] = bufferHead[i];
+                        break;
+                    }
+                    --_cacheSize;
+                    ++bufferHead;
+                }
+                return result;
+            }
+            else return ReceiveResult::Timeout;                   // è‹¥è¿åŒ…å¤´éƒ½æ²¡æ¥åˆ°ï¼Œä¹Ÿè¿”å›Timeout
+        }
 
-		/* »ñÈ¡½ÓÊÕµ½µÄÊı¾İ */
-		const DataType& GetReceivedData() { return _resultPkg->data; }
+        /* è·å–æ¥æ”¶åˆ°çš„æ•°æ® */
+        const DataType& GetReceivedData() { return _resultPkg->data; }
 
-		/* »ñÈ¡µ±Ç°»º´æµÄÊı¾İ³¤¶È */
-		size_t GetCacheSize() { return _cacheSize; }
+        /* è·å–å½“å‰ç¼“å­˜çš„æ•°æ®é•¿åº¦ */
+        size_t GetCacheSize() { return _cacheSize; }
 
-		/* ÖØÖÃµ±Ç°½ÓÊÕ»º´æ */
-		size_t ClearCache() { _cacheSize = 0; }
+        /* é‡ç½®å½“å‰æ¥æ”¶ç¼“å­˜ */
+        size_t ClearCache() { _cacheSize = 0; }
 
-	private:
-		serial::Serial& _serial;
-		size_t _cacheSize = 0;  // ±ê¼Ç»º´æµÄÊı¾İ³¤¶È
+    private:
+        serial::Serial& _serial;
+        size_t _cacheSize = 0;  // æ ‡è®°ç¼“å­˜çš„æ•°æ®é•¿åº¦
 
-		using PackageType = Package<DataType, HeadType, typename ChecksumCalculatorType::ResultType>;
-		// _receivePkgÖ¸Ïò½ÓÊÕ»º³åÇø, _resultPkgÖ¸ÏòÉÏÒ»¸öÒÑ½ÓÊÕ²¢ÑéÖ¤Í¨¹ıµÄ»º³åÇø
-		PackageType _pkg[2], * _receivePkg = &_pkg[0], * _resultPkg = &_pkg[1];
-	};
+        using PackageType = Package<DataType, HeadType, typename ChecksumCalculatorType::ResultType>;
+        // _receivePkgæŒ‡å‘æ¥æ”¶ç¼“å†²åŒº, _resultPkgæŒ‡å‘ä¸Šä¸€ä¸ªå·²æ¥æ”¶å¹¶éªŒè¯é€šè¿‡çš„ç¼“å†²åŒº
+        PackageType _pkg[2], * _receivePkg = &_pkg[0], * _resultPkg = &_pkg[1];
+    };
 
-	// ÎŞÍ·ÎŞĞ£ÑéµÄ´®¿ÚÊı¾İ°ü½ÓÊÕÆ÷
-	template <typename DataType>
-	class SerialReceiver<DataType, None, None> {
-	public:
-		SerialReceiver(serial::Serial& serial) : _serial(serial) { }
-		SerialReceiver(const SerialReceiver&) = delete;
-		SerialReceiver(SerialReceiver&&) = delete;
+    // æ— å¤´æ— æ ¡éªŒçš„ä¸²å£æ•°æ®åŒ…æ¥æ”¶å™¨
+    template <typename DataType>
+    class SerialReceiver<DataType, None, None> {
+    public:
+        SerialReceiver(serial::Serial& serial) : _serial(serial) { }
+        SerialReceiver(const SerialReceiver&) = delete;
+        SerialReceiver(SerialReceiver&&) = delete;
 
-		/*! ½ÓÊÕ×î¶àÒ»¸öÊı¾İ£¬²»¶ªÆúÈÎºÎÊı¾İ£¬³ıĞ£ÑéÎ´Í¨¹ıÖ®Íâ¡£ÊÊÓÃÓÚ½ÓÊÕ·¢ËÍÆµÂÊ½ÏµÍµÄÊı¾İ¡£
-		* ¸Ã·½·¨¿ÉÒÔÔì³É×èÈû£¬ÓÉÓÚÃ¿´Îµ÷ÓÃ¸Ã·½·¨Ö»»áµ÷ÓÃÒ»´Îserial.read£¬Òò´Ë³¬Ê±Ê±¼äÈ¡¾öÓÚSerial¶ÔÏó±¾ÉíµÄ³¬Ê±Ê±¼äÉè¶¨£¬ÈôÉèÎª0Ôò²»×èÈû¡£
-		* Ê¹ÓÃGetCacheSize·½·¨¿ÉÒÔ»ñÈ¡ÒÑ»º´æÊı¾İµÄ³¤¶È£¬Ê¹ÓÃClearCache·½·¨¿ÉÒÔÇ¿ÖÆÇå¿Õ»º´æµÄÊı¾İ¡£
-		*
-		* \return ³É¹¦Ê±£¬·µ»ØSuccess
-		* µ±Î´½ÓÊÕµ½×ã¹»ÊıÁ¿Êı¾İ£¬µ¼ÖÂ´®¿Ú½ÓÊÕ³¬Ê±Ê±£¬¸Ã·½·¨·µ»ØTimeout£¬ÔÚÏÂ´Îµ÷ÓÃ¸Ã·½·¨Ê±»á³¢ÊÔ½ÓÊÕÊ£Óà²¿·Ö¡£
-		* µ±½ÓÊÕµ½µÄÊı¾İ°üÍ·Î´¶ÔÆë£¬»òĞ£ÑéÎ´Í¨¹ı£¬¸Ã·½·¨·µ»ØInvaildHeader»òInvaildVerifyDegit£¬²¢ÏòºóÑ°ÕÒÆ¥ÅäµÄÍ·£¬ÔÚÏÂ´Îµ÷ÓÃ¸Ã·½·¨Ê±³¢ÊÔ½ÓÊÕÊ£Óà²¿·Ö¡£
-		*/
-		ReceiveResult Receive() {
-			_cacheSize += _serial.read(reinterpret_cast<uint8_t*>(_receivePkg) + _cacheSize, sizeof(DataType) - _cacheSize);
+        /*! æ¥æ”¶æœ€å¤šä¸€ä¸ªæ•°æ®ï¼Œä¸ä¸¢å¼ƒä»»ä½•æ•°æ®ï¼Œé™¤æ ¡éªŒæœªé€šè¿‡ä¹‹å¤–ã€‚é€‚ç”¨äºæ¥æ”¶å‘é€é¢‘ç‡è¾ƒä½çš„æ•°æ®ã€‚
+        * è¯¥æ–¹æ³•å¯ä»¥é€ æˆé˜»å¡ï¼Œç”±äºæ¯æ¬¡è°ƒç”¨è¯¥æ–¹æ³•åªä¼šè°ƒç”¨ä¸€æ¬¡serial.readï¼Œå› æ­¤è¶…æ—¶æ—¶é—´å–å†³äºSerialå¯¹è±¡æœ¬èº«çš„è¶…æ—¶æ—¶é—´è®¾å®šï¼Œè‹¥è®¾ä¸º0åˆ™ä¸é˜»å¡ã€‚
+        * ä½¿ç”¨GetCacheSizeæ–¹æ³•å¯ä»¥è·å–å·²ç¼“å­˜æ•°æ®çš„é•¿åº¦ï¼Œä½¿ç”¨ClearCacheæ–¹æ³•å¯ä»¥å¼ºåˆ¶æ¸…ç©ºç¼“å­˜çš„æ•°æ®ã€‚
+        *
+        * \return æˆåŠŸæ—¶ï¼Œè¿”å›Success
+        * å½“æœªæ¥æ”¶åˆ°è¶³å¤Ÿæ•°é‡æ•°æ®ï¼Œå¯¼è‡´ä¸²å£æ¥æ”¶è¶…æ—¶æ—¶ï¼Œè¯¥æ–¹æ³•è¿”å›Timeoutï¼Œåœ¨ä¸‹æ¬¡è°ƒç”¨è¯¥æ–¹æ³•æ—¶ä¼šå°è¯•æ¥æ”¶å‰©ä½™éƒ¨åˆ†ã€‚
+        * å½“æ¥æ”¶åˆ°çš„æ•°æ®åŒ…å¤´æœªå¯¹é½ï¼Œæˆ–æ ¡éªŒæœªé€šè¿‡ï¼Œè¯¥æ–¹æ³•è¿”å›InvaildHeaderæˆ–InvaildVerifyDegitï¼Œå¹¶å‘åå¯»æ‰¾åŒ¹é…çš„å¤´ï¼Œåœ¨ä¸‹æ¬¡è°ƒç”¨è¯¥æ–¹æ³•æ—¶å°è¯•æ¥æ”¶å‰©ä½™éƒ¨åˆ†ã€‚
+        */
+        ReceiveResult Receive() {
+            _cacheSize += _serial.read(reinterpret_cast<uint8_t*>(_receivePkg) + _cacheSize, sizeof(DataType) - _cacheSize);
 
-			if (_cacheSize == sizeof(DataType)) {
-				_cacheSize = 0;
-				std::swap(_receivePkg, _resultPkg);
-				return ReceiveResult::Success;
-			}
-			else return ReceiveResult::Timeout;
-		}
+            if (_cacheSize == sizeof(DataType)) {
+                _cacheSize = 0;
+                std::swap(_receivePkg, _resultPkg);
+                return ReceiveResult::Success;
+            }
+            else return ReceiveResult::Timeout;
+        }
 
-		/* »ñÈ¡½ÓÊÕµ½µÄÊı¾İ */
-		const DataType& GetReceivedData() { return _resultPkg->data; }
+        /* è·å–æ¥æ”¶åˆ°çš„æ•°æ® */
+        const DataType& GetReceivedData() { return _resultPkg->data; }
 
-		/* »ñÈ¡µ±Ç°»º´æµÄÊı¾İ³¤¶È */
-		size_t GetCacheSize() { return _cacheSize; }
+        /* è·å–å½“å‰ç¼“å­˜çš„æ•°æ®é•¿åº¦ */
+        size_t GetCacheSize() { return _cacheSize; }
 
-		/* ÖØÖÃµ±Ç°½ÓÊÕ»º´æ */
-		size_t ClearCache() { _cacheSize = 0; }
+        /* é‡ç½®å½“å‰æ¥æ”¶ç¼“å­˜ */
+        size_t ClearCache() { _cacheSize = 0; }
 
-	private:
-		serial::Serial& _serial;
-		size_t _cacheSize = 0;  // ±ê¼Ç»º´æµÄÊı¾İ³¤¶È
-		Package<DataType, None, None> _pkg[2], * _receivePkg = &_pkg[0], * _resultPkg = &_pkg[1];
-	};
+    private:
+        serial::Serial& _serial;
+        size_t _cacheSize = 0;  // æ ‡è®°ç¼“å­˜çš„æ•°æ®é•¿åº¦
+        Package<DataType, None, None> _pkg[2], * _receivePkg = &_pkg[0], * _resultPkg = &_pkg[1];
+    };
 
-	// ÓĞÍ·ÎŞĞ£ÑéµÄ´®¿ÚÊı¾İ°ü½ÓÊÕÆ÷
-	template <typename DataType, typename HeadType>
-	class SerialReceiver<DataType, HeadType, None> {
-	public:
-		SerialReceiver(serial::Serial& serial) : _serial(serial) { }
-		SerialReceiver(const SerialReceiver&) = delete;
-		SerialReceiver(SerialReceiver&&) = delete;
+    // æœ‰å¤´æ— æ ¡éªŒçš„ä¸²å£æ•°æ®åŒ…æ¥æ”¶å™¨
+    template <typename DataType, typename HeadType>
+    class SerialReceiver<DataType, HeadType, None> {
+    public:
+        SerialReceiver(serial::Serial& serial) : _serial(serial) { }
+        SerialReceiver(const SerialReceiver&) = delete;
+        SerialReceiver(SerialReceiver&&) = delete;
 
-		/*! ½ÓÊÕ×î¶àÒ»¸öÊı¾İ£¬²»¶ªÆúÈÎºÎÊı¾İ£¬³ıĞ£ÑéÎ´Í¨¹ıÖ®Íâ¡£ÊÊÓÃÓÚ½ÓÊÕ·¢ËÍÆµÂÊ½ÏµÍµÄÊı¾İ¡£
-		* ¸Ã·½·¨¿ÉÒÔÔì³É×èÈû£¬ÓÉÓÚÃ¿´Îµ÷ÓÃ¸Ã·½·¨Ö»»áµ÷ÓÃÒ»´Îserial.read£¬Òò´Ë³¬Ê±Ê±¼äÈ¡¾öÓÚSerial¶ÔÏó±¾ÉíµÄ³¬Ê±Ê±¼äÉè¶¨£¬ÈôÉèÎª0Ôò²»×èÈû¡£
-		* Ê¹ÓÃGetCacheSize·½·¨¿ÉÒÔ»ñÈ¡ÒÑ»º´æÊı¾İµÄ³¤¶È£¬Ê¹ÓÃClearCache·½·¨¿ÉÒÔÇ¿ÖÆÇå¿Õ»º´æµÄÊı¾İ¡£
-		*
-		* \return ³É¹¦Ê±£¬·µ»ØSuccess
-		* µ±Î´½ÓÊÕµ½×ã¹»ÊıÁ¿Êı¾İ£¬µ¼ÖÂ´®¿Ú½ÓÊÕ³¬Ê±Ê±£¬¸Ã·½·¨·µ»ØTimeout£¬ÔÚÏÂ´Îµ÷ÓÃ¸Ã·½·¨Ê±»á³¢ÊÔ½ÓÊÕÊ£Óà²¿·Ö¡£
-		* µ±½ÓÊÕµ½µÄÊı¾İ°üÍ·Î´¶ÔÆë£¬»òĞ£ÑéÎ´Í¨¹ı£¬¸Ã·½·¨·µ»ØInvaildHeader»òInvaildVerifyDegit£¬²¢ÏòºóÑ°ÕÒÆ¥ÅäµÄÍ·£¬ÔÚÏÂ´Îµ÷ÓÃ¸Ã·½·¨Ê±³¢ÊÔ½ÓÊÕÊ£Óà²¿·Ö¡£
-		*/
-		ReceiveResult Receive() {
-			ReceiveResult result;
-			// ½ÓÊÕ¾¡¿ÉÄÜ¶àµÄÊı¾İ
-			_cacheSize += _serial.read(reinterpret_cast<uint8_t*>(&_receivePkg->head) + _cacheSize, sizeof(HeadType) + sizeof(DataType) - _cacheSize);
+        /*! æ¥æ”¶æœ€å¤šä¸€ä¸ªæ•°æ®ï¼Œä¸ä¸¢å¼ƒä»»ä½•æ•°æ®ï¼Œé™¤æ ¡éªŒæœªé€šè¿‡ä¹‹å¤–ã€‚é€‚ç”¨äºæ¥æ”¶å‘é€é¢‘ç‡è¾ƒä½çš„æ•°æ®ã€‚
+        * è¯¥æ–¹æ³•å¯ä»¥é€ æˆé˜»å¡ï¼Œç”±äºæ¯æ¬¡è°ƒç”¨è¯¥æ–¹æ³•åªä¼šè°ƒç”¨ä¸€æ¬¡serial.readï¼Œå› æ­¤è¶…æ—¶æ—¶é—´å–å†³äºSerialå¯¹è±¡æœ¬èº«çš„è¶…æ—¶æ—¶é—´è®¾å®šï¼Œè‹¥è®¾ä¸º0åˆ™ä¸é˜»å¡ã€‚
+        * ä½¿ç”¨GetCacheSizeæ–¹æ³•å¯ä»¥è·å–å·²ç¼“å­˜æ•°æ®çš„é•¿åº¦ï¼Œä½¿ç”¨ClearCacheæ–¹æ³•å¯ä»¥å¼ºåˆ¶æ¸…ç©ºç¼“å­˜çš„æ•°æ®ã€‚
+        *
+        * \return æˆåŠŸæ—¶ï¼Œè¿”å›Success
+        * å½“æœªæ¥æ”¶åˆ°è¶³å¤Ÿæ•°é‡æ•°æ®ï¼Œå¯¼è‡´ä¸²å£æ¥æ”¶è¶…æ—¶æ—¶ï¼Œè¯¥æ–¹æ³•è¿”å›Timeoutï¼Œåœ¨ä¸‹æ¬¡è°ƒç”¨è¯¥æ–¹æ³•æ—¶ä¼šå°è¯•æ¥æ”¶å‰©ä½™éƒ¨åˆ†ã€‚
+        * å½“æ¥æ”¶åˆ°çš„æ•°æ®åŒ…å¤´æœªå¯¹é½ï¼Œæˆ–æ ¡éªŒæœªé€šè¿‡ï¼Œè¯¥æ–¹æ³•è¿”å›InvaildHeaderæˆ–InvaildVerifyDegitï¼Œå¹¶å‘åå¯»æ‰¾åŒ¹é…çš„å¤´ï¼Œåœ¨ä¸‹æ¬¡è°ƒç”¨è¯¥æ–¹æ³•æ—¶å°è¯•æ¥æ”¶å‰©ä½™éƒ¨åˆ†ã€‚
+        */
+        ReceiveResult Receive() {
+            ReceiveResult result;
+            // æ¥æ”¶å°½å¯èƒ½å¤šçš„æ•°æ®
+            _cacheSize += _serial.read(reinterpret_cast<uint8_t*>(&_receivePkg->head) + _cacheSize, sizeof(HeadType) + sizeof(DataType) - _cacheSize);
 
-			if (_cacheSize >= sizeof(HeadType)) {                 // ³É¹¦½ÓÊÕµ½°üÍ·²¿·Ö
-				if (_receivePkg->head.IsCorrect()) {               // Êı¾İ°üÍ·ÕıÈ·
-					if (_cacheSize == sizeof(HeadType) + sizeof(DataType)) {    // Èô°üÍ·ÕıÈ·ÇÒÊı¾İ½ÓÊÕÍêÕû£¬Ôò·µ»ØSuccess
-						_cacheSize = 0;
-						std::swap(_receivePkg, _resultPkg);
-						return ReceiveResult::Success;
-					}
-					else return ReceiveResult::Timeout;                         // Èô°üÍ·ÕıÈ·µ«Êı¾İÎ´½ÓÊÕÍêÕû£¬Ôò·µ»ØTimeout£¬µÈ´ıÏÂÒ»´Î½ÓÊÕ
-				}
-				else result = ReceiveResult::InvaildHeader;
+            if (_cacheSize >= sizeof(HeadType)) {                 // æˆåŠŸæ¥æ”¶åˆ°åŒ…å¤´éƒ¨åˆ†
+                if (_receivePkg->head.IsCorrect()) {               // æ•°æ®åŒ…å¤´æ­£ç¡®
+                    if (_cacheSize == sizeof(HeadType) + sizeof(DataType)) {    // è‹¥åŒ…å¤´æ­£ç¡®ä¸”æ•°æ®æ¥æ”¶å®Œæ•´ï¼Œåˆ™è¿”å›Success
+                        _cacheSize = 0;
+                        std::swap(_receivePkg, _resultPkg);
+                        return ReceiveResult::Success;
+                    }
+                    else return ReceiveResult::Timeout;                         // è‹¥åŒ…å¤´æ­£ç¡®ä½†æ•°æ®æœªæ¥æ”¶å®Œæ•´ï¼Œåˆ™è¿”å›Timeoutï¼Œç­‰å¾…ä¸‹ä¸€æ¬¡æ¥æ”¶
+                }
+                else result = ReceiveResult::InvaildHeader;
 
-				// ÈôÊı¾İ°üÍ·´íÎó£¬ÔòÏòºóÑ°ÕÒÆ¥ÅäµÄÍ·£¬ÈôÕÒµ½£¬Ôò°ÑÊı¾İÕûÌåÏòÇ°¶ÔÆë£¬ÒÔ±ãÏÂÒ»´Î½ÓÊÕÊ£Óà²¿·Ö
-				// ¼´Ê¹Ã»ÓĞÕÒµ½Æ¥ÅäµÄÍ·£¬µ±±éÀúÊ£Óà×Ö½ÚÊıµÍÓÚÍ·µÄ×Ö½ÚÊıÊ±£¬Ò²»á°ÑÊ£Óà×Ö½ÚÏòÇ°¶ÔÆë
-				--_cacheSize;
-				uint8_t* bufferHead = reinterpret_cast<uint8_t*>(&_receivePkg->head) + 1;
+                // è‹¥æ•°æ®åŒ…å¤´é”™è¯¯ï¼Œåˆ™å‘åå¯»æ‰¾åŒ¹é…çš„å¤´ï¼Œè‹¥æ‰¾åˆ°ï¼Œåˆ™æŠŠæ•°æ®æ•´ä½“å‘å‰å¯¹é½ï¼Œä»¥ä¾¿ä¸‹ä¸€æ¬¡æ¥æ”¶å‰©ä½™éƒ¨åˆ†
+                // å³ä½¿æ²¡æœ‰æ‰¾åˆ°åŒ¹é…çš„å¤´ï¼Œå½“éå†å‰©ä½™å­—èŠ‚æ•°ä½äºå¤´çš„å­—èŠ‚æ•°æ—¶ï¼Œä¹Ÿä¼šæŠŠå‰©ä½™å­—èŠ‚å‘å‰å¯¹é½
+                --_cacheSize;
+                uint8_t* bufferHead = reinterpret_cast<uint8_t*>(&_receivePkg->head) + 1;
 
-				while (true) {
-					if (_cacheSize < sizeof(HeadType) || reinterpret_cast<HeadType*>(bufferHead)->IsCorrect()) {
-						for (size_t i = 0; i < _cacheSize; ++i)
-							reinterpret_cast<uint8_t*>(&_receivePkg->head)[i] = bufferHead[i];
-						break;
-					}
-					--_cacheSize;
-					++bufferHead;
-				}
-				return result;
-			}
-			else return ReceiveResult::Timeout;                   // ÈôÁ¬°üÍ·¶¼Ã»½Óµ½£¬Ò²·µ»ØTimeout
-		}
+                while (true) {
+                    if (_cacheSize < sizeof(HeadType) || reinterpret_cast<HeadType*>(bufferHead)->IsCorrect()) {
+                        for (size_t i = 0; i < _cacheSize; ++i)
+                            reinterpret_cast<uint8_t*>(&_receivePkg->head)[i] = bufferHead[i];
+                        break;
+                    }
+                    --_cacheSize;
+                    ++bufferHead;
+                }
+                return result;
+            }
+            else return ReceiveResult::Timeout;                   // è‹¥è¿åŒ…å¤´éƒ½æ²¡æ¥åˆ°ï¼Œä¹Ÿè¿”å›Timeout
+        }
 
-		/* »ñÈ¡½ÓÊÕµ½µÄÊı¾İ */
-		const DataType& GetReceivedData() { return _resultPkg->data; }
+        /* è·å–æ¥æ”¶åˆ°çš„æ•°æ® */
+        const DataType& GetReceivedData() { return _resultPkg->data; }
 
-		/* »ñÈ¡µ±Ç°»º´æµÄÊı¾İ³¤¶È */
-		size_t GetCacheSize() { return _cacheSize; }
+        /* è·å–å½“å‰ç¼“å­˜çš„æ•°æ®é•¿åº¦ */
+        size_t GetCacheSize() { return _cacheSize; }
 
-		/* ÖØÖÃµ±Ç°½ÓÊÕ»º´æ */
-		size_t ClearCache() { _cacheSize = 0; }
+        /* é‡ç½®å½“å‰æ¥æ”¶ç¼“å­˜ */
+        size_t ClearCache() { _cacheSize = 0; }
 
-	private:
-		serial::Serial& _serial;
-		size_t _cacheSize = 0;  // ±ê¼Ç»º´æµÄÊı¾İ³¤¶È
+    private:
+        serial::Serial& _serial;
+        size_t _cacheSize = 0;  // æ ‡è®°ç¼“å­˜çš„æ•°æ®é•¿åº¦
 
-		// _receivePkgÖ¸Ïò½ÓÊÕ»º³åÇø, _resultPkgÖ¸ÏòÉÏÒ»¸öÒÑ½ÓÊÕ²¢ÑéÖ¤Í¨¹ıµÄ»º³åÇø
-		Package<DataType, HeadType, None> _pkg[2], * _receivePkg = &_pkg[0], * _resultPkg = &_pkg[1];
+        // _receivePkgæŒ‡å‘æ¥æ”¶ç¼“å†²åŒº, _resultPkgæŒ‡å‘ä¸Šä¸€ä¸ªå·²æ¥æ”¶å¹¶éªŒè¯é€šè¿‡çš„ç¼“å†²åŒº
+        Package<DataType, HeadType, None> _pkg[2], * _receivePkg = &_pkg[0], * _resultPkg = &_pkg[1];
 
-	};
+    };
 
-	// ÎŞÍ·ÓĞĞ£ÑéµÄ´®¿ÚÊı¾İ°ü½ÓÊÕÆ÷
-	template <typename DataType, typename ChecksumCalculatorType>
-	class SerialReceiver<DataType, None, ChecksumCalculatorType> {
-	public:
-		SerialReceiver(serial::Serial& serial) : _serial(serial) { }
-		SerialReceiver(const SerialReceiver&) = delete;
-		SerialReceiver(SerialReceiver&&) = delete;
+    // æ— å¤´æœ‰æ ¡éªŒçš„ä¸²å£æ•°æ®åŒ…æ¥æ”¶å™¨
+    template <typename DataType, typename ChecksumCalculatorType>
+    class SerialReceiver<DataType, None, ChecksumCalculatorType> {
+    public:
+        SerialReceiver(serial::Serial& serial) : _serial(serial) { }
+        SerialReceiver(const SerialReceiver&) = delete;
+        SerialReceiver(SerialReceiver&&) = delete;
 
-		/*! ½ÓÊÕ×î¶àÒ»¸öÊı¾İ£¬²»¶ªÆúÈÎºÎÊı¾İ£¬³ıĞ£ÑéÎ´Í¨¹ıÖ®Íâ¡£ÊÊÓÃÓÚ½ÓÊÕ·¢ËÍÆµÂÊ½ÏµÍµÄÊı¾İ¡£
-		* ¸Ã·½·¨¿ÉÒÔÔì³É×èÈû£¬ÓÉÓÚÃ¿´Îµ÷ÓÃ¸Ã·½·¨Ö»»áµ÷ÓÃÒ»´Îserial.read£¬Òò´Ë³¬Ê±Ê±¼äÈ¡¾öÓÚSerial¶ÔÏó±¾ÉíµÄ³¬Ê±Ê±¼äÉè¶¨£¬ÈôÉèÎª0Ôò²»×èÈû¡£
-		* Ê¹ÓÃGetCacheSize·½·¨¿ÉÒÔ»ñÈ¡ÒÑ»º´æÊı¾İµÄ³¤¶È£¬Ê¹ÓÃClearCache·½·¨¿ÉÒÔÇ¿ÖÆÇå¿Õ»º´æµÄÊı¾İ¡£
-		*
-		* \return ³É¹¦Ê±£¬·µ»ØSuccess
-		* µ±Î´½ÓÊÕµ½×ã¹»ÊıÁ¿Êı¾İ£¬µ¼ÖÂ´®¿Ú½ÓÊÕ³¬Ê±Ê±£¬¸Ã·½·¨·µ»ØTimeout£¬ÔÚÏÂ´Îµ÷ÓÃ¸Ã·½·¨Ê±»á³¢ÊÔ½ÓÊÕÊ£Óà²¿·Ö¡£
-		* µ±½ÓÊÕµ½µÄÊı¾İ°üÍ·Î´¶ÔÆë£¬»òĞ£ÑéÎ´Í¨¹ı£¬¸Ã·½·¨·µ»ØInvaildHeader»òInvaildVerifyDegit£¬²¢ÏòºóÑ°ÕÒÆ¥ÅäµÄÍ·£¬ÔÚÏÂ´Îµ÷ÓÃ¸Ã·½·¨Ê±³¢ÊÔ½ÓÊÕÊ£Óà²¿·Ö¡£
-		*/
-		ReceiveResult Receive() {
-			// ½ÓÊÕ¾¡¿ÉÄÜ¶àµÄÊı¾İ
-			_cacheSize += _serial.read(reinterpret_cast<uint8_t*>(&_receivePkg->data) + _cacheSize,
-				sizeof(DataType) + sizeof(typename ChecksumCalculatorType::ResultType) - _cacheSize);
+        /*! æ¥æ”¶æœ€å¤šä¸€ä¸ªæ•°æ®ï¼Œä¸ä¸¢å¼ƒä»»ä½•æ•°æ®ï¼Œé™¤æ ¡éªŒæœªé€šè¿‡ä¹‹å¤–ã€‚é€‚ç”¨äºæ¥æ”¶å‘é€é¢‘ç‡è¾ƒä½çš„æ•°æ®ã€‚
+        * è¯¥æ–¹æ³•å¯ä»¥é€ æˆé˜»å¡ï¼Œç”±äºæ¯æ¬¡è°ƒç”¨è¯¥æ–¹æ³•åªä¼šè°ƒç”¨ä¸€æ¬¡serial.readï¼Œå› æ­¤è¶…æ—¶æ—¶é—´å–å†³äºSerialå¯¹è±¡æœ¬èº«çš„è¶…æ—¶æ—¶é—´è®¾å®šï¼Œè‹¥è®¾ä¸º0åˆ™ä¸é˜»å¡ã€‚
+        * ä½¿ç”¨GetCacheSizeæ–¹æ³•å¯ä»¥è·å–å·²ç¼“å­˜æ•°æ®çš„é•¿åº¦ï¼Œä½¿ç”¨ClearCacheæ–¹æ³•å¯ä»¥å¼ºåˆ¶æ¸…ç©ºç¼“å­˜çš„æ•°æ®ã€‚
+        *
+        * \return æˆåŠŸæ—¶ï¼Œè¿”å›Success
+        * å½“æœªæ¥æ”¶åˆ°è¶³å¤Ÿæ•°é‡æ•°æ®ï¼Œå¯¼è‡´ä¸²å£æ¥æ”¶è¶…æ—¶æ—¶ï¼Œè¯¥æ–¹æ³•è¿”å›Timeoutï¼Œåœ¨ä¸‹æ¬¡è°ƒç”¨è¯¥æ–¹æ³•æ—¶ä¼šå°è¯•æ¥æ”¶å‰©ä½™éƒ¨åˆ†ã€‚
+        * å½“æ¥æ”¶åˆ°çš„æ•°æ®åŒ…å¤´æœªå¯¹é½ï¼Œæˆ–æ ¡éªŒæœªé€šè¿‡ï¼Œè¯¥æ–¹æ³•è¿”å›InvaildHeaderæˆ–InvaildVerifyDegitï¼Œå¹¶å‘åå¯»æ‰¾åŒ¹é…çš„å¤´ï¼Œåœ¨ä¸‹æ¬¡è°ƒç”¨è¯¥æ–¹æ³•æ—¶å°è¯•æ¥æ”¶å‰©ä½™éƒ¨åˆ†ã€‚
+        */
+        ReceiveResult Receive() {
+            // æ¥æ”¶å°½å¯èƒ½å¤šçš„æ•°æ®
+            _cacheSize += _serial.read(reinterpret_cast<uint8_t*>(&_receivePkg->data) + _cacheSize,
+                sizeof(DataType) + sizeof(typename ChecksumCalculatorType::ResultType) - _cacheSize);
 
-			if (_cacheSize == sizeof(DataType) + sizeof(typename ChecksumCalculatorType::ResultType)) {    // ÈôÊı¾İ½ÓÊÕÍêÕû£¬Ôò³¢ÊÔ½øÒ»²½Ğ£Ñé
-				if (ChecksumCalculatorType::Verify(*_receivePkg)) {
-					// Ğ£ÑéÍ¨¹ıÔò·µ»ØSuccess
-					_cacheSize = 0;
-					std::swap(_receivePkg, _resultPkg);
-					return ReceiveResult::Success;
-				}
-				else {
-					// ÈôĞ£Ñé²»Í¨¹ı£¬Ôò°ÑÊı¾İÕûÌåÏòÇ°¶ÔÆëÒ»Î»£¬ÏÂÒ»´Î½ÓÊÕÊ£Óà²¿·Ö
-					--_cacheSize;
-					uint8_t* bufferHead = reinterpret_cast<uint8_t*>(&_receivePkg->data) + 1;
-					for (size_t i = 0; i < _cacheSize; ++i)
-						reinterpret_cast<uint8_t*>(&_receivePkg->data)[i] = bufferHead[i];
-					return ReceiveResult::InvaildVerifyDegit;
-				}
-			}
+            if (_cacheSize == sizeof(DataType) + sizeof(typename ChecksumCalculatorType::ResultType)) {    // è‹¥æ•°æ®æ¥æ”¶å®Œæ•´ï¼Œåˆ™å°è¯•è¿›ä¸€æ­¥æ ¡éªŒ
+                if (ChecksumCalculatorType::Verify(*_receivePkg)) {
+                    // æ ¡éªŒé€šè¿‡åˆ™è¿”å›Success
+                    _cacheSize = 0;
+                    std::swap(_receivePkg, _resultPkg);
+                    return ReceiveResult::Success;
+                }
+                else {
+                    // è‹¥æ ¡éªŒä¸é€šè¿‡ï¼Œåˆ™æŠŠæ•°æ®æ•´ä½“å‘å‰å¯¹é½ä¸€ä½ï¼Œä¸‹ä¸€æ¬¡æ¥æ”¶å‰©ä½™éƒ¨åˆ†
+                    --_cacheSize;
+                    uint8_t* bufferHead = reinterpret_cast<uint8_t*>(&_receivePkg->data) + 1;
+                    for (size_t i = 0; i < _cacheSize; ++i)
+                        reinterpret_cast<uint8_t*>(&_receivePkg->data)[i] = bufferHead[i];
+                    return ReceiveResult::InvaildVerifyDegit;
+                }
+            }
 
-			// ÈôÊı¾İÎ´½ÓÊÕÍêÕû£¬Ôò·µ»ØTimeout£¬µÈ´ıÏÂÒ»´Î½ÓÊÕ
-			return ReceiveResult::Timeout;
-		}
+            // è‹¥æ•°æ®æœªæ¥æ”¶å®Œæ•´ï¼Œåˆ™è¿”å›Timeoutï¼Œç­‰å¾…ä¸‹ä¸€æ¬¡æ¥æ”¶
+            return ReceiveResult::Timeout;
+        }
 
-		/* »ñÈ¡½ÓÊÕµ½µÄÊı¾İ */
-		const DataType& GetReceivedData() { return _resultPkg->data; }
+        /* è·å–æ¥æ”¶åˆ°çš„æ•°æ® */
+        const DataType& GetReceivedData() { return _resultPkg->data; }
 
-		/* »ñÈ¡µ±Ç°»º´æµÄÊı¾İ³¤¶È */
-		size_t GetCacheSize() { return _cacheSize; }
+        /* è·å–å½“å‰ç¼“å­˜çš„æ•°æ®é•¿åº¦ */
+        size_t GetCacheSize() { return _cacheSize; }
 
-		/* ÖØÖÃµ±Ç°½ÓÊÕ»º´æ */
-		size_t ClearCache() { _cacheSize = 0; }
+        /* é‡ç½®å½“å‰æ¥æ”¶ç¼“å­˜ */
+        size_t ClearCache() { _cacheSize = 0; }
 
-	private:
-		serial::Serial& _serial;
-		size_t _cacheSize = 0;  // ±ê¼Ç»º´æµÄÊı¾İ³¤¶È
+    private:
+        serial::Serial& _serial;
+        size_t _cacheSize = 0;  // æ ‡è®°ç¼“å­˜çš„æ•°æ®é•¿åº¦
 
-		// _receivePkgÖ¸Ïò½ÓÊÕ»º³åÇø, _resultPkgÖ¸ÏòÉÏÒ»¸öÒÑ½ÓÊÕ²¢ÑéÖ¤Í¨¹ıµÄ»º³åÇø
-		Package<DataType, None, typename ChecksumCalculatorType::ResultType> _pkg[2], * _receivePkg = &_pkg[0], * _resultPkg = &_pkg[1];
-	};
+        // _receivePkgæŒ‡å‘æ¥æ”¶ç¼“å†²åŒº, _resultPkgæŒ‡å‘ä¸Šä¸€ä¸ªå·²æ¥æ”¶å¹¶éªŒè¯é€šè¿‡çš„ç¼“å†²åŒº
+        Package<DataType, None, typename ChecksumCalculatorType::ResultType> _pkg[2], * _receivePkg = &_pkg[0], * _resultPkg = &_pkg[1];
+    };
 
 }

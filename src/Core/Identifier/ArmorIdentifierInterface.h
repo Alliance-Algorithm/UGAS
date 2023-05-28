@@ -19,15 +19,15 @@ Header Functions:
 
 // TODO: 把这里处理掉
 inline double malposition(const LightBar& LBl, const LightBar& LBr) {
-	cv::Point2f axis = (LBl.top - LBl.bottom + LBr.top - LBr.bottom) / 2;
-	cv::Point2f dis = (LBl.top + LBl.bottom - LBr.top - LBr.bottom) / 2;
-	return fabs(axis.dot(dis) / axis.cross(dis));
+    cv::Point2f axis = (LBl.top - LBl.bottom + LBr.top - LBr.bottom) / 2;
+    cv::Point2f dis = (LBl.top + LBl.bottom - LBr.top - LBr.bottom) / 2;
+    return fabs(axis.dot(dis) / axis.cross(dis));
 }
 
 
 class ArmorIdentifierInterface {
 public:
-	virtual ~ArmorIdentifierInterface() = default;
+    virtual ~ArmorIdentifierInterface() = default;
 
-	virtual std::vector<ArmorPlate> Identify(const cv::Mat& imgThre, const cv::Mat& imgGray) = 0;
+    virtual std::vector<ArmorPlate> Identify(const cv::Mat& imgThre, const cv::Mat& imgGray) = 0;
 };

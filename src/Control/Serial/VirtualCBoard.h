@@ -5,49 +5,49 @@ Latest Update: 2023/05/26
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-ÓÃÓÚµ¥»úµ÷ÊÔ£¬½Ó¿ÚÓëCBoardInfantryÏàÍ¬£¬µ«ÎŞÊµ¼Ê²Ù×÷¡£
+ç”¨äºå•æœºè°ƒè¯•ï¼Œæ¥å£ä¸CBoardInfantryç›¸åŒï¼Œä½†æ— å®é™…æ“ä½œã€‚
 */
 
 #include "Util/Parameter/Parameters.h"
 
 class VirtualCBoard {
 public:
-	VirtualCBoard(bool debugOutput = false) : _debugOutput(debugOutput) { }
+    VirtualCBoard(bool debugOutput = false) : _debugOutput(debugOutput) { }
 
-	~VirtualCBoard() {	}
+    ~VirtualCBoard() {    }
 
-	/*! Ïò³ıÉÚ±øÍâµÄµØÃæ±øÖÖ·¢ËÍÔÆÌ¨Ãé×¼Êı¾İ
-	* \param yaw pitch µ¥Î»Ê¹ÓÃ»¡¶ÈÖÆ£¬·½Ïò×ñÑ­ÓÒÊÖ¶¨Ôò
-	*/
-	void Send(double yaw, double pitch) {
-		if (_debugOutput) {
-			yaw *= 180.0 / MathConsts::Pi;
-			pitch *= 180.0 / MathConsts::Pi;
-			std::cout << "Send: [" << yaw << ", " << pitch << "] deg\n";
-		}
-	}
+    /*! å‘é™¤å“¨å…µå¤–çš„åœ°é¢å…µç§å‘é€äº‘å°ç„å‡†æ•°æ®
+    * \param yaw pitch å•ä½ä½¿ç”¨å¼§åº¦åˆ¶ï¼Œæ–¹å‘éµå¾ªå³æ‰‹å®šåˆ™
+    */
+    void Send(double yaw, double pitch) {
+        if (_debugOutput) {
+            yaw *= 180.0 / MathConsts::Pi;
+            pitch *= 180.0 / MathConsts::Pi;
+            std::cout << "Send: [" << yaw << ", " << pitch << "] deg\n";
+        }
+    }
 
-	/*! ÏòÎŞÈË»ú·¢ËÍÔÆÌ¨Ãé×¼Êı¾İ
-	* \param yaw pitch µ¥Î»Ê¹ÓÃ»¡¶ÈÖÆ£¬·½Ïò×ñÑ­ÓÒÊÖ¶¨Ôò
-	*/
-	void SendUAV(double yaw, double pitch) {
-		if (_debugOutput) {
-			yaw *= 180.0 / MathConsts::Pi;
-			pitch *= 180.0 / MathConsts::Pi;
-			std::cout << "SendUAV: [" << yaw << ", " << pitch << "] deg\n";
-		}
-	}
+    /*! å‘æ— äººæœºå‘é€äº‘å°ç„å‡†æ•°æ®
+    * \param yaw pitch å•ä½ä½¿ç”¨å¼§åº¦åˆ¶ï¼Œæ–¹å‘éµå¾ªå³æ‰‹å®šåˆ™
+    */
+    void SendUAV(double yaw, double pitch) {
+        if (_debugOutput) {
+            yaw *= 180.0 / MathConsts::Pi;
+            pitch *= 180.0 / MathConsts::Pi;
+            std::cout << "SendUAV: [" << yaw << ", " << pitch << "] deg\n";
+        }
+    }
 
-	void Receive() { }
+    void Receive() { }
 
-	ArmorColor GetEnemyColor() {
-		return Parameters::DefaultEnemyColor;
-	}
+    ArmorColor GetEnemyColor() {
+        return Parameters::DefaultEnemyColor;
+    }
 
-	float GetBulletSpeed() {
-		return Parameters::DefaultBulletSpeed;
-	}
+    float GetBulletSpeed() {
+        return Parameters::DefaultBulletSpeed;
+    }
 
 private:
-	bool _debugOutput;
+    bool _debugOutput;
 };

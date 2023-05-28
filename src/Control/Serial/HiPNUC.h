@@ -5,7 +5,7 @@ Latest Update: 2023/05/26
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-³¬ºËµç×Ó£¨HiPNUC£©µÄ¹ßĞÔµ¼º½Éè±¸Í¨Ñ¶
+è¶…æ ¸ç”µå­ï¼ˆHiPNUCï¼‰çš„æƒ¯æ€§å¯¼èˆªè®¾å¤‡é€šè®¯
 */
 
 #include <chrono>
@@ -21,160 +21,160 @@ Header Functions:
 
 class HiPNUC {
 public:
-	HiPNUC(const char* portName) :
-		_portName(portName),
-		_destructed(false),
-		_thread(&HiPNUC::_serialMain, this) {
-	}
-	HiPNUC(const HiPNUC&) = delete;
-	HiPNUC(HiPNUC&&) = delete;
+    HiPNUC(const char* portName) :
+        _portName(portName),
+        _destructed(false),
+        _thread(&HiPNUC::_serialMain, this) {
+    }
+    HiPNUC(const HiPNUC&) = delete;
+    HiPNUC(HiPNUC&&) = delete;
 
-	~HiPNUC() {
-		_destructed = true;
-		_thread.join();
-	}
+    ~HiPNUC() {
+        _destructed = true;
+        _thread.join();
+    }
 
-	IMUTransformer GetTransformer() {
-		const float* quatPtr = _transQuat;
-		auto q = Eigen::Quaternionf{ quatPtr[0], quatPtr[1], quatPtr[2], quatPtr[3] };
-		return IMUTransformer(q, _available);
-	}
+    IMUTransformer GetTransformer() {
+        const float* quatPtr = _transQuat;
+        auto q = Eigen::Quaternionf{ quatPtr[0], quatPtr[1], quatPtr[2], quatPtr[3] };
+        return IMUTransformer(q, _available);
+    }
 
 private:
 #pragma pack(push, 1)
-	// ±ê×¼Êı¾İ½á¹¹Ìå
-	struct Data91 {           // Unit      Name
-		uint16_t length;      //       Ö¡ÖĞÊı¾İÓòµÄ³¤¶È£¬¹Ì¶¨Öµ76
-		uint16_t crc;         //       ³ı×ÔÉíÍâÆäÓàËùÓĞ×Ö¶ÎµÄCRC-16Ğ£ÑéºÍ
-		uint8_t tag;          //       Êı¾İ°ü±êÇ©£º0x91
-		uint16_t useless;     //       ±£Áô
-		uint8_t avg_temp;     //  ¡ãC   Ä£¿éÍÓÂİÒÇÆ½¾ùÎÂ¶È
-		float pressure;       //  Pa   ÆøÑ¹(²¿·ÖĞÍºÅÖ§³Ö)
-		uint32_t timestamp;   //  ms   ¿ª»ú¿ªÊ¼ÀÛ¼ÓµÄ±¾µØÊ±¼ä´ÁĞÅÏ¢£¬Ã¿ºÁÃëÔö¼Ó1
-		float acc[3];         //  1G   ¾­¹ı³ö³§Ğ£×¼ºóµÄ¼ÓËÙ¶È£¬Ë³ĞòÎª£ºxyz
-		float gyr[3];         // deg/s ¾­¹ı³ö³§Ğ£×¼ºóµÄ½ÇËÙ¶È£¬Ë³ĞòÎª£ºxyz
-		float mag[3];         //  uT   ´ÅÇ¿¶È£¬Ë³ĞòÎª£ºxyz
-		float eul[3];         //  deg  Å·À­½Ç£¬Ë³ĞòÎª£ºroll, pitch, yaw (yxz)
-		float quat[4];        //       ½ÚµãËÄÔªÊı¼¯ºÏ£¬Ë³ĞòÎª£ºwxyz
-	};
+    // æ ‡å‡†æ•°æ®ç»“æ„ä½“
+    struct Data91 {           // Unit      Name
+        uint16_t length;      //       å¸§ä¸­æ•°æ®åŸŸçš„é•¿åº¦ï¼Œå›ºå®šå€¼76
+        uint16_t crc;         //       é™¤è‡ªèº«å¤–å…¶ä½™æ‰€æœ‰å­—æ®µçš„CRC-16æ ¡éªŒå’Œ
+        uint8_t tag;          //       æ•°æ®åŒ…æ ‡ç­¾ï¼š0x91
+        uint16_t useless;     //       ä¿ç•™
+        uint8_t avg_temp;     //  Â°C   æ¨¡å—é™€èºä»ªå¹³å‡æ¸©åº¦
+        float pressure;       //  Pa   æ°”å‹(éƒ¨åˆ†å‹å·æ”¯æŒ)
+        uint32_t timestamp;   //  ms   å¼€æœºå¼€å§‹ç´¯åŠ çš„æœ¬åœ°æ—¶é—´æˆ³ä¿¡æ¯ï¼Œæ¯æ¯«ç§’å¢åŠ 1
+        float acc[3];         //  1G   ç»è¿‡å‡ºå‚æ ¡å‡†åçš„åŠ é€Ÿåº¦ï¼Œé¡ºåºä¸ºï¼šxyz
+        float gyr[3];         // deg/s ç»è¿‡å‡ºå‚æ ¡å‡†åçš„è§’é€Ÿåº¦ï¼Œé¡ºåºä¸ºï¼šxyz
+        float mag[3];         //  uT   ç£å¼ºåº¦ï¼Œé¡ºåºä¸ºï¼šxyz
+        float eul[3];         //  deg  æ¬§æ‹‰è§’ï¼Œé¡ºåºä¸ºï¼šroll, pitch, yaw (yxz)
+        float quat[4];        //       èŠ‚ç‚¹å››å…ƒæ•°é›†åˆï¼Œé¡ºåºä¸ºï¼šwxyz
+    };
 
-	// Ö»ÓĞËÄÔªÊıµÄÊı¾İ½á¹¹Ìå
-	struct DataD1 {           // Unit      Name
-		uint16_t length;      //       Ö¡ÖĞÊı¾İÓòµÄ³¤¶È£¬¹Ì¶¨Öµ17
-		uint16_t crc;         //       ³ı×ÔÉíÍâÆäÓàËùÓĞ×Ö¶ÎµÄCRC-16Ğ£ÑéºÍ
-		uint8_t tag1;         //       Êı¾İ°ü±êÇ©£º0xD1
-		float quat[4];        //       ½ÚµãËÄÔªÊı¼¯ºÏ£¬Ë³ĞòÎª£ºwxyz
-	};
+    // åªæœ‰å››å…ƒæ•°çš„æ•°æ®ç»“æ„ä½“
+    struct DataD1 {           // Unit      Name
+        uint16_t length;      //       å¸§ä¸­æ•°æ®åŸŸçš„é•¿åº¦ï¼Œå›ºå®šå€¼17
+        uint16_t crc;         //       é™¤è‡ªèº«å¤–å…¶ä½™æ‰€æœ‰å­—æ®µçš„CRC-16æ ¡éªŒå’Œ
+        uint8_t tag1;         //       æ•°æ®åŒ…æ ‡ç­¾ï¼š0xD1
+        float quat[4];        //       èŠ‚ç‚¹å››å…ƒæ•°é›†åˆï¼Œé¡ºåºä¸ºï¼šwxyz
+    };
 #pragma pack(pop)
 
 
-	static constexpr int a = sizeof(Eigen::Quaternionf);
+    static constexpr int a = sizeof(Eigen::Quaternionf);
 
-	class DataCRC16Calculator {
-	public:
-		using ResultType = SerialUtil::None;
+    class DataCRC16Calculator {
+    public:
+        using ResultType = SerialUtil::None;
 
-		template <typename T>
-		static bool Verify(const T& package) {
-			static_assert(sizeof(T) == 82 || sizeof(T) == 23, "Wrong package size!");
+        template <typename T>
+        static bool Verify(const T& package) {
+            static_assert(sizeof(T) == 82 || sizeof(T) == 23, "Wrong package size!");
 
-			uint16_t checksum = 0x00;
-			auto src = reinterpret_cast<const uint8_t*>(&package);
+            uint16_t checksum = 0x00;
+            auto src = reinterpret_cast<const uint8_t*>(&package);
 
-			_crc16Update(checksum, src, 4);
-			_crc16Update(checksum, src + 6, sizeof(T) - 6);
+            _crc16Update(checksum, src, 4);
+            _crc16Update(checksum, src + 6, sizeof(T) - 6);
 
-			return checksum == *reinterpret_cast<const uint16_t*>(src + 4);
-		}
+            return checksum == *reinterpret_cast<const uint16_t*>(src + 4);
+        }
 
-	private:
-		static void _crc16Update(uint16_t& currectCrc, const uint8_t* src, size_t lengthInBytes) {
-			uint32_t crc = currectCrc;
-			for (size_t j = 0; j < lengthInBytes; ++j) {
-				uint32_t i;
-				uint32_t byte = src[j];
-				crc ^= byte << 8;
-				for (i = 0; i < 8; ++i) {
-					uint32_t temp = crc << 1;
-					if (crc & 0x8000) {
-						temp ^= 0x1021;
-					}
-					crc = temp;
-				}
-			}
-			currectCrc = crc;
-		}
-	};
+    private:
+        static void _crc16Update(uint16_t& currectCrc, const uint8_t* src, size_t lengthInBytes) {
+            uint32_t crc = currectCrc;
+            for (size_t j = 0; j < lengthInBytes; ++j) {
+                uint32_t i;
+                uint32_t byte = src[j];
+                crc ^= byte << 8;
+                for (i = 0; i < 8; ++i) {
+                    uint32_t temp = crc << 1;
+                    if (crc & 0x8000) {
+                        temp ^= 0x1021;
+                    }
+                    crc = temp;
+                }
+            }
+            currectCrc = crc;
+        }
+    };
 
-	void _serialMain() {
-		FPSCounter_V2 imuFps, errorFps;
+    void _serialMain() {
+        FPSCounter_V2 imuFps, errorFps;
 
-		while (!_destructed) {
-			try {
+        while (!_destructed) {
+            try {
 
-				serial::Serial serial(_portName, 115200, serial::Timeout::simpleTimeout(100));
+                serial::Serial serial(_portName, 115200, serial::Timeout::simpleTimeout(100));
 
-				while (true) {
-					if (_destructed) return;
-					try {
-						SerialUtil::SerialReceiver<DataD1, SerialUtil::Head<uint16_t, 0xa55a>, DataCRC16Calculator> receiver(serial);
+                while (true) {
+                    if (_destructed) return;
+                    try {
+                        SerialUtil::SerialReceiver<DataD1, SerialUtil::Head<uint16_t, 0xa55a>, DataCRC16Calculator> receiver(serial);
 
-						auto result = receiver.Receive();
-						if (result == SerialUtil::ReceiveResult::Success) {
-							const auto& data = receiver.GetReceivedData();
+                        auto result = receiver.Receive();
+                        if (result == SerialUtil::ReceiveResult::Success) {
+                            const auto& data = receiver.GetReceivedData();
 
-							// Ã¿´ÎGetReceivedDataµÃµ½µÄÊı¾İ£¬ÆäÉúÃüÖÜÆÚ³ÖĞøµ½ÏÂ´ÎReceive³É¹¦ºó£¬ÔÙ´Îµ÷ÓÃReceiveÇ°¡£
-							// TODO: ÕâÀïÊ¹ÓÃÖ¸Õë´æ´¢ËÄÔªÊıÊµÏÖÎŞËø£¬ÓĞ¼«Ğ¡¸ÅÂÊÔÚ¶ÁÈ¡Ê±»ñµÃ´íÎóÊı¾İ¡£
-							_transQuat = &(data.quat[0]);
+                            // æ¯æ¬¡GetReceivedDataå¾—åˆ°çš„æ•°æ®ï¼Œå…¶ç”Ÿå‘½å‘¨æœŸæŒç»­åˆ°ä¸‹æ¬¡ReceiveæˆåŠŸåï¼Œå†æ¬¡è°ƒç”¨Receiveå‰ã€‚
+                            // TODO: è¿™é‡Œä½¿ç”¨æŒ‡é’ˆå­˜å‚¨å››å…ƒæ•°å®ç°æ— é”ï¼Œæœ‰æå°æ¦‚ç‡åœ¨è¯»å–æ—¶è·å¾—é”™è¯¯æ•°æ®ã€‚
+                            _transQuat = &(data.quat[0]);
 
-							if (imuFps.Count()) {
-								_available = imuFps.GetFPS() > 100;
-								std::cout << "HiPNUC IMU Fps: " << imuFps.GetFPS() << '\n';
-							}
-						}
-						else if (result == SerialUtil::ReceiveResult::InvaildHeader)
-							LOG(WARNING) << "HiPNUC: Invaild Header!";
-						else if (result == SerialUtil::ReceiveResult::InvaildVerifyDegit)
-							LOG(WARNING) << "HiPNUC: Invaild Verify Degit!";
-					}
-					catch (serial::IOException& e) {
-						// windowsÏÂµÄ´®¿Ú»áÅ¼·¢ĞÔµÄÅ×³öIOException£¬´ó²¿·ÖÊ±ºò¿ÉÒÔºöÂÔ´ËÒì³£
-						LOG(ERROR) << "HiPNUC: Unexpected serial::IOException: " << e.what();
-						errorFps.Count();
-						if (errorFps.GetFPS() > 10) throw std::runtime_error("HiPNUC: Exceptions are thrown too frequently.");
-					}
-					catch (serial::SerialException& e) {
-						// linuxÏÂµÄ´®¿Ú»áÅ×³öSerialException£¬Ò»°ãÔÚ´®¿Ú¶Ï¿ªÁ¬½ÓÊ±µ¯³ö£¬ÔİÊ±²»Çå³ş»á²»»áÅ¼·¢ĞÔÅ×³ö£¬ÓÅÏÈÑ¡ÔñºöÂÔ´ËÒì³£
-						LOG(ERROR) << "HiPNUC: Unexpected serial::SerialException: " << e.what();
-						errorFps.Count();
-						if (errorFps.GetFPS() > 10) throw std::runtime_error("HiPNUC: Exceptions are thrown too frequently.");
-					}
-				}
-				
-			}
-			catch (serial::IOException& e) {
-				LOG(ERROR) << "HiPNUC: Caught serial::IOException when serial init: " << e.what();
-			}
-			catch (std::exception& e) {
-				LOG(ERROR) << "HiPNUC: Uncaught " << typeid(e).name() << ": " << e.what();
-			}
+                            if (imuFps.Count()) {
+                                _available = imuFps.GetFPS() > 100;
+                                std::cout << "HiPNUC IMU Fps: " << imuFps.GetFPS() << '\n';
+                            }
+                        }
+                        else if (result == SerialUtil::ReceiveResult::InvaildHeader)
+                            LOG(WARNING) << "HiPNUC: Invaild Header!";
+                        else if (result == SerialUtil::ReceiveResult::InvaildVerifyDegit)
+                            LOG(WARNING) << "HiPNUC: Invaild Verify Degit!";
+                    }
+                    catch (serial::IOException& e) {
+                        // windowsä¸‹çš„ä¸²å£ä¼šå¶å‘æ€§çš„æŠ›å‡ºIOExceptionï¼Œå¤§éƒ¨åˆ†æ—¶å€™å¯ä»¥å¿½ç•¥æ­¤å¼‚å¸¸
+                        LOG(ERROR) << "HiPNUC: Unexpected serial::IOException: " << e.what();
+                        errorFps.Count();
+                        if (errorFps.GetFPS() > 10) throw std::runtime_error("HiPNUC: Exceptions are thrown too frequently.");
+                    }
+                    catch (serial::SerialException& e) {
+                        // linuxä¸‹çš„ä¸²å£ä¼šæŠ›å‡ºSerialExceptionï¼Œä¸€èˆ¬åœ¨ä¸²å£æ–­å¼€è¿æ¥æ—¶å¼¹å‡ºï¼Œæš‚æ—¶ä¸æ¸…æ¥šä¼šä¸ä¼šå¶å‘æ€§æŠ›å‡ºï¼Œä¼˜å…ˆé€‰æ‹©å¿½ç•¥æ­¤å¼‚å¸¸
+                        LOG(ERROR) << "HiPNUC: Unexpected serial::SerialException: " << e.what();
+                        errorFps.Count();
+                        if (errorFps.GetFPS() > 10) throw std::runtime_error("HiPNUC: Exceptions are thrown too frequently.");
+                    }
+                }
+                
+            }
+            catch (serial::IOException& e) {
+                LOG(ERROR) << "HiPNUC: Caught serial::IOException when serial init: " << e.what();
+            }
+            catch (std::exception& e) {
+                LOG(ERROR) << "HiPNUC: Uncaught " << typeid(e).name() << ": " << e.what();
+            }
 
-			_available = false;
-			LOG(ERROR) << "HiPNUC: Will reconnect in 1 second.";
-			auto timingStart = std::chrono::steady_clock::now();
-			while (std::chrono::steady_clock::now() - timingStart < std::chrono::seconds(1)) {
-				if (_destructed) return;
-				std::this_thread::sleep_for(std::chrono::milliseconds(1));
-			}
-		}
-	}
+            _available = false;
+            LOG(ERROR) << "HiPNUC: Will reconnect in 1 second.";
+            auto timingStart = std::chrono::steady_clock::now();
+            while (std::chrono::steady_clock::now() - timingStart < std::chrono::seconds(1)) {
+                if (_destructed) return;
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            }
+        }
+    }
 
-	const char* _portName;
-	std::atomic<bool> _destructed;
-	std::thread _thread;
+    const char* _portName;
+    std::atomic<bool> _destructed;
+    std::thread _thread;
 
-	std::atomic<bool> _available = false;
+    std::atomic<bool> _available = false;
 
-	const float _defaultTransQuat[4] = { 1, 0, 0, 0 };
-	std::atomic<const float*> _transQuat = _defaultTransQuat;
+    const float _defaultTransQuat[4] = { 1, 0, 0, 0 };
+    std::atomic<const float*> _transQuat = _defaultTransQuat;
 };

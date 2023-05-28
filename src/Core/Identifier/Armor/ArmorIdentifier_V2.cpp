@@ -112,12 +112,12 @@ std::vector<ArmorPlate> ArmorIdentifier_V2::_matchArmorPlates(const cv::Mat& img
         cv::Point2f Icenter = (_lightBarList[i].top + _lightBarList[i].bottom) / 2;
         for (int j = i + 1; j < n; ++j) { // 一些筛选条件
             float Jsize = P2PDis(_lightBarList[j].top, _lightBarList[j].bottom);
-            if (max(Isize, Jsize) / min(Isize, Jsize) > maxArmorLightRatio)		continue;
-            if (fabs(_lightBarList[i].angle - _lightBarList[j].angle) > maxdAngle)	continue;
-            if (malposition(_lightBarList[i], _lightBarList[j]) > maxMalposition)		continue;
+            if (max(Isize, Jsize) / min(Isize, Jsize) > maxArmorLightRatio)        continue;
+            if (fabs(_lightBarList[i].angle - _lightBarList[j].angle) > maxdAngle)    continue;
+            if (malposition(_lightBarList[i], _lightBarList[j]) > maxMalposition)        continue;
             cv::Point2f Jcenter = (_lightBarList[j].top + _lightBarList[j].bottom) / 2;
-            if (fabs(Icenter.y - Jcenter.y) * 2 / (Isize + Jsize) > maxLightDy)	continue;
-            if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis)	continue;
+            if (fabs(Icenter.y - Jcenter.y) * 2 / (Isize + Jsize) > maxLightDy)    continue;
+            if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis)    continue;
 
             // 数字识别部分（暂时放这，可能会挪到运动模型那去）
             ArmorPlate armor(_lightBarList[i], _lightBarList[j]);
@@ -142,7 +142,7 @@ std::vector<ArmorPlate> ArmorIdentifier_V2::Identify(const cv::Mat& imgThre, con
             circle(debugCanvas.lightbar.GetMat(), lightBar.bottom, 2, COLOR_PINK, 2);
             auto angle = std::to_string(lightBar.angle); angle.resize(4);
             //TextFormat(angle).SetFontScale(0.5)
-            //	.Draw(img, lightBar._bottom, COLOR_YELLOW, Direction::BOTTOM_RIGHT);
+            //    .Draw(img, lightBar._bottom, COLOR_YELLOW, Direction::BOTTOM_RIGHT);
             putText(debugCanvas.lightbar.GetMat(), angle, lightBar.bottom, 0, 0.5, COLOR_YELLOW);
         }
     }

@@ -4,38 +4,38 @@ using namespace cv;
 #if DEBUG_PARA == 1
 // Function Implementations
 void AddTrackbar(const cv::String& trackbarname, int* value, int count,
-	const cv::String& winname, cv::TrackbarCallback onChange)
+    const cv::String& winname, cv::TrackbarCallback onChange)
 {
-	createTrackbar(trackbarname, winname, value, count, onChange);
+    createTrackbar(trackbarname, winname, value, count, onChange);
 }
 
 class DoubleTrackBarCB {
-	double* _value;
-	int _div, _setValue;
+    double* _value;
+    int _div, _setValue;
 public:
-	DoubleTrackBarCB(double* value, int div, int setValue) :
-		_value(value), _div(div), _setValue(setValue) {}
+    DoubleTrackBarCB(double* value, int div, int setValue) :
+        _value(value), _div(div), _setValue(setValue) {}
 
-	static void CallBackFunc(int pos, void* data) {
-		DoubleTrackBarCB* _this = static_cast<DoubleTrackBarCB*>(data);
-		*(_this->_value) = static_cast<double>(pos) / _this->_div;
-	}
-	friend void AddTrackbar(const cv::String& trackbarname,
-		double* value, int div, int count, const cv::String& winname);
+    static void CallBackFunc(int pos, void* data) {
+        DoubleTrackBarCB* _this = static_cast<DoubleTrackBarCB*>(data);
+        *(_this->_value) = static_cast<double>(pos) / _this->_div;
+    }
+    friend void AddTrackbar(const cv::String& trackbarname,
+        double* value, int div, int count, const cv::String& winname);
 };
 
 void AddTrackbar(const cv::String& trackbarname,
-	double* value, int div, int count, const cv::String& winname)
+    double* value, int div, int count, const cv::String& winname)
 {
-	// 因为只创建一次，生命周期为整个程序运行周期，这个new没有对应的delete
-	// 如需修改，需要加入后即不变物理地址的容器来管理内存，否则TrackBar拿到的指针地址不安全
-	DoubleTrackBarCB* doubleCB = new DoubleTrackBarCB(value, div, *value * div);
-	createTrackbar(trackbarname, winname, &doubleCB->_setValue, count * div,
-		DoubleTrackBarCB::CallBackFunc, doubleCB);
+    // 因为只创建一次，生命周期为整个程序运行周期，这个new没有对应的delete
+    // 如需修改，需要加入后即不变物理地址的容器来管理内存，否则TrackBar拿到的指针地址不安全
+    DoubleTrackBarCB* doubleCB = new DoubleTrackBarCB(value, div, *value * div);
+    createTrackbar(trackbarname, winname, &doubleCB->_setValue, count * div,
+        DoubleTrackBarCB::CallBackFunc, doubleCB);
 }
 
 void DebugImg(const cv::String& winname, cv::InputArray mat) {
-	imshow(winname, mat); waitKey(1);
+    imshow(winname, mat); waitKey(1);
 }
 #endif
 
@@ -45,21 +45,21 @@ namedWindow(TRACKBAR_NAME, WINDOW_NORMAL);
 /// Special init for different team
 switch (team) {
 case Red: // ===== BULE Light =====
-	AddTrackbar("BHmin", &BHmin, 180);
-	AddTrackbar("BHmax", &BHmax, 180);
-	AddTrackbar("BSmin", &BSmin, 255);
-	AddTrackbar("BSmax", &BSmax, 255);
-	AddTrackbar("BVmin", &BVmin, 255);
-	AddTrackbar("BVmax", &BVmax, 255);
-	break;
+    AddTrackbar("BHmin", &BHmin, 180);
+    AddTrackbar("BHmax", &BHmax, 180);
+    AddTrackbar("BSmin", &BSmin, 255);
+    AddTrackbar("BSmax", &BSmax, 255);
+    AddTrackbar("BVmin", &BVmin, 255);
+    AddTrackbar("BVmax", &BVmax, 255);
+    break;
 case Blue: // ===== RED Light =====
-	AddTrackbar("RHmaxL", &RHmaxL, 180);
-	AddTrackbar("RHminR", &RHminR, 180);
-	AddTrackbar("RSmin", &RSmin, 255);
-	AddTrackbar("RSmax", &RSmax, 255);
-	AddTrackbar("RVmin", &RVmin, 255);
-	AddTrackbar("RVmax", &RVmax, 255);
-	break;
+    AddTrackbar("RHmaxL", &RHmaxL, 180);
+    AddTrackbar("RHminR", &RHminR, 180);
+    AddTrackbar("RSmin", &RSmin, 255);
+    AddTrackbar("RSmax", &RSmax, 255);
+    AddTrackbar("RVmin", &RVmin, 255);
+    AddTrackbar("RVmax", &RVmax, 255);
+    break;
 default: throw_with_trace(std::runtime_error, "Unkown Team Id!");
 }
 
@@ -110,27 +110,27 @@ maxMalposition = 0.7, maxLightDy = 0.9, bigArmorDis = 3.5;
 
 /* PNP Parameters */
 // 注意两个相机矩阵的重标定
-//double CameraMatrixData[3][3] = {	1867.490995615071, 0, 469.7628091162226, \
-//									0, 1873.208292955122, 464.9909258534828, \
-//									0, 0, 1 };
+//double CameraMatrixData[3][3] = {    1867.490995615071, 0, 469.7628091162226, \
+//                                    0, 1873.208292955122, 464.9909258534828, \
+//                                    0, 0, 1 };
 double CameraMatrixData[3][3] = { 1.722231837421459e+03, 0, 7.013056440882832e+02, \
-									0, 1.724876404292754e+03, 5.645821718351237e+02, \
-									0, 0, 1 };
+                                    0, 1.724876404292754e+03, 5.645821718351237e+02, \
+                                    0, 0, 1 };
 //double DistCoeffsData[1][5] = { 0.02620928720926602, -0.01944757276326156, \
-//				0.009617926923965665, 0.0004854948878220314, -2.381184392406337 };
+//                0.009617926923965665, 0.0004854948878220314, -2.381184392406337 };
 double DistCoeffsData[1][5] = { -0.064232403853946, -0.087667493884102, 0, 0, 0.792381808294582 };
-const Mat	CameraMatrix(3, 3, CV_64F, CameraMatrixData), DistCoeffs(1, 5, CV_64F, DistCoeffsData);
-const int	NormalArmorWidth = 134, NormalArmorHeight = 56, LargerArmorWidth = 230, LargerArmorHeight = 56;
+const Mat    CameraMatrix(3, 3, CV_64F, CameraMatrixData), DistCoeffs(1, 5, CV_64F, DistCoeffsData);
+const int    NormalArmorWidth = 134, NormalArmorHeight = 56, LargerArmorWidth = 230, LargerArmorHeight = 56;
 const std::vector<Point3f>
-	NormalArmor3f = {
-	/*Top Left*/	 Point3f(-0.5 * NormalArmorWidth,	0.5 * NormalArmorHeight ,	0.0f),
-	/*Bottom Left*/	 Point3f(-0.5 * NormalArmorWidth,	-0.5 * NormalArmorHeight,	0.0f),
-	/*Bottom Right*/ Point3f(0.5 * NormalArmorWidth ,	-0.5 * NormalArmorHeight,	0.0f),
-	/*Top Right*/	 Point3f(0.5 * NormalArmorWidth ,	0.5 * NormalArmorHeight ,	0.0f) },
-	LargeArmor3f = { Point3f(-0.5 * LargerArmorWidth,	0.5 * LargerArmorHeight ,	0.0f),
-					 Point3f(-0.5 * LargerArmorWidth,	-0.5 * LargerArmorHeight,	0.0f),
-					 Point3f(0.5 * LargerArmorWidth ,	-0.5 * LargerArmorHeight,	0.0f),
-					 Point3f(0.5 * LargerArmorWidth ,	0.5 * LargerArmorHeight ,	0.0f) };
+    NormalArmor3f = {
+    /*Top Left*/     Point3f(-0.5 * NormalArmorWidth,    0.5 * NormalArmorHeight ,    0.0f),
+    /*Bottom Left*/     Point3f(-0.5 * NormalArmorWidth,    -0.5 * NormalArmorHeight,    0.0f),
+    /*Bottom Right*/ Point3f(0.5 * NormalArmorWidth ,    -0.5 * NormalArmorHeight,    0.0f),
+    /*Top Right*/     Point3f(0.5 * NormalArmorWidth ,    0.5 * NormalArmorHeight ,    0.0f) },
+    LargeArmor3f = { Point3f(-0.5 * LargerArmorWidth,    0.5 * LargerArmorHeight ,    0.0f),
+                     Point3f(-0.5 * LargerArmorWidth,    -0.5 * LargerArmorHeight,    0.0f),
+                     Point3f(0.5 * LargerArmorWidth ,    -0.5 * LargerArmorHeight,    0.0f),
+                     Point3f(0.5 * LargerArmorWidth ,    0.5 * LargerArmorHeight ,    0.0f) };
 
 /* AttitudeSolution Parameters */
 

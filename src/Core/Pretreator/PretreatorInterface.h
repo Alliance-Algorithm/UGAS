@@ -5,7 +5,7 @@ Latest Update: 2022/10/13
 Developer(s): 21-THY
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- �ṩͼƬԤ������Ľӿ�
+- 提供图片预处理类的接口
 */
 
 #include <tuple>
@@ -14,7 +14,7 @@ Header Functions:
 
 class PretreatorInterface {
 public:
-	virtual ~PretreatorInterface() = default;
+    virtual ~PretreatorInterface() = default;
 
-	virtual std::tuple<cv::Mat, cv::Mat> GetPretreated(const cv::Mat& img) const = 0;
+    virtual std::tuple<cv::Mat, cv::Mat> GetPretreated(const cv::Mat& img) const = 0;
 };

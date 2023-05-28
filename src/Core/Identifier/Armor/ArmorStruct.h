@@ -5,7 +5,7 @@ Latest Update: 2022/10/13
 Developer(s): 22-QZH
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ×°¼×°åºÍµÆÌõµÄÊı¾İ½á¹¹
+- è£…ç”²æ¿å’Œç¯æ¡çš„æ•°æ®ç»“æ„
 */
 
 #include <opencv2/opencv.hpp>
@@ -13,58 +13,58 @@ Header Functions:
 #include "Util/Debug/Log.h"
 
 struct LightBar {
-	cv::Point2f top, bottom;
-	float angle;
+    cv::Point2f top, bottom;
+    float angle;
 
-	// Õâ¸ö×Ô¶¯¼ÆËãAngleµÄÊµÏÖÒªºÍÊ¶±ğµÄµØ·½±íÊ¾·½Ê½Í¬²½
-	// ¿´¿´Ê²Ã´Ê±ºò¸ã¸öÍ³Ò»µÄ±ê×¼»¹ÊÇÔõÃ´£¬ÏÈ²»ÊµÏÖÕâ¸ö¹¹Ôì
-	// ToDo:¸ÄÕâÀï
-	// LightBar(cv::Point2f _top, cv::Point2f _bottom);
-	LightBar(cv::Point2f _top, cv::Point2f _bottom, float angle) :
-		top(_top), bottom(_bottom), angle(angle) {}
+    // è¿™ä¸ªè‡ªåŠ¨è®¡ç®—Angleçš„å®ç°è¦å’Œè¯†åˆ«çš„åœ°æ–¹è¡¨ç¤ºæ–¹å¼åŒæ­¥
+    // çœ‹çœ‹ä»€ä¹ˆæ—¶å€™æä¸ªç»Ÿä¸€çš„æ ‡å‡†è¿˜æ˜¯æ€ä¹ˆï¼Œå…ˆä¸å®ç°è¿™ä¸ªæ„é€ 
+    // ToDo:æ”¹è¿™é‡Œ
+    // LightBar(cv::Point2f _top, cv::Point2f _bottom);
+    LightBar(cv::Point2f _top, cv::Point2f _bottom, float angle) :
+        top(_top), bottom(_bottom), angle(angle) {}
 };
 
 
 enum class ArmorID : uint8_t {
-	Unknown = 0,             // ÎŞ·¨Ê¶±ğ
-	Hero = 1,                // Ó¢ĞÛ
-	Engineer = 2,            // ¹¤³Ì
-	InfantryIII = 3,         // ÈıºÅ²½±ø
-	InfantryIV = 4,          // ËÄºÅ²½±ø
-	InfantryV = 5,           // ÎåºÅ²½±ø
-	Sentinel = 6,            // ÉÚ±ø
+    Unknown = 0,             // æ— æ³•è¯†åˆ«
+    Hero = 1,                // è‹±é›„
+    Engineer = 2,            // å·¥ç¨‹
+    InfantryIII = 3,         // ä¸‰å·æ­¥å…µ
+    InfantryIV = 4,          // å››å·æ­¥å…µ
+    InfantryV = 5,           // äº”å·æ­¥å…µ
+    Sentinel = 6,            // å“¨å…µ
 };
 
 struct ArmorPlate {
-	ArmorPlate(const LightBar& left, const LightBar& right, ArmorID armorId = ArmorID::Unknown, bool isLargeArmor = false) : id(armorId), is_large_armor(isLargeArmor) {
-		// ÀÏ´úÂë´«³ĞµÄË³Ğò£ºU×ÖĞÍ£¨ºÍPNP²ÎÊı±íÊ¾Ë³ĞòÍ¬²½£©
-		// ¸úopencvÊ¹ÓÃµÄË³Ğò²»Í¬£¬ºóÃæÒª¸Äµô£¨Èı¸öµØ·½£º×°¼×°å²ÎÊı¡¢Êı×ÖÊ¶±ğ¡¢PNP²¿·Ö)
-		points.push_back(left.top); points.push_back(left.bottom);
-		points.push_back(right.bottom); points.push_back(right.top);
-	}
+    ArmorPlate(const LightBar& left, const LightBar& right, ArmorID armorId = ArmorID::Unknown, bool isLargeArmor = false) : id(armorId), is_large_armor(isLargeArmor) {
+        // è€ä»£ç ä¼ æ‰¿çš„é¡ºåºï¼šUå­—å‹ï¼ˆå’ŒPNPå‚æ•°è¡¨ç¤ºé¡ºåºåŒæ­¥ï¼‰
+        // è·Ÿopencvä½¿ç”¨çš„é¡ºåºä¸åŒï¼Œåé¢è¦æ”¹æ‰ï¼ˆä¸‰ä¸ªåœ°æ–¹ï¼šè£…ç”²æ¿å‚æ•°ã€æ•°å­—è¯†åˆ«ã€PNPéƒ¨åˆ†)
+        points.push_back(left.top); points.push_back(left.bottom);
+        points.push_back(right.bottom); points.push_back(right.top);
+    }
 
-	// U×ÖĞÍ£¨ºÍPNP²ÎÊı±íÊ¾Ë³ĞòÍ¬²½£¨ÀÏ´úÂë´«³ĞµÄË³Ğò£©£©
-	/*void Set(const LightBar& left, const LightBar& right, short _id = 0) {
-		points.push_back(left.top); points.push_back(left.bottom);
-		points.push_back(right.bottom); points.push_back(right.top);
-		if (_id) id = _id;
-	}*/
-	
-	cv::Point2f center() const {
-		if (points.size() != 4)
-			throw_with_trace(std::runtime_error, "Invalid ArmorPlate object");
-		return (points[0] + points[1] + points[2] + points[3]) / 4;
-	}
+    // Uå­—å‹ï¼ˆå’ŒPNPå‚æ•°è¡¨ç¤ºé¡ºåºåŒæ­¥ï¼ˆè€ä»£ç ä¼ æ‰¿çš„é¡ºåºï¼‰ï¼‰
+    /*void Set(const LightBar& left, const LightBar& right, short _id = 0) {
+        points.push_back(left.top); points.push_back(left.bottom);
+        points.push_back(right.bottom); points.push_back(right.top);
+        if (_id) id = _id;
+    }*/
+    
+    cv::Point2f center() const {
+        if (points.size() != 4)
+            throw_with_trace(std::runtime_error, "Invalid ArmorPlate object");
+        return (points[0] + points[1] + points[2] + points[3]) / 4;
+    }
 
-	/*std::vector<cv::Point2f> OffsetPoints(const cv::Point2f offset) const {
-		std::vector<cv::Point2f> offsetPoints;
-		for_each(points.begin(), points.end(), [&](const cv::Point2f& point) {
-			offsetPoints.push_back(point + offset);
-		});
-		return offsetPoints;
-	}*/
+    /*std::vector<cv::Point2f> OffsetPoints(const cv::Point2f offset) const {
+        std::vector<cv::Point2f> offsetPoints;
+        for_each(points.begin(), points.end(), [&](const cv::Point2f& point) {
+            offsetPoints.push_back(point + offset);
+        });
+        return offsetPoints;
+    }*/
 
-	std::vector<cv::Point2f> points;
-	ArmorID id;
-	bool is_large_armor;
+    std::vector<cv::Point2f> points;
+    ArmorID id;
+    bool is_large_armor;
 };

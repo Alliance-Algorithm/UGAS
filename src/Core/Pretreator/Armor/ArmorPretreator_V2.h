@@ -13,12 +13,12 @@ Header Functions:
 
 class ArmorPretreator_V2 : public PretreatorInterface {
 public:
-	ArmorPretreator_V2();
-	std::tuple<cv::Mat, cv::Mat> GetPretreated(const cv::Mat& img) const override;
+    ArmorPretreator_V2();
+    std::tuple<cv::Mat, cv::Mat> GetPretreated(const cv::Mat& img) const override;
 
 private:
-	ColorIdentifier_V1 _colorIdentifier;
+    ColorIdentifier_V1 _colorIdentifier;
 
     inline void LoopPixel(const uchar* src, uchar* dst, int n) const;
-	inline void Threshold(const cv::Mat& src, cv::Mat& dst) const;
+    inline void Threshold(const cv::Mat& src, cv::Mat& dst) const;
 };

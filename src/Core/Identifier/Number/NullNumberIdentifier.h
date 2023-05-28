@@ -14,8 +14,8 @@ class ArmorPlate;
 
 class NullNumberIdentifier : public NumberIdentifierInterface {
 public:
-	void init(void*) {}
-	short Identify(const cv::Mat& imgGray, const ArmorPlate& region) {
-		return static_cast<short>(5);
-	}
+    void init(void*) {}
+    short Identify(const cv::Mat& imgGray, const ArmorPlate& region) {
+        return static_cast<short>(5);
+    }
 };

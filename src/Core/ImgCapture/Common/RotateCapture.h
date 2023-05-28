@@ -5,8 +5,8 @@ Latest Update: 2023/03/21
 Developer(s): 22-QZH
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Ìá¹©¶ÔÈÎÒâImgCaptureÀàµÄ·â×°£¬ÔÚÔ­CaptureÀàµÄ»ù´¡ÉÏÔö¼ÓĞı×ªÍ¼Ïñ¹¦ÄÜ
-- Ê¹ÓÃ·½·¨(ÒÔCVVideoCaptureÀàÎªÀı):
+- æä¾›å¯¹ä»»æ„ImgCaptureç±»çš„å°è£…ï¼Œåœ¨åŸCaptureç±»çš„åŸºç¡€ä¸Šå¢åŠ æ—‹è½¬å›¾åƒåŠŸèƒ½
+- ä½¿ç”¨æ–¹æ³•(ä»¥CVVideoCaptureç±»ä¸ºä¾‹):
 - ResizeCapture<CVVideoCapture> capture(0.5, "Blue_4.mp4");                //
 */
 
@@ -15,26 +15,26 @@ Header Functions:
 template<typename CaptureType>
 class RotateCapture : public CaptureType {
 public:
-	cv::RotateFlags _rotateFlag;
+    cv::RotateFlags _rotateFlag;
 
-	RotateCapture() = delete;
+    RotateCapture() = delete;
 
-	template<typename... Types>
-	RotateCapture(cv::RotateFlags rotateFlag, Types&&... args) : CaptureType(std::forward<Types>(args)...) {
-		_rotateFlag = rotateFlag;
-	}
+    template<typename... Types>
+    RotateCapture(cv::RotateFlags rotateFlag, Types&&... args) : CaptureType(std::forward<Types>(args)...) {
+        _rotateFlag = rotateFlag;
+    }
 
-	RotateCapture(const RotateCapture&) = delete;
-	RotateCapture(RotateCapture&&) = delete;
+    RotateCapture(const RotateCapture&) = delete;
+    RotateCapture(RotateCapture&&) = delete;
 
-	std::tuple<cv::Mat, TimeStamp> Read() override {
-		auto tuple = CaptureType::Read();
-		if constexpr (debugCanvas.master) {
-			if (debugCanvas.master.DebugFrameHandler.Paused)
-				return tuple;
-		}
-		auto& [mat, timestamp] = tuple;
-		cv::rotate(mat, mat, _rotateFlag);
-		return tuple;
-	}
+    std::tuple<cv::Mat, TimeStamp> Read() override {
+        auto tuple = CaptureType::Read();
+        if constexpr (debugCanvas.master) {
+            if (debugCanvas.master.DebugFrameHandler.Paused)
+                return tuple;
+        }
+        auto& [mat, timestamp] = tuple;
+        cv::rotate(mat, mat, _rotateFlag);
+        return tuple;
+    }
 };

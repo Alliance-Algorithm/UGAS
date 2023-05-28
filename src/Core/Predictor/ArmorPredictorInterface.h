@@ -5,8 +5,8 @@ Latest Update: 2023/03/31
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- ×°¼×°åÔ¤²âÆ÷½Ó¿ÚÀà
-- ÊäÈëÎªÊı¸ö×°¼×°å»úÆ÷ÈË±¾Ìå×ø±ê
+- è£…ç”²æ¿é¢„æµ‹å™¨æ¥å£ç±»
+- è¾“å…¥ä¸ºæ•°ä¸ªè£…ç”²æ¿æœºå™¨äººæœ¬ä½“åæ ‡
 */
 
 #include <vector>
@@ -15,7 +15,7 @@ Header Functions:
 
 class ArmorPredictorInterface final {
 public:
-	virtual ~ArmorPredictorInterface() = default;
+    virtual ~ArmorPredictorInterface() = default;
 
-	virtual void GetPredicted(const std::vector<ArmorPlate3d>&) = 0;
+    virtual void GetPredicted(const std::vector<ArmorPlate3d>&) = 0;
 };

@@ -102,4 +102,7 @@
     <Library Include="src\ThirdParty\HTCameraSDK\Windows\MVCAMSDK.lib" />
     <Library Include="src\ThirdParty\HikCameraSDK\Windows\MvCameraControl.lib" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
 </Project>

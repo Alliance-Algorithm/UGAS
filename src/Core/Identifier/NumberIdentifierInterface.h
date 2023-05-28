@@ -14,7 +14,7 @@ Header Functions:
 
 class NumberIdentifierInterface {
 public:
-	virtual ~NumberIdentifierInterface() = default;
+    virtual ~NumberIdentifierInterface() = default;
 
-	virtual short Identify(const cv::Mat& imgGray, const ArmorPlate& region) = 0;
+    virtual short Identify(const cv::Mat& imgGray, const ArmorPlate& region) = 0;
 };

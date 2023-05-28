@@ -15,15 +15,15 @@ Header Functions:
 
 class ArmorIdentifier_V1 : public ArmorIdentifierInterface {
 private:
-	NumberIdentifierInterface& _numberIdentifier;
+    NumberIdentifierInterface& _numberIdentifier;
 
-	std::vector<LightBar> _lightBars;
+    std::vector<LightBar> _lightBars;
 
-	void FindLightBars(const cv::Mat& imgThre);
-	std::vector<ArmorPlate> FindArmorPlates(const cv::Mat& imgGray);
+    void FindLightBars(const cv::Mat& imgThre);
+    std::vector<ArmorPlate> FindArmorPlates(const cv::Mat& imgGray);
 
 public:
-	ArmorIdentifier_V1(NumberIdentifierInterface& numberIdentifier) : _numberIdentifier(numberIdentifier) { }
+    ArmorIdentifier_V1(NumberIdentifierInterface& numberIdentifier) : _numberIdentifier(numberIdentifier) { }
 
-	std::vector<ArmorPlate> Identify(const cv::Mat& imgThre, const cv::Mat& imgGray);
+    std::vector<ArmorPlate> Identify(const cv::Mat& imgThre, const cv::Mat& imgGray);
 };

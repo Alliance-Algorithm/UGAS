@@ -16,11 +16,11 @@ Header Functions:
 
 class NumberIdentifier_V1 {
 private:
-	cv::dnn::Net _net;
+    cv::dnn::Net _net;
 public:
-	explicit NumberIdentifier_V1(const char* model);
-	NumberIdentifier_V1(const NumberIdentifier_V1&) = delete;
-	NumberIdentifier_V1(NumberIdentifier_V1&&) = delete;
+    explicit NumberIdentifier_V1(const char* model);
+    NumberIdentifier_V1(const NumberIdentifier_V1&) = delete;
+    NumberIdentifier_V1(NumberIdentifier_V1&&) = delete;
 
-	bool Identify(const cv::Mat& imgGray, ArmorPlate& armor);
+    bool Identify(const cv::Mat& imgGray, ArmorPlate& armor);
 };

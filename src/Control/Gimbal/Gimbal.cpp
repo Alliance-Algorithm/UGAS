@@ -31,77 +31,77 @@
 #include "Util/Debug/MatForm/RectangleControl.hpp"
 
 void Gimbal::Always() {
-	auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
-	//auto imgCapture = CVVideoCapture("Blue_4.mp4");
+    auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
+    //auto imgCapture = CVVideoCapture("Blue_4.mp4");
 
-	auto hipnuc = HiPNUC("COM10");
-	//auto cboard = CBoardInfantry("COM22");
-	auto cboard = VirtualCBoard();
+    auto hipnuc = HiPNUC("COM10");
+    //auto cboard = CBoardInfantry("COM22");
+    auto cboard = VirtualCBoard();
 
-	auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV3.pb");
+    auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV3.pb");
 
-	//auto pnpSolver = ArmorPnPSolver_V1();
-	auto pnpSolver = ArmorPnPSolver();
-	auto armorPredictor = SimplePredictor();
-	auto strategy = Strategy_V1();
-	auto trajectory = Trajectory_V1();
+    //auto pnpSolver = ArmorPnPSolver_V1();
+    auto pnpSolver = ArmorPnPSolver();
+    auto armorPredictor = SimplePredictor();
+    auto strategy = Strategy_V1();
+    auto trajectory = Trajectory_V1();
 
-	auto fps = FPSCounter_V2();
+    auto fps = FPSCounter_V2();
 
-	while (true) {
-		try {
+    while (true) {
+        try {
 
-			cboard.Receive();
-			auto [img, timeStamp] = imgCapture.Read();
-			auto transformer = hipnuc.GetTransformer();
+            cboard.Receive();
+            auto [img, timeStamp] = imgCapture.Read();
+            auto transformer = hipnuc.GetTransformer();
 
-			if constexpr (debugCanvas.master) {
-				debugCanvas.master.LoadMat(img);
-			}
+            if constexpr (debugCanvas.master) {
+                debugCanvas.master.LoadMat(img);
+            }
 
-			auto armors = armorIdentifier.Identify(img, cboard.GetEnemyColor());
-			auto armors3d = std::vector<ArmorPlate3d>();
+            auto armors = armorIdentifier.Identify(img, cboard.GetEnemyColor());
+            auto armors3d = std::vector<ArmorPlate3d>();
 
-			if (transformer.Available()) {
-				// Õ”¬›“«π§◊˜’˝≥£
-				auto armors3d = pnpSolver.SolveAll(armors, transformer);
-				if (auto target = armorPredictor.Update(armors3d, std::chrono::steady_clock::now())) {
-					auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed(), transformer);
-					yaw += 0.0 / 180.0 * MathConsts::Pi;;
-					pitch += -0.5 / 180.0 * MathConsts::Pi;
-					cboard.SendUAV(yaw, pitch);
-				}
-				else {
-					cboard.SendUAV(0, 0);
-				}
-			}
-			else {
-				// Õ”¬›“«π§◊˜≤ª’˝≥££¨≤…”√µÕ±£‘À––ƒ£ Ω
-				auto armors3d = pnpSolver.SolveAll(armors);
-				if (auto target = armorPredictor.Update(armors3d, std::chrono::steady_clock::now())) {
-					auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed());
-					yaw += 0.0 / 180.0 * MathConsts::Pi;
-					pitch += 1.7 / 180.0 * MathConsts::Pi;
-					cboard.SendUAV(yaw, pitch);
-				}
-				else {
-					cboard.SendUAV(0, 0);
-				}
-			}
-			
+            if (transformer.Available()) {
+                // ÈôÄËû∫‰ª™Â∑•‰ΩúÊ≠£Â∏∏
+                auto armors3d = pnpSolver.SolveAll(armors, transformer);
+                if (auto target = armorPredictor.Update(armors3d, std::chrono::steady_clock::now())) {
+                    auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed(), transformer);
+                    yaw += 0.0 / 180.0 * MathConsts::Pi;;
+                    pitch += -0.5 / 180.0 * MathConsts::Pi;
+                    cboard.SendUAV(yaw, pitch);
+                }
+                else {
+                    cboard.SendUAV(0, 0);
+                }
+            }
+            else {
+                // ÈôÄËû∫‰ª™Â∑•‰Ωú‰∏çÊ≠£Â∏∏ÔºåÈááÁî®‰Ωé‰øùËøêË°åÊ®°Âºè
+                auto armors3d = pnpSolver.SolveAll(armors);
+                if (auto target = armorPredictor.Update(armors3d, std::chrono::steady_clock::now())) {
+                    auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed());
+                    yaw += 0.0 / 180.0 * MathConsts::Pi;
+                    pitch += 1.7 / 180.0 * MathConsts::Pi;
+                    cboard.SendUAV(yaw, pitch);
+                }
+                else {
+                    cboard.SendUAV(0, 0);
+                }
+            }
+            
 
-			if constexpr (DEBUG_IMG) {
-				debugCanvas.ShowAll();
-				cv::waitKey(1);
-			}
+            if constexpr (DEBUG_IMG) {
+                debugCanvas.ShowAll();
+                cv::waitKey(1);
+            }
 
-			if (fps.Count()) {
-				std::cout << "Fps: " << fps.GetFPS() << '\n';				
-			}
-		}
-		catch (const char* str) { // ÷ÿ∞¸◊∞“Ï≥£
-			throw_with_trace(std::runtime_error, str);
-		}
-	}
+            if (fps.Count()) {
+                std::cout << "Fps: " << fps.GetFPS() << '\n';                
+            }
+        }
+        catch (const char* str) { // ÈáçÂåÖË£ÖÂºÇÂ∏∏
+            throw_with_trace(std::runtime_error, str);
+        }
+    }
 
 }

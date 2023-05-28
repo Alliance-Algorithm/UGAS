@@ -5,10 +5,10 @@ Latest Update: 2023/03/21
 Developer(s): 22-QZH
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-- Ìá¹©¶ÔÈÎÒâImgCaptureÀàµÄ·â×°£¬ÔÚÔ­CaptureÀàµÄ»ù´¡ÉÏÔö¼Ó¸ü¸Ä´óĞ¡¹¦ÄÜ
-- Ê¹ÓÃ·½·¨(ÒÔCVVideoCaptureÀàÎªÀı):
-- ResizeCapture<CVVideoCapture> capture(0.5, "Blue_4.mp4");                //°ÑÔ­Í¼ÏñµÈ±ÈËõ·Åµ½Ô­À´µÄ0.5±¶
-- ResizeCapture<CVVideoCapture> capture(cv::Size(640, 480), "Blue_4.mp4"); //°ÑÔ­Í¼ÏñËõ·Åµ½(640, 480)´óĞ¡
+- æä¾›å¯¹ä»»æ„ImgCaptureç±»çš„å°è£…ï¼Œåœ¨åŸCaptureç±»çš„åŸºç¡€ä¸Šå¢åŠ æ›´æ”¹å¤§å°åŠŸèƒ½
+- ä½¿ç”¨æ–¹æ³•(ä»¥CVVideoCaptureç±»ä¸ºä¾‹):
+- ResizeCapture<CVVideoCapture> capture(0.5, "Blue_4.mp4");                //æŠŠåŸå›¾åƒç­‰æ¯”ç¼©æ”¾åˆ°åŸæ¥çš„0.5å€
+- ResizeCapture<CVVideoCapture> capture(cv::Size(640, 480), "Blue_4.mp4"); //æŠŠåŸå›¾åƒç¼©æ”¾åˆ°(640, 480)å¤§å°
 */
 
 #include <opencv2/opencv.hpp>
@@ -16,31 +16,31 @@ Header Functions:
 template<typename CaptureType>
 class ResizeCapture : public CaptureType {
 public:
-	double _ratio;
-	cv::Size _targetSize;
+    double _ratio;
+    cv::Size _targetSize;
 
-	ResizeCapture() = delete;
+    ResizeCapture() = delete;
 
-	template<typename... Types>
-	ResizeCapture(double ratio, Types&&... args) : CaptureType(std::forward<Types>(args)...) {
-		_ratio = ratio;
-		_targetSize = cv::Size(0, 0);
-	}
+    template<typename... Types>
+    ResizeCapture(double ratio, Types&&... args) : CaptureType(std::forward<Types>(args)...) {
+        _ratio = ratio;
+        _targetSize = cv::Size(0, 0);
+    }
 
-	template<typename... Types>
-	ResizeCapture(cv::Size targetSize, Types&&... args) : CaptureType(std::forward<Types>(args)...) {
-		_ratio = 0.0;
-		_targetSize = targetSize;
-	}
+    template<typename... Types>
+    ResizeCapture(cv::Size targetSize, Types&&... args) : CaptureType(std::forward<Types>(args)...) {
+        _ratio = 0.0;
+        _targetSize = targetSize;
+    }
 
-	ResizeCapture(const ResizeCapture&) = delete;
-	ResizeCapture(ResizeCapture&&) = delete;
+    ResizeCapture(const ResizeCapture&) = delete;
+    ResizeCapture(ResizeCapture&&) = delete;
 
 
-	std::tuple<cv::Mat, TimeStamp> Read() override {
-		auto tuple = CaptureType::Read();
-		auto& [mat, timestamp] = tuple;
-		cv::resize(mat, mat, _targetSize, _ratio, _ratio);
-		return tuple;
-	}
+    std::tuple<cv::Mat, TimeStamp> Read() override {
+        auto tuple = CaptureType::Read();
+        auto& [mat, timestamp] = tuple;
+        cv::resize(mat, mat, _targetSize, _ratio, _ratio);
+        return tuple;
+    }
 };

@@ -5,7 +5,7 @@ Latest Update: 2023/05/26
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-×î»ù´¡µÄ×ø±êÏµ×ª»»Æ÷£¬²»Ê¹ÓÃÍÓÂİÒÇ£¬¶øÊÇÀíÏëµØÈÏÎªÏà»ú¹âĞÄË®Æ½ÓÚÄ¿±ê×°¼×°åÖĞĞÄ£¬ÀíÏëµØÈÏÎªÏà»ú¹âĞÄ¡¢ÔÆÌ¨ÖĞĞÄºÍµ¯Íè·¢ÉäµãÖØºÏ¡£
+æœ€åŸºç¡€çš„åæ ‡ç³»è½¬æ¢å™¨ï¼Œä¸ä½¿ç”¨é™€èºä»ªï¼Œè€Œæ˜¯ç†æƒ³åœ°è®¤ä¸ºç›¸æœºå…‰å¿ƒæ°´å¹³äºç›®æ ‡è£…ç”²æ¿ä¸­å¿ƒï¼Œç†æƒ³åœ°è®¤ä¸ºç›¸æœºå…‰å¿ƒã€äº‘å°ä¸­å¿ƒå’Œå¼¹ä¸¸å‘å°„ç‚¹é‡åˆã€‚
 */
 
 #include <Eigen/Dense> 
@@ -13,39 +13,39 @@ Header Functions:
 
 class SimpleTransformer {
 public:
-	/*! ´«ÈëÏà»ú×ø±êÏµÏÂµÄ×°¼×°åÈıÎ¬×ø±ê£¬Í¨¹ıÀíÏëµØÈÏÎªÏà»ú¹âĞÄË®Æ½ÓÚÄ¿±ê×°¼×°åÖĞĞÄ£¬¼ÆËã³öÔÆÌ¨µ±Ç°µÄpitchÖá½Ç¶È£¬ÓÃÓÚ×ø±ê×ª»»¡£
-	* ×¢Òâ£º²»Í¬ÓÚIMUµÃµ½µÄTransformerÃ¿Ö¡Ö»ÓĞÒ»¸öÊµÀı£¬Ò»°ã¶ÔÓÚÃ¿Ò»¸öÊ¶±ğµ½µÄ×°¼×°å£¬¶¼Ó¦¸ÃÊ¹ÓÃÆä¶ÔÓ¦ÊµÀı»¯µÄSimpleTransformer½øĞĞ×ø±ê×ª»»¡£
-	* \param target Ïà»ú×ø±êÏµÏÂµÄ×°¼×°åÈıÎ¬×ø±ê
-	*/
-	explicit SimpleTransformer(const Eigen::Vector3d& target) {
-		pitch = -atan2(target.z(), target.x());
-	}
+    /*! ä¼ å…¥ç›¸æœºåæ ‡ç³»ä¸‹çš„è£…ç”²æ¿ä¸‰ç»´åæ ‡ï¼Œé€šè¿‡ç†æƒ³åœ°è®¤ä¸ºç›¸æœºå…‰å¿ƒæ°´å¹³äºç›®æ ‡è£…ç”²æ¿ä¸­å¿ƒï¼Œè®¡ç®—å‡ºäº‘å°å½“å‰çš„pitchè½´è§’åº¦ï¼Œç”¨äºåæ ‡è½¬æ¢ã€‚
+    * æ³¨æ„ï¼šä¸åŒäºIMUå¾—åˆ°çš„Transformeræ¯å¸§åªæœ‰ä¸€ä¸ªå®ä¾‹ï¼Œä¸€èˆ¬å¯¹äºæ¯ä¸€ä¸ªè¯†åˆ«åˆ°çš„è£…ç”²æ¿ï¼Œéƒ½åº”è¯¥ä½¿ç”¨å…¶å¯¹åº”å®ä¾‹åŒ–çš„SimpleTransformerè¿›è¡Œåæ ‡è½¬æ¢ã€‚
+    * \param target ç›¸æœºåæ ‡ç³»ä¸‹çš„è£…ç”²æ¿ä¸‰ç»´åæ ‡
+    */
+    explicit SimpleTransformer(const Eigen::Vector3d& target) {
+        pitch = -atan2(target.z(), target.x());
+    }
 
-	Eigen::Vector3d CameraLink2GimbalLink(const Eigen::Vector3d& srcPos) const {
-		return srcPos;
-	}
+    Eigen::Vector3d CameraLink2GimbalLink(const Eigen::Vector3d& srcPos) const {
+        return srcPos;
+    }
 
-	Eigen::Vector3d Link2Gyro(const Eigen::Vector3d& srcPos) const {
-		return {
-			srcPos.x() * cos(pitch) - srcPos.z() * sin(pitch),
-			srcPos.y(),
-			srcPos.z() * cos(pitch) + srcPos.x() * sin(pitch)
-		};
-	}
+    Eigen::Vector3d Link2Gyro(const Eigen::Vector3d& srcPos) const {
+        return {
+            srcPos.x() * cos(pitch) - srcPos.z() * sin(pitch),
+            srcPos.y(),
+            srcPos.z() * cos(pitch) + srcPos.x() * sin(pitch)
+        };
+    }
 
-	Eigen::Vector3d Gyro2Link(const Eigen::Vector3d& srcPos) const {
-		return {
-			srcPos.x() * cos(pitch) + srcPos.z() * sin(pitch),
-			srcPos.y(),
-			srcPos.z() * cos(pitch) - srcPos.x() * sin(pitch)
-		};
-	}
+    Eigen::Vector3d Gyro2Link(const Eigen::Vector3d& srcPos) const {
+        return {
+            srcPos.x() * cos(pitch) + srcPos.z() * sin(pitch),
+            srcPos.y(),
+            srcPos.z() * cos(pitch) - srcPos.x() * sin(pitch)
+        };
+    }
 
-	Eigen::Vector3d GimbalGyro2MuzzleGyro(const Eigen::Vector3d& srcPos) const {
-		return srcPos;
-	}
+    Eigen::Vector3d GimbalGyro2MuzzleGyro(const Eigen::Vector3d& srcPos) const {
+        return srcPos;
+    }
 
 private:
-	// ¼ÆËã³öµÄ¼ÙÏëÔÆÌ¨¸©Ñö×ËÌ¬£¬·½Ïò×ñÑ­ÓÒÊÖ¶¨Ôò
-	double pitch;
+    // è®¡ç®—å‡ºçš„å‡æƒ³äº‘å°ä¿¯ä»°å§¿æ€ï¼Œæ–¹å‘éµå¾ªå³æ‰‹å®šåˆ™
+    double pitch;
 };

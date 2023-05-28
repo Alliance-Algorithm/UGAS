@@ -28,9 +28,9 @@ void ArmorPretreator_V2::Threshold(const cv::Mat& src, cv::Mat& dst) const {
 std::tuple<cv::Mat, cv::Mat> ArmorPretreator_V2::GetPretreated(const cv::Mat& img) const {
     std::tuple<cv::Mat, cv::Mat> result;
     auto& [imgThre, imgGray] = result;
-	if (imgThre.empty())
+    if (imgThre.empty())
         imgThre.create(img.size(), CV_8UC1);
-	Threshold(img, imgThre);
+    Threshold(img, imgThre);
     cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
     return result;
 }

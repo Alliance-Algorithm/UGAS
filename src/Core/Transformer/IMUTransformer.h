@@ -5,40 +5,40 @@ Latest Update: 2023/05/26
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
-»ùÓÚIMUµÄ×ø±êÏµ×ª»»Æ÷¡£
+åŸºäºIMUçš„åæ ‡ç³»è½¬æ¢å™¨ã€‚
 */
 
 #include <Eigen/Dense>
 
 class IMUTransformer {
 public:
-	IMUTransformer(const Eigen::Quaterniond& quat, bool available = true) : _transQuat(quat), _available(available) { }
-	IMUTransformer(const Eigen::Quaternionf& quat, bool available = true) : _transQuat(quat), _available(available) { }
+    IMUTransformer(const Eigen::Quaterniond& quat, bool available = true) : _transQuat(quat), _available(available) { }
+    IMUTransformer(const Eigen::Quaternionf& quat, bool available = true) : _transQuat(quat), _available(available) { }
 
-	// ·µ»Ø¸ÃtransformerÊÇ·ñÓĞĞ§£¬ÔÚIMU¶ÏÁª»òÖ¡ÂÊÒì³£Ê±£¬¸Ãº¯ÊıÓ¦·µ»Øfalse
-	bool Available() {
-		return _available;
-	}
+    // è¿”å›è¯¥transformeræ˜¯å¦æœ‰æ•ˆï¼Œåœ¨IMUæ–­è”æˆ–å¸§ç‡å¼‚å¸¸æ—¶ï¼Œè¯¥å‡½æ•°åº”è¿”å›false
+    bool Available() {
+        return _available;
+    }
 
-	Eigen::Vector3d CameraLink2GimbalLink(const Eigen::Vector3d& srcPos) const {
-		return { srcPos.x() + 118.05, srcPos.y() + 67.5, srcPos.z() - 41.7 };
-	}
+    Eigen::Vector3d CameraLink2GimbalLink(const Eigen::Vector3d& srcPos) const {
+        return { srcPos.x() + 118.05, srcPos.y() + 67.5, srcPos.z() - 41.7 };
+    }
 
-	Eigen::Vector3d Link2Gyro(const Eigen::Vector3d& srcPos) const {
-		auto dstPos = _transQuat * Eigen::Quaterniond{ 0, srcPos.x(), srcPos.y(), srcPos.z() } *_transQuat.inverse();
-		return { dstPos.x(), dstPos.y(), dstPos.z() };
-	}
+    Eigen::Vector3d Link2Gyro(const Eigen::Vector3d& srcPos) const {
+        auto dstPos = _transQuat * Eigen::Quaterniond{ 0, srcPos.x(), srcPos.y(), srcPos.z() } *_transQuat.inverse();
+        return { dstPos.x(), dstPos.y(), dstPos.z() };
+    }
 
-	Eigen::Vector3d Gyro2Link(const Eigen::Vector3d& srcPos) const {
-		auto dstPos = _transQuat.inverse() * Eigen::Quaterniond{ 0, srcPos.x(), srcPos.y(), srcPos.z() } *_transQuat;
-		return { dstPos.x(), dstPos.y(), dstPos.z() };
-	}
+    Eigen::Vector3d Gyro2Link(const Eigen::Vector3d& srcPos) const {
+        auto dstPos = _transQuat.inverse() * Eigen::Quaterniond{ 0, srcPos.x(), srcPos.y(), srcPos.z() } *_transQuat;
+        return { dstPos.x(), dstPos.y(), dstPos.z() };
+    }
 
-	Eigen::Vector3d GimbalGyro2MuzzleGyro(const Eigen::Vector3d& srcPos) const {
-		return srcPos - Link2Gyro({ 69.4, 67.5, 0 });
-	}
+    Eigen::Vector3d GimbalGyro2MuzzleGyro(const Eigen::Vector3d& srcPos) const {
+        return srcPos - Link2Gyro({ 69.4, 67.5, 0 });
+    }
 
 private:
-	Eigen::Quaterniond _transQuat;
-	bool _available;
+    Eigen::Quaterniond _transQuat;
+    bool _available;
 };

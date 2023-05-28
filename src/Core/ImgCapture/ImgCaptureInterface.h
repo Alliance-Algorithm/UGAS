@@ -8,9 +8,9 @@ Header Functions:
 - 定义获取图像类的通用接口
 Class public functions:
 - init(void*)
-	初始化图像输入
+    初始化图像输入
 - read(Img&)
-	读取一帧图像，通过修改引用的方式返回结果
+    读取一帧图像，通过修改引用的方式返回结果
 */
 
 #include <opencv2/opencv.hpp>
@@ -19,7 +19,7 @@ Class public functions:
 
 class ImgCaptureInterface {
 public:
-	virtual ~ImgCaptureInterface() = default;
+    virtual ~ImgCaptureInterface() = default;
 
-	virtual std::tuple<cv::Mat, TimeStamp> Read() = 0;
+    virtual std::tuple<cv::Mat, TimeStamp> Read() = 0;
 };

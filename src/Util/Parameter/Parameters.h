@@ -21,10 +21,10 @@ Header Functions:
 
 #if DEBUG_PARA == 1
 // Debug Functions Announcement
-void AddTrackbar(const cv::String& trackbarname, int* value, int count,	// for int var
-	const cv::String& winname = TRACKBAR_NAME, cv::TrackbarCallback onChange = 0);
-void AddTrackbar(const cv::String& trackbarname,						// for double var
-	double* value, int div, int count, const cv::String& winname = TRACKBAR_NAME);
+void AddTrackbar(const cv::String& trackbarname, int* value, int count,    // for int var
+    const cv::String& winname = TRACKBAR_NAME, cv::TrackbarCallback onChange = 0);
+void AddTrackbar(const cv::String& trackbarname,                        // for double var
+    double* value, int div, int count, const cv::String& winname = TRACKBAR_NAME);
 void DebugImg(const cv::String& winname, cv::InputArray mat);
 #endif
 // Initialize Function
@@ -48,7 +48,7 @@ extern int minLightAngle, maxLightAngle;
 
 /* Armor Parameters */
 extern double maxArmorLightRatio, maxdAngle,
-	maxMalposition, maxLightDy, bigArmorDis;
+    maxMalposition, maxLightDy, bigArmorDis;
 
 /* Buff Parameters */
 
@@ -71,43 +71,43 @@ extern const double angleLowest, angleHighest, angleEPS;
 extern const double staticReactionTime;
 
 namespace MathConsts {
-	inline constexpr double Pi = 3.1415926535897;
-	inline constexpr double G = 9.8;
+    inline constexpr double Pi = 3.1415926535897;
+    inline constexpr double G = 9.8;
 };
 
 enum class ArmorColor : uint8_t {
-	Blue = 0, Red = 1
+    Blue = 0, Red = 1
 };
 
 namespace Parameters {
-	inline constexpr ArmorColor DefaultEnemyColor = ArmorColor::Blue;
-	inline constexpr double DefaultBulletSpeed = 28.2;
+    inline constexpr ArmorColor DefaultEnemyColor = ArmorColor::Blue;
+    inline constexpr double DefaultBulletSpeed = 28.2;
 }
 
 /* Colors */
-#define COLOR_RED				cv::Scalar(0	,0		,255)
-#define COLOR_PINK				cv::Scalar(196	,196	,255)
-#define COLOR_DARKRED			cv::Scalar(0	,0		,128)
+#define COLOR_RED                cv::Scalar(0    ,0        ,255)
+#define COLOR_PINK                cv::Scalar(196    ,196    ,255)
+#define COLOR_DARKRED            cv::Scalar(0    ,0        ,128)
 
-#define COLOR_BLUE				cv::Scalar(255	,0		,0)
-#define COLOR_LIGHTBLUE			cv::Scalar(255	,196	,196)
-#define COLOR_DARKBLUE			cv::Scalar(0	,0		,128)
+#define COLOR_BLUE                cv::Scalar(255    ,0        ,0)
+#define COLOR_LIGHTBLUE            cv::Scalar(255    ,196    ,196)
+#define COLOR_DARKBLUE            cv::Scalar(0    ,0        ,128)
 
-#define COLOR_GREEN				cv::Scalar(0	,255	,0)
-#define COLOR_LIGHTGREEN		cv::Scalar(196	,255	,196)
-#define COLOR_DARKGREEN			cv::Scalar(0	,128	,0)
+#define COLOR_GREEN                cv::Scalar(0    ,255    ,0)
+#define COLOR_LIGHTGREEN        cv::Scalar(196    ,255    ,196)
+#define COLOR_DARKGREEN            cv::Scalar(0    ,128    ,0)
 
-#define COLOR_BLACK				cv::Scalar(0	,0		,0)
-#define COLOR_DARKGRAY			cv::Scalar(88	,88		,88)
-#define COLOR_LIGHTGRAY			cv::Scalar(192	,192	,192)
-#define COLOR_WHITE				cv::Scalar(255	,255	,255)
+#define COLOR_BLACK                cv::Scalar(0    ,0        ,0)
+#define COLOR_DARKGRAY            cv::Scalar(88    ,88        ,88)
+#define COLOR_LIGHTGRAY            cv::Scalar(192    ,192    ,192)
+#define COLOR_WHITE                cv::Scalar(255    ,255    ,255)
 
-#define COLOR_PURPLE			cv::Scalar(255	,0		,255)
-#define COLOR_YELLOW			cv::Scalar(0	,255	,255)
-#define COLOR_VIOLENT			cv::Scalar(128	,0		,128)
-#define COLOR_MINTGREEN			cv::Scalar(204	,255	,0)
-#define COLOR_BROWN				cv::Scalar(0	,63		,125)
-#define COLOR_MALACHITEGREEN	cv::Scalar(128	,128	,0)
-#define COLOR_EARTHYYELLOW		cv::Scalar(0	,128	,128)
-#define COLOR_ORANGE			cv::Scalar(0	,128	,255)
-#define COLOR_LIME				cv::Scalar(255	,255	,0)
+#define COLOR_PURPLE            cv::Scalar(255    ,0        ,255)
+#define COLOR_YELLOW            cv::Scalar(0    ,255    ,255)
+#define COLOR_VIOLENT            cv::Scalar(128    ,0        ,128)
+#define COLOR_MINTGREEN            cv::Scalar(204    ,255    ,0)
+#define COLOR_BROWN                cv::Scalar(0    ,63        ,125)
+#define COLOR_MALACHITEGREEN    cv::Scalar(128    ,128    ,0)
+#define COLOR_EARTHYYELLOW        cv::Scalar(0    ,128    ,128)
+#define COLOR_ORANGE            cv::Scalar(0    ,128    ,255)
+#define COLOR_LIME                cv::Scalar(255    ,255    ,0)

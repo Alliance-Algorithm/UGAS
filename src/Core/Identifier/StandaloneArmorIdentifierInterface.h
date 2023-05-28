@@ -6,7 +6,7 @@
 
 class StandaloneArmorIdentifierInterface {
 public:
-	virtual ~StandaloneArmorIdentifierInterface() = default;
+    virtual ~StandaloneArmorIdentifierInterface() = default;
 
-	virtual std::vector<ArmorPlate> Identify(const cv::Mat& img) = 0;
+    virtual std::vector<ArmorPlate> Identify(const cv::Mat& img) = 0;
 };

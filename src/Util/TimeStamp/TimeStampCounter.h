@@ -12,5 +12,5 @@ typedef unsigned long long TimeStamp;
 
 class TimeStampCounter {
 public:
-	static TimeStamp GetTimeStamp();
+    static TimeStamp GetTimeStamp();
 };
