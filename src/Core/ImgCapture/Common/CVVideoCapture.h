@@ -10,6 +10,7 @@ Header Functions:
 */
 
 #include "Core/ImgCapture/ImgCaptureInterface.h"
+#include "Util/Exceptions.h"
 #include "Util/Debug/Log.h"
 #include "Util/Debug/DebugCanvas.h"
 
@@ -23,11 +24,11 @@ public:
         if (!isOpened()) {
             VideoCapture::open(std::string("resources/") + fileName);
             if (!isOpened())
-                throw_with_trace(std::runtime_error, "Fail to open.");
+                throw_with_trace(CVVideoCaptureException, "Fail to open.");
         }
         _frameCount = static_cast<int>(VideoCapture::get(cv::CAP_PROP_FRAME_COUNT));
         if (_frameCount == 0)
-            throw_with_trace(std::runtime_error, "Read empty video!")
+            throw_with_trace(CVVideoCaptureException, "Read empty video!")
     }
     CVVideoCapture(const CVVideoCapture&) = delete;
     CVVideoCapture(CVVideoCapture&&) = delete;
@@ -53,7 +54,7 @@ public:
             VideoCapture::set(cv::CAP_PROP_POS_FRAMES, 0);
             VideoCapture::read(img);
             if (img.empty()) {
-                throw_with_trace(std::runtime_error, "Read empty frame!")
+                throw_with_trace(CVVideoCaptureException, "Read empty frame!")
             }
         }
         cv::rotate(img, img, cv::ROTATE_180);

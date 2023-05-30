@@ -123,7 +123,7 @@ private:
                 const auto& data = receiver.GetReceivedData();
                 auto q = Eigen::Quaternionf(data.w, data.x, data.y, data.z);
                 auto size = _serial.available();
-                std::cout << size << ' ' << q << '\n';
+                //std::cout << size << ' ' << q << '\n';
             }
             //std::this_thread::sleep_for(std::chrono::milliseconds(100));
 

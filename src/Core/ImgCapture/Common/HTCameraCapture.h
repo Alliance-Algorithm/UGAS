@@ -11,6 +11,7 @@ Header Functions:
 
 
 #include "Core/ImgCapture/ImgCaptureInterface.h"
+#include "Util/Exceptions.h"
 
 #ifdef _WIN32                   //Windows头文件引用
 
@@ -49,7 +50,7 @@ public:
 
         if (CameraEnumerateDevice(sCameraList, &iCameraNums) != CAMERA_STATUS_SUCCESS || iCameraNums == 0)
         {
-            throw_with_trace(std::runtime_error, "No camera was found!");
+            throw_with_trace(HTCameraCaptureException, "No camera was found!");
         }
 
         //该示例中，我们只假设连接了一个相机。因此，只初始化第一个相机。(-1,-1)表示加载上次退出前保存的参数，如果是第一次使用该相机，则加载默认参数.
@@ -57,7 +58,7 @@ public:
         if ((status = CameraInit(&sCameraList[0], -1, -1, &_hCamera)) != CAMERA_STATUS_SUCCESS)
         {
             LOG(ERROR) << "Error code is " << status << CameraGetErrorString(status);
-            throw_with_trace(std::runtime_error, "Failed to init the camera");
+            throw_with_trace(HTCameraCaptureException, "Failed to init the camera");
         }
 
 
@@ -98,8 +99,8 @@ public:
                 CameraFlipFrameBuffer(_pFrameBuffer, &_sFrameInfo, 1);
             }
             else {
-                LOG(ERROR) << "CameraImageProcess status = " << status;
-                throw_with_trace(std::runtime_error, "Failed to execute CameraImageProcess");
+                LOG(ERROR) << "CameraImageProcess _status = " << status;
+                throw_with_trace(HTCameraCaptureException, "Failed to execute CameraImageProcess");
             }
 
             cv::Mat img(
@@ -115,8 +116,8 @@ public:
             return std::make_tuple(std::move(img), TimeStampCounter::GetTimeStamp());
         }
         else {
-            LOG(ERROR) << "CameraGetImageBuffer status = " << status;
-            throw_with_trace(std::runtime_error, "Failed to execute CameraGetImageBuffer");
+            LOG(ERROR) << "CameraGetImageBuffer _status = " << status;
+            throw_with_trace(HTCameraCaptureException, "Failed to execute CameraGetImageBuffer");
         }
     }
 };

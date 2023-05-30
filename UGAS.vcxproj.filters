@@ -96,6 +96,8 @@
     <ClInclude Include="src\Core\Transformer\IMUTransformer.h" />
     <ClInclude Include="src\Control\Serial\VirtualCBoard.h" />
     <ClInclude Include="src\Core\Predictor\Armor\SimplePredictor.h" />
+    <ClInclude Include="src\Control\Serial\StatusBoard.h" />
+    <ClInclude Include="src\Util\Exceptions.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\ThirdParty\HTCameraSDK\Windows\MVCAMSDK_X64.lib" />

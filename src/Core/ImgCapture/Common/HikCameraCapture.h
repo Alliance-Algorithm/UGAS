@@ -20,6 +20,7 @@ Header Functions:
 #endif
 
 #include "Core/ImgCapture/ImgCaptureInterface.h"
+#include "Util/Exceptions.h"
 #include "Util/Debug/Log.h"
 
 class HikCameraCapture : public ImgCaptureInterface {
@@ -223,12 +224,12 @@ private:
 public:
     HikCameraCapture() {
         if (!InitCamera(nullptr))
-            throw_with_trace(std::runtime_error, "HikCamera init failed, see log for details.");
+            throw_with_trace(HikCameraCaptureException, "HikCamera init failed, see log for details.");
     }
 
     HikCameraCapture(const char* userDefinedName) {
         if (!InitCamera(userDefinedName))
-            throw_with_trace(std::runtime_error, "HikCamera init failed, see log for details.");
+            throw_with_trace(HikCameraCaptureException, "HikCamera init failed, see log for details.");
     }
 
     HikCameraCapture(const HikCameraCapture&) = delete;
@@ -258,7 +259,7 @@ public:
             // 注意：为了最大化性能，这里只考虑相机传入的每帧图像大小、格式不变的情况，如有新的情况请修改代码
             if (pConvertData == nullptr) {
                 if (!IsRGBCamera(stImageInfo.stFrameInfo.enPixelType))
-                    throw_with_trace(std::runtime_error, "RGB camera needed!");
+                    throw_with_trace(HikCameraCaptureException, "RGB camera needed!");
 
                 ConvertDataSize = stImageInfo.stFrameInfo.nWidth * stImageInfo.stFrameInfo.nHeight * 3;
                 pConvertData = new unsigned char[ConvertDataSize];
@@ -277,7 +278,7 @@ public:
             nRet = MV_CC_ConvertPixelType(_handle, &stConvertParam);
             if (MV_OK != nRet) {
                 LOG(ERROR) << "nRet [" << nRet << ']';
-                throw_with_trace(std::runtime_error, "Failed to convert Pixel Type!")
+                throw_with_trace(HikCameraCaptureException, "Failed to convert Pixel Type!")
             }
 
             // 注意：这是cv::Mat的一个特殊构造函数，Mat指向的图像内容不会随Mat的析构被其自动析构，处理不当会造成内存泄露
@@ -290,7 +291,7 @@ public:
         }
         else {
             LOG(ERROR) << "nRet [" << nRet << ']';
-            throw_with_trace(std::runtime_error, "No frame data!")
+            throw_with_trace(HikCameraCaptureException, "No frame data!")
         }
     }
 };

@@ -23,6 +23,7 @@
 #include "Core/Transformer/SimpleTransformer.h"
 #include "Control/Serial/CBoardInfantry.h"
 #include "Control/Serial/VirtualCBoard.h"
+#include "Control/Serial/StatusBoard.h"
 #include "Control/Serial/GYH1.h"
 #include "Control/Serial/HiPNUC.h"
 #include "Util/Debug/DebugCanvas.h"
@@ -30,26 +31,33 @@
 #include "Util/FPSCounter/FPSCounter.h"
 #include "Util/Debug/MatForm/RectangleControl.hpp"
 
-void Gimbal::Always() {
-    auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
-    //auto imgCapture = CVVideoCapture("Blue_4.mp4");
+auto status = StatusBoard("COM3", 125, 25);
 
-    auto hipnuc = HiPNUC("COM10");
-    //auto cboard = CBoardInfantry("COM22");
-    auto cboard = VirtualCBoard();
+void Gimbal::Always(){
+    status.SetLEDCircleTimes(0);
+    status.SetColor(StatusBoard::COLOR::GREEN, 0);
+    status.SetSound(250, 0, 0);
+    try {
+        // auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
+        auto imgCapture = CVVideoCapture("F:\\Blue_3.mp4");
 
-    auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV3.pb");
+        auto hipnuc = HiPNUC("COM10");
+        //auto cboard = CBoardInfantry("COM22");
+        auto cboard = VirtualCBoard();
 
-    //auto pnpSolver = ArmorPnPSolver_V1();
-    auto pnpSolver = ArmorPnPSolver();
-    auto armorPredictor = SimplePredictor();
-    auto strategy = Strategy_V1();
-    auto trajectory = Trajectory_V1();
+        auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV3.pb");
 
-    auto fps = FPSCounter_V2();
+        //auto pnpSolver = ArmorPnPSolver_V1();
+        auto pnpSolver = ArmorPnPSolver();
+        auto armorPredictor = SimplePredictor();
+        auto strategy = Strategy_V1();
+        auto trajectory = Trajectory_V1();
 
-    while (true) {
-        try {
+        auto fps = FPSCounter_V2();
+
+        while (true) {
+            status.ResetPriority();
+            uint8_t reault = status.GetStatus();
 
             cboard.Receive();
             auto [img, timeStamp] = imgCapture.Read();
@@ -94,12 +102,26 @@ void Gimbal::Always() {
             }
 
             if (fps.Count()) {
-                std::cout << "Fps: " << fps.GetFPS() << '\n';                
+                std::cout << "Fps: " << fps.GetFPS() << '\n';
             }
         }
-        catch (const char* str) { // 重包装异常
-            throw_with_trace(std::runtime_error, str);
-        }
+    }
+    catch (BaseCaptureException e) {
+        // Capture错误
+        status.SetColor(StatusBoard::COLOR::RED, 1);
+        status.SetLEDCircleTimes(2);
+        status.SetSound(250, 10, 1);
+        throw;
+    }
+    catch (serial::IOException e) {
+        // 串口打开错误
+        status.SetColor(StatusBoard::COLOR::RED, 1);
+        status.SetLEDCircleTimes(3);
+        status.SetSound(250, 10, 1);
+        throw;
+    }
+    catch (const char* str) { // 重包装异常
+        throw_with_trace(std::runtime_error, str);
     }
 
 }

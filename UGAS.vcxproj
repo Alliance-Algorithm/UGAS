@@ -164,6 +164,7 @@
     <ClInclude Include="src\Control\Serial\CBoardInfantry.h" />
     <ClInclude Include="src\Control\Serial\GYH1.h" />
     <ClInclude Include="src\Control\Serial\HiPNUC.h" />
+    <ClInclude Include="src\Control\Serial\StatusBoard.h" />
     <ClInclude Include="src\Control\Serial\VirtualCBoard.h" />
     <ClInclude Include="src\Core\Identifier\ArmorIdentifierInterface.h" />
     <ClInclude Include="src\Core\Identifier\Armor\ArmorIdentifier_V1.h" />
@@ -219,6 +220,7 @@
     <ClInclude Include="src\ThirdParty\Serial\impl\win.h" />
     <ClInclude Include="src\ThirdParty\Serial\serial.h" />
     <ClInclude Include="src\ThirdParty\Serial\v8stdint.h" />
+    <ClInclude Include="src\Util\Exceptions.h" />
     <ClInclude Include="src\Util\Serial\CRC.h" />
     <ClInclude Include="src\Util\Debug\CustomException.h" />
     <ClInclude Include="src\Util\Debug\DebugCanvas.h" />
