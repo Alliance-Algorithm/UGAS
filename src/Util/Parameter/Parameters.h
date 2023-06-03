@@ -81,33 +81,33 @@ enum class ArmorColor : uint8_t {
 
 namespace Parameters {
     inline constexpr ArmorColor DefaultEnemyColor = ArmorColor::Blue;
-    inline constexpr double DefaultBulletSpeed = 28.2;
+    inline constexpr double DefaultBulletSpeed = 25.0;
 }
 
 /* Colors */
-#define COLOR_RED                cv::Scalar(0    ,0        ,255)
-#define COLOR_PINK                cv::Scalar(196    ,196    ,255)
-#define COLOR_DARKRED            cv::Scalar(0    ,0        ,128)
+#define COLOR_RED                  cv::Scalar(0    ,0        ,255)
+#define COLOR_PINK                 cv::Scalar(196    ,196    ,255)
+#define COLOR_DARKRED              cv::Scalar(0    ,0        ,128)
 
-#define COLOR_BLUE                cv::Scalar(255    ,0        ,0)
+#define COLOR_BLUE                 cv::Scalar(255    ,0        ,0)
 #define COLOR_LIGHTBLUE            cv::Scalar(255    ,196    ,196)
-#define COLOR_DARKBLUE            cv::Scalar(0    ,0        ,128)
+#define COLOR_DARKBLUE             cv::Scalar(0    ,0        ,128)
 
 #define COLOR_GREEN                cv::Scalar(0    ,255    ,0)
-#define COLOR_LIGHTGREEN        cv::Scalar(196    ,255    ,196)
+#define COLOR_LIGHTGREEN           cv::Scalar(196    ,255    ,196)
 #define COLOR_DARKGREEN            cv::Scalar(0    ,128    ,0)
 
 #define COLOR_BLACK                cv::Scalar(0    ,0        ,0)
-#define COLOR_DARKGRAY            cv::Scalar(88    ,88        ,88)
+#define COLOR_DARKGRAY             cv::Scalar(88    ,88        ,88)
 #define COLOR_LIGHTGRAY            cv::Scalar(192    ,192    ,192)
 #define COLOR_WHITE                cv::Scalar(255    ,255    ,255)
 
-#define COLOR_PURPLE            cv::Scalar(255    ,0        ,255)
-#define COLOR_YELLOW            cv::Scalar(0    ,255    ,255)
-#define COLOR_VIOLENT            cv::Scalar(128    ,0        ,128)
+#define COLOR_PURPLE               cv::Scalar(255    ,0        ,255)
+#define COLOR_YELLOW               cv::Scalar(0    ,255    ,255)
+#define COLOR_VIOLENT              cv::Scalar(128    ,0        ,128)
 #define COLOR_MINTGREEN            cv::Scalar(204    ,255    ,0)
 #define COLOR_BROWN                cv::Scalar(0    ,63        ,125)
-#define COLOR_MALACHITEGREEN    cv::Scalar(128    ,128    ,0)
-#define COLOR_EARTHYYELLOW        cv::Scalar(0    ,128    ,128)
-#define COLOR_ORANGE            cv::Scalar(0    ,128    ,255)
-#define COLOR_LIME                cv::Scalar(255    ,255    ,0)
+#define COLOR_MALACHITEGREEN       cv::Scalar(128    ,128    ,0)
+#define COLOR_EARTHYYELLOW         cv::Scalar(0    ,128    ,128)
+#define COLOR_ORANGE               cv::Scalar(0    ,128    ,255)
+#define COLOR_LIME                 cv::Scalar(255    ,255    ,0)

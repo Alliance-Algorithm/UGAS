@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="src\Control\Gimbal\Gimbal.h" />
     <ClInclude Include="src\Control\Serial\CBoardInfantry.h" />
+    <ClInclude Include="src\Control\Serial\CBoardSentry.h" />
     <ClInclude Include="src\Control\Serial\GYH1.h" />
     <ClInclude Include="src\Control\Serial\HiPNUC.h" />
     <ClInclude Include="src\Control\Serial\VirtualCBoard.h" />

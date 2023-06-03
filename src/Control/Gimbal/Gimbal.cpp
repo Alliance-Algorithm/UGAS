@@ -22,6 +22,7 @@
 #include "Core/Trajectory/Common/Trajectory_V1.h"
 #include "Core/Transformer/SimpleTransformer.h"
 #include "Control/Serial/CBoardInfantry.h"
+#include "Control/Serial/CBoardSentry.h"
 #include "Control/Serial/VirtualCBoard.h"
 #include "Control/Serial/GYH1.h"
 #include "Control/Serial/HiPNUC.h"
@@ -31,12 +32,12 @@
 #include "Util/Debug/MatForm/RectangleControl.hpp"
 
 void Gimbal::Always() {
-    auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
+    auto imgCapture = HikCameraCapture();
     //auto imgCapture = CVVideoCapture("Blue_4.mp4");
 
-    auto hipnuc = HiPNUC("COM10");
-    //auto cboard = CBoardInfantry("COM22");
-    auto cboard = VirtualCBoard();
+    auto hipnuc = HiPNUC("COM23");
+    auto cboard = CBoardSentry("COM28");
+    //auto cboard = VirtualCBoard();
 
     auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV3.pb");
 
@@ -51,7 +52,7 @@ void Gimbal::Always() {
     while (true) {
         try {
 
-            cboard.Receive();
+            //cboard.Receive();
             auto [img, timeStamp] = imgCapture.Read();
             auto transformer = hipnuc.GetTransformer();
 
@@ -66,12 +67,13 @@ void Gimbal::Always() {
                 auto armors3d = pnpSolver.SolveAll(armors, transformer);
                 if (auto target = armorPredictor.Update(armors3d, std::chrono::steady_clock::now())) {
                     auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed(), transformer);
-                    yaw += 0.0 / 180.0 * MathConsts::Pi;;
-                    pitch += -0.5 / 180.0 * MathConsts::Pi;
-                    cboard.SendUAV(yaw, pitch);
+                    yaw += -0.5 / 180.0 * MathConsts::Pi;;
+                    pitch += -0.4 / 180.0 * MathConsts::Pi;
+                    cboard.Send(yaw, pitch);
+                    std::cout << yaw * 53 << ' ' << pitch * 53 << '\n';
                 }
                 else {
-                    cboard.SendUAV(0, 0);
+                    cboard.Send(0, 0);
                 }
             }
             else {
@@ -81,10 +83,10 @@ void Gimbal::Always() {
                     auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed());
                     yaw += 0.0 / 180.0 * MathConsts::Pi;
                     pitch += 1.7 / 180.0 * MathConsts::Pi;
-                    cboard.SendUAV(yaw, pitch);
+                    cboard.Send(yaw, pitch);
                 }
                 else {
-                    cboard.SendUAV(0, 0);
+                    cboard.Send(0, 0);
                 }
             }
 

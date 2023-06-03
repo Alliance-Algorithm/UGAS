@@ -113,11 +113,11 @@ private:
             try {
 
                 serial::Serial serial(_portName, 115200, serial::Timeout::simpleTimeout(100));
+                SerialUtil::SerialReceiver<DataD1, SerialUtil::Head<uint16_t, 0xa55a>, DataCRC16Calculator> receiver(serial);
 
                 while (true) {
                     if (_destructed) return;
                     try {
-                        SerialUtil::SerialReceiver<DataD1, SerialUtil::Head<uint16_t, 0xa55a>, DataCRC16Calculator> receiver(serial);
 
                         auto result = receiver.Receive();
                         if (result == SerialUtil::ReceiveResult::Success) {
