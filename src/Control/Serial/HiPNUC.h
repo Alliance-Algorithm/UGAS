@@ -126,6 +126,7 @@ private:
                             // 每次GetReceivedData得到的数据，其生命周期持续到下次Receive成功后，再次调用Receive前。
                             // TODO: 这里使用指针存储四元数实现无锁，有极小概率在读取时获得错误数据。
                             _transQuat = &(data.quat[0]);
+                            //std::cout << data.quat[0] << ' ' << data.quat[1] << ' ' << data.quat[2] << ' ' << data.quat[3] << '\n';
 
                             if (imuFps.Count()) {
                                 _available = imuFps.GetFPS() > 100;

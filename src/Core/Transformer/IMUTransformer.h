@@ -21,7 +21,9 @@ public:
     }
 
     Eigen::Vector3d CameraLink2GimbalLink(const Eigen::Vector3d& srcPos) const {
-        return { srcPos.x() + 118.05, srcPos.y() + 67.5, srcPos.z() - 41.7 };
+        static const Eigen::Vector3d uav = { 118.05, 67.5, -41.7 };
+        static const Eigen::Vector3d sentry = { 150, 0, 0 };
+        return srcPos + sentry;
     }
 
     Eigen::Vector3d Link2Gyro(const Eigen::Vector3d& srcPos) const {
@@ -35,7 +37,9 @@ public:
     }
 
     Eigen::Vector3d GimbalGyro2MuzzleGyro(const Eigen::Vector3d& srcPos) const {
-        return srcPos - Link2Gyro({ 69.4, 67.5, 0 });
+        static const Eigen::Vector3d uav = { 69.4, 67.5, 0 };
+        static const Eigen::Vector3d sentry = { 100, 0, 40 };
+        return srcPos - Link2Gyro(sentry);
     }
 
 private:

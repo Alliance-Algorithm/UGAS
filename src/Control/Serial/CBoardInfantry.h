@@ -30,6 +30,7 @@ public:
         uint8_t selfColor;             // 自身队伍颜色：1-红，2-蓝
         uint8_t presetBulletSpeed;     // 预设弹速，单位：m/s
         float bulletSpeed;             // 实时弹速，单位：m/s
+        uint8_t autoscopeEnabled;      // 操作手是否开启自瞄
     };
 #pragma pack(pop)
 
@@ -75,6 +76,11 @@ public:
         }
 
         if (received) {
+            if (!_receiveSuccessed) {
+                LOG(INFO) << "CboardInfantry: Successfully received package.";
+                _receiveSuccessed = true;
+            }
+
             const auto& data = _receiver.GetReceivedData();
 
             if (data.selfColor == 1)        // 己方红色，击打蓝色
@@ -82,7 +88,8 @@ public:
             else if (data.selfColor == 2)   // 己方蓝色，击打红色
                 _enemyColor = ArmorColor::Red;
 
-            _bulletSpeed = data.presetBulletSpeed;  // 暂时不处理实时弹速
+            //_bulletSpeed = data.presetBulletSpeed;  // 暂时不处理实时弹速
+            _autoscopeEnabled = data.autoscopeEnabled;
         }
     }
 
@@ -94,12 +101,17 @@ public:
         return _bulletSpeed;
     }
 
+    bool GetAutoscopeEnabled() {
+        return _autoscopeEnabled;
+    }
+
 private:
     serial::Serial _serial;
+    bool _receiveSuccessed = false;
 
     SerialUtil::SerialSender<DataSend, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _sender;
     SerialUtil::SerialReceiver<DataReceive, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _receiver;
     ArmorColor _enemyColor = Parameters::DefaultEnemyColor;
     float _bulletSpeed = Parameters::DefaultBulletSpeed;
-
+    bool _autoscopeEnabled = false;
 };

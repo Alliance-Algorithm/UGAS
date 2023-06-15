@@ -104,21 +104,30 @@ int minLightAngle = 0, maxLightAngle = 40;
 
 /* Armor Parameters */
 double maxArmorLightRatio = 1.5, maxdAngle = 9.5, \
-maxMalposition = 0.7, maxLightDy = 0.9, bigArmorDis = 3.5;
+maxMalposition = 0.7, maxLightDy = 0.9, bigArmorDis = 5.0;
 
 /* Buff Parameters */
 
 /* PNP Parameters */
-// 注意两个相机矩阵的重标定
-//double CameraMatrixData[3][3] = {    1867.490995615071, 0, 469.7628091162226, \
-//                                    0, 1873.208292955122, 464.9909258534828, \
-//                                    0, 0, 1 };
-double CameraMatrixData[3][3] = { 1.722231837421459e+03, 0, 7.013056440882832e+02, \
+
+// 6mm镜头
+double CameraMatrixData[3][3] = {1.722231837421459e+03, 0, 7.013056440882832e+02, \
                                     0, 1.724876404292754e+03, 5.645821718351237e+02, \
                                     0, 0, 1 };
-//double DistCoeffsData[1][5] = { 0.02620928720926602, -0.01944757276326156, \
-//                0.009617926923965665, 0.0004854948878220314, -2.381184392406337 };
 double DistCoeffsData[1][5] = { -0.064232403853946, -0.087667493884102, 0, 0, 0.792381808294582 };
+
+// 8mm镜头(6.2 18:35)
+/*double CameraMatrixData[3][3] = {2411.67435752361, 0, 706.115296931680, \
+                                    0, 2413.93326236200, 606.089691712260, \
+                                    0, 0, 1 };
+double DistCoeffsData[1][5] = { -0.0299345399861973, 0.127101646352983, 0, 0, 0.155503759356591 };*/
+
+// 12mm镜头(6.2 19:35)
+/*double CameraMatrixData[3][3] = {3612.09388868374, 0, 713.350996606441, \
+                                    0, 3615.26346146138, 590.928598586120, \
+                                    0, 0, 1 };
+double DistCoeffsData[1][5] = { 0.00948033127678667, -0.900070016384203, 0, 0, 12.9708921407335 };*/
+
 const Mat    CameraMatrix(3, 3, CV_64F, CameraMatrixData), DistCoeffs(1, 5, CV_64F, DistCoeffsData);
 const int    NormalArmorWidth = 134, NormalArmorHeight = 56, LargerArmorWidth = 230, LargerArmorHeight = 56;
 const std::vector<Point3f>

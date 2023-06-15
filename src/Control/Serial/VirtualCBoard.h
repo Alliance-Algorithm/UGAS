@@ -48,6 +48,10 @@ public:
         return Parameters::DefaultBulletSpeed;
     }
 
+    bool GetAutoscopeEnabled() {
+        return false;
+    }
+
 private:
     bool _debugOutput;
 };

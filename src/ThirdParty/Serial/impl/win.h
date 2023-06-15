@@ -41,7 +41,9 @@
 
 #include "ThirdParty/Serial/serial.h"
 
+#define NOMINMAX
 #include "windows.h"
+#undef NOMINMAX
 
 namespace serial {
 

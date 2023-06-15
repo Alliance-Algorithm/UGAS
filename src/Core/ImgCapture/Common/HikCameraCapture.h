@@ -133,7 +133,7 @@ private:
                             nRet = MV_CC_SetEnumValue(_handle, "ExposureAuto", MV_EXPOSURE_AUTO_MODE_OFF);
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set auto exposure. nRet [" << nRet << "]";
 
-                            nRet = MV_CC_SetFloatValue(_handle, "ExposureTime", true ? 2000 : 1000);
+                            nRet = MV_CC_SetFloatValue(_handle, "ExposureTime", 3000);
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set exposure time. nRet [" << nRet << "]";
 
                             nRet = MV_CC_SetFloatValue(_handle, "Gain", true ? 16.9807f : 0.0f);
@@ -142,11 +142,14 @@ private:
                             nRet = MV_CC_SetBoolValue(_handle, "DigitalShiftEnable", true);
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set digital shift enable. nRet [" << nRet << "]";
 
-                            nRet = MV_CC_SetFloatValue(_handle, "DigitalShift", 5.9993f);
+                            nRet = MV_CC_SetFloatValue(_handle, "DigitalShift", false ? 5.9993f : 0.0f);
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set digital shift. nRet [" << nRet << "]";
 
                             nRet = MV_CC_SetBoolValue(_handle, "AcquisitionFrameRateEnable", false);
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set acquisition frame rate enable. nRet [" << nRet << "]";
+
+                            nRet = MV_CC_SetBayerCvtQuality(_handle, 1);
+                            if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set bayer cvt quality. nRet [" << nRet << "]";
 
                             nRet = MV_CC_StartGrabbing(_handle);
                             if (MV_OK == nRet) {
@@ -236,6 +239,8 @@ public:
 
     ~HikCameraCapture() {
         UnloadCamera();
+        if (pConvertData != nullptr)
+            delete[] pConvertData;
     }
 
     std::tuple<cv::Mat, TimeStamp> Read() override {
@@ -255,33 +260,48 @@ public:
         timeStamp = TimeStampCounter::GetTimeStamp();
         if (nRet == MV_OK)
         {
-            // 注意：为了最大化性能，这里只考虑相机传入的每帧图像大小、格式不变的情况，如有新的情况请修改代码
-            if (pConvertData == nullptr) {
-                if (!IsRGBCamera(stImageInfo.stFrameInfo.enPixelType))
-                    throw_with_trace(std::runtime_error, "RGB camera needed!");
-
-                ConvertDataSize = stImageInfo.stFrameInfo.nWidth * stImageInfo.stFrameInfo.nHeight * 3;
-                pConvertData = new unsigned char[ConvertDataSize];
-
-                stConvertParam.nWidth = stImageInfo.stFrameInfo.nWidth;                 // image width
-                stConvertParam.nHeight = stImageInfo.stFrameInfo.nHeight;               // image height                
-                stConvertParam.nSrcDataLen = stImageInfo.stFrameInfo.nFrameLen;         // input data size
-                stConvertParam.enSrcPixelType = stImageInfo.stFrameInfo.enPixelType;    // input pixel format
-                stConvertParam.enDstPixelType = PixelType_Gvsp_BGR8_Packed;             // output pixel format
-                stConvertParam.pDstBuffer = pConvertData;                               // output data buffer
-                stConvertParam.nDstBufferSize = ConvertDataSize;                        // output buffer size
+            if constexpr (false) {
+                // 调用opencv进行Bayer2BGR
+                // 效果不太好，但可以作为参考
+                cv::Mat src = cv::Mat(stImageInfo.stFrameInfo.nHeight, stImageInfo.stFrameInfo.nWidth, CV_8UC1, stImageInfo.pBufAddr);
+                switch (stImageInfo.stFrameInfo.enPixelType) {
+                case (PixelType_Gvsp_BayerRG8):
+                    cv::cvtColor(src, img, cv::COLOR_BayerRGGB2BGR); break;
+                default:
+                    LOG(ERROR) << "exPixelType: " << stImageInfo.stFrameInfo.enPixelType;
+                    throw_with_trace(std::runtime_error, "Unsupported pixel type! Maybe not a RGB camera or be incorrectly configured.");
+                };
             }
+            else {
+                // 调用海康SDK进行Bayer2BGR，一定要设置BayerCvtQuality，其在windows和linux下的默认值不同
+                // 注意：为了最大化性能，这里只考虑相机传入的每帧图像大小、格式不变的情况，如有新的情况请修改代码
+                if (pConvertData == nullptr) {
+                    if (!IsRGBCamera(stImageInfo.stFrameInfo.enPixelType))
+                        throw_with_trace(std::runtime_error, "RGB camera needed!");
 
-            stConvertParam.pSrcData = stImageInfo.pBufAddr;                             // input data buffer
+                    ConvertDataSize = stImageInfo.stFrameInfo.nWidth * stImageInfo.stFrameInfo.nHeight * 3;
+                    pConvertData = new unsigned char[ConvertDataSize];
 
-            nRet = MV_CC_ConvertPixelType(_handle, &stConvertParam);
-            if (MV_OK != nRet) {
-                LOG(ERROR) << "nRet [" << nRet << ']';
-                throw_with_trace(std::runtime_error, "Failed to convert Pixel Type!")
+                    stConvertParam.nWidth = stImageInfo.stFrameInfo.nWidth;                 // image width
+                    stConvertParam.nHeight = stImageInfo.stFrameInfo.nHeight;               // image height
+                    stConvertParam.nSrcDataLen = stImageInfo.stFrameInfo.nFrameLen;         // input data size
+                    stConvertParam.enSrcPixelType = stImageInfo.stFrameInfo.enPixelType;    // input pixel format
+                    stConvertParam.enDstPixelType = PixelType_Gvsp_BGR8_Packed;             // output pixel format
+                    stConvertParam.pDstBuffer = pConvertData;                               // output data buffer
+                    stConvertParam.nDstBufferSize = ConvertDataSize;                        // output buffer size
+                }
+
+                stConvertParam.pSrcData = stImageInfo.pBufAddr;                             // input data buffer
+
+                nRet = MV_CC_ConvertPixelType(_handle, &stConvertParam);
+                if (MV_OK != nRet) {
+                    LOG(ERROR) << "nRet [" << nRet << ']';
+                    throw_with_trace(std::runtime_error, "Failed to convert Pixel Type!")
+                }
+
+                // 注意：这是cv::Mat的一个特殊构造函数，Mat指向的图像内容不会随Mat的析构被其自动析构，处理不当会造成内存泄露
+                img = cv::Mat(stImageInfo.stFrameInfo.nHeight, stImageInfo.stFrameInfo.nWidth, CV_8UC3, stConvertParam.pDstBuffer);
             }
-
-            // 注意：这是cv::Mat的一个特殊构造函数，Mat指向的图像内容不会随Mat的析构被其自动析构，处理不当会造成内存泄露
-            img = cv::Mat(stImageInfo.stFrameInfo.nHeight, stImageInfo.stFrameInfo.nWidth, CV_8UC3, stConvertParam.pDstBuffer);
 
             // 这里不涉及堆内存释放
             MV_CC_FreeImageBuffer(_handle, &stImageInfo);

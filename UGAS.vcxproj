@@ -181,10 +181,12 @@
     <ClInclude Include="src\Core\Identifier\NumberIdentifierInterface.h" />
     <ClInclude Include="src\Core\Identifier\Number\NullNumberIdentifier.h" />
     <ClInclude Include="src\Core\Identifier\Number\NumberIdentifier_V1.h" />
+    <ClInclude Include="src\Core\Identifier\Number\NumberIdentifier_V2.h" />
     <ClInclude Include="src\Core\Identifier\StandaloneArmorIdentifierInterface.h" />
     <ClInclude Include="src\Core\ImgCapture\Common\CVVideoCapture.h" />
     <ClInclude Include="src\Core\ImgCapture\Common\HikCameraCapture.h" />
     <ClInclude Include="src\Core\ImgCapture\Common\HTCameraCapture.h" />
+    <ClInclude Include="src\Core\ImgCapture\Common\ImageFolderCapture.h" />
     <ClInclude Include="src\Core\ImgCapture\Common\ResizeCapture.h" />
     <ClInclude Include="src\Core\ImgCapture\Common\RotateCapture.h" />
     <ClInclude Include="src\Core\ImgCapture\ImgCaptureInterface.h" />
@@ -197,6 +199,8 @@
     <ClInclude Include="src\Core\Pretreator\Armor\ArmorPretreator_V2.h" />
     <ClInclude Include="src\Core\Pretreator\PretreatorInterface.h" />
     <ClInclude Include="src\Core\Strategy\Common\Strategy_V1.h" />
+    <ClInclude Include="src\Core\Tracker\Armor\ArmorEKFTracker.h" />
+    <ClInclude Include="src\Core\Tracker\Armor\VerticalTracker.h" />
     <ClInclude Include="src\Core\Trajectory\Common\Trajectory_V1.h" />
     <ClInclude Include="src\Core\Transformer\SimpleTransformer.h" />
     <ClInclude Include="src\Core\Transformer\IMUTransformer.h" />
@@ -220,6 +224,7 @@
     <ClInclude Include="src\ThirdParty\Serial\impl\win.h" />
     <ClInclude Include="src\ThirdParty\Serial\serial.h" />
     <ClInclude Include="src\ThirdParty\Serial\v8stdint.h" />
+    <ClInclude Include="src\Util\Recorder\PNGRecorder.h" />
     <ClInclude Include="src\Util\Serial\CRC.h" />
     <ClInclude Include="src\Util\Debug\CustomException.h" />
     <ClInclude Include="src\Util\Debug\DebugCanvas.h" />

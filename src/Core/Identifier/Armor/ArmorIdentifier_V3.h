@@ -23,11 +23,11 @@ public:
     std::vector<ArmorPlate> Identify(const cv::Mat& img, ArmorColor targetColor) {
         cv::Mat imgThre, imgGray;
         cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
-        cv::threshold(imgGray, imgThre, 120, 255, cv::THRESH_BINARY);
+        cv::threshold(imgGray, imgThre, 150, 255, cv::THRESH_BINARY);
 
         if constexpr (debugCanvas.pretreat) {
-            auto imgColor = _pretreat(img, targetColor);
-            debugCanvas.pretreat.LoadMat(imgColor);
+            //auto imgColor = _pretreat(img, targetColor);
+            debugCanvas.pretreat.LoadMat(imgThre);
         }
 
         std::vector<std::vector<cv::Point>> contours;
@@ -48,7 +48,7 @@ public:
                 if constexpr (debugCanvas.lightbar) {
                     auto& lightBar = *lightBarOpt;
                     cv::drawContours(debugCanvas.lightbar.GetMat(), contours, i, COLOR_RED, 2);
-                    line(debugCanvas.lightbar.GetMat(), lightBar.top, lightBar.bottom, COLOR_BLUE, 5);
+                    // line(debugCanvas.lightbar.GetMat(), lightBar.top, lightBar.bottom, COLOR_BLUE, 5);
                     circle(debugCanvas.lightbar.GetMat(), lightBar.top, 2, COLOR_ORANGE, 2);
                     circle(debugCanvas.lightbar.GetMat(), lightBar.bottom, 2, COLOR_PINK, 2);
                 }
@@ -68,9 +68,10 @@ public:
                 if (malposition(lightBars[i], lightBars[j]) > maxMalposition) continue;
                 cv::Point2f Jcenter = (lightBars[j].top + lightBars[j].bottom) / 2;
                 if (fabs(Icenter.y - Jcenter.y) * 2 / (Isize + Jsize) > maxLightDy)    continue;
-                if (P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize) > bigArmorDis) continue;
+                float lightBarDis = P2PDis(Icenter, Jcenter) * 2 / (Isize + Jsize);
+                if (lightBarDis > bigArmorDis) continue;
 
-                ArmorPlate armor(lightBars[i], lightBars[j]);
+                ArmorPlate armor(lightBars[i], lightBars[j], ArmorID::Unknown, lightBarDis > 3.5);
                 if (_numberIdentifier.Identify(imgGray, armor))
                     result.push_back(armor);
             }
@@ -124,8 +125,7 @@ private:
     std::optional<LightBar> _solveToLightbar(const cv::Mat& img, const std::vector<cv::Point>& contour, ArmorColor targetColor) {
         auto&& contourSize = contour.size();
         if (contourSize >= 5) {
-
-            static float scoreMap[256];
+            float scoreMap[256];
             float confidence = 0.0f;
             scoreMap[static_cast<size_t>(ColorConfidence::NotCredible)] = 0.0f;
             scoreMap[static_cast<size_t>(ColorConfidence::CredibleOneChannelOverexposure)] = 1.0f / contourSize;
@@ -133,12 +133,15 @@ private:
             scoreMap[static_cast<size_t>(ColorConfidence::CredibleThreeChannelOverexposure)] = 0.2f / contourSize;
 
             auto& colorIdentifier = targetColor == ArmorColor::Blue ? _blueIdentifier : _redIdentifier;
+            int maxPointY = 0;
             for (const auto& point : contour) {
+                maxPointY = std::max(maxPointY, point.y);
                 auto c = reinterpret_cast<const uchar*>(&img.at<cv::Vec3b>(point));
                 confidence += scoreMap[static_cast<size_t>(colorIdentifier.Identify(c))];
             }
+            if (img.rows == maxPointY + 1) confidence = 0;
 
-            if (confidence > 0.2f) {
+            if (confidence > 0.45f) {
                 constexpr int angleRange = 30;
                 auto box = cv::minAreaRect(contour);
 

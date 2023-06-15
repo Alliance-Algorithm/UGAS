@@ -55,7 +55,7 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
         armor.is_large_armor = false;
         break;
     case 6:
-        armor.id = ArmorID::Sentinel;
+        armor.id = ArmorID::Sentry;
         armor.is_large_armor = false;
         break;
     case 7:

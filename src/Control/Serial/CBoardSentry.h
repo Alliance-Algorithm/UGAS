@@ -49,14 +49,15 @@ public:
     /*! 向哨兵发送云台瞄准数据
     * \param yaw pitch 单位使用弧度制，方向遵循右手定则
     */
-    void Send(double yaw, double pitch) {
-        _sender.Data.yaw0 = 0;
-        _sender.Data.pitch0 = 0;
-        _sender.Data.fire0 = 0;
+    void Send(double yaw, double pitch, bool fire) {
+        _sender.Data.yaw0 = -yaw * 180.0 / MathConsts::Pi;
+        _sender.Data.pitch0 = -pitch * 180.0 / MathConsts::Pi;
+        _sender.Data.fire0 = fire;
+        // std::cout << fire;
 
-        _sender.Data.yaw1 = -yaw * 180.0 / MathConsts::Pi;
-        _sender.Data.pitch1 = -pitch * 180.0 / MathConsts::Pi;
-        _sender.Data.fire1 = 0;
+        _sender.Data.yaw1 = 0;// -yaw * 180.0 / MathConsts::Pi;
+        _sender.Data.pitch1 = 0;// -pitch * 180.0 / MathConsts::Pi;
+        _sender.Data.fire1 = 0;// fire;
 
         _sender.Send();
     }

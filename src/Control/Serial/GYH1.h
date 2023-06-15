@@ -25,7 +25,7 @@ public:
     struct QuaternionReceive {
         char head = 0x00;            // Should be 0x40
         float w, x, y, z;            // Quaternion Data
-        char crc8;                    // CRC8
+        char crc8;                   // CRC8
     };
 #pragma pack(pop)
 

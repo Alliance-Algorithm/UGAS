@@ -21,7 +21,8 @@ Header Functions:
 struct ArmorPlate3d {
     ArmorID id;
     Eigen::Vector3d position;
-    ArmorPlate3d(ArmorID _id, const Eigen::Vector3d& _position) : id(_id), position(_position) { }
+    Eigen::Vector3d normal;   // 装甲板平面的法向量（单位向量），方向沿车体向外
+    ArmorPlate3d(ArmorID _id, const Eigen::Vector3d& _position, const Eigen::Vector3d& _normal) : id(_id), position(_position), normal(_normal) { }
 };
 
 class ArmorPnPSolverInterface {

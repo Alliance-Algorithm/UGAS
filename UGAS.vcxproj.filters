@@ -97,6 +97,11 @@
     <ClInclude Include="src\Control\Serial\VirtualCBoard.h" />
     <ClInclude Include="src\Core\Predictor\Armor\SimplePredictor.h" />
     <ClInclude Include="src\Control\Serial\CBoardSentry.h" />
+    <ClInclude Include="src\Core\Tracker\Armor\ArmorEKFTracker.h" />
+    <ClInclude Include="src\Core\Identifier\Number\NumberIdentifier_V2.h" />
+    <ClInclude Include="src\Core\Tracker\Armor\VerticalTracker.h" />
+    <ClInclude Include="src\Util\Recorder\PNGRecorder.h" />
+    <ClInclude Include="src\Core\ImgCapture\Common\ImageFolderCapture.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="src\ThirdParty\HTCameraSDK\Windows\MVCAMSDK_X64.lib" />

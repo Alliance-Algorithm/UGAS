@@ -378,7 +378,9 @@ ELPP_INTERNAL_DEBUGGING_OUT_INFO << ELPP_INTERNAL_DEBUGGING_MSG(internalInfoStre
 #   include <sys/time.h>
 #elif ELPP_OS_WINDOWS
 #   include <direct.h>
+#   define NOMINMAX
 #   include <windows.h>
+#   undef NOMINMAX
 #  if defined(WIN32_LEAN_AND_MEAN)
 #      if defined(ELPP_WINSOCK2)
 #         include <winsock2.h>
