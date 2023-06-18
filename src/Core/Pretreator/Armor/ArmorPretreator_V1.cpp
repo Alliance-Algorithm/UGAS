@@ -21,10 +21,7 @@ std::tuple<cv::Mat, cv::Mat> ArmorPretreator_V1::GetPretreated(const cv::Mat& im
     }
     threshold(imgThre, imgThre, 0, 255, THRESH_BINARY);
 
-#if DEBUG_PARA == 0
-    static // 非调试模式设置静态内核
-#endif
-        Mat closeCore = getStructuringElement(MORPH_RECT, Size(closeCoreSize | 1, closeCoreSize | 1));
+    static Mat closeCore = getStructuringElement(MORPH_RECT, Size(closeCoreSize | 1, closeCoreSize | 1));
     morphologyEx(imgThre, imgThre, MORPH_CLOSE, closeCore);
 
     return result;

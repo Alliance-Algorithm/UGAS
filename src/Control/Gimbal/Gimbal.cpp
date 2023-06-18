@@ -3,6 +3,7 @@
 #include <thread>
 #include <opencv2/opencv.hpp>
 
+#include "config.h"
 #include "Core/ImgCapture/Common/CVVideoCapture.h"
 #include "Core/ImgCapture/Common/HTCameraCapture.h"
 #include "Core/ImgCapture/Common/HikCameraCapture.h"
@@ -31,15 +32,14 @@
 #include "Control/Serial/GYH1.h"
 #include "Control/Serial/HiPNUC.h"
 #include "Util/Debug/DebugCanvas.h"
-#include "Util/Debug/DebugSettings.h"
 #include "Util/Recorder/PNGRecorder.h"
 #include "Util/FPSCounter/FPSCounter.h"
 #include "Util/Debug/MatForm/RectangleControl.hpp"
 
-void Gimbal::Always() {
-    //auto imgCapture = HikCameraCapture();
-    auto imgCapture = ImageFolderCapture("../UGAS-record/sentry-record-230610-8am/");
+[[noreturn]] void Gimbal::Always() {
+    auto imgCapture = HikCameraCapture();
     //auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
+    //auto imgCapture = ImageFolderCapture("../UGAS-record/sentry-record-230610-8am/");
     //auto imgCapture = CVVideoCapture("Blue_4.mp4");
 
     auto hipnuc = HiPNUC("COM29");
@@ -59,7 +59,7 @@ void Gimbal::Always() {
 
     auto fps = FPSCounter_V2();
 
-    auto recorder = PNGRecorder("images/", 0.0);
+    auto recorder = PNGRecorder("images/", ENABLE_RECORDING ? 3.0 : 0.0);
 
     bool autoscopeEnabled = false;
 
@@ -83,6 +83,7 @@ void Gimbal::Always() {
             // 自瞄开启瞬间，重置跟踪目标
             if (!autoscopeEnabled && cboard.GetAutoscopeEnabled())
                 ekfTracker.lastTarget = ArmorID::Unknown;
+            autoscopeEnabled = cboard.GetAutoscopeEnabled();
 
             if (auto&&target = ekfTracker.Update(armors3d, timestamp, transformer)) {
                 //auto&& pos = target->Predict(0);
@@ -117,7 +118,7 @@ void Gimbal::Always() {
             }
         }
 
-        if constexpr (DEBUG_IMG) {
+        if constexpr (ENABLE_DEBUG_CANVAS) {
             debugCanvas.ShowAll();
             cv::waitKey(1);
         }

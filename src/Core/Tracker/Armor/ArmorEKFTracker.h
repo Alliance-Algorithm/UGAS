@@ -79,7 +79,7 @@ private:
             std::this_thread::sleep_for(std::chrono::seconds(100));*/
         }
 
-        Eigen::Vector<double, 9> _x;
+        Eigen::Matrix<double, 9, 1> _x;
         Eigen::Matrix<double, 9, 9> _P;
 
     private:

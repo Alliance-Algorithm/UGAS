@@ -1,7 +1,7 @@
 build
-resources
 cmake-build-debug
 cmake-build-release
+resources
 .vs
 .vscode
 .idea

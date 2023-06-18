@@ -11,6 +11,7 @@ Header Functions:
 #include <chrono>
 #include <thread>
 #include <chrono>
+#include <atomic>
 #include <optional>
 
 #include <eigen3/Eigen/Dense>

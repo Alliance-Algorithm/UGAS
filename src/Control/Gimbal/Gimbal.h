@@ -21,5 +21,5 @@ public:
 
     Gimbal() { }
 
-    void Always();
+    [[noreturn]] void Always();
 };
