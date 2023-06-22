@@ -3,16 +3,18 @@
 
 #include "Control/Gimbal/Gimbal.h"
 #include "Util/FPSCounter/FPSCounter.h"
+#include "Util/ROS/Node.h"
 
+int main(int argc, char* argv[]) {
+    ros_util::init(argc, argv);
 
-int main() {
 	for (int restartTime = 0;; ++restartTime) {
         LOG(INFO) << "Program started.";
 		try {
 			Gimbal gimbal;
 			gimbal.Always();
 		}
-		catch (std::exception& e) {
+		catch (const std::exception& e) {
 			LOG(ERROR) << "Uncaught " << typeid(e).name() << ": " << e.what();
 		}
         catch (const char* str) {

@@ -66,7 +66,7 @@
     while (true) {
         cboard.Receive();
 
-        auto [img, __discard__] = imgCapture.Read();
+        auto [img, _discard_] = imgCapture.Read();
         auto timestamp = std::chrono::steady_clock::now();
         auto transformer = hipnuc.GetTransformer();
 
