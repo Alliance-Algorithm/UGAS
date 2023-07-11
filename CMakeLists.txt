@@ -13,17 +13,17 @@ endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-# Set configure_file
-set (CONFIGURE_DIR_PATH ${PROJECT_SOURCE_DIR}/build/config)
-configure_file (
-        "${PROJECT_SOURCE_DIR}/src/config.h.in"
-        "${CONFIGURE_DIR_PATH}/config.h")
-
 # Initialize custom options
 option (ENABLE_DEBUG_CANVAS "Enable debug canvas to draw debug image" OFF)
 option (ENABLE_RECORDING "Enable recording of raw camera image" OFF)
 option (ENABLE_OPENVINO "Enable openvino to identify buff" OFF)
 option (ENABLE_ROS "Enable ROS to visualize positions" OFF)
+
+# Set configure_file
+set (CONFIGURE_DIR_PATH ${PROJECT_SOURCE_DIR}/build/config)
+configure_file (
+        "${PROJECT_SOURCE_DIR}/src/config.h.in"
+        "${CONFIGURE_DIR_PATH}/config.h")
 
 # Set the output executable file name:
 # When compiling in the ROS environment, the output executable file name will be the node name.
@@ -38,6 +38,7 @@ endif()
 # Find non-ros packages
 find_package(OpenCV 4.7 REQUIRED)
 find_package(HikCameraSDK REQUIRED)
+find_package(Ceres REQUIRED)
 
 if (ENABLE_OPENVINO)
     find_package(OpenVINO REQUIRED)
@@ -63,9 +64,12 @@ else()
 endif()
 
 # Link libraries
-target_link_libraries(${EXECUTABLE_NAME} ${OpenCV_LIBS} ${HikCameraSDK_LIB} ${OpenVINO_LIB} -lpthread)
+target_link_libraries(${EXECUTABLE_NAME} ${OpenCV_LIBS} ${HikCameraSDK_LIB} ${CERES_LIBRARIES} ${OpenVINO_LIB} -lpthread)
 
 # Install package
 if (ENABLE_ROS)
     ament_auto_package()
 endif()
+
+# Hide warning(s)
+add_definitions(-w)

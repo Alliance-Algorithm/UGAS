@@ -253,6 +253,7 @@ public:
     MAKE_REFERENCE_CANVAS (1, track, master)                   // 跟踪点
     MAKE_REFERENCE_CANVAS (1, predict, master)                 // 预测点
     MAKE_REFERENCE_CANVAS (1, fps, master)                     // 帧率
+    MAKE_REFERENCE_CANVAS (1, buff, master)                    // 能量机关调试
     MAKE_READONLY_CANVAS  (0, pretreat, "Pretreat Image")      // 预处理后的图像
 
     void ShowAll() {

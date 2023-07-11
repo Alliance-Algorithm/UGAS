@@ -50,13 +50,20 @@ const int    NormalArmorWidth = 134, NormalArmorHeight = 56, LargerArmorWidth = 
 const std::vector<Point3f>
     NormalArmor3f = {
     /*Top Left*/     Point3f(-0.5 * NormalArmorWidth,    0.5 * NormalArmorHeight ,    0.0f),
-    /*Bottom Left*/     Point3f(-0.5 * NormalArmorWidth,    -0.5 * NormalArmorHeight,    0.0f),
+    /*Bottom Left*/  Point3f(-0.5 * NormalArmorWidth,    -0.5 * NormalArmorHeight,    0.0f),
     /*Bottom Right*/ Point3f(0.5 * NormalArmorWidth ,    -0.5 * NormalArmorHeight,    0.0f),
-    /*Top Right*/     Point3f(0.5 * NormalArmorWidth ,    0.5 * NormalArmorHeight ,    0.0f) },
-    LargeArmor3f = { Point3f(-0.5 * LargerArmorWidth,    0.5 * LargerArmorHeight ,    0.0f),
+    /*Top Right*/    Point3f(0.5 * NormalArmorWidth ,    0.5 * NormalArmorHeight ,    0.0f) },
+    LargeArmor3f = {
+                     Point3f(-0.5 * LargerArmorWidth,    0.5 * LargerArmorHeight ,    0.0f),
                      Point3f(-0.5 * LargerArmorWidth,    -0.5 * LargerArmorHeight,    0.0f),
                      Point3f(0.5 * LargerArmorWidth ,    -0.5 * LargerArmorHeight,    0.0f),
-                     Point3f(0.5 * LargerArmorWidth ,    0.5 * LargerArmorHeight ,    0.0f) };
+                     Point3f(0.5 * LargerArmorWidth ,    0.5 * LargerArmorHeight ,    0.0f) },
+    Buff5Point3f = {
+                     Point3f(160.0f,                     159.0f,                      0.0f),
+                     Point3f(-160.0f,                    159.0f,                      0.0f),
+                     Point3f(-186.0f,                    -158.0f,                     0.0f),
+                     Point3f(186.0f,                     -158.0f,                     0.0f),
+                     Point3f(0.0f,                       -700.0f,                     0.0f) };
 
 /* AttitudeSolution Parameters */
 

@@ -48,7 +48,7 @@ extern double maxArmorLightRatio, maxdAngle,
 extern double CameraMatrixData[3][3], DistCoeffsData[1][5];
 extern const cv::Mat CameraMatrix, DistCoeffs;
 // TL -> BL -> BR -> TR
-extern const std::vector<cv::Point3f> NormalArmor3f, LargeArmor3f;
+extern const std::vector<cv::Point3f> NormalArmor3f, LargeArmor3f, Buff5Point3f;
 
 /* AttitudeSolution Parameters */
 
@@ -65,6 +65,10 @@ extern const double staticReactionTime;
 namespace MathConsts {
     inline constexpr double Pi = 3.1415926535897;
     inline constexpr double G = 9.8;
+};
+
+enum class AutoscopeState : uint8_t {
+    Disable = 0, Normal = 1, Buff = 2
 };
 
 enum class ArmorColor : uint8_t {

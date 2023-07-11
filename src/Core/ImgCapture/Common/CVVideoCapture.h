@@ -21,7 +21,7 @@ public:
     explicit CVVideoCapture(const std::string& fileName) {
         VideoCapture::open(fileName);
         if (!isOpened()) {
-            VideoCapture::open(std::string("resources/") + fileName);
+            VideoCapture::open(std::string("../resources/") + fileName);
             if (!isOpened())
                 throw_with_trace(std::runtime_error, "Fail to open.");
         }

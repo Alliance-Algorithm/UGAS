@@ -30,7 +30,7 @@ public:
         uint8_t selfColor;             // 自身队伍颜色：1-红，2-蓝
         uint8_t presetBulletSpeed;     // 预设弹速，单位：m/s
         float bulletSpeed;             // 实时弹速，单位：m/s
-        uint8_t autoscopeEnabled;      // 操作手是否开启自瞄
+        uint8_t autoscopeState;        // 自瞄状态 0:Disable, 1:Enable(Normal), 2:Enable(Buff)
     };
 #pragma pack(pop)
 
@@ -89,7 +89,7 @@ public:
                 _enemyColor = ArmorColor::Red;
 
             //_bulletSpeed = data.presetBulletSpeed;  // 暂时不处理实时弹速
-            _autoscopeEnabled = data.autoscopeEnabled;
+            _autoscopeState = static_cast<AutoscopeState>(data.autoscopeState);
         }
     }
 
@@ -101,8 +101,8 @@ public:
         return _bulletSpeed;
     }
 
-    bool GetAutoscopeEnabled() {
-        return _autoscopeEnabled;
+    AutoscopeState GetAutoscopeState() {
+        return _autoscopeState;
     }
 
 private:
@@ -113,5 +113,5 @@ private:
     SerialUtil::SerialReceiver<DataReceive, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _receiver;
     ArmorColor _enemyColor = Parameters::DefaultEnemyColor;
     float _bulletSpeed = Parameters::DefaultBulletSpeed;
-    bool _autoscopeEnabled = false;
+    AutoscopeState _autoscopeState = AutoscopeState::Disable;
 };
