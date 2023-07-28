@@ -8,9 +8,12 @@ Reference: ChenJun MLP Classifier
 Header Functions:
 - 数字识别V2版本
 - 综合两个网络的结果，使用统计结果区分大小装甲板
+- 加入模板匹配功能进行二次筛选，如果cj的也有负样本问题，就在深度学习后面加上模板匹配部分就行，我没有直接改getArmorIDFromMLP是害怕识别码不一样
+- 测试情况：神经网络对于数字分类任务可以很好完成，且具有较好的鲁棒性，对噪声图像仍旧可用，但区分正负样本能力很差，模板匹配可以很好的区分正负样本，但是对于图片发生了旋转、缺失小部分、噪声过多都无法使用
 */
 
 #include <opencv2/opencv.hpp>
+#include <vector>
 
 #include "Core/Identifier/Armor/ArmorStruct.h"
 #include "Core/Identifier/NumberIdentifierInterface.h"
@@ -21,6 +24,22 @@ public:
     NumberIdentifier_V2(const char* modelCNN, const char* modelMLP) :
         _netCNN(cv::dnn::readNetFromTensorflow(modelCNN)),
         _netMLP(cv::dnn::readNetFromONNX(modelMLP)) {
+            for(int i=1;i<11;i++)
+            {
+                std::string path="./templates/"+ std::to_string(i) + ".png";
+                cv::Mat img=cv::imread(path);
+                cv::cvtColor(img,img,cv::COLOR_BGR2GRAY);
+                if(!img.empty())
+                {
+                    cv::resize(img,img,cv::Size(36,36));
+                    cv::threshold(img,img, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
+                    _templateFigures.push_back(img);
+                }
+                else
+                {
+                    throw_with_trace(std::runtime_error, "Template figure does not exist");
+                }
+            }
     }
     NumberIdentifier_V2(const NumberIdentifier_V2&) = delete;
     NumberIdentifier_V2(NumberIdentifier_V2&&) = delete;
@@ -137,6 +156,60 @@ private:
         }
     }
 
+    ArmorID getArmorIDFromCNN(const cv::Mat imgNumber)
+    {
+        cv::Mat blobImage = cv::dnn::blobFromImage(imgNumber, 1.0, cv::Size(36, 36), false, false);
+        _netCNN.setInput(blobImage);
+        cv::Mat pred = _netCNN.forward();
+        // 获取预测结果
+        double maxVal; cv::Point maxLoc;
+        minMaxLoc(pred, NULL, &maxVal, NULL, &maxLoc);
+        // std::cout << pred << std::endl;
+        // if (maxVal < 1.) maxLoc.x = 0;
+
+        //进行正负样本筛查
+        cv::Mat resultMatrix;
+        cv::matchTemplate(imgNumber, _templateFigures[maxLoc.x-1], resultMatrix, cv::TM_CCOEFF_NORMED);
+        double score = 0;
+	    minMaxLoc(resultMatrix, NULL, &score, NULL, NULL);
+        if(score>0.3)//对于噪声较大图像，模板匹配的值在0.3-0.5之间
+        {
+            maxLoc.x=maxLoc.x;
+        }
+        else
+        {
+            maxLoc.x=0;
+        }
+    
+        switch (maxLoc.x) {
+        case 0:
+            return ArmorID::Unknown;
+        case 1:
+            //armor.id = ArmorID::Hero;
+            //armor.is_large_armor = true;
+            return ArmorID::Hero;
+        case 2:
+            return ArmorID::Engineer;
+        case 3:
+            return ArmorID::InfantryIII;
+        case 4:
+            return ArmorID::InfantryIV;
+        case 5:
+            return ArmorID::InfantryV;
+        case 6:
+            return ArmorID::Sentry;
+        case 7:
+            return ArmorID::InfantryIII;
+        case 8:
+            return ArmorID::InfantryIV;
+        case 9:
+            return ArmorID::InfantryV;
+        case 10:
+            return ArmorID::Outpost;
+        }
+    }
+
+    std::vector<cv::Mat> _templateFigures;//模板图像
     cv::dnn::Net _netCNN; //输入36x36二值化图
     cv::dnn::Net _netMLP; //输入20x28二值化图
 };
