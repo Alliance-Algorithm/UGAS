@@ -14,15 +14,19 @@ Header Functions:
 
 #include <opencv2/opencv.hpp>
 #include <eigen3/Eigen/Dense>
+#include <utility>
 
 #include "Control/Gimbal/Gimbal.h"
+#include "Core/Transformer/Tree.h"
 #include "Core/Identifier/Armor/ArmorStruct.h"
 
 struct ArmorPlate3d {
     ArmorID id;
-    Eigen::Vector3d position;
-    Eigen::Vector3d normal;   // 装甲板平面的法向量（单位向量），方向沿车体向外
-    ArmorPlate3d(ArmorID _id, const Eigen::Vector3d& _position, const Eigen::Vector3d& _normal) : id(_id), position(_position), normal(_normal) { }
+    GimbalGyro::Position position;
+    GimbalGyro::Rotation rotation;
+    ArmorPlate3d(ArmorID id, GimbalGyro::Position position, GimbalGyro::Rotation rotation) :
+        id(id), position(std::move(position)), rotation(std::move(rotation)) {
+    }
 };
 
 class ArmorPnPSolverInterface {

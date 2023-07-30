@@ -8,7 +8,6 @@
 #include <eigen3/Eigen/Dense>
 
 #include "Control/Gimbal/Gimbal.h"
-#include "Core/Transformer/SimpleTransformer.h"
 #include "Util/Parameter/Parameters.h"
 #include "Util/TimeStamp/TimeStampCounter.h"
 
@@ -17,62 +16,59 @@ public:
     /*! 获取射击角度，不做预测处理。
     * \return 返回云台偏移量，格式为tuple[yaw, pitch]，单位弧度制，遵循右手定则。
     */
-    template <typename TransformerType>
-    auto GetShotAngle(const Eigen::Vector3d& targetGimbalGyro, const double speed, const TransformerType& transformer) const {
-        std::tuple<double, double> result;
-        auto& [yaw, pitch] = result;
+    void GetShotAngle(const GimbalGyro::Position& target_pos, const double speed, double& yaw, double& pitch, double& fly_time) const {
+        MuzzleLink::DirectionVector shotVec = GetShotVector(target_pos, speed, fly_time);
 
-        Eigen::Vector3d shotVec = GetShotVector(transformer.GimbalGyro2MuzzleGyro(targetGimbalGyro), speed);
-        shotVec = transformer.Gyro2Link(shotVec);
-
-        yaw = atan2(shotVec.y(), shotVec.x());
-        pitch = -atan2(shotVec.z(), sqrt(shotVec.y() * shotVec.y() + shotVec.x() + shotVec.x()));
-
-        return result;
+        yaw = atan2(shotVec->y(), shotVec->x());
+        pitch = -atan2(shotVec->z(), sqrt(shotVec->y() * shotVec->y() + shotVec->x() + shotVec->x()));
     }
 
     /*! 获取射击角度，还没做预测。
     * \return 返回云台偏移量，格式为tuple[yaw, pitch]，单位弧度制，遵循右手定则。
     */
-    template <typename TargetType, typename TransformerType>
-    auto GetShotAngle(const TargetType& target, const double speed, const TransformerType& transformer) const {
-        return GetShotAngle(target.Predict(0), speed, transformer);
-    }
-
-
     template <typename TargetType>
-    auto GetShotAngle(const TargetType& target, const double speed) const {
-        auto pos = target.Predict(0);
+    std::tuple<double, double> GetShotAngle(const TargetType& target, const double speed) const {
+        std::tuple<double, double> result;
+        auto& [yaw, pitch] = result;
+        double fly_time = 0;
+        GimbalGyro::Position pos;
+        for (int i = 2; i-- > 0;)
+            GetShotAngle(pos = target.Predict(fly_time), speed, yaw, pitch, fly_time);
 
-
-        auto transformer = SimpleTransformer(pos);
-        return GetShotAngle(transformer.CameraLink2GimbalLink(transformer.Link2Gyro(pos)), speed, transformer);
+        ros_util::PointBroadcast(pos);
+        //std::cout << fly_time;
+        return result;
     }
 
 private:
-    Eigen::Vector3d GetShotVector(const Eigen::Vector3d& targetGimbalGyro, const double speed) const {
+    [[nodiscard]] MuzzleGyro::DirectionVector GetShotVector(const MuzzleGyro::Position& target_pos, const double speed, double& fly_time) const {
         // 不考虑空气阻力
 
-        double x = targetGimbalGyro.x() / 1000;
-        double y = targetGimbalGyro.y() / 1000;
-        double z = targetGimbalGyro.z() / 1000;
+        const double& x = target_pos->x();
+        const double& y = target_pos->y();
+        const double& z = target_pos->z();
 
-        double hDis = sqrt(x * x + y * y);
 
         double yaw = atan2(y, x);
         double pitch = 0;
 
         double a = speed * speed;                  // v0 ^ 2
         double b = a * a;                          // v0 ^ 4
-        double c = hDis * hDis;                    // xt ^ 2
+        double c = x * x + y * y;                  // xt ^ 2
         double d = c * c;                          // xt ^ 4
         double e = MathConsts::G * MathConsts::G;  // g ^ 2
 
+        double xt = sqrt(c);                    // target horizontal distance
+
         double f = b * d * (b - e * c - 2 * MathConsts::G * a * z);
         if (f >= 0) {
-            pitch = -atan((b * c - sqrt(f)) / (MathConsts::G * a * c * hDis));
+            pitch = -atan((b * c - sqrt(f)) / (MathConsts::G * a * c * xt));
         }
 
-        return { cos(pitch) * cos(yaw), cos(pitch) * sin(yaw),-sin(pitch) };
+        auto result = MuzzleGyro::DirectionVector{ cos(pitch) * cos(yaw), cos(pitch) * sin(yaw),-sin(pitch) };
+
+        fly_time = xt / (cos(pitch) * speed);
+
+        return result;
     }
 };

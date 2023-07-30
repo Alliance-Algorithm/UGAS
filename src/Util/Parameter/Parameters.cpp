@@ -47,16 +47,16 @@ double DistCoeffsData[1][5] = { 0.00948033127678667, -0.900070016384203, 0, 0, 1
 
 const Mat    CameraMatrix(3, 3, CV_64F, CameraMatrixData), DistCoeffs(1, 5, CV_64F, DistCoeffsData);
 const int    NormalArmorWidth = 134, NormalArmorHeight = 56, LargerArmorWidth = 230, LargerArmorHeight = 56;
-const std::vector<Point3f>
+const std::vector<Point3d>
     NormalArmor3f = {
-    /*Top Left*/     Point3f(-0.5 * NormalArmorWidth,    0.5 * NormalArmorHeight ,    0.0f),
-    /*Bottom Left*/     Point3f(-0.5 * NormalArmorWidth,    -0.5 * NormalArmorHeight,    0.0f),
-    /*Bottom Right*/ Point3f(0.5 * NormalArmorWidth ,    -0.5 * NormalArmorHeight,    0.0f),
-    /*Top Right*/     Point3f(0.5 * NormalArmorWidth ,    0.5 * NormalArmorHeight ,    0.0f) },
-    LargeArmor3f = { Point3f(-0.5 * LargerArmorWidth,    0.5 * LargerArmorHeight ,    0.0f),
-                     Point3f(-0.5 * LargerArmorWidth,    -0.5 * LargerArmorHeight,    0.0f),
-                     Point3f(0.5 * LargerArmorWidth ,    -0.5 * LargerArmorHeight,    0.0f),
-                     Point3f(0.5 * LargerArmorWidth ,    0.5 * LargerArmorHeight ,    0.0f) };
+    /*Top Left*/     Point3d(-0.5 * NormalArmorWidth,    0.5 * NormalArmorHeight ,    0.0f),
+    /*Bottom Left*/     Point3d(-0.5 * NormalArmorWidth,    -0.5 * NormalArmorHeight,    0.0f),
+    /*Bottom Right*/ Point3d(0.5 * NormalArmorWidth ,    -0.5 * NormalArmorHeight,    0.0f),
+    /*Top Right*/     Point3d(0.5 * NormalArmorWidth ,    0.5 * NormalArmorHeight ,    0.0f) },
+    LargeArmor3f = { Point3d(-0.5 * LargerArmorWidth,    0.5 * LargerArmorHeight ,    0.0f),
+                     Point3d(-0.5 * LargerArmorWidth,    -0.5 * LargerArmorHeight,    0.0f),
+                     Point3d(0.5 * LargerArmorWidth ,    -0.5 * LargerArmorHeight,    0.0f),
+                     Point3d(0.5 * LargerArmorWidth ,    0.5 * LargerArmorHeight ,    0.0f) };
 
 /* AttitudeSolution Parameters */
 
@@ -69,3 +69,8 @@ constexpr int iterations = 2, Trajc_iterate = 2;
 constexpr double Trajc_k = 0.00001, Trajc_dertaT = 0.0001;
 constexpr double angleLowest = -30.0, angleHighest = 45.0, angleEPS = 1e-2;
 constexpr double staticReactionTime = 0.05;
+
+namespace Parameters {
+    const ArmorColor DefaultEnemyColor = ArmorColor::Blue;
+    const double DefaultBulletSpeed = 26.0;
+}

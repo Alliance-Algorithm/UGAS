@@ -21,11 +21,9 @@
 #include "Core/Identifier/Color/ColorIdentifier_V1.h"
 #include "Core/PnPSolver/Armor/ArmorPnPSolver.h"
 #include "Core/Predictor/Armor/SimplePredictor.h"
-#include "Core/Tracker/Armor/ArmorEKFTracker.h"
-#include "Core/Tracker/Armor/VerticalTracker.h"
+#include "Core/Tracker/Armor/ArmorEKFTracker_V3.h"
 #include "Core/Strategy/Common/Strategy_V1.h"
 #include "Core/Trajectory/Common/Trajectory_V1.h"
-#include "Core/Transformer/SimpleTransformer.h"
 #include "Control/Serial/CBoardInfantry.h"
 #include "Control/Serial/CBoardSentry.h"
 #include "Control/Serial/VirtualCBoard.h"
@@ -42,16 +40,15 @@
     //auto imgCapture = ImageFolderCapture("../UGAS-record/sentry-record-230610-8am/");
     //auto imgCapture = CVVideoCapture("Blue_4.mp4");
 
-    auto hipnuc = HiPNUC("COM29");
+    auto hipnuc = HiPNUC("/dev/ttyUSB0");
 
     //auto cboard = CBoardSentry("COM25");
-    auto cboard = CBoardInfantry("COM25");
-    //auto cboard = VirtualCBoard();
+    //auto cboard = CBoardInfantry("/dev/ttyUSB1");
+    auto cboard = VirtualCBoard(true);
 
-    auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V2>("models/NumberIdentifyModelV3.pb", "models/mlp.onnx");
-    //auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV4.pb");
+    //auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V2>("../models/NumberIdentifyModelV3.pb", "../models/mlp.onnx");
+    auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV4.pb");
 
-    auto pnpSolver = ArmorPnPSolver();
     auto simplePredictor = SimplePredictor();
     auto ekfTracker = ArmorEKFTracker();
     auto strategy = Strategy_V1();
@@ -63,12 +60,14 @@
 
     bool autoscopeEnabled = false;
 
+    double angle = 0;
+    int interval = 0;
     while (true) {
         cboard.Receive();
 
         auto [img, _discard_] = imgCapture.Read();
         auto timestamp = std::chrono::steady_clock::now();
-        auto transformer = hipnuc.GetTransformer();
+        bool imuAvailable = hipnuc.UpdateTransformer();
 
         if constexpr (debugCanvas.master) {
             debugCanvas.master.LoadMat(img);
@@ -76,53 +75,51 @@
 
         auto armors = armorIdentifier.Identify(img, cboard.GetEnemyColor());
 
-        if (transformer.Available()) {
+        if (imuAvailable) {
             // 陀螺仪工作正常
-            auto armors3d = pnpSolver.SolveAll(armors, transformer);
+            auto armors3d = ArmorPnPSolver::SolveAll(armors);
 
-            // 自瞄开启瞬间，重置跟踪目标
-            if (!autoscopeEnabled && cboard.GetAutoscopeEnabled())
-                ekfTracker.lastTarget = ArmorID::Unknown;
             autoscopeEnabled = cboard.GetAutoscopeEnabled();
 
-            if (auto&&target = ekfTracker.Update(armors3d, timestamp, transformer)) {
-                //auto&& pos = target->Predict(0);
-                //std::cout << pos.x() << ' ' << pos.y() << ' ' << pos.z() << '\n';
-                auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed(), transformer);
+            if (auto target = ekfTracker.Update(armors3d, timestamp)) {
+                auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed());
                 // sentry y+1.7 p+0.0
                 yaw += 1.7 / 180.0 * MathConsts::Pi;
                 pitch += 0.3 / 180.0 * MathConsts::Pi;
-                cboard.Send(yaw, pitch);// , target->Shotable(trajectory._flyTime + 0.1));
+                cboard.Send(yaw, pitch);
                 recorder.Record(img, timestamp);
-
-                //std::cout << yaw * 53 << ' ' << pitch * 53 << '\n';
             }
             else {
-                cboard.Send(0, 0);//, false);
-                //std::cout << "sending zero!\n";
+                cboard.Send(0, 0);
             }
         }
         else {
             // 陀螺仪工作不正常，采用低保运行模式
-            auto armors3d = pnpSolver.SolveAll(armors);
-            if (auto target = simplePredictor.Update(armors3d, timestamp)) {
-                auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed());
-                yaw += 0.0 / 180.0 * MathConsts::Pi;
-                pitch += 1.7 / 180.0 * MathConsts::Pi;
-                //cboard.Send(yaw, pitch);// , false);
-                cboard.Send(0, 0);
-                recorder.Record(img, timestamp);
-            }
-            else {
-                cboard.Send(0, 0);// , false);
-            }
+//            auto armors3d = pnpSolver.SolveAll(armors);
+//            if (auto target = simplePredictor.Update(armors3d, timestamp)) {
+//                auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed());
+//                yaw += 0.0 / 180.0 * MathConsts::Pi;
+//                pitch += 1.7 / 180.0 * MathConsts::Pi;
+//                //cboard.Send(yaw, pitch);// , false);
+//                cboard.Send(0, 0);
+//                recorder.Record(img, timestamp);
+//            }
+//            else {
+//                cboard.Send(0, 0);// , false);
+//            }
         }
 
         if constexpr (ENABLE_DEBUG_CANVAS) {
-            debugCanvas.ShowAll();
-            cv::waitKey(1);
+            if (interval-- == 0) {
+                debugCanvas.ShowAll();
+//                for (auto& armor : armors) {
+//                    if (armor.id == ArmorID::InfantryV)
+//                        cv::waitKey(10000);
+//                }
+                cv::waitKey(1);
+                interval = 20;
+            }
         }
-        //cv::imwrite("test.png", img, compression_params);
 
         if (fps.Count()) {
             std::cout << "Fps: " << fps.GetFPS() << '\n';

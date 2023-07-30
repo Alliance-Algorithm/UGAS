@@ -11,6 +11,7 @@ Header Functions:
 
 #include <cmath>
 
+#include <utility>
 #include <vector>
 #include <optional>
 
@@ -26,13 +27,13 @@ class ArmorEKFTracker {
 public:
     struct Target {
     public:
-        explicit Target(const Eigen::Vector3d& pos, double yaw, double v_yaw) : _pos(pos), _yaw(yaw), _v_yaw(v_yaw) { }
+        explicit Target(GimbalGyro::Position pos, double yaw, double v_yaw) : _pos(std::move(pos)), _yaw(yaw), _v_yaw(v_yaw) { }
 
-        Eigen::Vector3d Predict(float sec) const {
+        [[nodiscard]] GimbalGyro::Position Predict(float sec) const {
             return _pos;
         }
 
-        bool Shotable(float sec) const {
+        [[nodiscard]] bool Shotable(float sec) const {
             //double yaw_diff = std::fmod(_yaw + _v_yaw * sec, 2 * MathConsts::Pi / 6);
 
             constexpr double div = 2 * MathConsts::Pi / 3;
@@ -44,7 +45,7 @@ public:
         }
 
     private:
-        Eigen::Vector3d _pos;
+        GimbalGyro::Position _pos;
         double _yaw, _v_yaw;
     };
 
@@ -140,7 +141,7 @@ private:
             return h;
         };
 
-        // Q - process noise covariance matrix
+        // Q - process noise covariance matrixEigen::Vector3d
         static Eigen::MatrixXd get_Q(double dt) {
             Eigen::MatrixXd q(9, 9);
             double t = dt, x = _sigma2_q_xyz, y = _sigma2_q_yaw, r = _sigma2_q_r;
@@ -184,7 +185,7 @@ private:
 
         void Update(const ArmorPlate3d& armor3d, std::chrono::steady_clock::time_point timeStamp) {
             double yaw = getContinuousYaw(armor3d);
-            double xa = armor3d.position.x() / 1000, ya = armor3d.position.y() / 1000, za = armor3d.position.z() / 1000;
+            double xa = armor3d.position->x() / 1000, ya = armor3d.position->y() / 1000, za = armor3d.position->z() / 1000;
 
             //std::cout << armor3d.normal.z() << '\n';
 
@@ -261,7 +262,7 @@ private:
 
     private:
         double getContinuousYaw(const ArmorPlate3d& armor3d) {
-            double yaw = atan2(armor3d.normal.y(), armor3d.normal.x());
+            double yaw = atan2(armor3d.normal->y(), armor3d.normal->x());
 
             // Generate continuous yaw (-pi~pi -> -inf~inf)
             double diff = std::fmod(yaw - _last_yaw, 2 * MathConsts::Pi);
@@ -272,17 +273,16 @@ private:
             return _last_yaw;
         }
 
-        Eigen::Vector3d getTrackingArmorPosFromEKF()
-        {
+        [[nodiscard]] Eigen::Vector3d getTrackingArmorPosFromEKF() const {
             const Eigen::VectorXd& x = _ekf._x;
             double xc = x(0), yc = x(2), za = x(4);
             double yaw = x(6), r = x(8);
             double xa = xc - r * cos(yaw);
             double ya = yc - r * sin(yaw);
-            return Eigen::Vector3d(xa, ya, za);
+            return { xa, ya, za };
         }
 
-        Target getOutPostTarget() {
+        [[nodiscard]] Target getOutPostTarget() const {
             const Eigen::VectorXd& x = _ekf._x;
             double xc = x(0), yc = x(2), za = x(4);
             double aim_yaw = atan2(-yc, -xc);
@@ -314,14 +314,13 @@ public:
     ArmorEKFTracker(const ArmorEKFTracker&) = delete;
     ArmorEKFTracker(ArmorEKFTracker&&) = delete;
 
-    template <typename TransformerType>
-    std::optional<Target> Update(const std::vector<ArmorPlate3d>& armors3d, std::chrono::steady_clock::time_point timeStamp, const TransformerType& transformer) {
+    std::optional<Target> Update(const std::vector<ArmorPlate3d>& armors3d, std::chrono::steady_clock::time_point timeStamp) {
 
         std::vector<double> distances;
         std::vector<double> angles;
         for (const auto& armor3d : armors3d) {
-            auto pos = transformer.Gyro2Link(armor3d.position);
-            const double& x = pos.x(), & y = pos.y(), & z = pos.z();
+            CameraLink::Position pos = armor3d.position;
+            const double& x = pos->x(), & y = pos->y(), & z = pos->z();
             double dis = sqrt(x * x + y * y + z * z);
             distances.push_back(dis);
             double angle = x / dis;
@@ -329,20 +328,21 @@ public:
         }
 
         for (const auto& armor3d : armors3d) {
-            if (armor3d.id == ArmorID::Outpost) {
+            /*if (armor3d.id == ArmorID::Outpost) {
                 lastTarget = ArmorID::Outpost;
                 lastSuccess = timeStamp;
                 break;
             }
-            else if (armor3d.id == ArmorID::Hero) {
+            else */
+            if (armor3d.id == ArmorID::Hero) {
                 lastTarget = ArmorID::Hero;
                 lastSuccess = timeStamp;
                 break;
             }
         }
 
-        std::vector<int> sortedAngles;
-        for (int i = 0; i < armors3d.size(); ++i)
+        std::vector<std::size_t> sortedAngles;
+        for (std::size_t i = 0; i < armors3d.size(); ++i)
             sortedAngles.push_back(i);
         std::sort(sortedAngles.begin(), sortedAngles.end(), [&angles](const int& a, const int& b) -> bool {
             return angles[a] < angles[b];

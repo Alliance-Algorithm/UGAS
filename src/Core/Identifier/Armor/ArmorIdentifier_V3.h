@@ -128,9 +128,9 @@ private:
             float scoreMap[256];
             float confidence = 0.0f;
             scoreMap[static_cast<size_t>(ColorConfidence::NotCredible)] = 0.0f;
-            scoreMap[static_cast<size_t>(ColorConfidence::CredibleOneChannelOverexposure)] = 1.0f / contourSize;
-            scoreMap[static_cast<size_t>(ColorConfidence::CredibleTwoChannelOverexposure)] = 0.5f / contourSize;
-            scoreMap[static_cast<size_t>(ColorConfidence::CredibleThreeChannelOverexposure)] = 0.2f / contourSize;
+            scoreMap[static_cast<size_t>(ColorConfidence::CredibleOneChannelOverexposure)] = 1.0f / (float)contourSize;
+            scoreMap[static_cast<size_t>(ColorConfidence::CredibleTwoChannelOverexposure)] = 0.5f / (float)contourSize;
+            scoreMap[static_cast<size_t>(ColorConfidence::CredibleThreeChannelOverexposure)] = 0.2f / (float)contourSize;
 
             auto& colorIdentifier = targetColor == ArmorColor::Blue ? _blueIdentifier : _redIdentifier;
             int maxPointY = 0;
@@ -150,25 +150,25 @@ private:
                     putText(debugCanvas.lightbar.GetMat(), angle, cv::Point2f(box.center.x + 10, box.center.y), 0, 0.5, COLOR_YELLOW);
                 }
 
-                cv::Point2f contour[4];
-                box.points(contour);
+                cv::Point2f corner[4];
+                box.points(corner);
                 auto diff = box.size.width - box.size.height;
                 if (diff > 0) {     //旋转前，矩形横放
-                    float angle = fmod(box.angle + 360, 360);
+                    float angle = fmodf(box.angle + 360, 360);
                     if (90 - angleRange < angle && angle < 90 + angleRange) {
-                        return LightBar((contour[0] + contour[1]) / 2 + ROIoffset, (contour[2] + contour[3]) / 2 + ROIoffset, 0);
+                        return LightBar((corner[0] + corner[1]) / 2, (corner[2] + corner[3]) / 2, 0);
                     }
                     else if (270 - angleRange < angle && angle < 270 + angleRange) {
-                        return LightBar((contour[2] + contour[3]) / 2 + ROIoffset, (contour[0] + contour[1]) / 2 + ROIoffset, 0);
+                        return LightBar((corner[2] + corner[3]) / 2, (corner[0] + corner[1]) / 2, 0);
                     }
                 }
-                else if (diff < 0) {  //旋转前，矩形横放
-                    float angle = fmod(box.angle + 360 + 90, 360);
+                else if (diff < 0) {  //旋转前，矩形竖放
+                    float angle = fmodf(box.angle + 360 + 90, 360);
                     if (90 - angleRange < angle && angle < 90 + angleRange) {
-                        return LightBar((contour[1] + contour[2]) / 2 + ROIoffset, (contour[0] + contour[3]) / 2 + ROIoffset, 0);
+                        return LightBar((corner[1] + corner[2]) / 2, (corner[0] + corner[3]) / 2, 0);
                     }
                     else if (270 - angleRange < angle && angle < 270 + angleRange) {
-                        return LightBar((contour[0] + contour[3]) / 2 + ROIoffset, (contour[1] + contour[2]) / 2 + ROIoffset, 0);
+                        return LightBar((corner[0] + corner[3]) / 2, (corner[1] + corner[2]) / 2, 0);
                     }
                 }
             }

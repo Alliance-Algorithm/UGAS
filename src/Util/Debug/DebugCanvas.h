@@ -250,8 +250,8 @@ public:
     MAKE_REFERENCE_CANVAS (1, lightbar, master)                // 灯条识别结果
     MAKE_REFERENCE_CANVAS (1, armor, master)                   // 装甲板识别结果
     MAKE_REFERENCE_CANVAS (1, armorNum, master)                // 装甲板数字识别结果
-    MAKE_REFERENCE_CANVAS (1, track, master)                   // 跟踪点
-    MAKE_REFERENCE_CANVAS (1, predict, master)                 // 预测点
+    MAKE_REFERENCE_CANVAS (0, track, master)                   // 跟踪点
+    MAKE_REFERENCE_CANVAS (0, predict, master)                 // 预测点
     MAKE_REFERENCE_CANVAS (1, fps, master)                     // 帧率
     MAKE_READONLY_CANVAS  (0, pretreat, "Pretreat Image")      // 预处理后的图像
 

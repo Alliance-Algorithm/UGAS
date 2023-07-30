@@ -19,6 +19,11 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
     Mat imgWarped, imgNumber, imgInput, M = getPerspectiveTransform(armor.points, dst);
     //warpPerspective(imgGray, imgWarped, M, Size(32, 32));
     warpPerspective(imgGray, imgWarped, M, Size(36, 36));
+
+    double imgWrapedMaxVal;
+    minMaxLoc(imgWarped, nullptr, &imgWrapedMaxVal, nullptr, nullptr);
+    if (imgWrapedMaxVal > 120) return false;
+
     threshold(imgWarped, imgNumber, 0, 255, THRESH_BINARY | THRESH_OTSU);
     // 神经网络预测
     // Mat blobImage = blobFromImage(imgNumber, 1.0, Size(32, 32), false, false);
@@ -28,8 +33,6 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
     // 获取预测结果
     double maxVal; Point maxLoc;
     minMaxLoc(pred, NULL, &maxVal, NULL, &maxLoc);
-    // std::cout << pred << std::endl;
-    // if (maxVal < 1.) maxLoc.x = 0;
 
     switch (maxLoc.x) {
     case 0:

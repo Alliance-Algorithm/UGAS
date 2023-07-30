@@ -18,11 +18,12 @@ Header Functions:
 
 #include "Util/Serial/SerialUtil.h"
 #include "Util/FPSCounter/FPSCounter.h"
-#include "Core/Transformer/IMUTransformer.h"
+#include "Core/Transformer/Tree.h"
+#include "Util/ROS/TfBroadcast.h"
 
 class HiPNUC {
 public:
-    HiPNUC(const char* portName) :
+    explicit HiPNUC(const char* portName) :
         _portName(portName),
         _destructed(false),
         _thread(&HiPNUC::_serialMain, this) {
@@ -35,10 +36,14 @@ public:
         _thread.join();
     }
 
-    IMUTransformer GetTransformer() {
-        const float* quatPtr = _transQuat;
-        auto q = Eigen::Quaternionf{ quatPtr[0], quatPtr[1], quatPtr[2], quatPtr[3] };
-        return IMUTransformer(q, _available);
+    bool UpdateTransformer() {
+        if (_available) {
+            const float* quatPtr = _transQuat;
+            transformer::SetRotation<GimbalGyro, GimbalLink>(Eigen::Quaterniond{ quatPtr[0], quatPtr[1], quatPtr[2], quatPtr[3] });
+        }
+        ros_util::TfBroadcast<GimbalGyro, CameraLink>();
+        ros_util::TfBroadcast<GimbalGyro, MuzzleLink>();
+        return _available;
     }
 
 private:

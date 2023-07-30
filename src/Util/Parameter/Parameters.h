@@ -48,7 +48,7 @@ extern double maxArmorLightRatio, maxdAngle,
 extern double CameraMatrixData[3][3], DistCoeffsData[1][5];
 extern const cv::Mat CameraMatrix, DistCoeffs;
 // TL -> BL -> BR -> TR
-extern const std::vector<cv::Point3f> NormalArmor3f, LargeArmor3f;
+extern const std::vector<cv::Point3d> NormalArmor3f, LargeArmor3f;
 
 /* AttitudeSolution Parameters */
 
@@ -63,7 +63,7 @@ extern const double angleLowest, angleHighest, angleEPS;
 extern const double staticReactionTime;
 
 namespace MathConsts {
-    inline constexpr double Pi = 3.1415926535897;
+    inline constexpr double Pi = 3.14159265358979323846;
     inline constexpr double G = 9.8;
 };
 
@@ -72,8 +72,8 @@ enum class ArmorColor : uint8_t {
 };
 
 namespace Parameters {
-    inline constexpr ArmorColor DefaultEnemyColor = ArmorColor::Blue;
-    inline constexpr double DefaultBulletSpeed = 25.0;
+    extern const ArmorColor DefaultEnemyColor;
+    extern const double DefaultBulletSpeed;
 }
 
 /* Colors */

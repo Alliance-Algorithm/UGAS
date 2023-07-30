@@ -16,8 +16,6 @@ Header Functions:
 
 #include "Util/Serial/SerialUtil.h"
 #include "Util/FPSCounter/FPSCounter.h"
-#include "Core/Transformer/IMUTransformer.h"
-
 
 #include <thread>
 #include <condition_variable>

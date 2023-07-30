@@ -8,63 +8,39 @@ Header Functions:
 - 在一个独立线程中运行ROS2 Node
 */
 
+#include "config.h"
+
+#if ENABLE_ROS
+
 #include <thread>
 
-#include "rclcpp/rclcpp.hpp"
-#include "tf2/LinearMath/Quaternion.h"
-#include "tf2_ros/transform_broadcaster.h"
-#include "geometry_msgs/msg/transform_stamped.hpp"
+#include <rclcpp/rclcpp.hpp>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/transform_broadcaster.h>
+#include <visualization_msgs/msg/marker.hpp>
+#include <visualization_msgs/msg/marker_array.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <geometry_msgs/msg/point_stamped.hpp>
 
 namespace ros_util {
     class Node : public rclcpp::Node {
     public:
-        Node() : rclcpp::Node("main") {
-            tf_broadcaster_ = std::make_unique<tf2_ros::TransformBroadcaster>(*this);
-            thread_ = std::thread(&Node::thread_main, this);
+        Node() : rclcpp::Node("main"), tf_broadcaster_(*this) {
+            point_pub_ = this->create_publisher<geometry_msgs::msg::PointStamped>("/test_point", 10);
+            marker_pub_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("/armor_plate_array", 10);
         }
+        ~Node() override = default;
 
-        ~Node() override {
-            if (thread_.joinable()) {
-                thread_.join();
-            }
-        }
+        tf2_ros::TransformBroadcaster tf_broadcaster_;
 
-    private:
-        void thread_main() {
-            double yaw = 0;
-            while (rclcpp::ok()) {
-                geometry_msgs::msg::TransformStamped t;
-                t.header.stamp = this->get_clock()->now();
-                t.header.frame_id = "world";
-                t.child_frame_id = "abc";
-
-                t.transform.translation.x = 10.0;
-                t.transform.translation.y = 10.0;
-                t.transform.translation.z = 0.0;
-
-                tf2::Quaternion q;
-                q.setRPY(0, 0, yaw);
-                t.transform.rotation.x = q.x();
-                t.transform.rotation.y = q.y();
-                t.transform.rotation.z = q.z();
-                t.transform.rotation.w = q.w();
-
-                tf_broadcaster_->sendTransform(t);
-
-                std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                yaw += 0.001;
-            }
-        }
-
-        std::unique_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
-
-        std::thread thread_;
+        rclcpp::Publisher<geometry_msgs::msg::PointStamped>::SharedPtr point_pub_;
+        rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_pub_;
     };
 
-    std::thread node_thread_;
-    std::weak_ptr<Node> node_;
+    inline std::thread node_thread_;
+    inline std::weak_ptr<Node> node_;
 
-    void init(int argc, char* argv[]) {
+    inline void init(int argc, char* argv[]) {
         node_thread_ = std::thread([argc, argv](){
             rclcpp::init(argc, argv);
             auto node = std::make_shared<Node>();
@@ -75,3 +51,11 @@ namespace ros_util {
         node_thread_.detach();
     }
 }
+
+#else // ENABLE_ROS
+
+namespace ros_util {
+    void init(int argc, char* argv[]) { }
+}
+
+#endif // ENABLE_ROS
