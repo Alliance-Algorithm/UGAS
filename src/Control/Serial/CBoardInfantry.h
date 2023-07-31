@@ -88,7 +88,18 @@ public:
             else if (data.selfColor == 2)   // 己方蓝色，击打红色
                 _enemyColor = ArmorColor::Red;
 
-            //_bulletSpeed = data.presetBulletSpeed;  // 暂时不处理实时弹速
+            switch (data.presetBulletSpeed) {
+                case 26: // 30m/s max
+                    _bulletSpeed = 26.0f;
+                    break;
+                case 16: // 18m/s max
+                    _bulletSpeed = 15.6f;
+                    break;
+                case 13: // 15m/s max || 22m/s max?
+                    _bulletSpeed = 12.3f;
+                    break;
+            }
+
             _autoscopeEnabled = data.autoscopeEnabled;
         }
     }

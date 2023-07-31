@@ -35,16 +35,16 @@
 #include "Util/Debug/MatForm/RectangleControl.hpp"
 
 [[noreturn]] void Gimbal::Always() {
-    auto imgCapture = HikCameraCapture();
-    //auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
+    //auto imgCapture = HikCameraCapture();
+    auto imgCapture = RotateCapture<HikCameraCapture>(cv::RotateFlags::ROTATE_180);
     //auto imgCapture = ImageFolderCapture("../UGAS-record/sentry-record-230610-8am/");
     //auto imgCapture = CVVideoCapture("Blue_4.mp4");
 
-    auto hipnuc = HiPNUC("/dev/ttyUSB0");
+    auto hipnuc = HiPNUC("/dev/IMU");
 
-    //auto cboard = CBoardSentry("COM25");
+    auto cboard = CBoardInfantry("/dev/CBoard");
     //auto cboard = CBoardInfantry("/dev/ttyUSB1");
-    auto cboard = VirtualCBoard(true);
+    //auto cboard = VirtualCBoard(true);
 
     //auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V2>("../models/NumberIdentifyModelV3.pb", "../models/mlp.onnx");
     auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV4.pb");
@@ -84,8 +84,8 @@
             if (auto target = ekfTracker.Update(armors3d, timestamp)) {
                 auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed());
                 // sentry y+1.7 p+0.0
-                yaw += 1.7 / 180.0 * MathConsts::Pi;
-                pitch += 0.3 / 180.0 * MathConsts::Pi;
+                yaw += 0.4 / 180.0 * MathConsts::Pi;
+                pitch += 2.4 / 180.0 * MathConsts::Pi;
                 cboard.Send(yaw, pitch);
                 recorder.Record(img, timestamp);
             }
@@ -95,27 +95,22 @@
         }
         else {
             // 陀螺仪工作不正常，采用低保运行模式
-//            auto armors3d = pnpSolver.SolveAll(armors);
-//            if (auto target = simplePredictor.Update(armors3d, timestamp)) {
-//                auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed());
-//                yaw += 0.0 / 180.0 * MathConsts::Pi;
-//                pitch += 1.7 / 180.0 * MathConsts::Pi;
-//                //cboard.Send(yaw, pitch);// , false);
-//                cboard.Send(0, 0);
-//                recorder.Record(img, timestamp);
-//            }
-//            else {
-//                cboard.Send(0, 0);// , false);
-//            }
+            auto armors3d = ArmorPnPSolver::SolveAll(armors);
+            if (auto target = simplePredictor.Update(armors3d, timestamp)) {
+                auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.GetBulletSpeed());
+                yaw += 0.5 / 180.0 * MathConsts::Pi;
+                pitch += 2.4 / 180.0 * MathConsts::Pi;
+                cboard.Send(yaw, pitch);
+                recorder.Record(img, timestamp);
+            }
+            else {
+                cboard.Send(0, 0);
+            }
         }
 
         if constexpr (ENABLE_DEBUG_CANVAS) {
             if (interval-- == 0) {
                 debugCanvas.ShowAll();
-//                for (auto& armor : armors) {
-//                    if (armor.id == ArmorID::InfantryV)
-//                        cv::waitKey(10000);
-//                }
                 cv::waitKey(1);
                 interval = 20;
             }

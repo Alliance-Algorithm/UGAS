@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # exit when any error occurs
 set -e
 
@@ -7,9 +8,15 @@ set -e
 cd "${0%/*}"
 cd ..
 
+
+DEBUG="OFF"
 FORCE_INSTALLATION="OFF"
 while [ "$1" != "" ]; do
     case "$1" in
+        "--debug" )
+            DEBUG="ON" ;;
+        "-d" )
+            DEBUG="ON" ;;
         "--force" )
             FORCE_INSTALLATION="ON" ;;
         "-f" )
@@ -27,20 +34,54 @@ while [ "$1" != "" ]; do
     shift
 done
 
+if [ "${DEBUG}" = "ON" ] && [ "${FORCE_INSTALLATION}" = "ON" ]
+then
+    echo "error: the option debug and force cannot be enabled at the same time."
+    echo "--debug forbids installation and --force forced installation, which is contradictory."
+fi
+
+
 REMOTE_IP="192.168.234.1"
 REMOTE_PORT="22"
 REMOTE_USERNAME="alliance"
 REMOTE_PASSWORD="alliance"
 REMOTE_PASSWORD_ROOT="alliance"
 
-echo "uploading to remote host..."
-/bin/sshpass -p "${REMOTE_PASSWORD}" /bin/rsync -av -e "/bin/ssh -p ${REMOTE_PORT}" --exclude-from='./.gitignore' . ${REMOTE_USERNAME}@${REMOTE_IP}:/home/${REMOTE_USERNAME}/ugas
-/bin/sshpass -p "${REMOTE_PASSWORD}" /bin/ssh ${REMOTE_USERNAME}@${REMOTE_IP} "/home/${REMOTE_USERNAME}/ugas/shell/build.sh $@"
-
-if [ "${FORCE_INSTALLATION}" == "ON" ]
+if [ "${DEBUG}" = "OFF" ]
 then
-    /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh root@${REMOTE_IP} "/home/${REMOTE_USERNAME}/ugas/shell/install.sh"
+    REMOTE_DEPLOY_PATH="/home/${REMOTE_USERNAME}/ugas"
 else
-    /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh root@${REMOTE_IP} "systemctl restart ugas.service || /home/${REMOTE_USERNAME}/ugas/shell/install.sh"
+    /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh root@${REMOTE_IP} "killall ugas || true"
+    /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh root@${REMOTE_IP} "systemctl stop ugas.service || true"
+    REMOTE_DEPLOY_PATH="/home/${REMOTE_USERNAME}/ugas_debug"
 fi
 
+
+echo "uploading to remote host..."    
+/bin/sshpass -p "${REMOTE_PASSWORD}" /bin/rsync -av -e "/bin/ssh -p ${REMOTE_PORT}" --exclude-from="./.gitignore" . ${REMOTE_USERNAME}@${REMOTE_IP}:${REMOTE_DEPLOY_PATH}
+/bin/sshpass -p "${REMOTE_PASSWORD}" /bin/ssh ${REMOTE_USERNAME}@${REMOTE_IP} "${REMOTE_DEPLOY_PATH}/shell/build.sh $*"
+
+if [ "${DEBUG}" = "OFF" ]
+then
+    if [ "${FORCE_INSTALLATION}" = "ON" ]
+    then
+        /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh root@${REMOTE_IP} "${REMOTE_DEPLOY_PATH}/shell/install.sh"
+    else
+        /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh root@${REMOTE_IP} "systemctl restart ugas.service || ${REMOTE_DEPLOY_PATH}/shell/install.sh"
+    fi
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

@@ -47,7 +47,7 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [ "${CLEAR_BEFORE_BUILD}" == "ON" ]
+if [ "${CLEAR_BEFORE_BUILD}" = "ON" ]
 then
     echo "clearing cache..."
     rm -rf ./build
@@ -56,18 +56,18 @@ then
 fi
 
 echo "building ugas..."
-if [ "${ENABLE_ROS}" == "OFF" ]
+if [ "${ENABLE_ROS}" = "OFF" ]
 then
     mkdir -p ./build && cd ./build
     cmake -GNinja -DCMAKE_BUILD_TYPE=Release \
         -DENABLE_DEBUG_CANVAS=${ENABLE_DEBUG_CANVAS} -DENABLE_OPENVINO=${ENABLE_OPENVINO} -DENABLE_RECORDING=${ENABLE_RECORDING} -DENABLE_ROS=OFF ..
     ninja
     cd ..
-    if [ "${RUN_AFTER_BUILD}" == "ON" ]; then ./build/ugas; fi
+    if [ "${RUN_AFTER_BUILD}" = "ON" ]; then ./build/ugas; fi
 else
     colcon build --packages-select ugas --event-handlers console_direct+ --cmake-args -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release \
         -DENABLE_DEBUG_CANVAS=${ENABLE_DEBUG_CANVAS} -DENABLE_OPENVINO=${ENABLE_OPENVINO} -DENABLE_RECORDING=${ENABLE_RECORDING} -DENABLE_ROS=ON
     source ./install/local_setup.bash
-    if [ "${RUN_AFTER_BUILD}" == "ON" ]; then ros2 run ugas main; fi
+    if [ "${RUN_AFTER_BUILD}" = "ON" ]; then ros2 run ugas main; fi
 fi
 
