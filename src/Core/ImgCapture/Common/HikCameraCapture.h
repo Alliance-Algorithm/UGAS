@@ -129,21 +129,30 @@ private:
 
                         nRet = MV_CC_SetEnumValue(_handle, "TriggerMode", MV_TRIGGER_MODE_OFF);
                         if (MV_OK == nRet) {
+                            if (parameters::RotateCameraImage) {
+                                nRet = MV_CC_SetBoolValue(_handle, "ReverseX", true);
+                                if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set reverse x. nRet [" << nRet << "]";
+
+                                nRet = MV_CC_SetBoolValue(_handle, "ReverseY", true);
+                                if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set reverse y. nRet [" << nRet << "]";
+                            }
 
                             nRet = MV_CC_SetEnumValue(_handle, "ExposureAuto", MV_EXPOSURE_AUTO_MODE_OFF);
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set auto exposure. nRet [" << nRet << "]";
 
-                            nRet = MV_CC_SetFloatValue(_handle, "ExposureTime", 2000);
+                            nRet = MV_CC_SetFloatValue(_handle, "ExposureTime", parameters::CameraExposureTime.count());
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set exposure time. nRet [" << nRet << "]";
 
-                            nRet = MV_CC_SetFloatValue(_handle, "Gain", true ? 16.9807f : 0.0f);
+                            nRet = MV_CC_SetFloatValue(_handle, "Gain", parameters::CameraGain);
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set gain. nRet [" << nRet << "]";
 
-                            nRet = MV_CC_SetBoolValue(_handle, "DigitalShiftEnable", true);
-                            if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set digital shift enable. nRet [" << nRet << "]";
+                            if (parameters::CameraDigitalShift != 0.0f) {
+                                nRet = MV_CC_SetBoolValue(_handle, "DigitalShiftEnable", true);
+                                if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set digital shift enable. nRet [" << nRet << "]";
 
-                            nRet = MV_CC_SetFloatValue(_handle, "DigitalShift", false ? 5.9993f : 0.0f);
-                            if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set digital shift. nRet [" << nRet << "]";
+                                nRet = MV_CC_SetFloatValue(_handle, "DigitalShift", parameters::CameraDigitalShift);
+                                if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set digital shift. nRet [" << nRet << "]";
+                            }
 
                             nRet = MV_CC_SetBoolValue(_handle, "AcquisitionFrameRateEnable", false);
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set acquisition frame rate enable. nRet [" << nRet << "]";

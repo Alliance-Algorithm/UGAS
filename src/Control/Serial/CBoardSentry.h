@@ -50,8 +50,8 @@ public:
     * \param yaw pitch 单位使用弧度制，方向遵循右手定则
     */
     void Send(double yaw, double pitch, bool fire) {
-        _sender.Data.yaw0 = -yaw * 180.0 / MathConsts::Pi;
-        _sender.Data.pitch0 = -pitch * 180.0 / MathConsts::Pi;
+        _sender.Data.yaw0 = -yaw * 180.0 / parameters::Pi;
+        _sender.Data.pitch0 = -pitch * 180.0 / parameters::Pi;
         _sender.Data.fire0 = fire;
         // std::cout << fire;
 
@@ -102,7 +102,7 @@ private:
 
     SerialUtil::SerialSender<DataSend, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _sender;
     SerialUtil::SerialReceiver<DataReceive, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> _receiver;
-    ArmorColor _enemyColor = Parameters::DefaultEnemyColor;
-    float _bulletSpeed = Parameters::DefaultBulletSpeed;
+    ArmorColor _enemyColor = parameters::DefaultEnemyColor;
+    float _bulletSpeed = parameters::DefaultBulletSpeed;
 
 };

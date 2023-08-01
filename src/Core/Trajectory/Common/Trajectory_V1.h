@@ -56,13 +56,13 @@ private:
         double b = a * a;                          // v0 ^ 4
         double c = x * x + y * y;                  // xt ^ 2
         double d = c * c;                          // xt ^ 4
-        double e = MathConsts::G * MathConsts::G;  // g ^ 2
+        double e = parameters::G * parameters::G;  // g ^ 2
 
         double xt = sqrt(c);                    // target horizontal distance
 
-        double f = b * d * (b - e * c - 2 * MathConsts::G * a * z);
+        double f = b * d * (b - e * c - 2 * parameters::G * a * z);
         if (f >= 0) {
-            pitch = -atan((b * c - sqrt(f)) / (MathConsts::G * a * c * xt));
+            pitch = -atan((b * c - sqrt(f)) / (parameters::G * a * c * xt));
         }
 
         auto result = MuzzleGyro::DirectionVector{ cos(pitch) * cos(yaw), cos(pitch) * sin(yaw),-sin(pitch) };

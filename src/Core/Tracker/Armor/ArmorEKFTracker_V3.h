@@ -47,8 +47,8 @@ class ArmorEKFTracker {
             double &v_za = ekf.x_(5), & model_yaw = ekf.x_(6), & r = ekf.x_(8);
             double yaw = GetArmorYaw(armor);
 
-            constexpr double legal_range = MathConsts::Pi / 4;
-            constexpr double step = 2 * MathConsts::Pi / armor_count;
+            constexpr double legal_range = parameters::Pi / 4;
+            constexpr double step = 2 * parameters::Pi / armor_count;
 
             double shift = 0;
 
@@ -92,7 +92,7 @@ class ArmorEKFTracker {
 
         [[nodiscard]] static std::tuple<Eigen::Vector3d, double> GetArmorState(const Eigen::VectorXd& x, size_t index) {
             const double& xc = x(0), & yc = x(2), & za = x(4), & r = x(8);
-            constexpr double yaw_step = 2 * MathConsts::Pi / armor_count;
+            constexpr double yaw_step = 2 * parameters::Pi / armor_count;
             double yaw = x(6) + yaw_step * (double)index;
 
             double xa = xc - r * cos(yaw);
@@ -133,8 +133,8 @@ class ArmorEKFTracker {
             double camera_yaw = std::atan2(-yc, -xc);
             if (fabs(v_yaw) < 2.0) {
                 double shift = 0;
-                constexpr double legal_range = MathConsts::Pi / 4;
-                constexpr double step = 2 * MathConsts::Pi / TrackerUnit::armor_count;
+                constexpr double legal_range = parameters::Pi / 4;
+                constexpr double step = 2 * parameters::Pi / TrackerUnit::armor_count;
                 size_t i;
                 for (i = 0; i < TrackerUnit::armor_count; ++i) {
                     double diff = GetMinimumAngleDiff(camera_yaw, model_yaw + shift);
@@ -316,9 +316,9 @@ private:
     }
 
     static double GetMinimumAngleDiff(double a, double b) {
-        double diff = std::fmod(a - b, 2 * MathConsts::Pi);
-        if (diff < -MathConsts::Pi) diff += 2 * MathConsts::Pi;
-        else if (diff > MathConsts::Pi) diff -= 2 * MathConsts::Pi;
+        double diff = std::fmod(a - b, 2 * parameters::Pi);
+        if (diff < -parameters::Pi) diff += 2 * parameters::Pi;
+        else if (diff > parameters::Pi) diff -= 2 * parameters::Pi;
         return diff;
     }
 

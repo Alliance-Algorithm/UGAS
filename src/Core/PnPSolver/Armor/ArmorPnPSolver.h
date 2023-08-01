@@ -34,20 +34,22 @@ public:
     static std::optional<std::tuple<CameraLink::Position, CameraLink::Rotation>> Solve(const ArmorPlate& armor) {
         cv::Mat rvec, tvec;
 
-        auto& objectPoints = armor.is_large_armor ? LargeArmor3f : NormalArmor3f;
-        if (cv::solvePnP(objectPoints, armor.points, CameraMatrix, DistCoeffs, rvec, tvec, false, cv::SOLVEPNP_IPPE)) {
+        auto& objectPoints = armor.is_large_armor ? parameters::LargeArmorObjectPoints : parameters::NormalArmorObjectPoints;
+        if (cv::solvePnP(objectPoints, armor.points,
+                         parameters::CameraMatrix, parameters::CameraDistCoeffs,
+                         rvec, tvec, false, cv::SOLVEPNP_IPPE)) {
             if constexpr (debugCanvas.master) {
-                std::vector<cv::Point2d> projected_points;
-                cv::projectPoints(objectPoints, rvec, tvec, CameraMatrix, DistCoeffs, projected_points);
-                cv::circle(debugCanvas.master.GetMat(), projected_points[0], 2, COLOR_ORANGE, 2);
-                cv::circle(debugCanvas.master.GetMat(), projected_points[1], 2, COLOR_PINK, 2);
-                cv::circle(debugCanvas.master.GetMat(), projected_points[2], 2, COLOR_PURPLE, 2);
-                cv::circle(debugCanvas.master.GetMat(), projected_points[3], 2, COLOR_RED, 2);
+//                std::vector<cv::Point2d> projected_points;
+//                cv::projectPoints(objectPoints, rvec, tvec, parameters::CameraMatrix, parameters::CameraDistCoeffs, projected_points);
+//                cv::circle(debugCanvas.master.GetMat(), projected_points[0], 2, COLOR_ORANGE, 2);
+//                cv::circle(debugCanvas.master.GetMat(), projected_points[1], 2, COLOR_PINK, 2);
+//                cv::circle(debugCanvas.master.GetMat(), projected_points[2], 2, COLOR_PURPLE, 2);
+//                cv::circle(debugCanvas.master.GetMat(), projected_points[3], 2, COLOR_RED, 2);
             }
 
             Eigen::Vector3d position = {tvec.at<double>(2), -tvec.at<double>(0), -tvec.at<double>(1)};
             position = position / 1000.0;
-            if (position.norm() > 15) return std::nullopt;
+            if (position.norm() > parameters::MaxArmorDistance) return std::nullopt;
 
             Eigen::Vector3d rvec_eigen = { rvec.at<double>(2), -rvec.at<double>(0), -rvec.at<double>(1) };
             Eigen::Quaterniond rotation = Eigen::Quaterniond{Eigen::AngleAxisd{rvec_eigen.norm(), rvec_eigen.normalized()}};

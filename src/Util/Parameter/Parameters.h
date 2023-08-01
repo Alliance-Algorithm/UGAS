@@ -14,8 +14,65 @@ Header Functions:
 #include <cstdint>
 
 #include <vector>
+#include <chrono>
 
 #include <opencv2/opencv.hpp>
+
+
+enum class ArmorColor : uint8_t {
+    Blue = 0, Red = 1
+};
+
+
+namespace parameters {
+    /******** Universal Parameter Area ********/
+
+    extern const ArmorColor DefaultEnemyColor;
+
+    // parameters for hik camera: CS016
+    inline constexpr float MaxGainCS016 = 16.9807f;
+    inline constexpr float MaxDigitalShiftCS016 = 5.9993f;
+
+    // identifier parameters
+    inline constexpr float BlueLightBarHue = 228.0f;
+    inline constexpr float RedLightBarHue = 11.0f;
+
+    // armor matching parameters
+    extern const double maxArmorLightRatio, maxdAngle, maxMalposition, maxLightDy, bigArmorDis;
+
+    // pnp parameters
+    // tl -> bl -> br -> tr
+    extern const std::vector<cv::Point3d> NormalArmorObjectPoints, LargeArmorObjectPoints;
+
+    // trajectory parameters
+    extern const double DefaultBulletSpeed;
+    inline constexpr double G = 9.8;
+
+    inline constexpr double Pi = 3.14159265358979323846;
+
+
+    /******** Specialized Parameter Area ********/
+
+    // flag whether to rotate the camera image 180 degrees.
+    extern const bool RotateCameraImage;
+
+    // camera calibration matrix
+    extern const cv::Mat CameraMatrix, CameraDistCoeffs;
+
+    // camera initialization parameters
+    extern const std::chrono::duration<float, std::micro> CameraExposureTime;
+    extern const float CameraGain, CameraDigitalShift;
+
+    // will ignore armor which distance farther than this
+    extern const double MaxArmorDistance;
+
+    // will be used by class cboard_xx to mapping preset bullet speeds and actual bullet speeds.
+    // average bullet speed when max bullet speed set to 30/18/15.
+    extern const double AverageBulletSpeed30, AverageBulletSpeed18, AverageBulletSpeed15;
+
+    // offset applied to the trajectory result.
+    extern const double StaticYawOffset, StaticPitchOffset;
+};
 
 #define TRACKBAR_NAME "Default TrackBars"
 
@@ -27,54 +84,40 @@ Header Functions:
 //extern VIDEO_VAR_TYPE video;
 //extern NUM_PARA_TYPE numberIdPara;
 //extern int frameWidth, frameHeight;
-extern cv::Point2f ROIoffset;
+//extern cv::Point2f ROIoffset;
 
 /* Pretreat Parameters */
-extern int BHmin , BHmax , BSmin, BSmax, BVmin, BVmax;
-extern int RHmaxL, RHminR, RSmin, RSmax, RVmin, RVmax;
-extern int closeCoreSize;
+//extern int BHmin , BHmax , BSmin, BSmax, BVmin, BVmax;
+//extern int RHmaxL, RHminR, RSmin, RSmax, RVmin, RVmax;
+//extern int closeCoreSize;
 
 /* LightBar Parameters */
-extern int minLightRatio, maxLightRatio;
-extern int minLightAngle, maxLightAngle;
+//extern int minLightRatio, maxLightRatio;
+//extern int minLightAngle, maxLightAngle;
 
 /* Armor Parameters */
-extern double maxArmorLightRatio, maxdAngle,
-    maxMalposition, maxLightDy, bigArmorDis;
+//extern double maxArmorLightRatio, maxdAngle,
+//    maxMalposition, maxLightDy, bigArmorDis;
 
 /* Buff Parameters */
 
 /* PNP Parameters */
-extern double CameraMatrixData[3][3], DistCoeffsData[1][5];
-extern const cv::Mat CameraMatrix, DistCoeffs;
-// TL -> BL -> BR -> TR
-extern const std::vector<cv::Point3d> NormalArmor3f, LargeArmor3f;
+//extern double CameraMatrixData[3][3], DistCoeffsData[1][5];
+//extern const cv::Mat CameraMatrix, DistCoeffs;
+//// TL -> BL -> BR -> TR
+//extern const std::vector<cv::Point3d> NormalArmor3f, LargeArmor3f;
 
 /* AttitudeSolution Parameters */
 
 /* TrackingStrategy Parameters */
-extern int maxArmorTrackDis;
-extern double keep_tracking, rotation_validity;
+//extern int maxArmorTrackDis;
+//extern double keep_tracking, rotation_validity;
 
 /* Trajectory Parameters */
-extern const int iterations, Trajc_iterate;
-extern const double Trajc_k, Trajc_dertaT;
-extern const double angleLowest, angleHighest, angleEPS;
-extern const double staticReactionTime;
-
-namespace MathConsts {
-    inline constexpr double Pi = 3.14159265358979323846;
-    inline constexpr double G = 9.8;
-};
-
-enum class ArmorColor : uint8_t {
-    Blue = 0, Red = 1
-};
-
-namespace Parameters {
-    extern const ArmorColor DefaultEnemyColor;
-    extern const double DefaultBulletSpeed;
-}
+//extern const int iterations, Trajc_iterate;
+//extern const double Trajc_k, Trajc_dertaT;
+//extern const double angleLowest, angleHighest, angleEPS;
+//extern const double staticReactionTime;
 
 /* Colors */
 #define COLOR_RED                  cv::Scalar(0    ,0        ,255)

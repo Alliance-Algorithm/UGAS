@@ -16,6 +16,8 @@ int main(int argc, char* argv[]) {
     transformer::SetTranslation<GimbalGyro, CameraGyro>(Eigen::Vector3d{105.8, 0, -40.5} / 1000.0);
     transformer::SetTranslation<GimbalGyro, MuzzleGyro>(Eigen::Vector3d{29.69, 0, 5.5} / 1000.0);
 
+
+
 	for (int restartTime = 0;; ++restartTime) {
         LOG(INFO) << "Program started.";
 		try {

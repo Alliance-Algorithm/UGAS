@@ -65,7 +65,7 @@ public:
         auto q = ReceiveQuaternion();
         auto euler = q.toRotationMatrix().eulerAngles(0, 1, 2);
         // "Euler from quaternion in roll, pitch, yaw" 
-        std::cout << euler.x() * 180 / MathConsts::Pi << ' ' << euler.y() * 180 / MathConsts::Pi << ' ' << euler.z() * 180 / MathConsts::Pi << '\n';
+        std::cout << euler.x() * 180 / parameters::Pi << ' ' << euler.y() * 180 / parameters::Pi << ' ' << euler.z() * 180 / parameters::Pi << '\n';
         return euler;
     }
 

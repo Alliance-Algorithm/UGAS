@@ -21,8 +21,8 @@ public:
     */
     void Send(double yaw, double pitch) {
         if (_debugOutput) {
-            yaw *= 180.0 / MathConsts::Pi;
-            pitch *= 180.0 / MathConsts::Pi;
+            yaw *= 180.0 / parameters::Pi;
+            pitch *= 180.0 / parameters::Pi;
             std::cout << "Send: [" << yaw << ", " << pitch << "] deg\n";
         }
     }
@@ -32,8 +32,8 @@ public:
     */
     void SendUAV(double yaw, double pitch) {
         if (_debugOutput) {
-            yaw *= 180.0 / MathConsts::Pi;
-            pitch *= 180.0 / MathConsts::Pi;
+            yaw *= 180.0 / parameters::Pi;
+            pitch *= 180.0 / parameters::Pi;
             std::cout << "SendUAV: [" << yaw << ", " << pitch << "] deg\n";
         }
     }
@@ -41,11 +41,11 @@ public:
     void Receive() { }
 
     ArmorColor GetEnemyColor() {
-        return Parameters::DefaultEnemyColor;
+        return parameters::DefaultEnemyColor;
     }
 
     float GetBulletSpeed() {
-        return Parameters::DefaultBulletSpeed;
+        return parameters::DefaultBulletSpeed;
     }
 
     bool GetAutoscopeEnabled() {
