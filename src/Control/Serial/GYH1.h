@@ -13,7 +13,6 @@ Header Functions:
 
 #include <eigen3/Eigen/Dense>
 
-#include "Control/Gimbal/Gimbal.h"
 #include "Util/Serial/CRC.h"
 #include "Util/Serial/SerialUtil.h"
 #include "Util/Debug/Log.h"

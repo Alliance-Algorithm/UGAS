@@ -16,7 +16,7 @@ Header Functions:
 
 namespace SerialUtil {
 
-    void PrintByteArray(const uint8_t* array, size_t size) {
+    inline void PrintByteArray(const uint8_t* array, size_t size) {
         std::cout << std::hex << std::setfill('0');
         for (size_t i = 0; i < size; ++i)
             std::cout << std::setw(2) << static_cast<int>(array[i]) << ' ';
@@ -24,7 +24,7 @@ namespace SerialUtil {
     }
 
     template <typename T>
-    void PrintStructAsByteArray(const T& data) {
+    inline void PrintStructAsByteArray(const T& data) {
         PrintByteArray(reinterpret_cast<const uint8_t*>(&data), sizeof(T));
     }
 

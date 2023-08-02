@@ -17,7 +17,14 @@ Header Functions:
 #include <chrono>
 
 #include <opencv2/opencv.hpp>
+#include <eigen3/Eigen/Dense>
 
+
+enum class GimbalType {
+    Infantry,
+    Uav,
+    Sentry
+};
 
 enum class ArmorColor : uint8_t {
     Blue = 0, Red = 1
@@ -53,6 +60,11 @@ namespace parameters {
 
     /******** Specialized Parameter Area ********/
 
+    // type of gimbal
+    extern const GimbalType GimbalType;
+
+    extern const Eigen::Translation3d TranslationGimbalToCamera, TranslationGimbalToMuzzle;
+
     // flag whether to rotate the camera image 180 degrees.
     extern const bool RotateCameraImage;
 
@@ -73,51 +85,6 @@ namespace parameters {
     // offset applied to the trajectory result.
     extern const double StaticYawOffset, StaticPitchOffset;
 };
-
-#define TRACKBAR_NAME "Default TrackBars"
-
-// Initialize Function
-//void ParametersInit(const Team team);
-
-/* Univertial Parameters */
-//extern Team team;
-//extern VIDEO_VAR_TYPE video;
-//extern NUM_PARA_TYPE numberIdPara;
-//extern int frameWidth, frameHeight;
-//extern cv::Point2f ROIoffset;
-
-/* Pretreat Parameters */
-//extern int BHmin , BHmax , BSmin, BSmax, BVmin, BVmax;
-//extern int RHmaxL, RHminR, RSmin, RSmax, RVmin, RVmax;
-//extern int closeCoreSize;
-
-/* LightBar Parameters */
-//extern int minLightRatio, maxLightRatio;
-//extern int minLightAngle, maxLightAngle;
-
-/* Armor Parameters */
-//extern double maxArmorLightRatio, maxdAngle,
-//    maxMalposition, maxLightDy, bigArmorDis;
-
-/* Buff Parameters */
-
-/* PNP Parameters */
-//extern double CameraMatrixData[3][3], DistCoeffsData[1][5];
-//extern const cv::Mat CameraMatrix, DistCoeffs;
-//// TL -> BL -> BR -> TR
-//extern const std::vector<cv::Point3d> NormalArmor3f, LargeArmor3f;
-
-/* AttitudeSolution Parameters */
-
-/* TrackingStrategy Parameters */
-//extern int maxArmorTrackDis;
-//extern double keep_tracking, rotation_validity;
-
-/* Trajectory Parameters */
-//extern const int iterations, Trajc_iterate;
-//extern const double Trajc_k, Trajc_dertaT;
-//extern const double angleLowest, angleHighest, angleEPS;
-//extern const double staticReactionTime;
 
 /* Colors */
 #define COLOR_RED                  cv::Scalar(0    ,0        ,255)

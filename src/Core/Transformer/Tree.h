@@ -8,6 +8,7 @@ Header Functions:
 - 定义tf tree
 */
 
+#include "Util/Parameter/Parameters.h"
 #include "Core/Transformer/Transformer.h"
 
 
@@ -26,7 +27,7 @@ struct CameraGyro : transformer::Frame<CameraGyro> {
     using transformer::Frame<CameraGyro>::Frame;
 
     using Header = GimbalGyro;
-    static constexpr auto& transform = gimbal_camera_translation_;
+    static constexpr auto& transform = parameters::TranslationGimbalToCamera;
     static constexpr char name[] = "camera_gyro";
 };
 
@@ -34,7 +35,7 @@ struct MuzzleGyro : transformer::Frame<MuzzleGyro> {
     using transformer::Frame<MuzzleGyro>::Frame;
 
     using Header = GimbalGyro;
-    static constexpr auto& transform = gimbal_muzzle_translation_;
+    static constexpr auto& transform = parameters::TranslationGimbalToMuzzle;
     static constexpr char name[] = "muzzle_gyro";
 };
 
@@ -51,7 +52,7 @@ struct CameraLink : transformer::Frame<CameraLink> {
     using transformer::Frame<CameraLink>::Frame;
 
     using Header = GimbalLink;
-    static constexpr auto& transform = gimbal_camera_translation_;
+    static constexpr auto& transform = parameters::TranslationGimbalToCamera;
     static constexpr char name[] = "camera_link";
 };
 
@@ -60,6 +61,6 @@ struct MuzzleLink : transformer::Frame<MuzzleLink> {
     using transformer::Frame<MuzzleLink>::Frame;
 
     using Header = GimbalLink;
-    static constexpr auto& transform = gimbal_muzzle_translation_;
+    static constexpr auto& transform = parameters::TranslationGimbalToMuzzle;
     static constexpr char name[] = "muzzle_link";
 };

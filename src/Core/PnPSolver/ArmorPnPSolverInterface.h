@@ -16,7 +16,6 @@ Header Functions:
 #include <eigen3/Eigen/Dense>
 #include <utility>
 
-#include "Control/Gimbal/Gimbal.h"
 #include "Core/Transformer/Tree.h"
 #include "Core/Identifier/Armor/ArmorStruct.h"
 

@@ -10,6 +10,11 @@ Header Functions:
 */
 
 namespace parameters {
+    const enum GimbalType GimbalType = GimbalType::Infantry;
+
+    const Eigen::Translation3d TranslationGimbalToCamera{Eigen::Vector3d{105.8, 0, -40.5} / 1000.0};
+    const Eigen::Translation3d TranslationGimbalToMuzzle{Eigen::Vector3d{29.69, 0, 5.5} / 1000.0};
+
     const bool RotateCameraImage = true;
 
     const cv::Mat CameraMatrix(3, 3, CV_64F, camera_calibration_data::CameraMatrixData6);

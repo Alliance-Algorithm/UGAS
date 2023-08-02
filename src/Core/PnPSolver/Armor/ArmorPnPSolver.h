@@ -20,7 +20,6 @@ Header Functions:
 #include "Core/PnPSolver/ArmorPnPSolverInterface.h"
 #include "Core/Identifier/Armor/ArmorStruct.h"
 #include "Util/Parameter/Parameters.h"
-#include "Control/Gimbal/Gimbal.h"
 #include "Control/Serial/HiPNUC.h"
 
 

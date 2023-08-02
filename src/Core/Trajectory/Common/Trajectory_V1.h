@@ -7,13 +7,12 @@
 #include <opencv2/opencv.hpp>
 #include <eigen3/Eigen/Dense>
 
-#include "Control/Gimbal/Gimbal.h"
 #include "Util/Parameter/Parameters.h"
 #include "Util/TimeStamp/TimeStampCounter.h"
 
 class Trajectory_V1 {
 public:
-    /*! 获取射击角度，不做预测处理。
+    /*! 获取射击角度
     * \return 返回云台偏移量，格式为tuple[yaw, pitch]，单位弧度制，遵循右手定则。
     */
     void GetShotAngle(const GimbalGyro::Position& target_pos, const double speed, double& yaw, double& pitch, double& fly_time) const {
@@ -23,16 +22,17 @@ public:
         pitch = -atan2(shotVec->z(), sqrt(shotVec->y() * shotVec->y() + shotVec->x() + shotVec->x()));
     }
 
-    /*! 获取射击角度，还没做预测。
+    /*! 获取射击角度
     * \return 返回云台偏移量，格式为tuple[yaw, pitch]，单位弧度制，遵循右手定则。
     */
     template <typename TargetType>
-    std::tuple<double, double> GetShotAngle(const TargetType& target, const double speed) const {
+    std::tuple<double, double> GetShotAngle(const TargetType& target, const double speed, bool predict_movement = true) const {
         std::tuple<double, double> result;
         auto& [yaw, pitch] = result;
         double fly_time = 0;
         GimbalGyro::Position pos;
-        for (int i = 2; i-- > 0;)
+        GetShotAngle(target.Predict(0), speed, yaw, pitch, fly_time);
+        if (predict_movement)
             GetShotAngle(pos = target.Predict(fly_time), speed, yaw, pitch, fly_time);
 
         ros_util::PointBroadcast(pos);

@@ -1,4 +1,4 @@
-#include "Gimbal.h"
+#include "GimbalUav.h"
 
 #include <thread>
 #include <opencv2/opencv.hpp>
@@ -10,30 +10,26 @@
 #include "Core/Pretreator/Armor/ArmorPretreator_V2.h"
 #include "Core/Identifier/Armor/ArmorIdentifier_V3.h"
 #include "Core/Identifier/Number/NumberIdentifier_V1.h"
-#include "Core/Identifier/Number/NumberIdentifier_V2.h"
 #include "Core/PnPSolver/Armor/ArmorPnPSolver.h"
 #include "Core/Predictor/Armor/SimplePredictor.h"
 #include "Core/Tracker/Armor/ArmorEKFTracker_V3.h"
-#include "Core/Strategy/Common/Strategy_V1.h"
 #include "Core/Trajectory/Common/Trajectory_V1.h"
-#include "Control/Serial/CBoardInfantry.h"
-#include "Control/Serial/CBoardSentry.h"
+#include "Control/Serial/CBoardUav.h"
 #include "Control/Serial/VirtualCBoard.h"
 #include "Control/Serial/GYH1.h"
 #include "Control/Serial/HiPNUC.h"
 #include "Util/Debug/DebugCanvas.h"
 #include "Util/Recorder/PNGRecorder.h"
 #include "Util/FPSCounter/FPSCounter.h"
-#include "Util/Debug/MatForm/RectangleControl.hpp"
 
-[[noreturn]] void Gimbal::Always() {
+[[noreturn]] void GimbalUav::Always() {
     auto imgCapture = HikCameraCapture();
 
     auto hipnuc = HiPNUC("/dev/IMU");
 
-    auto cboard = CBoardInfantry("/dev/CBoard");
+    auto cboard = CBoardUav("/dev/CH340_3");
+    //auto cboard = VirtualCBoard();
 
-    //auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V2>("../models/NumberIdentifyModelV3.pb", "../models/mlp.onnx");
     auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV4.pb");
 
     auto simplePredictor = SimplePredictor();
@@ -66,7 +62,8 @@
             autoscopeEnabled = cboard.get_auto_scope_enabled();
 
             if (auto target = ekfTracker.Update(armors3d, timestamp)) {
-                auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.get_bullet_speed());
+                auto [yaw, pitch] = trajectory.GetShotAngle(
+                        *target, cboard.get_bullet_speed(), false);
                 yaw += parameters::StaticYawOffset;
                 pitch += parameters::StaticPitchOffset;
                 cboard.Send(yaw, pitch, true);
@@ -75,20 +72,6 @@
             else {
                 cboard.Send();
             }
-        }
-        else {
-            // 陀螺仪工作不正常，采用低保运行模式
-//            auto armors3d = ArmorPnPSolver::SolveAll(armors);
-//            if (auto target = simplePredictor.Update(armors3d, timestamp)) {
-//                auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.get_bullet_speed());
-//                yaw += parameters::StaticYawOffset;
-//                pitch += parameters::StaticPitchOffset;
-//                cboard.Send(yaw, pitch);
-//                recorder.Record(img, timestamp);
-//            }
-//            else {
-//                cboard.Send(0, 0);
-//            }
         }
 
         if constexpr (ENABLE_DEBUG_CANVAS) {

@@ -51,23 +51,23 @@ if [ "${DEBUG}" = "OFF" ]
 then
     REMOTE_DEPLOY_PATH="/home/${REMOTE_USERNAME}/ugas"
 else
-    /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh root@${REMOTE_IP} "killall ugas || true"
-    /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh root@${REMOTE_IP} "systemctl stop ugas.service || true"
+    /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh -o StrictHostKeyChecking=no root@${REMOTE_IP} "killall ugas || true"
+    /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh -o StrictHostKeyChecking=no root@${REMOTE_IP} "systemctl stop ugas.service || true"
     REMOTE_DEPLOY_PATH="/home/${REMOTE_USERNAME}/ugas_debug"
 fi
 
 
 echo "uploading to remote host..."    
-/bin/sshpass -p "${REMOTE_PASSWORD}" /bin/rsync -av -e "/bin/ssh -p ${REMOTE_PORT}" --exclude-from="./.gitignore" . ${REMOTE_USERNAME}@${REMOTE_IP}:${REMOTE_DEPLOY_PATH}
-/bin/sshpass -p "${REMOTE_PASSWORD}" /bin/ssh ${REMOTE_USERNAME}@${REMOTE_IP} "${REMOTE_DEPLOY_PATH}/shell/build.sh $*"
+/bin/sshpass -p "${REMOTE_PASSWORD}" /bin/rsync -av -e "/bin/ssh -o StrictHostKeyChecking=no -p ${REMOTE_PORT}" --exclude-from="./.gitignore" . ${REMOTE_USERNAME}@${REMOTE_IP}:${REMOTE_DEPLOY_PATH}
+/bin/sshpass -p "${REMOTE_PASSWORD}" /bin/ssh -o StrictHostKeyChecking=no ${REMOTE_USERNAME}@${REMOTE_IP} "${REMOTE_DEPLOY_PATH}/shell/build.sh $*"
 
 if [ "${DEBUG}" = "OFF" ]
 then
     if [ "${FORCE_INSTALLATION}" = "ON" ]
     then
-        /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh root@${REMOTE_IP} "${REMOTE_DEPLOY_PATH}/shell/install.sh"
+        /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh -o StrictHostKeyChecking=no root@${REMOTE_IP} "${REMOTE_DEPLOY_PATH}/shell/install.sh"
     else
-        /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh root@${REMOTE_IP} "systemctl restart ugas.service || ${REMOTE_DEPLOY_PATH}/shell/install.sh"
+        /bin/sshpass -p "${REMOTE_PASSWORD_ROOT}" /bin/ssh -o StrictHostKeyChecking=no root@${REMOTE_IP} "systemctl restart ugas.service || ${REMOTE_DEPLOY_PATH}/shell/install.sh"
     fi
 fi
 
