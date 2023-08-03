@@ -21,3 +21,9 @@ inline float P2PDis(const cv::Point3f& a, const cv::Point3f& b) {
     cv::Point3f tmp = b - a;
     return sqrt(tmp.x * tmp.x + tmp.y * tmp.y + tmp.z * tmp.z);
 }
+
+template<typename T>
+inline void LimitRange(T& value, const T min, const T max) {
+    value = value < min ? min : value;
+    value = value > max ? max : value;
+}

@@ -14,6 +14,7 @@ namespace parameters {
 
     const Eigen::Translation3d TranslationGimbalToCamera{Eigen::Vector3d{118.05, 67.5, -41.7} / 1000.0};
     const Eigen::Translation3d TranslationGimbalToMuzzle{Eigen::Vector3d{69.4, 67.5, 0} / 1000.0};
+    const Eigen::Translation3d TranslationGimbalToTransmitter{Eigen::Vector3d{29.69, 0, 5.5} / 1000.0};
 
     const bool RotateCameraImage = true;
 
@@ -25,7 +26,7 @@ namespace parameters {
 
     const double MaxArmorDistance = 15.0;
 
-    const double AverageBulletSpeed30 = 26.0;
+    const double AverageBulletSpeed30 = 28.0;
     const double AverageBulletSpeed18 = 0.0;
     const double AverageBulletSpeed15 = 0.0;
 

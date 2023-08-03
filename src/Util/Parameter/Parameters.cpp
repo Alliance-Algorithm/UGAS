@@ -4,7 +4,7 @@
 namespace parameters {
     /******** Universal Parameter Area ********/
 
-    const ArmorColor DefaultEnemyColor = ArmorColor::Blue;
+    const ArmorColor DefaultEnemyColor = ArmorColor::Red;
 
     const double maxArmorLightRatio = 1.5, maxdAngle = 9.5, maxMalposition = 0.7, maxLightDy = 0.9, bigArmorDis = 5.0;
 
@@ -33,6 +33,14 @@ namespace parameters {
             {0, 0, 1}
         };
         double CameraDistCoeffsData12[5] = { 0.00948033127678667, -0.900070016384203, 0, 0, 12.9708921407335 };
+
+        // dji image transmitter camera
+        double TransmitterCameraMatrixData[3][3] = {
+                {870.536594077599, 0, 959.879173875982},
+                {0, 871.00281111889, 554.055610210946},
+                {0, 0, 1}
+        };
+        double TransmitterCameraDistCoeffsData[5] = {-0.285400532140372, 0.106341621768377, 0, 0, -0.0203255154424868};
     }
     constexpr int NormalArmorWidth = 134, NormalArmorHeight = 56, LargerArmorWidth = 230, LargerArmorHeight = 56;
     const std::vector<cv::Point3d> NormalArmorObjectPoints = {
@@ -47,10 +55,13 @@ namespace parameters {
             cv::Point3d( 0.5 * LargerArmorWidth, -0.5 * LargerArmorHeight, 0.0f),
             cv::Point3d( 0.5 * LargerArmorWidth,  0.5 * LargerArmorHeight, 0.0f)
     };
+    const cv::Mat TransmitterCameraMatrix(3, 3, CV_64F, camera_calibration_data::TransmitterCameraMatrixData);
+    const cv::Mat TransmitterCameraDistCoeffs(1, 5, CV_64F, camera_calibration_data::TransmitterCameraDistCoeffsData);
 
     const double DefaultBulletSpeed = 26.0;
 }
 
 // enable specialized parameter
-// #include "Util/Parameter/Specialize/TopFeedingOmniWheelInfantry.h"
-#include "Util/Parameter/Specialize/Uav.h"
+
+#include "Util/Parameter/Specialize/TopFeedingOmniWheelInfantry.h"
+//#include "Util/Parameter/Specialize/Uav.h"

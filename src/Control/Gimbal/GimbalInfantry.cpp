@@ -15,8 +15,7 @@
 #include "Core/Tracker/Armor/ArmorEKFTracker_V3.h"
 #include "Core/Trajectory/Common/Trajectory_V1.h"
 #include "Control/Serial/CBoardInfantry.h"
-#include "Control/Serial/GYH1.h"
-#include "Control/Serial/HiPNUC.h"
+#include "Control/Serial/VirtualCBoard.h"
 #include "Util/Debug/DebugCanvas.h"
 #include "Util/Recorder/PNGRecorder.h"
 #include "Util/FPSCounter/FPSCounter.h"
@@ -27,6 +26,7 @@
     auto hipnuc = HiPNUC("/dev/IMU");
 
     auto cboard = CBoardInfantry("/dev/CBoard");
+//    auto cboard = VirtualCBoard();
 
     auto armorIdentifier = ArmorIdentifier_V3<NumberIdentifier_V1>("models/NumberIdentifyModelV4.pb");
 
@@ -61,9 +61,10 @@
 
             if (auto target = ekfTracker.Update(armors3d, timestamp)) {
                 auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.get_bullet_speed());
+                auto [rect_x, rect_y] = ArmorPnPSolver::ReProjection(target->Predict(0));
                 yaw += parameters::StaticYawOffset;
                 pitch += parameters::StaticPitchOffset;
-                cboard.Send(yaw, pitch, true);
+                cboard.Send(yaw, pitch, rect_x, rect_y);
                 recorder.Record(img, timestamp);
             }
             else {
@@ -71,18 +72,7 @@
             }
         }
         else {
-            // 陀螺仪工作不正常，采用低保运行模式
-//            auto armors3d = ArmorPnPSolver::SolveAll(armors);
-//            if (auto target = simplePredictor.Update(armors3d, timestamp)) {
-//                auto [yaw, pitch] = trajectory.GetShotAngle(*target, cboard.get_bullet_speed());
-//                yaw += parameters::StaticYawOffset;
-//                pitch += parameters::StaticPitchOffset;
-//                cboard.Send(yaw, pitch);
-//                recorder.Record(img, timestamp);
-//            }
-//            else {
-//                cboard.Send(0, 0);
-//            }
+            // 忘了低保那点东西吧
         }
 
         if constexpr (ENABLE_DEBUG_CANVAS) {

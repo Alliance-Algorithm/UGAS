@@ -32,7 +32,7 @@ public:
         float bullet_speed;              // 实时弹速，单位：m/s
         uint8_t auto_scope_enabled;      // 操作手是否开启自瞄
         uint8_t attack_sentry_enabled;   // 是否允许攻击哨兵
-        uint8_t attack_outpost_enabled;  // 是否允许攻击前哨站
+        // uint8_t attack_outpost_enabled;  // 是否允许攻击前哨站
     };
 #pragma pack(pop)
 

@@ -9,10 +9,11 @@ Header Functions:
 - 使用陀螺仪四元数进行解算
 */
 
-//#include <cmath>
-
 #include <optional>
 #include <vector>
+
+#include <cstdint>
+#include <cmath>
 
 #include <opencv2/opencv.hpp>
 #include <eigen3/Eigen/Dense>
@@ -21,6 +22,7 @@ Header Functions:
 #include "Core/Identifier/Armor/ArmorStruct.h"
 #include "Util/Parameter/Parameters.h"
 #include "Control/Serial/HiPNUC.h"
+#include "Util/UtilFunctions.h"
 
 
 class ArmorPnPSolver {
@@ -69,6 +71,19 @@ public:
         }
 
         return armors3d;
+    }
+
+    static std::tuple<std::uint16_t, std::uint16_t> ReProjection(const TransmitterLink::Position& position) {
+        std::vector<cv::Point3d> object_points = {{0, 0, 0}};
+        cv::Mat rvec{cv::Point3d{0, 0, 0}};
+        cv::Mat tvec{cv::Point3d{-position->y(), -position->z(), position->x()}};
+        std::vector<cv::Point2d> image_points;
+        cv::projectPoints(object_points, rvec, tvec,
+                          parameters::TransmitterCameraMatrix, parameters::TransmitterCameraDistCoeffs, image_points);
+        auto& point = image_points[0];
+        LimitRange(point.x, 0.0, 1920.0);
+        LimitRange(point.y, 0.0, 1080.0);
+        return {static_cast<std::uint16_t>(std::lround(point.x)), static_cast<std::uint16_t>(std::lround(point.y))};
     }
 };
 

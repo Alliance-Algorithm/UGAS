@@ -51,6 +51,9 @@ namespace parameters {
     // tl -> bl -> br -> tr
     extern const std::vector<cv::Point3d> NormalArmorObjectPoints, LargeArmorObjectPoints;
 
+    // transmitter camera calibration matrix
+    extern const cv::Mat TransmitterCameraMatrix, TransmitterCameraDistCoeffs;
+
     // trajectory parameters
     extern const double DefaultBulletSpeed;
     inline constexpr double G = 9.8;
@@ -63,7 +66,7 @@ namespace parameters {
     // type of gimbal
     extern const GimbalType GimbalType;
 
-    extern const Eigen::Translation3d TranslationGimbalToCamera, TranslationGimbalToMuzzle;
+    extern const Eigen::Translation3d TranslationGimbalToCamera, TranslationGimbalToMuzzle, TranslationGimbalToTransmitter;
 
     // flag whether to rotate the camera image 180 degrees.
     extern const bool RotateCameraImage;

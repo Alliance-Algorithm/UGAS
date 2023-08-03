@@ -39,6 +39,14 @@ struct MuzzleGyro : transformer::Frame<MuzzleGyro> {
     static constexpr char name[] = "muzzle_gyro";
 };
 
+struct TransmitterGyro : transformer::Frame<TransmitterGyro> {
+    using transformer::Frame<TransmitterGyro>::Frame;
+
+    using Header = GimbalGyro;
+    static constexpr auto& transform = parameters::TranslationGimbalToTransmitter;
+    static constexpr char name[] = "Transmitter_gyro";
+};
+
 
 struct GimbalLink : transformer::Frame<GimbalLink> {
     using transformer::Frame<GimbalLink>::Frame;
@@ -56,11 +64,18 @@ struct CameraLink : transformer::Frame<CameraLink> {
     static constexpr char name[] = "camera_link";
 };
 
-
 struct MuzzleLink : transformer::Frame<MuzzleLink> {
     using transformer::Frame<MuzzleLink>::Frame;
 
     using Header = GimbalLink;
     static constexpr auto& transform = parameters::TranslationGimbalToMuzzle;
     static constexpr char name[] = "muzzle_link";
+};
+
+struct TransmitterLink : transformer::Frame<TransmitterLink> {
+    using transformer::Frame<TransmitterLink>::Frame;
+
+    using Header = GimbalLink;
+    static constexpr auto& transform = parameters::TranslationGimbalToTransmitter;
+    static constexpr char name[] = "Transmitter_link";
 };
