@@ -44,7 +44,7 @@ struct TransmitterGyro : transformer::Frame<TransmitterGyro> {
 
     using Header = GimbalGyro;
     static constexpr auto& transform = parameters::TranslationGimbalToTransmitter;
-    static constexpr char name[] = "Transmitter_gyro";
+    static constexpr char name[] = "transmitter_gyro";
 };
 
 
@@ -77,5 +77,5 @@ struct TransmitterLink : transformer::Frame<TransmitterLink> {
 
     using Header = GimbalLink;
     static constexpr auto& transform = parameters::TranslationGimbalToTransmitter;
-    static constexpr char name[] = "Transmitter_link";
+    static constexpr char name[] = "transmitter_link";
 };

@@ -43,6 +43,7 @@ public:
         }
         ros_util::TfBroadcast<GimbalGyro, CameraLink>();
         ros_util::TfBroadcast<GimbalGyro, MuzzleLink>();
+        ros_util::TfBroadcast<GimbalGyro, TransmitterLink>();
         return _available;
     }
 

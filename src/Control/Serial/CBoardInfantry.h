@@ -57,8 +57,8 @@ public:
     void Send(double yaw, double pitch, uint16_t rect_x, uint16_t rect_y) {
         sender_.Data.yaw = static_cast<float>(-yaw * 180.0 / parameters::Pi);
         sender_.Data.pitch = static_cast<float>(-pitch * 180.0 / parameters::Pi);
-        sender_.Data.rect_x = 960;
-        sender_.Data.rect_y = 540;
+        sender_.Data.rect_x = rect_x;
+        sender_.Data.rect_y = rect_y;
         sender_.Data.color = 1;
         sender_.Send();
     }

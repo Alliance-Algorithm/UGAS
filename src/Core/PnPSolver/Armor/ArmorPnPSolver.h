@@ -83,6 +83,7 @@ public:
         auto& point = image_points[0];
         LimitRange(point.x, 0.0, 1920.0);
         LimitRange(point.y, 0.0, 1080.0);
+        point.y = 1080 - point.y;
         return {static_cast<std::uint16_t>(std::lround(point.x)), static_cast<std::uint16_t>(std::lround(point.y))};
     }
 };

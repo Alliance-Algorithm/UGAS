@@ -26,8 +26,8 @@ public:
 
     // 发送云台瞄准数据
     // yaw pitch: 击中目标所需云台移动差值，单位使用弧度制，方向遵循右手定则
-    // fire: 保留
-    void Send(double yaw, double pitch, bool fire) const {
+    template<typename T>
+    void Send(double yaw, double pitch, T&& others...) const {
         if (_debugOutput) {
             yaw *= 180.0 / parameters::Pi;
             pitch *= 180.0 / parameters::Pi;

@@ -14,7 +14,7 @@ namespace parameters {
 
     const Eigen::Translation3d TranslationGimbalToCamera{Eigen::Vector3d{105.8, 0, -40.5} / 1000.0};
     const Eigen::Translation3d TranslationGimbalToMuzzle{Eigen::Vector3d{29.69, 0, 5.5} / 1000.0};
-    const Eigen::Translation3d TranslationGimbalToTransmitter{Eigen::Vector3d{29.69, 0, 5.5} / 1000.0};
+    const Eigen::Translation3d TranslationGimbalToTransmitter{Eigen::Vector3d{108.81, 0, 91.77} / 1000.0};
 
     const bool RotateCameraImage = true;
 
