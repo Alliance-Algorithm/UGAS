@@ -18,18 +18,19 @@ namespace parameters {
 
     const bool RotateCameraImage = true;
 
-    const cv::Mat CameraMatrix(3, 3, CV_64F, camera_calibration_data::CameraMatrixData12);
-    const cv::Mat CameraDistCoeffs(1, 5, CV_64F, camera_calibration_data::CameraDistCoeffsData12);
+    const cv::Mat CameraMatrix(3, 3, CV_64F, camera_calibration_data::CameraMatrixData8);
+    const cv::Mat CameraDistCoeffs(1, 5, CV_64F, camera_calibration_data::CameraDistCoeffsData8);
 
     const std::chrono::duration<float, std::micro> CameraExposureTime = std::chrono::microseconds(2000);
     const float CameraGain = MaxGainCS016, CameraDigitalShift = 0.0f;
 
     const double MaxArmorDistance = 15.0;
 
-    const double AverageBulletSpeed30 = 28.0;
+    const double AverageBulletSpeed30 = 26.6; // 27.6 with 12mm camera
     const double AverageBulletSpeed18 = 0.0;
     const double AverageBulletSpeed15 = 0.0;
 
-    const double StaticYawOffset = 0.00 / 180.0 * parameters::Pi;
-    const double StaticPitchOffset = 0.75 / 180.0 * parameters::Pi;
+    // 0.0 0.75 with 12mm camera
+    const double StaticYawOffset = 0.5 / 180.0 * parameters::Pi;
+    const double StaticPitchOffset = 1.7 / 180.0 * parameters::Pi;
 }
