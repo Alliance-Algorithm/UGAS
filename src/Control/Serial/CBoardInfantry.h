@@ -32,6 +32,7 @@ public:
         uint8_t preset_bullet_speed;     // 预设弹速，单位：m/s
         float bullet_speed;              // 实时弹速，单位：m/s
         uint8_t auto_scope_enabled;      // 操作手是否开启自瞄
+        uint8_t buff_mode_enabled;       // 打符模式是否开启
     };
 #pragma pack(pop)
 
@@ -62,15 +63,6 @@ public:
         sender_.Data.color = 1;
         sender_.Send();
     }
-
-//    /*! 向无人机发送云台瞄准数据
-//    * \param yaw pitch 单位使用弧度制，方向遵循右手定则
-//    */
-//    void SendUAV(double yaw, double pitch) {
-//        _sender.Data.yaw = -yaw;
-//        _sender.Data.pitch = -pitch;
-//        _sender.Send();
-//    }
     
     void Receive() {
         bool received = false;
@@ -113,6 +105,7 @@ public:
             }
 
             auto_scope_enabled_ = data.auto_scope_enabled;
+            buff_mode_enabled_ = data.buff_mode_enabled;
         }
     }
 
@@ -128,6 +121,10 @@ public:
         return auto_scope_enabled_;
     }
 
+    [[nodiscard]] bool get_buff_mode_enabled() const {
+        return buff_mode_enabled_;
+    }
+
 private:
     serial::Serial serial_;
     bool receive_succeed_ = false;
@@ -136,5 +133,5 @@ private:
     SerialUtil::SerialReceiver<DataReceive, SerialUtil::Head<uint8_t, 0xff>, CRC::DjiCRC8Calculator> receiver_;
     ArmorColor enemy_color_ = parameters::DefaultEnemyColor;
     double bullet_speed_ = parameters::DefaultBulletSpeed;
-    bool auto_scope_enabled_ = false;
+    bool auto_scope_enabled_ = false, buff_mode_enabled_ = false;
 };

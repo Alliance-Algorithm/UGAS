@@ -42,6 +42,8 @@ find_package(HikCameraSDK REQUIRED)
 if (ENABLE_OPENVINO)
     find_package(OpenVINO REQUIRED)
     set(OpenVINO_LIB openvino::runtime)
+    find_package(Ceres REQUIRED)
+    set(Ceres_LIB Ceres::ceres)
 endif (ENABLE_OPENVINO)
 
 # Include project source directory
@@ -63,7 +65,7 @@ else()
 endif()
 
 # Link libraries
-target_link_libraries(${EXECUTABLE_NAME} ${OpenCV_LIBS} ${HikCameraSDK_LIB} ${OpenVINO_LIB} -lpthread)
+target_link_libraries(${EXECUTABLE_NAME} ${OpenCV_LIBS} ${HikCameraSDK_LIB} ${OpenVINO_LIB} ${Ceres_LIB} -lpthread)
 
 # Install package
 if (ENABLE_ROS)

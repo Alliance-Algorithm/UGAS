@@ -26,14 +26,14 @@ public:
     * \return 返回云台偏移量，格式为tuple[yaw, pitch]，单位弧度制，遵循右手定则。
     */
     template <typename TargetType>
-    std::tuple<double, double> GetShotAngle(const TargetType& target, const double speed, bool predict_movement = true) const {
+    std::tuple<double, double>  GetShotAngle(const TargetType& target, const double speed, bool predict_movement = true) const {
         std::tuple<double, double> result;
         auto& [yaw, pitch] = result;
         double fly_time = 0;
         GimbalGyro::Position pos;
         GetShotAngle(target.Predict(0), speed, yaw, pitch, fly_time);
         if (predict_movement)
-            GetShotAngle(pos = target.Predict(fly_time), speed, yaw, pitch, fly_time);
+            GetShotAngle(pos = target.Predict(fly_time + 0.1), speed, yaw, pitch, fly_time);
 
         ros_util::PointBroadcast(pos);
         //std::cout << fly_time;

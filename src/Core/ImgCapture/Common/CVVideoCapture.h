@@ -13,7 +13,7 @@ Header Functions:
 #include "Util/Debug/Log.h"
 #include "Util/Debug/DebugCanvas.h"
 
-class CVVideoCapture : public ImgCaptureInterface, private cv::VideoCapture {
+class CVVideoCapture : private cv::VideoCapture {
 private:
     int _frameCount;
 
@@ -21,7 +21,7 @@ public:
     explicit CVVideoCapture(const std::string& fileName) {
         VideoCapture::open(fileName);
         if (!isOpened()) {
-            VideoCapture::open(std::string("resources/") + fileName);
+            VideoCapture::open(fileName);
             if (!isOpened())
                 throw_with_trace(std::runtime_error, "Fail to open.");
         }
@@ -32,13 +32,14 @@ public:
     CVVideoCapture(const CVVideoCapture&) = delete;
     CVVideoCapture(CVVideoCapture&&) = delete;
 
-    std::tuple<cv::Mat, TimeStamp> Read() override {
+    std::tuple<cv::Mat, TimeStamp> Read() {
         if constexpr(debugCanvas.master) {
             auto& handler = debugCanvas.master.DebugFrameHandler;
             int frameAdjust = handler.FrameAdjust;
             handler.FrameAdjust = 0;
             if (handler.Paused)
-                --frameAdjust;
+                cv::waitKey(0);
+                //--frameAdjust;
             if (frameAdjust != 0) {
                 int frameIndex = static_cast<int>(VideoCapture::get(cv::CAP_PROP_POS_FRAMES)) + frameAdjust + (100 * _frameCount);
                 frameIndex %= _frameCount;

@@ -42,7 +42,7 @@ namespace parameters {
         };
         double TransmitterCameraDistCoeffsData[5] = {-0.285400532140372, 0.106341621768377, 0, 0, -0.0203255154424868};
     }
-    constexpr int NormalArmorWidth = 134, NormalArmorHeight = 56, LargerArmorWidth = 230, LargerArmorHeight = 56;
+    constexpr double NormalArmorWidth = 134, NormalArmorHeight = 56, LargerArmorWidth = 230, LargerArmorHeight = 56;
     const std::vector<cv::Point3d> NormalArmorObjectPoints = {
             cv::Point3d(-0.5 * NormalArmorWidth,  0.5 * NormalArmorHeight, 0.0f),
             cv::Point3d(-0.5 * NormalArmorWidth, -0.5 * NormalArmorHeight, 0.0f),
@@ -54,6 +54,13 @@ namespace parameters {
             cv::Point3d(-0.5 * LargerArmorWidth, -0.5 * LargerArmorHeight, 0.0f),
             cv::Point3d( 0.5 * LargerArmorWidth, -0.5 * LargerArmorHeight, 0.0f),
             cv::Point3d( 0.5 * LargerArmorWidth,  0.5 * LargerArmorHeight, 0.0f)
+    };
+    constexpr double BuffPlateHeightL = 372, BuffPlateHeightR = 320, BuffPlateWidth = 317;
+    const std::vector<cv::Point3d> BuffObjectPoints = {
+            cv::Point3d{0, -0.5 * BuffPlateHeightL, -0.5 * BuffPlateWidth},
+            cv::Point3d{0, -0.5 * BuffPlateHeightR,  0.5 * BuffPlateWidth},
+            cv::Point3d{0,  0.5 * BuffPlateHeightR,  0.5 * BuffPlateWidth},
+            cv::Point3d{0,  0.5 * BuffPlateHeightL, -0.5 * BuffPlateWidth},
     };
     const cv::Mat TransmitterCameraMatrix(3, 3, CV_64F, camera_calibration_data::TransmitterCameraMatrixData);
     const cv::Mat TransmitterCameraDistCoeffs(1, 5, CV_64F, camera_calibration_data::TransmitterCameraDistCoeffsData);

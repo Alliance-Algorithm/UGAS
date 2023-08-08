@@ -20,6 +20,8 @@ Header Functions:
 #endif
 
 #include "Core/ImgCapture/ImgCaptureInterface.h"
+#include "Util/Parameter/Parameters.h"
+#include "Util/Debug/DebugCanvas.h"
 #include "Util/Debug/Log.h"
 
 class HikCameraCapture : public ImgCaptureInterface {
@@ -272,14 +274,14 @@ public:
             if constexpr (false) {
                 // 调用opencv进行Bayer2BGR
                 // 效果不太好，但可以作为参考
-                cv::Mat src = cv::Mat(stImageInfo.stFrameInfo.nHeight, stImageInfo.stFrameInfo.nWidth, CV_8UC1, stImageInfo.pBufAddr);
-                switch (stImageInfo.stFrameInfo.enPixelType) {
-                case (PixelType_Gvsp_BayerRG8):
-                    cv::cvtColor(src, img, cv::COLOR_BayerRGGB2BGR); break;
-                default:
-                    LOG(ERROR) << "exPixelType: " << stImageInfo.stFrameInfo.enPixelType;
-                    throw_with_trace(std::runtime_error, "Unsupported pixel type! Maybe not a RGB camera or be incorrectly configured.");
-                };
+//                cv::Mat src = cv::Mat(stImageInfo.stFrameInfo.nHeight, stImageInfo.stFrameInfo.nWidth, CV_8UC1, stImageInfo.pBufAddr);
+//                switch (stImageInfo.stFrameInfo.enPixelType) {
+//                case (PixelType_Gvsp_BayerRG8):
+//                    cv::cvtColor(src, img, cv::COLOR_BayerRGGB2BGR); break;
+//                default:
+//                    LOG(ERROR) << "exPixelType: " << stImageInfo.stFrameInfo.enPixelType;
+//                    throw_with_trace(std::runtime_error, "Unsupported pixel type! Maybe not a RGB camera or be incorrectly configured.");
+//                };
             }
             else {
                 // 调用海康SDK进行Bayer2BGR，一定要设置BayerCvtQuality，其在windows和linux下的默认值不同

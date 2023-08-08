@@ -56,6 +56,7 @@ then
 fi
 
 echo "building ugas..."
+source /opt/intel/openvino_2023/setupvars.sh
 if [ "${ENABLE_ROS}" = "OFF" ]
 then
     mkdir -p ./build && cd ./build
