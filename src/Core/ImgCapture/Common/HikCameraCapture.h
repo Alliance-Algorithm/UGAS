@@ -138,6 +138,13 @@ private:
                                 nRet = MV_CC_SetBoolValue(_handle, "ReverseY", true);
                                 if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set reverse y. nRet [" << nRet << "]";
                             }
+                            else {
+                                nRet = MV_CC_SetBoolValue(_handle, "ReverseX", false);
+                                if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set reverse x. nRet [" << nRet << "]";
+
+                                nRet = MV_CC_SetBoolValue(_handle, "ReverseY", false);
+                                if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set reverse y. nRet [" << nRet << "]";
+                            }
 
                             nRet = MV_CC_SetEnumValue(_handle, "ExposureAuto", MV_EXPOSURE_AUTO_MODE_OFF);
                             if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set auto exposure. nRet [" << nRet << "]";

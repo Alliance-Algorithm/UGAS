@@ -14,6 +14,7 @@ Header Functions:
 //#include <opencv2/highgui.hpp>
 //#include <opencv2/plot.hpp>
 
+#include "Core/Tracker/TrackerStruct.h"
 #include "Core/Identifier/Buff/BuffStruct.h"
 
 #include "ceres/ceres.h"
@@ -21,7 +22,7 @@ Header Functions:
 
 class BuffTracker {
 public:
-    class Target {
+    class Target : public TargetInterface {
     public:
         Target(const BuffPlate3d& buff, const double& radius, bool is_rotation_forward,
                const double& k, const double& t) : position_(*buff.position), is_rotation_forward_(is_rotation_forward) {
@@ -43,7 +44,7 @@ public:
             is_linear = false;
         }
 
-        [[nodiscard]] GimbalGyro::Position Predict(const double& sec) const {
+        [[nodiscard]] GimbalGyro::Position Predict(double sec) const override {
             double x = begin_x_ + sec;
             double angle = (is_linear ? CalcLinear(x) : CalcSine(x)) - begin_y_;
             angle = is_rotation_forward_ ? angle : -angle;
@@ -71,7 +72,7 @@ public:
     BuffTracker(const BuffTracker&) = delete;
     BuffTracker(BuffTracker&&) = delete;
 
-    std::optional<Target> Update(const BuffPlate3d& buff, const std::chrono::steady_clock::time_point& timestamp) {
+    std::unique_ptr<TargetInterface> Update(const BuffPlate3d& buff, const std::chrono::steady_clock::time_point& timestamp) {
         if (!angle_array_.empty() && timestamp - last_update_ > std::chrono::milliseconds(200)) {
             time_array_.clear();
             angle_array_.clear();
@@ -123,9 +124,9 @@ public:
 
                 if (linear_succeed && sine_succeed) {
                     if (linear_loss < sine_loss)
-                        return Target(buff, 0.7, angle_sum_ > 0, k, t);
+                        return std::make_unique<Target>(buff, 0.7, angle_sum_ > 0, k, t);
                     else
-                        return Target(buff, 0.7, angle_sum_ > 0, a, omega, phi, t);
+                        return std::make_unique<Target>(buff, 0.7, angle_sum_ > 0, a, omega, phi, t);
                 }
             }
         }
@@ -136,7 +137,7 @@ public:
 ////        problem.SetParameterLowerBound(&omega, 0, 2.000);
 ////        problem.SetParameterLowerBound(&phi, 0, -parameters::Pi);
 ////        problem.SetParameterLowerBound(&phi, 0, parameters::Pi);
-        return {};
+        return nullptr;
     }
 
     void ResetAll() {

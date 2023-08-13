@@ -7,6 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include <eigen3/Eigen/Dense>
 
+#include "Core/Tracker/TrackerStruct.h"
 #include "Util/Parameter/Parameters.h"
 #include "Util/TimeStamp/TimeStampCounter.h"
 
@@ -15,25 +16,14 @@ public:
     /*! 获取射击角度
     * \return 返回云台偏移量，格式为tuple[yaw, pitch]，单位弧度制，遵循右手定则。
     */
-    void GetShotAngle(const GimbalGyro::Position& target_pos, const double speed, double& yaw, double& pitch, double& fly_time) const {
-        MuzzleLink::DirectionVector shotVec = GetShotVector(target_pos, speed, fly_time);
-
-        yaw = atan2(shotVec->y(), shotVec->x());
-        pitch = -atan2(shotVec->z(), sqrt(shotVec->y() * shotVec->y() + shotVec->x() + shotVec->x()));
-    }
-
-    /*! 获取射击角度
-    * \return 返回云台偏移量，格式为tuple[yaw, pitch]，单位弧度制，遵循右手定则。
-    */
-    template <typename TargetType>
-    std::tuple<double, double>  GetShotAngle(const TargetType& target, const double speed, bool predict_movement = true) const {
+    static std::tuple<double, double> GetShotAngle(const TargetInterface& target, const double& speed, bool predict_movement = true, double time_shift = 0) {
         std::tuple<double, double> result;
         auto& [yaw, pitch] = result;
         double fly_time = 0;
         GimbalGyro::Position pos;
-        GetShotAngle(target.Predict(0), speed, yaw, pitch, fly_time);
+        GetShotAngleInternal(target.Predict(time_shift), speed, yaw, pitch, fly_time);
         if (predict_movement)
-            GetShotAngle(pos = target.Predict(fly_time + 0.1), speed, yaw, pitch, fly_time);
+            GetShotAngleInternal(pos = target.Predict( time_shift + fly_time), speed, yaw, pitch, fly_time);
 
         ros_util::PointBroadcast(pos);
         //std::cout << fly_time;
@@ -41,7 +31,14 @@ public:
     }
 
 private:
-    [[nodiscard]] MuzzleGyro::DirectionVector GetShotVector(const MuzzleGyro::Position& target_pos, const double speed, double& fly_time) const {
+    static void GetShotAngleInternal(const GimbalGyro::Position& target_pos, const double speed, double& yaw, double& pitch, double& fly_time) {
+        MuzzleLink::DirectionVector shotVec = GetShotVector(target_pos, speed, fly_time);
+
+        yaw = atan2(shotVec->y(), shotVec->x());
+        pitch = -atan2(shotVec->z(), sqrt(shotVec->y() * shotVec->y() + shotVec->x() + shotVec->x()));
+    }
+
+    [[nodiscard]] static MuzzleGyro::DirectionVector GetShotVector(const MuzzleGyro::Position& target_pos, const double speed, double& fly_time) {
         // 不考虑空气阻力
 
         const double& x = target_pos->x();

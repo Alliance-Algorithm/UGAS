@@ -4,7 +4,7 @@
 namespace parameters {
     /******** Universal Parameter Area ********/
 
-    const ArmorColor DefaultEnemyColor = ArmorColor::Red;
+    const ArmorColor DefaultEnemyColor = ArmorColor::Blue;
 
     const double maxArmorLightRatio = 1.5, maxdAngle = 9.5, maxMalposition = 0.7, maxLightDy = 0.9, bigArmorDis = 5.0;
 
@@ -65,10 +65,12 @@ namespace parameters {
     const cv::Mat TransmitterCameraMatrix(3, 3, CV_64F, camera_calibration_data::TransmitterCameraMatrixData);
     const cv::Mat TransmitterCameraDistCoeffs(1, 5, CV_64F, camera_calibration_data::TransmitterCameraDistCoeffsData);
 
-    const double DefaultBulletSpeed = 26.0;
+    const double DefaultBulletSpeed = 8.0;
 }
 
 // enable specialized parameter
 
-#include "Util/Parameter/Specialize/TopFeedingOmniWheelInfantry.h"
+#include "Util/Parameter/Specialize/BalancedInfantry.h"
+//#include "Util/Parameter/Specialize/McknumWheelInfantry.h"
+//#include "Util/Parameter/Specialize/TopFeedingOmniWheelInfantry.h"
 //#include "Util/Parameter/Specialize/Uav.h"
