@@ -7,8 +7,7 @@ set -e
 cd "${0%/*}"
 cd ..
 
-source shell/env_init.sh
-
+# parse arguments
 CLEAR_BEFORE_BUILD="OFF"
 RUN_AFTER_BUILD="OFF"
 ENABLE_DEBUG_CANVAS="OFF"
@@ -47,6 +46,11 @@ while [ "$1" != "" ]; do
     shift
 done
 
+# source rc file (optional)
+LOCAL_INIT_FILE="${HOME}/.ugasrc"
+if [ -f "${LOCAL_INIT_FILE}" ]; then source "${LOCAL_INIT_FILE}"; fi
+
+# clear compile output before build (optional)
 if [ "${CLEAR_BEFORE_BUILD}" = "ON" ]
 then
     echo "clearing cache..."
@@ -56,8 +60,8 @@ then
 fi
 
 echo "building ugas..."
-#source /opt/openvino/setupvars.sh
-source /opt/intel/openvino_2023/setupvars.sh
+
+# compile
 if [ "${ENABLE_ROS}" = "OFF" ]
 then
     mkdir -p ./build && cd ./build
@@ -65,11 +69,17 @@ then
         -DENABLE_DEBUG_CANVAS=${ENABLE_DEBUG_CANVAS} -DENABLE_OPENVINO=${ENABLE_OPENVINO} -DENABLE_RECORDING=${ENABLE_RECORDING} -DENABLE_ROS=OFF ..
     ninja
     cd ..
-    if [ "${RUN_AFTER_BUILD}" = "ON" ]; then ./build/ugas; fi
+    echo -e "\x23\x21/bin/bash\ncd \"\${0%/*}/..\"\nif [ -f \"${LOCAL_INIT_FILE}\" ]; then source ${LOCAL_INIT_FILE}; fi\n./build/ugas" > ./build/ugas.sh
 else
     colcon build --packages-select ugas --event-handlers console_direct+ --cmake-args -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release \
         -DENABLE_DEBUG_CANVAS=${ENABLE_DEBUG_CANVAS} -DENABLE_OPENVINO=${ENABLE_OPENVINO} -DENABLE_RECORDING=${ENABLE_RECORDING} -DENABLE_ROS=ON
-    source ./install/local_setup.bash
-    if [ "${RUN_AFTER_BUILD}" = "ON" ]; then ros2 run ugas main; fi
+    echo -e "\x23\x21/bin/bash\ncd \"\${0%/*}/..\"\nif [ -f \"${LOCAL_INIT_FILE}\" ]; then source ${LOCAL_INIT_FILE}; fi\nsource ./install/local_setup.bash\nros2 run ugas main" > ./build/ugas.sh
 fi
 
+# execute (optional)
+chmod u+x ./build/ugas.sh
+if [ "${RUN_AFTER_BUILD}" = "ON" ]
+then
+    echo "executing ugas..."
+    ./build/ugas.sh
+fi

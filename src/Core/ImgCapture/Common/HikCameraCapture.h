@@ -80,7 +80,7 @@ private:
     bool InitCamera(const char* userDefinedName) {
         MV_CC_DEVICE_INFO_LIST stDeviceList;
         memset(&stDeviceList, 0, sizeof(MV_CC_DEVICE_INFO_LIST));
-        int nRet = MV_CC_EnumDevices(MV_GIGE_DEVICE | MV_USB_DEVICE, &stDeviceList);
+        unsigned int nRet = MV_CC_EnumDevices(MV_GIGE_DEVICE | MV_USB_DEVICE, &stDeviceList);
         if (MV_OK == nRet) {
 
             MV_CC_DEVICE_INFO* pDeviceInfo = nullptr;
@@ -227,7 +227,7 @@ private:
     }
 
     void UnloadCamera() {
-        int nRet;
+        unsigned int nRet;
         nRet = MV_CC_StopGrabbing(_handle);
         if (MV_OK != nRet)
             LOG(WARNING) << "Failed to stop grabbing. nRet [" << nRet << ']';
@@ -274,7 +274,7 @@ public:
             }
         }
 
-        int nRet = MV_CC_GetImageBuffer(_handle, &stImageInfo, 5000);
+        unsigned int nRet = MV_CC_GetImageBuffer(_handle, &stImageInfo, 5000);
         timeStamp = TimeStampCounter::GetTimeStamp();
         if (nRet == MV_OK)
         {
