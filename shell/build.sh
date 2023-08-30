@@ -69,17 +69,18 @@ then
         -DENABLE_DEBUG_CANVAS=${ENABLE_DEBUG_CANVAS} -DENABLE_OPENVINO=${ENABLE_OPENVINO} -DENABLE_RECORDING=${ENABLE_RECORDING} -DENABLE_ROS=OFF ..
     ninja
     cd ..
-    echo -e "\x23\x21/bin/bash\ncd \"\${0%/*}/..\"\nif [ -f \"${LOCAL_INIT_FILE}\" ]; then source ${LOCAL_INIT_FILE}; fi\n./build/ugas" > ./build/ugas.sh
+    mkdir -p ./install
+    echo -e "\x23\x21/bin/bash\ncd \"\${0%/*}/..\"\nif [ -f \"${LOCAL_INIT_FILE}\" ]; then source ${LOCAL_INIT_FILE}; fi\n./build/ugas" > ./install/ugas.sh
 else
     colcon build --packages-select ugas --event-handlers console_direct+ --cmake-args -GNinja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Release \
         -DENABLE_DEBUG_CANVAS=${ENABLE_DEBUG_CANVAS} -DENABLE_OPENVINO=${ENABLE_OPENVINO} -DENABLE_RECORDING=${ENABLE_RECORDING} -DENABLE_ROS=ON
-    echo -e "\x23\x21/bin/bash\ncd \"\${0%/*}/..\"\nif [ -f \"${LOCAL_INIT_FILE}\" ]; then source ${LOCAL_INIT_FILE}; fi\nsource ./install/local_setup.bash\nros2 run ugas main" > ./build/ugas.sh
+    echo -e "\x23\x21/bin/bash\ncd \"\${0%/*}/..\"\nif [ -f \"${LOCAL_INIT_FILE}\" ]; then source ${LOCAL_INIT_FILE}; fi\nsource ./install/local_setup.bash\nros2 run ugas main" > ./install/ugas.sh
 fi
 
 # execute (optional)
-chmod u+x ./build/ugas.sh
+chmod u+x ./install/ugas.sh
 if [ "${RUN_AFTER_BUILD}" = "ON" ]
 then
     echo "executing ugas..."
-    ./build/ugas.sh
+    ./install/ugas.sh
 fi

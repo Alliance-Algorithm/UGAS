@@ -3,7 +3,7 @@
 # NOTE: this file should only be used in docker images.
 
 SCREEN_SOCKNAME="ugas"
-EXECUTABLE_PATH="${HOME}/ugas/build/ugas.sh"
+EXECUTABLE_PATH="${HOME}/ugas/install/ugas.sh"
 
 if [[ "$1" == "--entry" ]]; then
     # act as entry point of docker, should be executed by docker.
