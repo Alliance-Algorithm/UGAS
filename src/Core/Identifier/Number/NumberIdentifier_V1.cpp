@@ -6,10 +6,26 @@ using namespace cv;
 using namespace dnn;
 
 NumberIdentifier_V1::NumberIdentifier_V1(const char* model) {
-    //加载模型，输入为32*32的二值化图像转灰度图
+    //加载模型，输入为36*36的二值化图像转灰度图
     _net = cv::dnn::readNetFromTensorflow(model);
     if (_net.empty())
         throw_with_trace(std::runtime_error, "Cannot open model file!");
+    for(int i=1;i<11;i++)
+    {
+        std::string path="./templates/"+ std::to_string(i) + ".png";
+        cv::Mat img=imread(path);
+        cvtColor(img,img,COLOR_BGR2GRAY);
+        if(!img.empty())
+        {
+            cv::resize(img,img,Size(36,36));
+            threshold(img,img, 0, 255, THRESH_BINARY | THRESH_OTSU);
+            _templateFigures.push_back(img);
+        }
+        else
+        {
+            throw_with_trace(std::runtime_error, "Template figure does not exist");
+        }
+    }
 }
 
 bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
@@ -26,7 +42,6 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
 
     threshold(imgWarped, imgNumber, 0, 255, THRESH_BINARY | THRESH_OTSU);
     // 神经网络预测
-    // Mat blobImage = blobFromImage(imgNumber, 1.0, Size(32, 32), false, false);
     Mat blobImage = blobFromImage(imgNumber, 1.0, Size(36, 36), false, false);
     _net.setInput(blobImage);
     Mat pred = _net.forward();
@@ -34,6 +49,20 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
     double maxVal; Point maxLoc;
     minMaxLoc(pred, NULL, &maxVal, NULL, &maxLoc);
 
+    //进行正负样本筛查
+    cv::Mat resultMatrix;
+    cv::matchTemplate(imgNumber, _templateFigures[maxLoc.x-1], resultMatrix, TM_CCOEFF_NORMED);
+    double score = 0;
+	minMaxLoc(resultMatrix, NULL, &score, NULL, NULL);
+    if(score>0.3)
+    {
+        maxLoc.x=maxLoc.x;
+    }
+    else
+    {
+        maxLoc.x=0;
+    }
+    
     switch (maxLoc.x) {
     case 0:
         return false;
@@ -71,6 +100,10 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
     case 9:
         armor.id = ArmorID::InfantryV;
         armor.is_large_armor = true;
+        break;
+    case 10:
+        armor.id=ArmorID::Outpost;
+        armor.is_large_armor=false;
         break;
     }
 
