@@ -23,28 +23,80 @@ Header Functions:
 
 class HiPNUC {
 public:
-    explicit HiPNUC(const char* portName) :
-        _portName(portName),
-        _destructed(false),
-        _thread(&HiPNUC::_serialMain, this) {
-    }
+    explicit HiPNUC(std::string port_name) : port_name_(std::move(port_name)) { }
     HiPNUC(const HiPNUC&) = delete;
     HiPNUC(HiPNUC&&) = delete;
 
-    ~HiPNUC() {
-        _destructed = true;
-        _thread.join();
-    }
+    ~HiPNUC() = default;
 
-    bool UpdateTransformer() {
-        if (_available) {
-            const float* quatPtr = _transQuat;
-            transformer::SetRotation<GimbalGyro, GimbalLink>(Eigen::Quaterniond{ quatPtr[0], quatPtr[1], quatPtr[2], quatPtr[3] });
+    bool Receive() {
+        bool succeed = false;
+
+        if (!serial_available_) {
+            try {
+                serial_ = new serial::Serial(port_name_, 115200, serial::Timeout::simpleTimeout(100));
+                serial_->flush();
+                receiver_ = new ReceiverType(*serial_);
+                serial_available_ = true;
+            }
+            catch (serial::IOException& e) {
+                LOG(ERROR) << "HiPNUC: Caught serial::IOException when serial init: " << e.what();
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+            catch (std::exception& e) {
+                LOG(ERROR) << "HiPNUC: Uncaught " << typeid(e).name() << ": " << e.what();
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
         }
-        ros_util::TfBroadcast<GimbalGyro, CameraLink>();
-        ros_util::TfBroadcast<GimbalGyro, MuzzleLink>();
-        ros_util::TfBroadcast<GimbalGyro, TransmitterLink>();
-        return _available;
+
+        if (serial_available_) {
+            try {
+                auto result = receiver_->Receive();
+                if (result == SerialUtil::ReceiveResult::Success) {
+                    const auto& data = receiver_->GetReceivedData();
+                    if (200 < imu_fps_.GetFPS() && imu_fps_.GetFPS() < 450) {
+                        transformer::SetRotation<GimbalGyro, GimbalLink>(
+                                Eigen::Quaterniond{ data.quat[0], data.quat[1], data.quat[2], data.quat[3] });
+                        succeed = true;
+                    }
+                    ros_util::TfBroadcast<GimbalGyro, CameraLink>();
+                    ros_util::TfBroadcast<GimbalGyro, MuzzleLink>();
+                    ros_util::TfBroadcast<GimbalGyro, TransmitterLink>();
+                    if (imu_fps_.Count())
+                        std::cout << "HiPNUC IMU Fps: " << imu_fps_.GetFPS() << '\n';
+                }
+                else if (result == SerialUtil::ReceiveResult::InvaildHeader)
+                    LOG(WARNING) << "HiPNUC: Invaild Header!";
+                else if (result == SerialUtil::ReceiveResult::InvaildVerifyDegit)
+                    LOG(WARNING) << "HiPNUC: Invaild Verify Degit!";
+            }
+            catch (serial::IOException& e) {
+                // windows下的串口会偶发性的抛出IOException，大部分时候可以忽略此异常
+                LOG(ERROR) << "HiPNUC: Unexpected serial::IOException: " << e.what();
+                error_fps_.Count();
+                if (error_fps_.GetFPS() > 10) {
+                    LOG(ERROR) << "HiPNUC: Exceptions are thrown too frequently.";
+                    serial_available_ = false;
+                    delete serial_;
+                    delete receiver_;
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                }
+            }
+            catch (serial::SerialException& e) {
+                // linux下的串口会抛出SerialException，一般在串口断开连接时弹出，暂时不清楚会不会偶发性抛出，优先选择忽略此异常
+                LOG(ERROR) << "HiPNUC: Unexpected serial::SerialException: " << e.what();
+                error_fps_.Count();
+                if (error_fps_.GetFPS() > 10) {
+                    LOG(ERROR) << "HiPNUC: Exceptions are thrown too frequently.";
+                    serial_available_ = false;
+                    delete serial_;
+                    delete receiver_;
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                }
+            }
+        }
+
+        return succeed;
     }
 
 private:
@@ -73,9 +125,6 @@ private:
         float quat[4];        //       节点四元数集合，顺序为：wxyz
     };
 #pragma pack(pop)
-
-
-    static constexpr int a = sizeof(Eigen::Quaternionf);
 
     class DataCRC16Calculator {
     public:
@@ -113,76 +162,12 @@ private:
         }
     };
 
-    void _serialMain() {
-        FPSCounter_V2 imuFps, errorFps;
+    std::string port_name_;
 
-        while (!_destructed) {
-            try {
+    serial::Serial* serial_ = nullptr;
+    using ReceiverType = SerialUtil::SerialReceiver<DataD1, SerialUtil::Head<uint16_t, 0xa55a>, DataCRC16Calculator>;
+    ReceiverType *receiver_ = nullptr;
+    bool serial_available_ = false;
 
-                serial::Serial serial(_portName, 115200, serial::Timeout::simpleTimeout(100));
-                SerialUtil::SerialReceiver<DataD1, SerialUtil::Head<uint16_t, 0xa55a>, DataCRC16Calculator> receiver(serial);
-
-                while (true) {
-                    if (_destructed) return;
-                    try {
-
-                        auto result = receiver.Receive();
-                        if (result == SerialUtil::ReceiveResult::Success) {
-                            const auto& data = receiver.GetReceivedData();
-
-                            // 每次GetReceivedData得到的数据，其生命周期持续到下次Receive成功后，再次调用Receive前。
-                            // TODO: 这里使用指针存储四元数实现无锁，有极小概率在读取时获得错误数据。
-                            _transQuat = &(data.quat[0]);
-                            //std::cout << data.quat[0] << ' ' << data.quat[1] << ' ' << data.quat[2] << ' ' << data.quat[3] << '\n';
-
-                            if (imuFps.Count()) {
-                                _available = imuFps.GetFPS() > 100;
-                                std::cout << "HiPNUC IMU Fps: " << imuFps.GetFPS() << '\n';
-                            }
-                        }
-                        else if (result == SerialUtil::ReceiveResult::InvaildHeader)
-                            LOG(WARNING) << "HiPNUC: Invaild Header!";
-                        else if (result == SerialUtil::ReceiveResult::InvaildVerifyDegit)
-                            LOG(WARNING) << "HiPNUC: Invaild Verify Degit!";
-                    }
-                    catch (serial::IOException& e) {
-                        // windows下的串口会偶发性的抛出IOException，大部分时候可以忽略此异常
-                        LOG(ERROR) << "HiPNUC: Unexpected serial::IOException: " << e.what();
-                        errorFps.Count();
-                        if (errorFps.GetFPS() > 10) throw std::runtime_error("HiPNUC: Exceptions are thrown too frequently.");
-                    }
-                    catch (serial::SerialException& e) {
-                        // linux下的串口会抛出SerialException，一般在串口断开连接时弹出，暂时不清楚会不会偶发性抛出，优先选择忽略此异常
-                        LOG(ERROR) << "HiPNUC: Unexpected serial::SerialException: " << e.what();
-                        errorFps.Count();
-                        if (errorFps.GetFPS() > 10) throw std::runtime_error("HiPNUC: Exceptions are thrown too frequently.");
-                    }
-                }
-                
-            }
-            catch (serial::IOException& e) {
-                LOG(ERROR) << "HiPNUC: Caught serial::IOException when serial init: " << e.what();
-            }
-            catch (std::exception& e) {
-                LOG(ERROR) << "HiPNUC: Uncaught " << typeid(e).name() << ": " << e.what();
-            }
-
-            _available = false;
-            LOG(ERROR) << "HiPNUC: Will reconnect in 1 second.";
-            auto timingStart = std::chrono::steady_clock::now();
-            while (std::chrono::steady_clock::now() - timingStart < std::chrono::seconds(1)) {
-                if (_destructed) return;
-                std::this_thread::sleep_for(std::chrono::milliseconds(1));
-            }
-        }
-    }
-
-    const char* _portName;
-    std::atomic<bool> _destructed;
-    std::thread _thread;
-
-    std::atomic<bool> _available = false;
-
-    const float _defaultTransQuat[4] = { 1, 0, 0, 0 };
-    std::atomic<const float*> _transQuat = _defaultTransQuat;
+    FPSCounter_V2 imu_fps_ = {}, error_fps_ = {};
 };

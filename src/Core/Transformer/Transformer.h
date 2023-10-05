@@ -8,6 +8,9 @@ Header Functions:
 - 一个强类型的tf
 */
 
+#include <mutex>
+#include <shared_mutex>
+
 #include <eigen3/Eigen/Dense>
 
 namespace transformer {
@@ -210,6 +213,8 @@ namespace transformer {
                 return Node::transform;
             }
         };
+
+        inline std::shared_mutex transformer_mutex_;
     }
 
     template <typename From, typename To, typename T>
@@ -224,6 +229,7 @@ namespace transformer {
         static_assert(!(forward && backward), "The two frames are headers for each other.");
 
         if constexpr (forward) {
+            auto lock = std::unique_lock(internal_calculation::transformer_mutex_);
             To::transform.linear() = value.toRotationMatrix();
         }
     }
@@ -240,6 +246,7 @@ namespace transformer {
         static_assert(!(forward && backward), "The two frames are headers for each other.");
 
         if constexpr (forward) {
+            auto lock = std::unique_lock(internal_calculation::transformer_mutex_);
             To::transform.translation() = std::forward<T>(value);
         }
     }
@@ -256,6 +263,7 @@ namespace transformer {
         static_assert(!(forward && backward), "The two frames are headers for each other.");
 
         if constexpr (forward) {
+            auto lock = std::unique_lock(internal_calculation::transformer_mutex_);
             To::transform = std::forward<T>(value);
         }
     }
@@ -273,6 +281,7 @@ namespace transformer {
         static_assert(!(forward && backward), "The two frames are headers for each other.");
 
         if constexpr (forward) {
+            auto lock = std::shared_lock(internal_calculation::transformer_mutex_);
             return To::transform;
         }
     }
@@ -280,6 +289,7 @@ namespace transformer {
     // Calculate the transformation between nodes, NO direct connection required.
     template <typename From, typename To>
     auto CalculateTransform() {
+        auto lock = std::shared_lock(internal_calculation::transformer_mutex_);
         using LCA = typename internal_calculation::GetLCA<From, To>::Result;
         static_assert(!std::is_same<LCA, Root>::value, "Trying to convert between two separated tf trees.");
         if constexpr (!std::is_same<LCA, From>::value && !std::is_same<LCA, To>::value) {

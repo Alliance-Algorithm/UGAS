@@ -20,6 +20,8 @@ Header Functions:
 #endif
 
 #include "Core/ImgCapture/ImgCaptureInterface.h"
+#include "Util/Parameter/Parameters.h"
+#include "Util/Debug/DebugCanvas.h"
 #include "Util/Debug/Log.h"
 
 class HikCameraCapture : public ImgCaptureInterface {
@@ -78,7 +80,7 @@ private:
     bool InitCamera(const char* userDefinedName) {
         MV_CC_DEVICE_INFO_LIST stDeviceList;
         memset(&stDeviceList, 0, sizeof(MV_CC_DEVICE_INFO_LIST));
-        int nRet = MV_CC_EnumDevices(MV_GIGE_DEVICE | MV_USB_DEVICE, &stDeviceList);
+        unsigned int nRet = MV_CC_EnumDevices(MV_GIGE_DEVICE | MV_USB_DEVICE, &stDeviceList);
         if (MV_OK == nRet) {
 
             MV_CC_DEVICE_INFO* pDeviceInfo = nullptr;
@@ -134,6 +136,13 @@ private:
                                 if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set reverse x. nRet [" << nRet << "]";
 
                                 nRet = MV_CC_SetBoolValue(_handle, "ReverseY", true);
+                                if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set reverse y. nRet [" << nRet << "]";
+                            }
+                            else {
+                                nRet = MV_CC_SetBoolValue(_handle, "ReverseX", false);
+                                if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set reverse x. nRet [" << nRet << "]";
+
+                                nRet = MV_CC_SetBoolValue(_handle, "ReverseY", false);
                                 if (MV_OK != nRet) LOG(WARNING) << "Warning: Failed to set reverse y. nRet [" << nRet << "]";
                             }
 
@@ -218,7 +227,7 @@ private:
     }
 
     void UnloadCamera() {
-        int nRet;
+        unsigned int nRet;
         nRet = MV_CC_StopGrabbing(_handle);
         if (MV_OK != nRet)
             LOG(WARNING) << "Failed to stop grabbing. nRet [" << nRet << ']';
@@ -265,21 +274,21 @@ public:
             }
         }
 
-        int nRet = MV_CC_GetImageBuffer(_handle, &stImageInfo, 5000);
+        unsigned int nRet = MV_CC_GetImageBuffer(_handle, &stImageInfo, 5000);
         timeStamp = TimeStampCounter::GetTimeStamp();
         if (nRet == MV_OK)
         {
             if constexpr (false) {
                 // 调用opencv进行Bayer2BGR
                 // 效果不太好，但可以作为参考
-                cv::Mat src = cv::Mat(stImageInfo.stFrameInfo.nHeight, stImageInfo.stFrameInfo.nWidth, CV_8UC1, stImageInfo.pBufAddr);
-                switch (stImageInfo.stFrameInfo.enPixelType) {
-                case (PixelType_Gvsp_BayerRG8):
-                    cv::cvtColor(src, img, cv::COLOR_BayerRGGB2BGR); break;
-                default:
-                    LOG(ERROR) << "exPixelType: " << stImageInfo.stFrameInfo.enPixelType;
-                    throw_with_trace(std::runtime_error, "Unsupported pixel type! Maybe not a RGB camera or be incorrectly configured.");
-                };
+//                cv::Mat src = cv::Mat(stImageInfo.stFrameInfo.nHeight, stImageInfo.stFrameInfo.nWidth, CV_8UC1, stImageInfo.pBufAddr);
+//                switch (stImageInfo.stFrameInfo.enPixelType) {
+//                case (PixelType_Gvsp_BayerRG8):
+//                    cv::cvtColor(src, img, cv::COLOR_BayerRGGB2BGR); break;
+//                default:
+//                    LOG(ERROR) << "exPixelType: " << stImageInfo.stFrameInfo.enPixelType;
+//                    throw_with_trace(std::runtime_error, "Unsupported pixel type! Maybe not a RGB camera or be incorrectly configured.");
+//                };
             }
             else {
                 // 调用海康SDK进行Bayer2BGR，一定要设置BayerCvtQuality，其在windows和linux下的默认值不同

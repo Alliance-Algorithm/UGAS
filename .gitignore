@@ -5,6 +5,7 @@ cmake-build-debug
 cmake-build-release
 resources
 videos
+images
 .vs
 .vscode
 .idea

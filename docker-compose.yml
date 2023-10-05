@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+
+    ugas:
+        container_name: ugas-runtime
+        privileged: true
+        network_mode: host
+        volumes:
+            - '/dev/:/dev/'
+        image: 'qzhhhi/ugas-base:latest'
+        restart: unless-stopped
+
+    dhcp-server:
+        container_name: dhcp-server-runtime
+        command: eno1
+        privileged: true
+        network_mode: host
+        volumes:
+            - '/var/run/dbus:/var/run/dbus'
+        image: 'qzhhhi/dhcp-server:latest'
+        restart: unless-stopped
