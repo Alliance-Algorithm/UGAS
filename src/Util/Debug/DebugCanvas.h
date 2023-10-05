@@ -11,10 +11,10 @@ Header Functions:
 
 #include <opencv2/opencv.hpp>
 
+#include "config.h"
 #include "MatForm/MatForm.hpp"
 #include "MatForm/RectangleControl.hpp"
 #include "MatForm/ButtonControl.hpp"
-#include "Util/Debug/DebugSettings.h"
 
 template<bool Enabled>
 class ControlCanvas : private MatForm {
@@ -235,10 +235,10 @@ public:
 };
 
 
-#define MAKE_CONTROL_CANVAS(enable, name, arg) ControlCanvas<DEBUG_IMG && enable> name = ControlCanvas<DEBUG_IMG && enable>(arg, &_matFormList);
-#define MAKE_SIMPLE_CANVAS(enable, name, arg) SimpleCanvas<DEBUG_IMG && enable> name = SimpleCanvas<DEBUG_IMG && enable>(arg, &_matFormList);
-#define MAKE_REFERENCE_CANVAS(enable, name, target) ReferenceCanvas<decltype(target), DEBUG_IMG && enable> name = target;
-#define MAKE_READONLY_CANVAS(enable, name, arg) ReadonlyCanvas<DEBUG_IMG && enable> name = ReadonlyCanvas<DEBUG_IMG && enable>(arg, &_matFormList);
+#define MAKE_CONTROL_CANVAS(enable, name, arg) ControlCanvas<ENABLE_DEBUG_CANVAS && enable> name = ControlCanvas<ENABLE_DEBUG_CANVAS && enable>(arg, &_matFormList);
+#define MAKE_SIMPLE_CANVAS(enable, name, arg) SimpleCanvas<ENABLE_DEBUG_CANVAS && enable> name = SimpleCanvas<ENABLE_DEBUG_CANVAS && enable>(arg, &_matFormList);
+#define MAKE_REFERENCE_CANVAS(enable, name, target) ReferenceCanvas<decltype(target), ENABLE_DEBUG_CANVAS && enable> name = target;
+#define MAKE_READONLY_CANVAS(enable, name, arg) ReadonlyCanvas<ENABLE_DEBUG_CANVAS && enable> name = ReadonlyCanvas<ENABLE_DEBUG_CANVAS && enable>(arg, &_matFormList);
 
 class DebugCanvas {
 private:
@@ -250,8 +250,8 @@ public:
     MAKE_REFERENCE_CANVAS (1, lightbar, master)                // 灯条识别结果
     MAKE_REFERENCE_CANVAS (1, armor, master)                   // 装甲板识别结果
     MAKE_REFERENCE_CANVAS (1, armorNum, master)                // 装甲板数字识别结果
-    MAKE_REFERENCE_CANVAS (1, track, master)                   // 跟踪点
-    MAKE_REFERENCE_CANVAS (1, predict, master)                 // 预测点
+    MAKE_REFERENCE_CANVAS (0, track, master)                   // 跟踪点
+    MAKE_REFERENCE_CANVAS (0, predict, master)                 // 预测点
     MAKE_REFERENCE_CANVAS (1, fps, master)                     // 帧率
     MAKE_READONLY_CANVAS  (0, pretreat, "Pretreat Image")      // 预处理后的图像
 

@@ -16,7 +16,7 @@ Header Functions:
 
 namespace SerialUtil {
 
-    void PrintByteArray(const uint8_t* array, size_t size) {
+    inline void PrintByteArray(const uint8_t* array, size_t size) {
         std::cout << std::hex << std::setfill('0');
         for (size_t i = 0; i < size; ++i)
             std::cout << std::setw(2) << static_cast<int>(array[i]) << ' ';
@@ -24,7 +24,7 @@ namespace SerialUtil {
     }
 
     template <typename T>
-    void PrintStructAsByteArray(const T& data) {
+    inline void PrintStructAsByteArray(const T& data) {
         PrintByteArray(reinterpret_cast<const uint8_t*>(&data), sizeof(T));
     }
 
@@ -82,7 +82,7 @@ namespace SerialUtil {
     template <typename DataType, typename HeadType, typename ChecksumCalculatorType>
     class SerialSender {
     public:
-        SerialSender(serial::Serial& serial) : _serial(serial) {
+        explicit SerialSender(serial::Serial& serial) : _serial(serial) {
             _pkg.head.MakeCorrect();
         }
         SerialSender(const SerialSender&) = delete;
@@ -103,7 +103,7 @@ namespace SerialUtil {
     template <typename DataType>
     class SerialSender<DataType, None, None> {
     public:
-        SerialSender(serial::Serial& serial) : _serial(serial) { }
+        explicit SerialSender(serial::Serial& serial) : _serial(serial) { }
         SerialSender(const SerialSender&) = delete;
         SerialSender(SerialSender&&) = delete;
 
@@ -121,7 +121,7 @@ namespace SerialUtil {
     template <typename DataType, typename HeadType>
     class SerialSender<DataType, HeadType, None> {
     public:
-        SerialSender(serial::Serial& serial) : _serial(serial) {
+        explicit SerialSender(serial::Serial& serial) : _serial(serial) {
             _pkg.head.MakeCorrect();
         }
         SerialSender(const SerialSender&) = delete;
@@ -141,7 +141,7 @@ namespace SerialUtil {
     template <typename DataType, typename ChecksumCalculatorType>
     class SerialSender<DataType, None, ChecksumCalculatorType> {
     public:
-        SerialSender(serial::Serial& serial) : _serial(serial) { }
+        explicit SerialSender(serial::Serial& serial) : _serial(serial) { }
         SerialSender(const SerialSender&) = delete;
         SerialSender(SerialSender&&) = delete;
 
@@ -165,7 +165,7 @@ namespace SerialUtil {
     template <typename DataType, typename HeadType, typename ChecksumCalculatorType>
     class SerialReceiver {
     public:
-        SerialReceiver(serial::Serial& serial) : _serial(serial) { }
+        explicit SerialReceiver(serial::Serial& serial) : _serial(serial) { }
         SerialReceiver(const SerialReceiver&) = delete;
         SerialReceiver(SerialReceiver&&) = delete;
 
@@ -222,7 +222,7 @@ namespace SerialUtil {
         size_t GetCacheSize() { return _cacheSize; }
 
         /* 重置当前接收缓存 */
-        size_t ClearCache() { _cacheSize = 0; }
+        void ClearCache() { _cacheSize = 0; }
 
     private:
         serial::Serial& _serial;
@@ -237,7 +237,7 @@ namespace SerialUtil {
     template <typename DataType>
     class SerialReceiver<DataType, None, None> {
     public:
-        SerialReceiver(serial::Serial& serial) : _serial(serial) { }
+        explicit SerialReceiver(serial::Serial& serial) : _serial(serial) { }
         SerialReceiver(const SerialReceiver&) = delete;
         SerialReceiver(SerialReceiver&&) = delete;
 
@@ -267,7 +267,7 @@ namespace SerialUtil {
         size_t GetCacheSize() { return _cacheSize; }
 
         /* 重置当前接收缓存 */
-        size_t ClearCache() { _cacheSize = 0; }
+        void ClearCache() { _cacheSize = 0; }
 
     private:
         serial::Serial& _serial;
@@ -279,7 +279,7 @@ namespace SerialUtil {
     template <typename DataType, typename HeadType>
     class SerialReceiver<DataType, HeadType, None> {
     public:
-        SerialReceiver(serial::Serial& serial) : _serial(serial) { }
+        explicit SerialReceiver(serial::Serial& serial) : _serial(serial) { }
         SerialReceiver(const SerialReceiver&) = delete;
         SerialReceiver(SerialReceiver&&) = delete;
 
@@ -333,7 +333,7 @@ namespace SerialUtil {
         size_t GetCacheSize() { return _cacheSize; }
 
         /* 重置当前接收缓存 */
-        size_t ClearCache() { _cacheSize = 0; }
+        void ClearCache() { _cacheSize = 0; }
 
     private:
         serial::Serial& _serial;
@@ -348,7 +348,7 @@ namespace SerialUtil {
     template <typename DataType, typename ChecksumCalculatorType>
     class SerialReceiver<DataType, None, ChecksumCalculatorType> {
     public:
-        SerialReceiver(serial::Serial& serial) : _serial(serial) { }
+        explicit SerialReceiver(serial::Serial& serial) : _serial(serial) { }
         SerialReceiver(const SerialReceiver&) = delete;
         SerialReceiver(SerialReceiver&&) = delete;
 
@@ -393,7 +393,7 @@ namespace SerialUtil {
         size_t GetCacheSize() { return _cacheSize; }
 
         /* 重置当前接收缓存 */
-        size_t ClearCache() { _cacheSize = 0; }
+        void ClearCache() { _cacheSize = 0; }
 
     private:
         serial::Serial& _serial;

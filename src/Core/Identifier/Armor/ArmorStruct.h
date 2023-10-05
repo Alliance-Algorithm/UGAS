@@ -25,14 +25,16 @@ struct LightBar {
 };
 
 
-enum class ArmorID : uint8_t {
+enum class ArmorID : uint16_t {
     Unknown = 0,             // 无法识别
     Hero = 1,                // 英雄
     Engineer = 2,            // 工程
     InfantryIII = 3,         // 三号步兵
     InfantryIV = 4,          // 四号步兵
     InfantryV = 5,           // 五号步兵
-    Sentinel = 6,            // 哨兵
+    Sentry = 6,              // 哨兵
+    Outpost = 7,             // 前哨站
+    Base = 8,                // 基地
 };
 
 struct ArmorPlate {

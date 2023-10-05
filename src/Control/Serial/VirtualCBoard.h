@@ -1,7 +1,7 @@
 #pragma once
 /*
 Creation Date: 2023/05/26
-Latest Update: 2023/05/26
+Latest Update: 2023/08/02
 Developer(s): 22-Qzh
 (C)Copyright: NJUST.Alliance - All rights reserved
 Header Functions:
@@ -14,40 +14,42 @@ class VirtualCBoard {
 public:
     VirtualCBoard(bool debugOutput = false) : _debugOutput(debugOutput) { }
 
-    ~VirtualCBoard() {    }
+    ~VirtualCBoard() = default;
 
-    /*! 向除哨兵外的地面兵种发送云台瞄准数据
-    * \param yaw pitch 单位使用弧度制，方向遵循右手定则
-    */
-    void Send(double yaw, double pitch) {
+    // 发送云台瞄准数据
+    // 没有目标时调用
+    void Send() const {
         if (_debugOutput) {
-            yaw *= 180.0 / MathConsts::Pi;
-            pitch *= 180.0 / MathConsts::Pi;
+            std::cout << "Send: [0, 0] deg\n";
+        }
+    }
+
+    // 发送云台瞄准数据
+    // yaw pitch: 击中目标所需云台移动差值，单位使用弧度制，方向遵循右手定则
+    template<typename T>
+    void Send(double yaw, double pitch, T&& others...) const {
+        if (_debugOutput) {
+            yaw *= 180.0 / parameters::Pi;
+            pitch *= 180.0 / parameters::Pi;
             std::cout << "Send: [" << yaw << ", " << pitch << "] deg\n";
         }
     }
 
-    /*! 向无人机发送云台瞄准数据
-    * \param yaw pitch 单位使用弧度制，方向遵循右手定则
-    */
-    void SendUAV(double yaw, double pitch) {
-        if (_debugOutput) {
-            yaw *= 180.0 / MathConsts::Pi;
-            pitch *= 180.0 / MathConsts::Pi;
-            std::cout << "SendUAV: [" << yaw << ", " << pitch << "] deg\n";
-        }
+    void Receive() const { }
+
+    [[nodiscard]] ArmorColor get_enemy_color() const {
+        return parameters::DefaultEnemyColor;
     }
 
-    void Receive() { }
-
-    ArmorColor GetEnemyColor() {
-        return Parameters::DefaultEnemyColor;
+    [[nodiscard]] double get_bullet_speed() const {
+        return parameters::DefaultBulletSpeed;
     }
 
-    float GetBulletSpeed() {
-        return Parameters::DefaultBulletSpeed;
+    [[nodiscard]] bool get_auto_scope_enabled() const {
+        return true;
     }
 
 private:
     bool _debugOutput;
 };
+

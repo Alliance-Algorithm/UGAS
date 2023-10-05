@@ -11,17 +11,19 @@ Header Functions:
 #include <chrono>
 #include <thread>
 #include <chrono>
+#include <atomic>
 #include <optional>
 
 #include <eigen3/Eigen/Dense>
 
 #include "Util/Serial/SerialUtil.h"
 #include "Util/FPSCounter/FPSCounter.h"
-#include "Core/Transformer/IMUTransformer.h"
+#include "Core/Transformer/Tree.h"
+#include "Util/ROS/TfBroadcast.h"
 
 class HiPNUC {
 public:
-    HiPNUC(const char* portName) :
+    explicit HiPNUC(const char* portName) :
         _portName(portName),
         _destructed(false),
         _thread(&HiPNUC::_serialMain, this) {
@@ -34,10 +36,15 @@ public:
         _thread.join();
     }
 
-    IMUTransformer GetTransformer() {
-        const float* quatPtr = _transQuat;
-        auto q = Eigen::Quaternionf{ quatPtr[0], quatPtr[1], quatPtr[2], quatPtr[3] };
-        return IMUTransformer(q, _available);
+    bool UpdateTransformer() {
+        if (_available) {
+            const float* quatPtr = _transQuat;
+            transformer::SetRotation<GimbalGyro, GimbalLink>(Eigen::Quaterniond{ quatPtr[0], quatPtr[1], quatPtr[2], quatPtr[3] });
+        }
+        ros_util::TfBroadcast<GimbalGyro, CameraLink>();
+        ros_util::TfBroadcast<GimbalGyro, MuzzleLink>();
+        ros_util::TfBroadcast<GimbalGyro, TransmitterLink>();
+        return _available;
     }
 
 private:
@@ -113,11 +120,11 @@ private:
             try {
 
                 serial::Serial serial(_portName, 115200, serial::Timeout::simpleTimeout(100));
+                SerialUtil::SerialReceiver<DataD1, SerialUtil::Head<uint16_t, 0xa55a>, DataCRC16Calculator> receiver(serial);
 
                 while (true) {
                     if (_destructed) return;
                     try {
-                        SerialUtil::SerialReceiver<DataD1, SerialUtil::Head<uint16_t, 0xa55a>, DataCRC16Calculator> receiver(serial);
 
                         auto result = receiver.Receive();
                         if (result == SerialUtil::ReceiveResult::Success) {
@@ -126,6 +133,7 @@ private:
                             // 每次GetReceivedData得到的数据，其生命周期持续到下次Receive成功后，再次调用Receive前。
                             // TODO: 这里使用指针存储四元数实现无锁，有极小概率在读取时获得错误数据。
                             _transQuat = &(data.quat[0]);
+                            //std::cout << data.quat[0] << ' ' << data.quat[1] << ' ' << data.quat[2] << ' ' << data.quat[3] << '\n';
 
                             if (imuFps.Count()) {
                                 _available = imuFps.GetFPS() > 100;

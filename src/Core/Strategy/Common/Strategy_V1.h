@@ -39,8 +39,8 @@ public:
             // 击打离准星最近的
             float angleMin;
             for (const auto& target : targets) {
-                const auto yaw = target.gimbalAttitude.yaw / 180 * static_cast<float>(MathConsts::Pi);
-                const auto pitch = target.gimbalAttitude.pitch / 180 * static_cast<float>(MathConsts::Pi);
+                const auto yaw = target.gimbalAttitude.yaw / 180 * static_cast<float>(parameters::Pi);
+                const auto pitch = target.gimbalAttitude.pitch / 180 * static_cast<float>(parameters::Pi);
                 const auto x1 = cos(yaw) * cos(pitch), y1 = sin(yaw) * cos(pitch), z1 = sin(pitch);
                 const auto& x2 = target.position.x, & y2 = target.position.y, & z2 = target.position.z;
                 const auto angle = acos((x1 * x2 + y1 * y2 + z1 * z2) / sqrt(x2 * x2 + y2 * y2 + z2 * z2));

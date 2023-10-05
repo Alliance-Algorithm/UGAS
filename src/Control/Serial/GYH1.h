@@ -13,7 +13,6 @@ Header Functions:
 
 #include <eigen3/Eigen/Dense>
 
-#include "Control/Gimbal/Gimbal.h"
 #include "Util/Serial/CRC.h"
 #include "Util/Serial/SerialUtil.h"
 #include "Util/Debug/Log.h"
@@ -25,7 +24,7 @@ public:
     struct QuaternionReceive {
         char head = 0x00;            // Should be 0x40
         float w, x, y, z;            // Quaternion Data
-        char crc8;                    // CRC8
+        char crc8;                   // CRC8
     };
 #pragma pack(pop)
 
@@ -65,7 +64,7 @@ public:
         auto q = ReceiveQuaternion();
         auto euler = q.toRotationMatrix().eulerAngles(0, 1, 2);
         // "Euler from quaternion in roll, pitch, yaw" 
-        std::cout << euler.x() * 180 / MathConsts::Pi << ' ' << euler.y() * 180 / MathConsts::Pi << ' ' << euler.z() * 180 / MathConsts::Pi << '\n';
+        std::cout << euler.x() * 180 / parameters::Pi << ' ' << euler.y() * 180 / parameters::Pi << ' ' << euler.z() * 180 / parameters::Pi << '\n';
         return euler;
     }
 
@@ -120,10 +119,10 @@ private:
                     LOG(WARNING) << "Invaild Verify Degit!";
             }
             if (received) {
-                const auto& data = receiver.GetReceivedData();
+                /*const auto& data = receiver.GetReceivedData();
                 auto q = Eigen::Quaternionf(data.w, data.x, data.y, data.z);
                 auto size = _serial.available();
-                std::cout << size << ' ' << q << '\n';
+                std::cout << size << ' ' << q << '\n';*/
             }
             //std::this_thread::sleep_for(std::chrono::milliseconds(100));
 

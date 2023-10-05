@@ -1,7 +1,10 @@
 build
-resources
+install
+log
 cmake-build-debug
 cmake-build-release
+resources
+videos
 .vs
 .vscode
 .idea

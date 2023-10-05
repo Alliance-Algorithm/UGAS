@@ -9,7 +9,9 @@
 
 #include "ThirdParty/Serial/serial.h"
 #include <tchar.h>
+#define NOMINMAX
 #include <windows.h>
+#undef NOMINMAX
 #include <setupapi.h>
 #include <initguid.h>
 #include <devguid.h>
