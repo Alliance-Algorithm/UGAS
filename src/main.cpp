@@ -12,11 +12,6 @@
 int main(int argc, char* argv[]) {
     ros_util::init(argc, argv);
 
-    //transformer::SetTranslation<CameraLink, GimbalLink>(-Eigen::Vector3d{ 118.05, 67.5, -41.7 });
-    //transformer::SetTranslation<MuzzleLink, GimbalLink>(-Eigen::Vector3d{ 69.4, 67.5, 0 });
-//    transformer::SetTranslation<GimbalGyro, CameraGyro>(Eigen::Vector3d{105.8, 0, -40.5} / 1000.0);
-//    transformer::SetTranslation<GimbalGyro, MuzzleGyro>(Eigen::Vector3d{29.69, 0, 5.5} / 1000.0);
-
 	for (int restartTime = 0;; ++restartTime) {
         LOG(INFO) << "Program started.";
 		try {
@@ -44,5 +39,6 @@ int main(int argc, char* argv[]) {
 		LOG(ERROR) << "Program crashed, will restart in 5 seconds... ";
 		std::this_thread::sleep_for(std::chrono::seconds(5));
 	}
+
 	return 0;
 }

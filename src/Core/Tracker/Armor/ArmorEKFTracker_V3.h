@@ -12,6 +12,7 @@ Header Functions:
 
 #include <eigen3/Eigen/Dense>
 
+#include "Core/Tracker/TrackerStruct.h"
 #include "Core/Tracker/Armor/EKF.h"
 #include "Util/ROS/TfBroadcast.h"
 
@@ -121,11 +122,11 @@ class ArmorEKFTracker {
 #endif
     };
 
-    class Target {
+    class Target : public TargetInterface {
     public:
         explicit Target(const TrackerUnit& tracker) : tracker_(tracker) { }
 
-        [[nodiscard]] GimbalGyro::Position Predict(double sec) const {
+        [[nodiscard]] GimbalGyro::Position Predict(double sec) const override {
             // xc  v_xc  yc  v_yc  za  v_za  yaw  v_yaw  r
             Eigen::VectorXd x = tracker_.ekf.PredictConst(sec);
             const double& xc = x(0), & yc = x(2), & za = x(4), & v_yaw = x(7);
@@ -173,7 +174,7 @@ public:
         tracker_map_[ArmorID::Outpost] = {};
     };
 
-    std::optional<Target> Update(const std::vector<ArmorPlate3d>& armors, std::chrono::steady_clock::time_point timestamp) {
+    std::unique_ptr<TargetInterface> Update(const std::vector<ArmorPlate3d>& armors, std::chrono::steady_clock::time_point timestamp) {
         // dt: interval between adjacent updates by seconds.
         double dt = std::chrono::duration<double>(timestamp - last_update_).count();
         last_update_ = timestamp;
@@ -302,11 +303,10 @@ public:
             }
         }
         if (selected_tracker) {
-            // std::cout << minimum_angle << '\n';
-            return Target{*selected_tracker};
+            return std::make_unique<Target>(*selected_tracker);
         }
         else
-            return std::nullopt;
+            return nullptr;
     }
 
 private:

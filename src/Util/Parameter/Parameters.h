@@ -50,6 +50,8 @@ namespace parameters {
     // pnp parameters
     // tl -> bl -> br -> tr
     extern const std::vector<cv::Point3d> NormalArmorObjectPoints, LargeArmorObjectPoints;
+    // bl -> br -> tr -> tl
+    extern const std::vector<cv::Point3d> BuffObjectPoints;
 
     // transmitter camera calibration matrix
     extern const cv::Mat TransmitterCameraMatrix, TransmitterCameraDistCoeffs;
