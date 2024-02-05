@@ -20,10 +20,10 @@ configure_file (
         "${CONFIGURE_DIR_PATH}/config.h")
 
 # Initialize custom options
-option (ENABLE_DEBUG_CANVAS "Enable debug canvas to draw debug image" OFF)
-option (ENABLE_RECORDING "Enable recording of raw camera image" OFF)
-option (ENABLE_OPENVINO "Enable openvino to identify buff" OFF)
-option (ENABLE_ROS "Enable ROS to visualize positions" OFF)
+option (ENABLE_DEBUG_CANVAS "Enable debug canvas to draw debug image" ON)
+option (ENABLE_RECORDING "Enable recording of raw camera image" ON)
+option (ENABLE_OPENVINO "Enable openvino to identify buff" ON)
+option (ENABLE_ROS "Enable ROS to visualize positions" ON)
 
 # Set the output executable file name:
 # When compiling in the ROS environment, the output executable file name will be the node name.
