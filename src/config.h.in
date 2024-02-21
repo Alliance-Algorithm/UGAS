@@ -1,7 +1,0 @@
-#pragma once
-// written by qzh on 18/06/2023
-
-#cmakedefine01 ENABLE_DEBUG_CANVAS
-#cmakedefine01 ENABLE_RECORDING
-#cmakedefine01 ENABLE_OPENVINO
-#cmakedefine01 ENABLE_ROS
