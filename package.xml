@@ -4,7 +4,7 @@
   <name>ugas</name>
   <version>1.0.0</version>
   <description>Universal Gimbal Aiming System</description>
-  <maintainer email="qzhhh@foxmail.com">qzh</maintainer>
+  <maintainer email="zihanqin2048@gmail.com">Qzh</maintainer>
   <license>Unknown</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

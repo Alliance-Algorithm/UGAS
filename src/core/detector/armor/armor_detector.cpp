@@ -4,6 +4,7 @@
 
 #include <vector>
 
+#include <eigen3/Eigen/Dense>
 #include <opencv2/opencv.hpp>
 
 class ColorIdentifier {
@@ -190,19 +191,17 @@ public:
         : _blueIdentifier(228.0f)
         , _redIdentifier(11.0f) {}
 
-    std::vector<ArmorPlate> detect(const cv::Mat& img, ArmorColor target_color) {
+    inline std::vector<ArmorPlate> detect(const cv::Mat& img, ArmorColor target_color) {
         cv::Mat threshold_img, gray_img;
         cv::cvtColor(img, gray_img, cv::COLOR_BGR2GRAY);
         cv::threshold(gray_img, threshold_img, 150, 255, cv::THRESH_BINARY);
 
         std::vector<std::vector<cv::Point>> contours;
-        std::vector<ArmorPlate> result;
         cv::findContours(threshold_img, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
 
         auto lightbars         = solve_lightbars(img, contours, target_color);
-        auto matched_lightbars = match_lightbars(std::move(lightbars));
-
-        solve_pnp(std::move(matched_lightbars));
+        auto matched_lightbars = match_lightbars(lightbars);
+        auto result            = solve_pnp(matched_lightbars);
 
         return result;
     }
@@ -234,7 +233,7 @@ private:
         cv::Point2f points[4];
     };
 
-    std::vector<LightBar> solve_lightbars(
+    inline std::vector<LightBar> solve_lightbars(
         const cv::Mat& img, const std::vector<std::vector<cv::Point>>& contours,
         ArmorColor targetColor) {
 
@@ -299,7 +298,7 @@ private:
         return lightbars;
     }
 
-    std::vector<MatchedLightBar> match_lightbars(std::vector<LightBar>&& lightbars) {
+    inline std::vector<MatchedLightBar> match_lightbars(std::vector<LightBar>& lightbars) {
         std::sort(lightbars.begin(), lightbars.end(), [](LightBar& a, LightBar& b) {
             return a.top.x < b.top.x;
         });
@@ -336,9 +335,64 @@ private:
         return matched;
     }
 
-    void solve_pnp(const std::vector<MatchedLightBar>& matched_lightbars) {}
+    inline std::vector<ArmorPlate>
+        solve_pnp(const std::vector<MatchedLightBar>& matched_lightbars) {
 
-    static double malposition(const LightBar& left, const LightBar& right) {
+        constexpr double NormalArmorWidth = 134, NormalArmorHeight = 56, LargerArmorWidth = 230,
+                         LargerArmorHeight                     = 56;
+        const std::vector<cv::Point3d> NormalArmorObjectPoints = {
+            cv::Point3d(-0.5 * NormalArmorWidth, 0.5 * NormalArmorHeight, 0.0f),
+            cv::Point3d(-0.5 * NormalArmorWidth, -0.5 * NormalArmorHeight, 0.0f),
+            cv::Point3d(0.5 * NormalArmorWidth, -0.5 * NormalArmorHeight, 0.0f),
+            cv::Point3d(0.5 * NormalArmorWidth, 0.5 * NormalArmorHeight, 0.0f)};
+        const std::vector<cv::Point3d> LargeArmorObjectPoints = {
+            cv::Point3d(-0.5 * LargerArmorWidth, 0.5 * LargerArmorHeight, 0.0f),
+            cv::Point3d(-0.5 * LargerArmorWidth, -0.5 * LargerArmorHeight, 0.0f),
+            cv::Point3d(0.5 * LargerArmorWidth, -0.5 * LargerArmorHeight, 0.0f),
+            cv::Point3d(0.5 * LargerArmorWidth, 0.5 * LargerArmorHeight, 0.0f)};
+
+        double CameraMatrixData[3][3] = {
+            {1.722231837421459e+03,                     0, 7.013056440882832e+02},
+            {                    0, 1.724876404292754e+03, 5.645821718351237e+02},
+            {                    0,                     0,                     1}
+        };
+        double CameraDistCoeffsData[5] = {
+            -0.064232403853946, -0.087667493884102, 0, 0, 0.792381808294582};
+        const cv::Mat CameraMatrix(3, 3, CV_64F, CameraMatrixData);
+        const cv::Mat CameraDistCoeffs(1, 5, CV_64F, CameraDistCoeffsData);
+
+        cv::Mat rvec, tvec;
+        std::vector<ArmorPlate> armors;
+
+        for (auto& matched : matched_lightbars) {
+            auto& objectPoints = NormalArmorObjectPoints;
+            std::vector<cv::Point2f> image_points;
+            for (auto& point : matched.points)
+                image_points.push_back(point);
+            if (cv::solvePnP(
+                    objectPoints, image_points, CameraMatrix, CameraDistCoeffs, rvec, tvec, false,
+                    cv::SOLVEPNP_IPPE)) {
+
+                Eigen::Vector3d position = {
+                    tvec.at<double>(2), -tvec.at<double>(0), -tvec.at<double>(1)};
+                position = position / 1000.0;
+                if (position.norm() > 15.0)
+                    continue;
+
+                Eigen::Vector3d rvec_eigen = {
+                    rvec.at<double>(2), -rvec.at<double>(0), -rvec.at<double>(1)};
+                Eigen::Quaterniond rotation = Eigen::Quaterniond{
+                    Eigen::AngleAxisd{rvec_eigen.norm(), rvec_eigen.normalized()}
+                };
+
+                armors.emplace_back(ArmorId::UNKNOWN, position, rotation);
+            }
+        }
+
+        return armors;
+    }
+
+    inline static double malposition(const LightBar& left, const LightBar& right) {
         cv::Point2f axis = (left.top - left.bottom + right.top - right.bottom) / 2;
         cv::Point2f dis  = (left.top + left.bottom - right.top - right.bottom) / 2;
         return fabs(axis.dot(dis) / axis.cross(dis));

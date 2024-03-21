@@ -1,30 +1,107 @@
-#include <opencv2/highgui.hpp>
 #include <thread>
 
+#include <eigen3/Eigen/Dense>
+#include <opencv2/highgui.hpp>
+
+#include <geometry_msgs/msg/vector3.hpp>
 #include <hikcamera/image_capturer.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+#include <visualization_msgs/msg/marker.hpp>
 
+#include "core/ballistic_solver/ballistic_solver.hpp"
 #include "core/detector/armor/armor_detector.hpp"
 
 class CameraNode : public rclcpp::Node {
 public:
     CameraNode(const std::string& node_name)
         : Node(node_name)
-        , thread_(&CameraNode::thread_main, this) {}
+        , tf_buffer_(get_clock())
+        , tf_listener_(tf_buffer_)
+        , thread_(&CameraNode::thread_main, this) {
+        aiming_direction_publisher_ =
+            create_publisher<geometry_msgs::msg::Vector3>("/gimbal/auto_aim", rclcpp::QoS(1));
+        marker_publisher_ = create_publisher<visualization_msgs::msg::Marker>(
+            "/gimbal/auto_aim_marker", rclcpp::QoS(1));
+    }
 
 private:
     void thread_main() {
         hikcamera::ImageCapturer image_capturer;
 
         ArmorDetector armor_detector;
+        BallisticSolver ballistic_solver;
 
         while (rclcpp::ok()) {
-            auto image = image_capturer.read();
+            auto image  = image_capturer.read();
             auto armors = armor_detector.detect(image, ArmorDetector::ArmorColor::BLUE);
-            cv::imshow("image", image);
-            cv::waitKey(1);
+
+            // cv::imshow("image", image);
+            // cv::waitKey(1);
+
+            if (armors.empty())
+                continue;
+
+            geometry_msgs::msg::TransformStamped camera_link_to_odom, odom_to_muzzle_link;
+            try {
+                camera_link_to_odom =
+                    tf_buffer_.lookupTransform("odom", "camera_link", tf2::TimePointZero);
+                odom_to_muzzle_link =
+                    tf_buffer_.lookupTransform("odom", "muzzle_link", tf2::TimePointZero);
+            } catch (const tf2::TransformException& ex) {
+                RCLCPP_WARN(this->get_logger(), "Could not transform: %s", ex.what());
+                continue;
+            }
+
+            Eigen::Vector3d target =
+                Eigen::Translation3d{
+                    camera_link_to_odom.transform.translation.x,
+                    camera_link_to_odom.transform.translation.y,
+                    camera_link_to_odom.transform.translation.z}
+                * (Eigen::Quaterniond{
+                       camera_link_to_odom.transform.rotation.w,
+                       camera_link_to_odom.transform.rotation.x,
+                       camera_link_to_odom.transform.rotation.y,
+                       camera_link_to_odom.transform.rotation.z}
+                   * armors[0].position);
+
+            visualization_msgs::msg::Marker aiming_point_;
+            aiming_point_.header.frame_id = "odom";
+            // aiming_point_.ns = "aiming_point";
+            aiming_point_.type    = visualization_msgs::msg::Marker::SPHERE;
+            aiming_point_.action  = visualization_msgs::msg::Marker::ADD;
+            aiming_point_.scale.x = aiming_point_.scale.y = aiming_point_.scale.z = 0.05;
+            aiming_point_.color.r                                                 = 1.0;
+            aiming_point_.color.g                                                 = 0.0;
+            aiming_point_.color.b                                                 = 0.0;
+            aiming_point_.color.a                                                 = 1.0;
+            aiming_point_.lifetime        = rclcpp::Duration::from_seconds(0.1);
+            aiming_point_.header.stamp    = now();
+            aiming_point_.pose.position.x = target.x();
+            aiming_point_.pose.position.y = target.y();
+            aiming_point_.pose.position.z = target.z();
+            marker_publisher_->publish(aiming_point_);
+
+            Eigen::Vector3d muzzle = {
+                odom_to_muzzle_link.transform.translation.x,
+                odom_to_muzzle_link.transform.translation.y,
+                odom_to_muzzle_link.transform.translation.z};
+
+            auto aiming_direction = ballistic_solver.solve(target, muzzle, 27.0);
+            geometry_msgs::msg::Vector3 msg;
+            msg.x = aiming_direction.x();
+            msg.y = aiming_direction.y();
+            msg.z = aiming_direction.z();
+            aiming_direction_publisher_->publish(msg);
         }
     }
+
+    tf2_ros::Buffer tf_buffer_;
+    tf2_ros::TransformListener tf_listener_;
+
+    rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr aiming_direction_publisher_;
+    rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_publisher_;
 
     std::thread thread_;
 };

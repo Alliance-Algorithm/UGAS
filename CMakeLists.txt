@@ -23,6 +23,7 @@ find_package(OpenCV 4.5 REQUIRED)
 set(PROJECT_SOURCES
     src/main.cpp
     src/core/detector/armor/armor_detector.cpp
+    src/core/ballistic_solver/ballistic_solver.cpp
 )
 ament_auto_add_executable (
     ${PROJECT_NAME}
