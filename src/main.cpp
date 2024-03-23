@@ -12,6 +12,7 @@
 
 #include "core/ballistic_solver/ballistic_solver.hpp"
 #include "core/detector/armor/armor_detector.hpp"
+#include "util/fps_counter.h"
 
 class CameraNode : public rclcpp::Node {
 public:
@@ -28,12 +29,16 @@ public:
 
 private:
     void thread_main() {
-        hikcamera::ImageCapturer image_capturer;
+        FpsCounter fps_counter;
 
+        hikcamera::ImageCapturer image_capturer;
         ArmorDetector armor_detector;
         BallisticSolver ballistic_solver;
 
         while (rclcpp::ok()) {
+            if (fps_counter.count())
+                std::cout << "fps: " << fps_counter.get_fps() << '\n';
+
             auto image  = image_capturer.read();
             auto armors = armor_detector.detect(image, ArmorDetector::ArmorColor::BLUE);
 
@@ -53,18 +58,16 @@ private:
                 RCLCPP_WARN(this->get_logger(), "Could not transform: %s", ex.what());
                 continue;
             }
+            auto gimbal_pose = Eigen::Quaterniond{
+                camera_link_to_odom.transform.rotation.w, camera_link_to_odom.transform.rotation.x,
+                camera_link_to_odom.transform.rotation.y, camera_link_to_odom.transform.rotation.z};
 
             Eigen::Vector3d target =
                 Eigen::Translation3d{
                     camera_link_to_odom.transform.translation.x,
                     camera_link_to_odom.transform.translation.y,
                     camera_link_to_odom.transform.translation.z}
-                * (Eigen::Quaterniond{
-                       camera_link_to_odom.transform.rotation.w,
-                       camera_link_to_odom.transform.rotation.x,
-                       camera_link_to_odom.transform.rotation.y,
-                       camera_link_to_odom.transform.rotation.z}
-                   * armors[0].position);
+                * (gimbal_pose * armors[0].position);
 
             visualization_msgs::msg::Marker aiming_point_;
             aiming_point_.header.frame_id = "odom";
@@ -88,7 +91,12 @@ private:
                 odom_to_muzzle_link.transform.translation.y,
                 odom_to_muzzle_link.transform.translation.z};
 
-            auto aiming_direction = ballistic_solver.solve(target, muzzle, 27.0);
+            auto aiming_direction = ballistic_solver.solve(target, muzzle, 27.5);
+
+            auto delta_yaw   = Eigen::AngleAxisd{-0.005, gimbal_pose * Eigen::Vector3d::UnitZ()};
+            auto delta_pitch = Eigen::AngleAxisd{0.012, gimbal_pose * Eigen::Vector3d::UnitY()};
+            aiming_direction = (delta_pitch * (delta_yaw * aiming_direction)).eval();
+
             geometry_msgs::msg::Vector3 msg;
             msg.x = aiming_direction.x();
             msg.y = aiming_direction.y();
