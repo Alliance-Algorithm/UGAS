@@ -2,87 +2,10 @@
 
 #include <cstdint>
 
-#include <opencv2/core/mat.hpp>
-#include <stdexcept>
-#include <variant>
 #include <vector>
 
 #include <eigen3/Eigen/Dense>
 #include <opencv2/opencv.hpp>
-
-// 数字神经网络接口
-class NumberIdentifyInterface {
-public:
-    virtual ~NumberIdentifyInterface()                     = default;
-    virtual std::tuple<int, double> Identify(cv::Mat& img) = 0;
-};
-
-class NumberIdentify : public NumberIdentifyInterface {
-public:
-    explicit NumberIdentify(std::string modelPath);
-    std::tuple<int, double> Identify(cv::Mat& img);
-
-private:
-    cv::dnn::Net _net;
-    void _softmax(cv::Mat& modelInferResult);
-    cv::Mat _BlobImage(cv::Mat& img);
-};
-
-/**
- * @brief Construct a new Number Identify:: Number Identify object
- *
- * @param modelPath 支持onnx与pb模型
- */
-NumberIdentify::NumberIdentify(std::string modelPath) {
-    if (modelPath.find(".onnx") != std::variant_npos) {
-        _net = cv::dnn::readNetFromONNX(modelPath);
-    } else if (modelPath.find(".pb") != std::variant_npos) {
-        _net = cv::dnn::readNetFromTensorflow(modelPath);
-    } else {
-        throw std::runtime_error("Error model type!");
-    }
-    if (_net.empty())
-        throw std::runtime_error("Cannot open model file!");
-}
-
-/**
- * @brief 输出识别结果与置信度，识别结果可转ArmorDetector::ArmorId枚举类
- *
- * @param img
- * @return std::tuple<int, double>
- */
-std::tuple<int, double> NumberIdentify::Identify(cv::Mat& img) {
-    cv::Mat inputImage = _BlobImage(img);
-    cv::Mat blobImage  = cv::dnn::blobFromImage(inputImage, 1.0, cv::Size(36, 36), false, false);
-    _net.setInput(blobImage);
-    cv::Mat pred = _net.forward();
-    cv::normalize(pred, pred, 1, 10, cv::NORM_MINMAX);
-    _softmax(pred);
-    double maxValue;
-    cv::Point maxLoc;
-    minMaxLoc(pred, NULL, &maxValue, NULL, &maxLoc);
-    std::tuple<int, double> resultMsg(maxLoc.x, maxValue);
-
-    return resultMsg;
-}
-
-cv::Mat NumberIdentify::_BlobImage(cv::Mat& img) {
-    cv::resize(img, img, cv::Size(36, 36));
-    cv::cvtColor(img, img, cv::COLOR_BGR2GRAY);
-    cv::GaussianBlur(img, img, cv::Size(5, 5), 0, 0);
-    cv::threshold(img, img, 0, 255, cv::THRESH_BINARY | cv::THRESH_OTSU);
-
-    return img;
-}
-
-inline void NumberIdentify::_softmax(cv::Mat& modelInferResult) {
-    cv::Mat expMat;
-    cv::exp(modelInferResult, expMat);
-
-    double sumExp = cv::sum(expMat)[0];
-
-    modelInferResult = expMat / sumExp;
-}
 
 class ColorIdentifier {
 public:
@@ -266,10 +189,7 @@ class ArmorDetector::Impl {
 public:
     Impl()
         : _blueIdentifier(228.0f)
-        , _redIdentifier(11.0f)
-        // TODO： 模型路径优化
-        , _identify(
-              NumberIdentify("/workspaces/RMCS/rmcs_ws/src/ugas/models/armoridentify_v3.onnx")) {}
+        , _redIdentifier(11.0f) {}
 
     inline std::vector<ArmorPlate> detect(const cv::Mat& img, ArmorColor target_color) {
         cv::Mat threshold_img, gray_img;
@@ -279,9 +199,9 @@ public:
         std::vector<std::vector<cv::Point>> contours;
         cv::findContours(threshold_img, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
 
-        auto lightbars = solve_lightbars(img, contours, target_color);
-        auto matched_lightbars = match_lightbars(lightbars, img); // 其中包括数字神经网络识别
-        auto result = solve_pnp(matched_lightbars);
+        auto lightbars         = solve_lightbars(img, contours, target_color);
+        auto matched_lightbars = match_lightbars(lightbars);
+        auto result            = solve_pnp(matched_lightbars);
 
         return result;
     }
@@ -303,8 +223,6 @@ private:
             points[1] = left.bottom;
             points[2] = right.bottom;
             points[3] = right.top;
-
-            isLarge = false;
         }
 
         cv::Point2f top_left() const { return points[0]; }
@@ -313,7 +231,6 @@ private:
         cv::Point2f top_right() const { return points[3]; }
 
         cv::Point2f points[4];
-        bool isLarge;                                             // 大装甲板标志
     };
 
     inline std::vector<LightBar> solve_lightbars(
@@ -381,8 +298,7 @@ private:
         return lightbars;
     }
 
-    inline std::vector<MatchedLightBar>
-        match_lightbars(std::vector<LightBar>& lightbars, const cv::Mat& img) {
+    inline std::vector<MatchedLightBar> match_lightbars(std::vector<LightBar>& lightbars) {
         std::sort(lightbars.begin(), lightbars.end(), [](LightBar& a, LightBar& b) {
             return a.top.x < b.top.x;
         });
@@ -416,30 +332,7 @@ private:
             }
         }
 
-        std::vector<MatchedLightBar> flitered; // 数字识别过滤后的装甲板容器
-
-        for (auto& sample : matched) {
-            cv::Mat roi;
-            perspective(img, sample, roi);
-            auto res        = _identify.Identify(roi);
-            auto code       = std::get<0>(res);
-            auto confidence = std::get<1>(res);
-
-            if (confidence < 0.5) {
-                continue;
-            }
-
-            switch ((ArmorId)code) {
-            case ArmorId::LARGE_III:
-            case ArmorId::LARGE_IV:
-            case ArmorId::LARGE_V: sample.isLarge = true; break;
-            default: break;
-            }
-
-            flitered.push_back(sample);
-        }
-
-        return flitered;
+        return matched;
     }
 
     inline std::vector<ArmorPlate>
@@ -472,18 +365,10 @@ private:
         std::vector<ArmorPlate> armors;
 
         for (auto& matched : matched_lightbars) {
-
+            auto& objectPoints = NormalArmorObjectPoints;
             std::vector<cv::Point2f> image_points;
             for (auto& point : matched.points)
                 image_points.push_back(point);
-
-            auto objectPoints = NormalArmorObjectPoints;
-
-            if (matched.isLarge) {
-                objectPoints = LargeArmorObjectPoints;
-                // Mar 27 fix 装甲板大小 Feng
-            }
-
             if (cv::solvePnP(
                     objectPoints, image_points, CameraMatrix, CameraDistCoeffs, rvec, tvec, false,
                     cv::SOLVEPNP_IPPE)) {
@@ -513,36 +398,7 @@ private:
         return fabs(axis.dot(dis) / axis.cross(dis));
     };
 
-    /**
-     * @brief 透视矫正
-     *
-     * @param img org
-     * @param match_lightbar 矫正特征点
-     * @param roi dst
-     */
-    inline static void
-        perspective(const cv::Mat& img, MatchedLightBar& match_lightbar, cv::Mat& roi) {
-        auto leftHeight  = cv::norm(match_lightbar.top_left() - match_lightbar.bottom_left());
-        auto rightHeight = cv::norm(match_lightbar.top_right() - match_lightbar.bottom_right());
-        auto maxHeight   = std::max(leftHeight, rightHeight);
-
-        auto upWidth   = cv::norm(match_lightbar.top_left() - match_lightbar.top_right());
-        auto downWidth = cv::norm(match_lightbar.bottom_left() - match_lightbar.bottom_right());
-        auto maxWidth  = std::max(upWidth, downWidth);
-
-        cv::Point2f srcAffinePts[4] = {
-            cv::Point2f(match_lightbar.top_left()), cv::Point2f(match_lightbar.top_right()),
-            cv::Point2f(match_lightbar.bottom_right()), cv::Point2f(match_lightbar.bottom_left())};
-        cv::Point2f dstAffinePts[4] = {
-            cv::Point2f(0, 0), cv::Point2f(maxWidth, 0), cv::Point2f(maxWidth, maxHeight),
-            cv::Point2f(0, maxHeight)};
-
-        auto affineMat = cv::getPerspectiveTransform(srcAffinePts, dstAffinePts);
-        cv::warpPerspective(img, roi, affineMat, cv::Point(maxWidth, maxHeight));
-    }
-
     ColorIdentifier _blueIdentifier, _redIdentifier;
-    NumberIdentify _identify;
 };
 
 ArmorDetector::ArmorDetector() { impl_ = new Impl{}; }

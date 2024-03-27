@@ -18,12 +18,8 @@ public:
         INFANTRY_IV  = 4,
         INFANTRY_V   = 5,
         SENTRY       = 6,
-        LARGE_III    = 7,
-        LARGE_IV     = 8,
-        LARGE_V      = 9,
-        OUTPOST      = 10,
-        BASE         = 11,
-        // Mar 27 适配数字神经网络识别结果
+        OUTPOST      = 7,
+        BASE         = 8,
     };
 
     struct ArmorPlate {
