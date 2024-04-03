@@ -30,7 +30,6 @@ public:
         return result;
     }
 
-private:
     static void GetShotAngleInternal(const GimbalGyro::Position& target_pos, const double speed, double& yaw, double& pitch, double& fly_time) {
         MuzzleLink::DirectionVector shotVec = GetShotVector(target_pos, speed, fly_time);
 

@@ -3,8 +3,8 @@ project(ugas VERSION 1.0 LANGUAGES C CXX)
 
 # Set compilation flags
 set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -22,22 +22,22 @@ configure_file (
 # Initialize custom options
 option (ENABLE_DEBUG_CANVAS "Enable debug canvas to draw debug image" OFF)
 option (ENABLE_RECORDING "Enable recording of raw camera image" OFF)
-option (ENABLE_OPENVINO "Enable openvino to identify buff" OFF)
-option (ENABLE_ROS "Enable ROS to visualize positions" OFF)
+option (ENABLE_OPENVINO "Enable openvino to identify buff" ON)
+option (ENABLE_ROS "Enable ROS to visualize positions" ON)
 
 # Set the output executable file name:
 # When compiling in the ROS environment, the output executable file name will be the node name.
 # Otherwise, the output file name will be the project name.
 if (ENABLE_ROS)
-    set(EXECUTABLE_NAME main)
+    set(EXECUTABLE_NAME ${PROJECT_NAME})
 else ()
     set(EXECUTABLE_NAME ${PROJECT_NAME})
     set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
 endif()
 
 # Find non-ros packages
-find_package(OpenCV 4.7 REQUIRED)
-find_package(HikCameraSDK REQUIRED)
+find_package(OpenCV 4.5 REQUIRED)
+# find_package(HikCameraSDK REQUIRED)
 
 if (ENABLE_OPENVINO)
     find_package(OpenVINO REQUIRED)
@@ -66,6 +66,11 @@ endif()
 
 # Link libraries
 target_link_libraries(${EXECUTABLE_NAME} ${OpenCV_LIBS} ${HikCameraSDK_LIB} ${OpenVINO_LIB} ${Ceres_LIB} -lpthread)
+
+install(
+    DIRECTORY models/
+    DESTINATION share/${PROJECT_NAME}/models
+)
 
 # Install package
 if (ENABLE_ROS)

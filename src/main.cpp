@@ -4,7 +4,6 @@
 #include <eigen3/Eigen/Core>
 
 #include "Control/Gimbal/GimbalInfantry.h"
-#include "Control/Gimbal/GimbalUav.h"
 #include "Core/Transformer/Tree.h"
 #include "Util/FPSCounter/FPSCounter.h"
 #include "Util/ROS/Node.h"
@@ -17,10 +16,6 @@ int main(int argc, char* argv[]) {
 		try {
             if (parameters::GimbalType == GimbalType::Infantry) {
                 GimbalInfantry gimbal;
-                gimbal.Always();
-            }
-            else if (parameters::GimbalType == GimbalType::Uav) {
-                GimbalUav gimbal;
                 gimbal.Always();
             }
             else if (parameters::GimbalType == GimbalType::Sentry) {

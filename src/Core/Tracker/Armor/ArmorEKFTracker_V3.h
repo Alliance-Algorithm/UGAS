@@ -12,18 +12,20 @@ Header Functions:
 
 #include <eigen3/Eigen/Dense>
 
-#include "Core/Tracker/TrackerStruct.h"
 #include "Core/Tracker/Armor/EKF.h"
+#include "Core/Tracker/TrackerStruct.h"
 #include "Util/ROS/TfBroadcast.h"
 
 class ArmorEKFTracker {
     // 整车追踪器
     struct TrackerUnit {
-        TrackerUnit(const ArmorPlate3d& armor, const std::chrono::steady_clock::time_point& timestamp) : last_update(timestamp) {
-            double& r = r_list[0];
-            double yaw = GetArmorYaw(armor);
-            double xc = armor.position->x() + r * cos(yaw);
-            double yc = armor.position->y() + r * sin(yaw);
+        TrackerUnit(
+            const ArmorPlate3d& armor, const std::chrono::steady_clock::time_point& timestamp)
+            : last_update(timestamp) {
+            double& r        = r_list[0];
+            double yaw       = GetArmorYaw(armor);
+            double xc        = armor.position->x() + r * cos(yaw);
+            double yc        = armor.position->y() + r * sin(yaw);
             const double& za = armor.position->z();
             // xc  v_xc  yc  v_yc  za  v_za  yaw  v_yaw  r
             ekf.x_ << xc, 0, yc, 0, za, 0, yaw, 0, r;
@@ -40,35 +42,37 @@ class ArmorEKFTracker {
         void Predict(double dt) {
             ekf.Predict(dt);
             tracked_duration += dt;
-            for (bool &updated : armor_newly_updated)
+            for (bool& updated : armor_newly_updated)
                 updated = false;
         }
 
-        void Update(const ArmorPlate3d& armor, const std::chrono::steady_clock::time_point& timestamp) {
-            double &v_za = ekf.x_(5), & model_yaw = ekf.x_(6), & r = ekf.x_(8);
+        void Update(
+            const ArmorPlate3d& armor, const std::chrono::steady_clock::time_point& timestamp) {
+            double &v_za = ekf.x_(5), &model_yaw = ekf.x_(6), &r = ekf.x_(8);
             double yaw = GetArmorYaw(armor);
 
             constexpr double legal_range = parameters::Pi / 4;
-            constexpr double step = 2 * parameters::Pi / armor_count;
+            constexpr double step        = 2 * parameters::Pi / armor_count;
 
             double shift = 0;
 
             size_t i;
             for (i = 0; i < armor_count; ++i) {
-                //std::cout << yaw << ' ';
+                // std::cout << yaw << ' ';
                 double diff = GetMinimumAngleDiff(yaw, model_yaw + shift);
                 if (-legal_range < diff && diff < legal_range) {
                     yaw = model_yaw + shift + diff;
                     break;
-                }
-                else shift += step;
+                } else
+                    shift += step;
             }
 
             if (i < 4) {
                 model_yaw += shift;
                 r = r_list[i];
 
-                Eigen::Vector4d measurement = { armor.position->x(), armor.position->y(), armor.position->z(), yaw };
+                Eigen::Vector4d measurement = {
+                    armor.position->x(), armor.position->y(), armor.position->z(), yaw};
                 ekf.Update(measurement);
                 last_update = timestamp;
 
@@ -91,10 +95,11 @@ class ArmorEKFTracker {
             }
         }
 
-        [[nodiscard]] static std::tuple<Eigen::Vector3d, double> GetArmorState(const Eigen::VectorXd& x, size_t index) {
-            const double& xc = x(0), & yc = x(2), & za = x(4), & r = x(8);
+        [[nodiscard]] static std::tuple<Eigen::Vector3d, double>
+            GetArmorState(const Eigen::VectorXd& x, size_t index) {
+            const double &xc = x(0), &yc = x(2), &za = x(4), &r = x(8);
             constexpr double yaw_step = 2 * parameters::Pi / armor_count;
-            double yaw = x(6) + yaw_step * (double)index;
+            double yaw                = x(6) + yaw_step * (double)index;
 
             double xa = xc - r * cos(yaw);
             double ya = yc - r * sin(yaw);
@@ -104,7 +109,7 @@ class ArmorEKFTracker {
 
         [[nodiscard]] std::tuple<Eigen::Vector3d, double> GetArmorState(size_t index) const {
             Eigen::VectorXd x = ekf.x_;
-            x(8) = r_list[index];
+            x(8)              = r_list[index];
             return GetArmorState(x, index);
         }
 
@@ -124,36 +129,38 @@ class ArmorEKFTracker {
 
     class Target : public TargetInterface {
     public:
-        explicit Target(const TrackerUnit& tracker) : tracker_(tracker) { }
+        explicit Target(const TrackerUnit& tracker)
+            : tracker_(tracker) {}
 
         [[nodiscard]] GimbalGyro::Position Predict(double sec) const override {
             // xc  v_xc  yc  v_yc  za  v_za  yaw  v_yaw  r
             Eigen::VectorXd x = tracker_.ekf.PredictConst(sec);
-            const double& xc = x(0), & yc = x(2), & za = x(4), & v_yaw = x(7);
+            const double &xc = x(0), &yc = x(2), &za = x(4), &v_yaw = x(7);
             double& model_yaw = x(6);
             double camera_yaw = std::atan2(-yc, -xc);
-            if (fabs(v_yaw) < 2.0) {
-                double shift = 0;
+            if (fabs(v_yaw) < 12.0) {
+                double shift                 = 0;
                 constexpr double legal_range = parameters::Pi / 4;
-                constexpr double step = 2 * parameters::Pi / TrackerUnit::armor_count;
+                constexpr double step        = 2 * parameters::Pi / TrackerUnit::armor_count;
                 size_t i;
                 for (i = 0; i < TrackerUnit::armor_count; ++i) {
                     double diff = GetMinimumAngleDiff(camera_yaw, model_yaw + shift);
                     if (-legal_range < diff && diff < legal_range)
                         break;
-                    else shift += step;
+                    else
+                        shift += step;
                 }
                 if (i < TrackerUnit::armor_count) {
-                    double r = tracker_.r_list[i];
+                    double r   = tracker_.r_list[i];
                     double yaw = model_yaw + shift;
-                    auto pos = Eigen::Vector3d{xc - r * cos(yaw), yc - r * sin(yaw), za};
+                    auto pos   = Eigen::Vector3d{xc - r * cos(yaw), yc - r * sin(yaw), za};
                     return GimbalGyro::Position(pos);
                 }
             }
-            //return GimbalGyro::Position(0, 0, 0);
+            // return GimbalGyro::Position(0, 0, 0);
             model_yaw = camera_yaw;
-            double r = (tracker_.r_list[0] + tracker_.r_list[1]) / 2;
-            //auto [pos, yaw] = TrackerUnit::GetArmorState(x, 0);
+            double r  = (tracker_.r_list[0] + tracker_.r_list[1]) / 2;
+            // auto [pos, yaw] = TrackerUnit::GetArmorState(x, 0);
             auto pos = Eigen::Vector3d{xc - r * cos(camera_yaw), yc - r * sin(camera_yaw), za};
 
             return GimbalGyro::Position(pos);
@@ -165,23 +172,24 @@ class ArmorEKFTracker {
 
 public:
     ArmorEKFTracker() {
-        tracker_map_[ArmorID::Hero] = {};
-        tracker_map_[ArmorID::Engineer] = {};
+        tracker_map_[ArmorID::Hero]        = {};
+        tracker_map_[ArmorID::Engineer]    = {};
         tracker_map_[ArmorID::InfantryIII] = {};
-        tracker_map_[ArmorID::InfantryIV] = {};
-        tracker_map_[ArmorID::InfantryV] = {};
-        tracker_map_[ArmorID::Sentry] = {};
-        tracker_map_[ArmorID::Outpost] = {};
+        tracker_map_[ArmorID::InfantryIV]  = {};
+        tracker_map_[ArmorID::InfantryV]   = {};
+        tracker_map_[ArmorID::Sentry]      = {};
+        tracker_map_[ArmorID::Outpost]     = {};
     };
 
-    std::unique_ptr<TargetInterface> Update(const std::vector<ArmorPlate3d>& armors, std::chrono::steady_clock::time_point timestamp) {
+    std::unique_ptr<TargetInterface> Update(
+        const std::vector<ArmorPlate3d>& armors, std::chrono::steady_clock::time_point timestamp) {
         // dt: interval between adjacent updates by seconds.
-        double dt = std::chrono::duration<double>(timestamp - last_update_).count();
+        double dt    = std::chrono::duration<double>(timestamp - last_update_).count();
         last_update_ = timestamp;
 
-        for (auto &[armor_id, tracker_array]: tracker_map_) {
+        for (auto& [armor_id, tracker_array] : tracker_map_) {
             for (auto iter = tracker_array.begin(); iter != tracker_array.end();) {
-                auto &tracker = *iter;
+                auto& tracker = *iter;
                 if (timestamp - tracker.last_update > std::chrono::milliseconds(1000))
                     iter = tracker_array.erase(iter);
                 else {
@@ -198,78 +206,81 @@ public:
 
                 if (tracker_array.empty()) {
                     tracker_array.emplace_back(armor, timestamp);
-                }
-                else {
+                } else {
                     auto& tracker = tracker_array[0];
                     tracker.Update(armor, timestamp);
                 }
             }
         }
-        //return;
-
+        // return;
 
 #if ENABLE_ROS
         // 发送装甲板可视化信息
         if (auto node = ros_util::node_.lock()) {
             visualization_msgs::msg::MarkerArray marker_array;
-            for (auto& [armor_id, tracker_array]: tracker_map_) {
+            for (auto& [armor_id, tracker_array] : tracker_map_) {
                 for (auto& tracker : tracker_array) {
-                    if (tracker.tracking_density < 40.0) continue;
-                    //std::cout << (int)armor_id << ' ' << tracker.ekf.x_(7) << ' ';
-                    //std::cout << tracker.ekf.x_[7] << '\n';
+                    if (tracker.tracking_density < 40.0)
+                        continue;
+
+                    // std::cout << (int)armor_id << ' ' << tracker.ekf.x_(7) << ' ';
+                    // std::cout << tracker.ekf.x_[7] << '\n';
                     for (size_t i = 0; i < TrackerUnit::armor_count; ++i) {
                         visualization_msgs::msg::Marker marker1;
                         marker1.header.frame_id = "gimbal_gyro";
-                        marker1.ns = "armor_plate_array";
-                        marker1.id = tracker.ros_marker_id + (int)i;
-                        marker1.type = visualization_msgs::msg::Marker::CUBE;
-                        marker1.action = visualization_msgs::msg::Marker::MODIFY;
-                        marker1.scale.x = 0.02;
-                        marker1.scale.y = 0.135;
-                        marker1.scale.z = 0.125;
-                        marker1.color.r = tracker.color_r;
-                        marker1.color.g = tracker.color_g;
-                        marker1.color.b = tracker.color_b;
-                        marker1.color.a = 0.5;
-                        marker1.lifetime = rclcpp::Duration::from_seconds(0.1);
-                        marker1.header.stamp = node->now();
-                        auto [pos, yaw] = tracker.GetArmorState(i);
+                        // marker1.ns              = "armor_plate_array";
+                        marker1.id              = tracker.ros_marker_id + (int)i;
+                        marker1.type            = visualization_msgs::msg::Marker::CUBE;
+                        marker1.action          = visualization_msgs::msg::Marker::MODIFY;
+                        marker1.scale.x         = 0.02;
+                        marker1.scale.y         = 0.135;
+                        marker1.scale.z         = 0.125;
+                        marker1.color.r         = tracker.color_r;
+                        marker1.color.g         = tracker.color_g;
+                        marker1.color.b         = tracker.color_b;
+                        marker1.color.a         = 0.5;
+                        marker1.lifetime        = rclcpp::Duration::from_seconds(0.1);
+                        marker1.header.stamp    = node->now();
+                        auto [pos, yaw]         = tracker.GetArmorState(i);
                         marker1.pose.position.x = pos.x();
                         marker1.pose.position.y = pos.y();
                         marker1.pose.position.z = pos.z();
-                        auto rotation = Eigen::Quaterniond{Eigen::AngleAxisd{yaw, Eigen::Vector3d::UnitZ()}};
+                        auto rotation           = Eigen::Quaterniond{
+                            Eigen::AngleAxisd{yaw, Eigen::Vector3d::UnitZ()}
+                        };
                         marker1.pose.orientation.w = rotation.w();
                         marker1.pose.orientation.x = rotation.x();
                         marker1.pose.orientation.y = rotation.y();
                         marker1.pose.orientation.z = rotation.z();
                         marker_array.markers.push_back(std::move(marker1));
                     }
-
                 }
             }
-            //std::cout << '\n';
+            // std::cout << '\n';
 
             static int debug_index = 0;
             for (auto& armor : armors) {
                 visualization_msgs::msg::Marker marker;
                 marker.header.frame_id = "gimbal_gyro";
-                marker.ns = "armor_plate_array";
-                marker.id = 1000000 + debug_index++;
-                marker.type = visualization_msgs::msg::Marker::CUBE;
-                marker.action = visualization_msgs::msg::Marker::MODIFY;
-                marker.scale.x = 0.02;
-                marker.scale.y = 0.135;
-                marker.scale.z = 0.125;
-                marker.color.r = 1.0;
-                marker.color.g = 1.0;
-                marker.color.b = 1.0;
-                marker.color.a = 0.5;
-                marker.lifetime = rclcpp::Duration::from_seconds(0.1);
-                marker.header.stamp = node->now();
+                // marker.ns              = "armor_plate_array";
+                marker.id              = 1000000 + debug_index++;
+                marker.type            = visualization_msgs::msg::Marker::CUBE;
+                marker.action          = visualization_msgs::msg::Marker::MODIFY;
+                marker.scale.x         = 0.02;
+                marker.scale.y         = 0.135;
+                marker.scale.z         = 0.125;
+                marker.color.r         = 1.0;
+                marker.color.g         = 1.0;
+                marker.color.b         = 1.0;
+                marker.color.a         = 0.5;
+                marker.lifetime        = rclcpp::Duration::from_seconds(0.1);
+                marker.header.stamp    = node->now();
                 marker.pose.position.x = armor.position->x();
                 marker.pose.position.y = armor.position->y();
                 marker.pose.position.z = armor.position->z();
-                auto rotation = Eigen::Quaterniond{Eigen::AngleAxisd{GetArmorYaw(armor), Eigen::Vector3d::UnitZ()}};
+                auto rotation          = Eigen::Quaterniond{
+                    Eigen::AngleAxisd{GetArmorYaw(armor), Eigen::Vector3d::UnitZ()}
+                };
                 marker.pose.orientation.w = rotation.w();
                 marker.pose.orientation.x = rotation.x();
                 marker.pose.orientation.y = rotation.y();
@@ -280,32 +291,33 @@ public:
         }
 #endif
         TrackerUnit* selected_tracker = nullptr;
-        int selected_level = 0; double minimum_angle;
-        for (auto &[armor_id, tracker_array]: tracker_map_) {
+        int selected_level            = 0;
+        double minimum_angle;
+        for (auto& [armor_id, tracker_array] : tracker_map_) {
             for (auto& tracker : tracker_array) {
                 int level = 0;
-                if (tracker.tracking_density > 100) level = 2;
-                else if (tracker.tracking_density > 40) level = 1;
+                if (tracker.tracking_density > 100)
+                    level = 2;
+                else if (tracker.tracking_density > 40)
+                    level = 1;
 
                 auto center = *static_cast<MuzzleLink::Position>(
-                        GimbalGyro::Position(tracker.ekf.x_(0), tracker.ekf.x_(2), tracker.ekf.x_(4)));
+                    GimbalGyro::Position(tracker.ekf.x_(0), tracker.ekf.x_(2), tracker.ekf.x_(4)));
                 double angle = std::acos(center.dot(Eigen::Vector3d{1, 0, 0}) / center.norm());
 
                 if (level > selected_level) {
-                    selected_level = level;
-                    minimum_angle = angle;
+                    selected_level   = level;
+                    minimum_angle    = angle;
                     selected_tracker = &tracker;
-                }
-                else if(level > 0 && level == selected_level && angle < minimum_angle) {
-                    minimum_angle = angle;
+                } else if (level > 0 && level == selected_level && angle < minimum_angle) {
+                    minimum_angle    = angle;
                     selected_tracker = &tracker;
                 }
             }
         }
         if (selected_tracker) {
             return std::make_unique<Target>(*selected_tracker);
-        }
-        else
+        } else
             return nullptr;
     }
 
@@ -317,19 +329,21 @@ private:
 
     static double GetMinimumAngleDiff(double a, double b) {
         double diff = std::fmod(a - b, 2 * parameters::Pi);
-        if (diff < -parameters::Pi) diff += 2 * parameters::Pi;
-        else if (diff > parameters::Pi) diff -= 2 * parameters::Pi;
+        if (diff < -parameters::Pi)
+            diff += 2 * parameters::Pi;
+        else if (diff > parameters::Pi)
+            diff -= 2 * parameters::Pi;
         return diff;
     }
 
     // Generate continuous yaw (-pi~pi -> -inf~inf)
     static double GetContinuousYaw(const ArmorPlate3d& armor, double last_yaw) {
-        double yaw = GetArmorYaw(armor);
+        double yaw  = GetArmorYaw(armor);
         double diff = GetMinimumAngleDiff(yaw, last_yaw);
         return last_yaw + diff;
     }
 
-    //std::list<TrackerUnit> tracker_array_;
+    // std::list<TrackerUnit> tracker_array_;
     std::map<ArmorID, std::vector<TrackerUnit>> tracker_map_;
     std::chrono::steady_clock::time_point last_update_;
 
