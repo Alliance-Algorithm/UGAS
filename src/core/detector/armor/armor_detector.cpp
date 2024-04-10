@@ -27,7 +27,7 @@ public:
 class NumberIdentify : public NumberIdentifyInterface {
 public:
     explicit NumberIdentify(std::string modelPath);
-    std::tuple<int, double> Identify(cv::Mat& img);
+    [[nodiscard]] std::tuple<int, double> Identify(cv::Mat& img);
 
 private:
     cv::dnn::Net _net;
@@ -514,6 +514,7 @@ private:
             if (cv::solvePnP(
                     objectPoints, image_points, CameraMatrix, CameraDistCoeffs, rvec, tvec, false,
                     cv::SOLVEPNP_IPPE)) {
+                        
 
                 Eigen::Vector3d position = {
                     tvec.at<double>(2), -tvec.at<double>(0), -tvec.at<double>(1)};

@@ -1,13 +1,13 @@
 
 #include <ctime>
-#include <opencv2/core.hpp>
 #include <thread>
 
 #include <eigen3/Eigen/Dense>
+#include <hikcamera/image_capturer.hpp>
+#include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
 #include <geometry_msgs/msg/vector3.hpp>
-#include <hikcamera/image_capturer.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
@@ -16,6 +16,7 @@
 #include "core/ballistic_solver/ballistic_solver.hpp"
 #include "core/detector/armor/armor_detector.hpp"
 #include "util/fps_counter.h"
+#include "util/timer.hpp"
 
 class CameraNode : public rclcpp::Node {
 public:
@@ -33,6 +34,7 @@ public:
 private:
     void thread_main() {
         FpsCounter fps_counter;
+        Timer timer;
 
         hikcamera::ImageCapturer::CameraProfile camera_profile;
         {
@@ -45,8 +47,6 @@ private:
         ArmorDetector armor_detector;
         BallisticSolver ballistic_solver;
 
-        clock_t no_target_timestamp = 0;
-
         while (rclcpp::ok()) {
             if (fps_counter.count())
                 RCLCPP_INFO(this->get_logger(), "fps: %d ", fps_counter.get_fps());
@@ -54,25 +54,20 @@ private:
             auto image  = image_capturer.read();
             auto armors = armor_detector.detect(image, ArmorDetector::ArmorColor::BLUE);
 
-            // cv::imshow("img", image);
-            // cv::waitKey(1);
             geometry_msgs::msg::Vector3 msg;
 
             if (armors.empty()) {
-                if (no_target_timestamp == 0) {
-                    no_target_timestamp = clock();
-                } else {
-                    auto timestamp = clock();
+                if (timer.running()) {
+                    if (timer.elapsed() >= 500) {
+                        timer.reset();
 
-                    auto duration =
-                        (double)(timestamp - no_target_timestamp) / CLOCKS_PER_SEC * 1000;
-
-                    if (duration > 500) {
                         msg.x = 0;
                         msg.y = 0;
                         msg.z = 0;
                         aiming_direction_publisher_->publish(msg);
                     }
+                } else {
+                    timer.start();
                 }
                 continue;
             }
@@ -129,8 +124,6 @@ private:
             msg.y = aiming_direction.y();
             msg.z = aiming_direction.z();
             aiming_direction_publisher_->publish(msg);
-
-            no_target_timestamp = clock();
         }
     }
 
