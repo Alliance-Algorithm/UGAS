@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.12)
 project(ugas VERSION 1.0 LANGUAGES C CXX)
 
 # Set compilation flags
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -14,7 +15,7 @@ endif()
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Set configure_file
-set (CONFIGURE_DIR_PATH ${PROJECT_SOURCE_DIR}/build/config)
+set (CONFIGURE_DIR_PATH ${PROJECT_SOURCE_DIR}/src)
 configure_file (
         "${PROJECT_SOURCE_DIR}/src/config.h.in"
         "${CONFIGURE_DIR_PATH}/config.h")
@@ -59,7 +60,7 @@ file(GLOB_RECURSE UGAS_SOURCE CONFIGURE_DEPENDS
 if (ENABLE_ROS)
     find_package (ament_cmake_auto REQUIRED)
     ament_auto_find_build_dependencies ()
-    ament_auto_add_executable(${EXECUTABLE_NAME} ${UGAS_SOURCE})
+    ament_auto_add_library(${EXECUTABLE_NAME} SHARED ${UGAS_SOURCE})
 else()
     add_executable(${EXECUTABLE_NAME} ${UGAS_SOURCE})
 endif()
@@ -71,6 +72,8 @@ install(
     DIRECTORY models/
     DESTINATION share/${PROJECT_NAME}/models
 )
+
+pluginlib_export_plugin_description_file(rmcs_executor plugins.xml)
 
 # Install package
 if (ENABLE_ROS)

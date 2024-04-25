@@ -10,6 +10,7 @@
 #include "Core/Tracker/TrackerStruct.h"
 #include "Util/Parameter/Parameters.h"
 #include "Util/TimeStamp/TimeStampCounter.h"
+#include "Util/ROS/TfBroadcast.h"
 
 class Trajectory_V1 {
 public:

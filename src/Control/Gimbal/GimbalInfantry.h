@@ -8,10 +8,12 @@ Header Functions:
 - 步兵云台控制
 */
 
+#include "Core/Tracker/TrackerStruct.h"
 
 class GimbalInfantry {
 public:
     GimbalInfantry() = default;
 
-    [[noreturn]] void Always();
+    [[noreturn]] void
+        Always(TargetInterface*& target_ref, std::chrono::steady_clock::time_point& timestamp_ref);
 };

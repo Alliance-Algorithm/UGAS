@@ -2,6 +2,8 @@
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
 #include <chrono>
+#include <eigen3/Eigen/Dense>
+#include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/vector3.hpp>
 #include <hikcamera/image_capturer.hpp>
 #include <opencv2/opencv.hpp>
@@ -32,87 +34,91 @@
 
 inline const rclcpp::QoS kCoreQoS = rclcpp::QoS(1).best_effort().durability_volatile();
 
-class TestSender {
-public:
-    TestSender()
-        : thread_(&TestSender::thread_main, this) {
-        if (auto node = ros_util::node_.lock()) {
-            aiming_direction_publisher_ =
-                node->create_publisher<geometry_msgs::msg::Vector3>("/gimbal/auto_aim", kCoreQoS);
+// class TestSender {
+// public:
+//     TestSender()
+//         : thread_(&TestSender::thread_main, this) {
+//         if (auto node = ros_util::node_.lock()) {
+//             aiming_direction_publisher_ =
+//                 node->create_publisher<geometry_msgs::msg::Vector3>("/gimbal/auto_aim",
+//                 kCoreQoS);
 
-            gimbal_pose_subscription_ = node->create_subscription<geometry_msgs::msg::Quaternion>(
-                "/gimbal/pose_imu", kCoreQoS, [](geometry_msgs::msg::Quaternion::UniquePtr msg) {
-                    transformer::SetRotation<GimbalGyro, GimbalLink>(
-                        Eigen::Quaterniond{msg->w, msg->x, msg->y, msg->z});
-                    // ros_util::TfBroadcast<GimbalGyro, CameraLink>();
-                    // ros_util::TfBroadcast<GimbalGyro, MuzzleLink>();
-                    // ros_util::TfBroadcast<GimbalGyro, TransmitterLink>();
-                });
-        } else
-            throw std::runtime_error{"ohhhh"};
-    }
+//             gimbal_pose_subscription_ =
+//             node->create_subscription<geometry_msgs::msg::Quaternion>(
+//                 "/gimbal/pose_imu", kCoreQoS, [](geometry_msgs::msg::Quaternion::UniquePtr msg) {
+//                     transformer::SetRotation<GimbalGyro, GimbalLink>(
+//                         Eigen::Quaterniond{msg->w, msg->x, msg->y, msg->z});
+//                     // ros_util::TfBroadcast<GimbalGyro, CameraLink>();
+//                     // ros_util::TfBroadcast<GimbalGyro, MuzzleLink>();
+//                     // ros_util::TfBroadcast<GimbalGyro, TransmitterLink>();
+//                 });
+//         } else
+//             throw std::runtime_error{"ohhhh"};
+//     }
 
-    ~TestSender() { thread_.join(); }
+//     ~TestSender() { thread_.join(); }
 
-    void update(
-        std::unique_ptr<TargetInterface> target, std::chrono::steady_clock::time_point timestamp) {
-        auto p          = target.release();
-        auto previous_p = target_.load(std::memory_order_acquire);
-        target_.store(p, std::memory_order_relaxed);
-        timestamp_.store(timestamp, std::memory_order_release);
-        // delete previous_p;
-    }
+//     void update(
+//         std::unique_ptr<TargetInterface> target, std::chrono::steady_clock::time_point timestamp)
+//         { auto p          = target.release(); auto previous_p =
+//         target_.load(std::memory_order_acquire); target_.store(p, std::memory_order_relaxed);
+//         timestamp_.store(timestamp, std::memory_order_release);
+//         // delete previous_p;
+//     }
 
-private:
-    void thread_main() {
-        using namespace std::chrono_literals;
+// private:
+//     void thread_main() {
+//         using namespace std::chrono_literals;
 
-        auto trajectory = Trajectory_V1();
-        auto tick       = std::chrono::steady_clock::now();
+//         auto trajectory = Trajectory_V1();
+//         auto tick       = std::chrono::steady_clock::now();
 
-        while (rclcpp::ok()) {
-            if (auto target = target_.load(std::memory_order_acquire)) {
-                auto diff =
-                    std::chrono::steady_clock::now() - timestamp_.load(std::memory_order_acquire);
-                if (diff > 500ms)
-                    continue;
+//         while (rclcpp::ok()) {
+//             if (auto target = target_.load(std::memory_order_acquire)) {
+//                 auto diff =
+//                     std::chrono::steady_clock::now() -
+//                     timestamp_.load(std::memory_order_acquire);
+//                 if (diff > 500ms)
+//                     continue;
 
-                double fly_time = 0;
-                for (int i = 5; i-- > 0;) {
-                    auto pos = target->Predict(
-                        static_cast<std::chrono::duration<double>>(diff).count() + fly_time + 0.05);
-                    auto aiming_direction = *trajectory.GetShotVector(pos, 28.0, fly_time);
-                    if (i == 0) {
-                        auto gimbal_pose = transformer::GetTransform<GimbalGyro, GimbalLink>();
-                        auto delta_yaw =
-                            Eigen::AngleAxisd{0.000, gimbal_pose * Eigen::Vector3d::UnitZ()};
-                        auto delta_pitch =
-                            Eigen::AngleAxisd{0.005, gimbal_pose * Eigen::Vector3d::UnitY()};
-                        aiming_direction = (delta_pitch * (delta_yaw * (aiming_direction))).eval();
-                        auto msg         = std::make_unique<geometry_msgs::msg::Vector3>();
-                        msg->x           = aiming_direction.x();
-                        msg->y           = aiming_direction.y();
-                        msg->z           = aiming_direction.z();
-                        aiming_direction_publisher_->publish(std::move(msg));
-                    }
-                }
-            }
+//                 double fly_time = 0;
+//                 for (int i = 5; i-- > 0;) {
+//                     auto pos = target->Predict(
+//                         static_cast<std::chrono::duration<double>>(diff).count() + fly_time +
+//                         0.05);
+//                     auto aiming_direction = *trajectory.GetShotVector(pos, 28.0, fly_time);
+//                     if (i == 0) {
+//                         auto gimbal_pose = transformer::GetTransform<GimbalGyro, GimbalLink>();
+//                         auto delta_yaw =
+//                             Eigen::AngleAxisd{0.000, gimbal_pose * Eigen::Vector3d::UnitZ()};
+//                         auto delta_pitch =
+//                             Eigen::AngleAxisd{0.005, gimbal_pose * Eigen::Vector3d::UnitY()};
+//                         aiming_direction = (delta_pitch * (delta_yaw *
+//                         (aiming_direction))).eval(); auto msg         =
+//                         std::make_unique<geometry_msgs::msg::Vector3>(); msg->x           =
+//                         aiming_direction.x(); msg->y           = aiming_direction.y(); msg->z =
+//                         aiming_direction.z();
+//                         aiming_direction_publisher_->publish(std::move(msg));
+//                     }
+//                 }
+//             }
 
-            tick += 1ms;
-            std::this_thread::sleep_until(tick);
-        }
-    }
+//             tick += 1ms;
+//             std::this_thread::sleep_until(tick);
+//         }
+//     }
 
-    std::thread thread_;
+//     std::thread thread_;
 
-    std::atomic<TargetInterface*> target_ = nullptr;
-    std::atomic<std::chrono::steady_clock::time_point> timestamp_;
+//     std::atomic<TargetInterface*> target_ = nullptr;
+//     std::atomic<std::chrono::steady_clock::time_point> timestamp_;
 
-    rclcpp::Subscription<geometry_msgs::msg::Quaternion>::SharedPtr gimbal_pose_subscription_;
-    rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr aiming_direction_publisher_;
-};
+//     rclcpp::Subscription<geometry_msgs::msg::Quaternion>::SharedPtr gimbal_pose_subscription_;
+//     rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr aiming_direction_publisher_;
+// };
 
-[[noreturn]] void GimbalInfantry::Always() {
+[[noreturn]] void GimbalInfantry::Always(
+    TargetInterface*& target_ref, std::chrono::steady_clock::time_point& timestamp_ref) {
     hikcamera::ImageCapturer::CameraProfile camera_profile;
     {
         using namespace std::chrono_literals;
@@ -138,15 +144,15 @@ private:
     auto ekf_tracker      = ArmorEKFTracker();
     auto buff_tracker     = BuffTracker();
 
-    auto sender = TestSender();
+    // auto sender = TestSender();
 
     auto fps = FPSCounter_V2();
 
     auto recorder = PNGRecorder("images/", ENABLE_RECORDING ? 3.0 : 0.0);
 
-    bool autoscope_enabled = true, buff_enabled = true;
+    bool autoscope_enabled = true, buff_enabled = false;
 
-    while (true) {
+    while (rclcpp::ok()) {
         auto img       = image_capturer.read();
         auto timestamp = std::chrono::steady_clock::now();
 
@@ -165,7 +171,9 @@ private:
                 auto armors   = armor_identifier.Identify(img, ArmorColor::Blue);
                 auto armors3d = ArmorPnPSolver::SolveAll(armors);
                 if (auto target = ekf_tracker.Update(armors3d, timestamp)) {
-                    sender.update(std::move(target), timestamp);
+                    timestamp_ref = timestamp;
+                    target_ref    = target.release();
+                    // sender.update(std::move(target), timestamp);
                     // cboard.Send(std::move(target), timestamp);
                     break;
                 }
@@ -173,7 +181,9 @@ private:
                 if (auto buff = buff_identifier.Identify(img)) {
                     if (auto buff3d = BuffPnPSolver::Solve(*buff)) {
                         if (auto target = buff_tracker.Update(*buff3d, timestamp)) {
-                            sender.update(std::move(target), timestamp);
+                            timestamp_ref = timestamp;
+                            target_ref    = target.release();
+                            // sender.update(std::move(target), timestamp);
                             // cboard.Send(std::move(target), timestamp);
                             break;
                         }
