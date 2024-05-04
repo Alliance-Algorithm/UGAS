@@ -23,6 +23,8 @@ public:
               get_component_name(),
               rclcpp::NodeOptions{}.automatically_declare_parameters_from_overrides(true))
         , target_(nullptr) {
+        ros_util::init();
+
         register_input("/predefined/update_count", update_count_);
         register_input("/tf", tf_);
         register_output(

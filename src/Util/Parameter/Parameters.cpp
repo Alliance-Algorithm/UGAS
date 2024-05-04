@@ -70,7 +70,7 @@ namespace parameters {
 
 // enable specialized parameter
 
-#include "Util/Parameter/Specialize/BalancedInfantry.h"
-//#include "Util/Parameter/Specialize/McknumWheelInfantry.h"
-//#include "Util/Parameter/Specialize/TopFeedingOmniWheelInfantry.h"
-//#include "Util/Parameter/Specialize/Uav.h"
+// #include "Util/Parameter/Specialize/BalancedInfantry.h"
+#include "Util/Parameter/Specialize/McknumWheelInfantry.h"
+// #include "Util/Parameter/Specialize/TopFeedingOmniWheelInfantry.h"
+// #include "Util/Parameter/Specialize/Uav.h"

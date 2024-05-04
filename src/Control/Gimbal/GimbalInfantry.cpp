@@ -203,7 +203,7 @@ inline const rclcpp::QoS kCoreQoS = rclcpp::QoS(1).best_effort().durability_vola
         }
 
         if (fps.Count()) {
-            std::cout << "Fps: " << fps.GetFPS() << '\n';
+            RCLCPP_INFO(rclcpp::get_logger("ugas"), "Fps: %d", fps.GetFPS());
         }
     }
 }

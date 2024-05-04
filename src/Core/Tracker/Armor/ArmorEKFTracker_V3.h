@@ -227,7 +227,7 @@ public:
                     // std::cout << tracker.ekf.x_[7] << '\n';
                     for (size_t i = 0; i < TrackerUnit::armor_count; ++i) {
                         visualization_msgs::msg::Marker marker1;
-                        marker1.header.frame_id = "gimbal_gyro";
+                        marker1.header.frame_id = "odom_imu";
                         // marker1.ns              = "armor_plate_array";
                         marker1.id              = tracker.ros_marker_id + (int)i;
                         marker1.type            = visualization_msgs::msg::Marker::CUBE;
@@ -261,7 +261,7 @@ public:
             static int debug_index = 0;
             for (auto& armor : armors) {
                 visualization_msgs::msg::Marker marker;
-                marker.header.frame_id = "gimbal_gyro";
+                marker.header.frame_id = "odom_imu";
                 // marker.ns              = "armor_plate_array";
                 marker.id              = 1000000 + debug_index++;
                 marker.type            = visualization_msgs::msg::Marker::CUBE;
