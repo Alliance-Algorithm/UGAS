@@ -15,7 +15,9 @@ class ArmorPlate;
 class NullNumberIdentifier : public NumberIdentifierInterface {
 public:
     void init(void*) {}
-    short Identify(const cv::Mat& imgGray, const ArmorPlate& region) {
+    short Identify(const cv::Mat& imgGray, const ArmorPlate& region) override {
+        (void)imgGray;
+        (void)region;
         return static_cast<short>(5);
     }
 };

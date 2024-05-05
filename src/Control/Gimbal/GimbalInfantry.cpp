@@ -117,7 +117,7 @@ inline const rclcpp::QoS kCoreQoS = rclcpp::QoS(1).best_effort().durability_vola
 //     rclcpp::Publisher<geometry_msgs::msg::Vector3>::SharedPtr aiming_direction_publisher_;
 // };
 
-[[noreturn]] void GimbalInfantry::Always(
+void GimbalInfantry::Always(
     TargetInterface*& target_ref, std::chrono::steady_clock::time_point& timestamp_ref) {
     hikcamera::ImageCapturer::CameraProfile camera_profile;
     {
@@ -140,9 +140,9 @@ inline const rclcpp::QoS kCoreQoS = rclcpp::QoS(1).best_effort().durability_vola
     auto buff_identifier =
         BuffIdentifier_V1(package_share_directory + "/models/buff_nocolor_v6.onnx");
 
-    auto simple_predictor = SimplePredictor();
-    auto ekf_tracker      = ArmorEKFTracker();
-    auto buff_tracker     = BuffTracker();
+    // auto simple_predictor = SimplePredictor();
+    auto ekf_tracker  = ArmorEKFTracker();
+    auto buff_tracker = BuffTracker();
 
     // auto sender = TestSender();
 
@@ -150,7 +150,8 @@ inline const rclcpp::QoS kCoreQoS = rclcpp::QoS(1).best_effort().durability_vola
 
     auto recorder = PNGRecorder("images/", ENABLE_RECORDING ? 3.0 : 0.0);
 
-    bool autoscope_enabled = true, buff_enabled = false;
+    // bool autoscope_enabled = true;
+    bool buff_enabled = false;
 
     while (rclcpp::ok()) {
         auto img       = image_capturer.read();

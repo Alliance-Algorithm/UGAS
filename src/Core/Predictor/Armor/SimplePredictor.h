@@ -26,6 +26,7 @@ public:
         explicit Target(const ArmorPlate3d& armorPlate3d) : ArmorPlate3d(armorPlate3d) { }
 
         [[nodiscard]] auto Predict(float sec) const {
+            (void)sec;
             return position;
         }
     };

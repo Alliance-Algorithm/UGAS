@@ -67,6 +67,7 @@ private:
 
     // J_f - Jacobian of process function
     static Eigen::MatrixXd jacobian_f(const Eigen::VectorXd& x, double dt) {
+        (void)x;
         Eigen::MatrixXd f(9, 9);
         f << 1, dt, 0, 0, 0, 0, 0, 0, 0,
                 0, 1, 0, 0, 0, 0, 0, 0, 0,

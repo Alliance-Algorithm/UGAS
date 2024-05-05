@@ -30,7 +30,7 @@ public:
 
     ColorConfidence Identify(const uchar* color) const {
         // 部分代码来自 https://github.com/egonSchiele/OpenCV/blob/master/modules/imgproc/src/color.cpp
-        constexpr int bidx = 0, scn = 3;
+        constexpr int bidx = 0; 
         constexpr int hsv_shift = 12;
 
         static constexpr int div_table[] = {

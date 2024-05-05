@@ -30,7 +30,7 @@ private:
 public:
     MatForm() = delete;
 
-    MatForm(const char* title) {
+    explicit MatForm(const char* title) {
         _title = title;
         _instantiatedList = nullptr;
     }
@@ -70,6 +70,7 @@ public:
     }
 
     static void OnMouse(int event, int x, int y, int flags, void* param) {
+        (void)flags;
         //std::cout << x << ' ' << y << std::endl;
         if (event == cv::EVENT_LBUTTONDOWN || event == cv::EVENT_LBUTTONUP || event == cv::EVENT_LBUTTONDBLCLK) {
             MatForm* _this = static_cast<MatForm*>(param);

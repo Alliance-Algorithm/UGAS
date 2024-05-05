@@ -14,6 +14,5 @@ class GimbalInfantry {
 public:
     GimbalInfantry() = default;
 
-    [[noreturn]] void
-        Always(TargetInterface*& target_ref, std::chrono::steady_clock::time_point& timestamp_ref);
+    void Always(TargetInterface*& target_ref, std::chrono::steady_clock::time_point& timestamp_ref);
 };

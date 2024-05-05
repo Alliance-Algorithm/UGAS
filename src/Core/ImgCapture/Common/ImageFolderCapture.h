@@ -22,7 +22,7 @@ public:
     explicit ImageFolderCapture(const char* path) {
         using std::filesystem::directory_iterator;
 
-        int count = 0;
+        // int count = 0;
         for (auto& v : directory_iterator(path))
         {
             if (std::filesystem::is_regular_file(v.path()) && v.path().extension().string() == ".png") {

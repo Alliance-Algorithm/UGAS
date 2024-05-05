@@ -25,7 +25,7 @@ private:
     int _lastFrameRows = 0, _lastFrameCols = 0;
 
 public:
-    constexpr operator bool () const {
+    constexpr explicit operator bool () const {
         return true;
     }
 
@@ -42,7 +42,7 @@ public:
     ControlCanvas() = delete;
 
     template<typename... Types>
-    ControlCanvas(Types&&... args) : MatForm(std::forward<Types>(args)...) {
+    explicit ControlCanvas(Types&&... args) : MatForm(std::forward<Types>(args)...) {
         _btnForward10Frame.Text = "<<";
         _btnForward10Frame.OnMouseDown = [this](auto) {
             DebugFrameHandler.FrameAdjust -= 10;
@@ -120,9 +120,9 @@ public:
     } DebugFrameHandler;
 
     template<typename... Types>
-    ControlCanvas(Types&&... args) { }
+    explicit ControlCanvas(Types&&... ) { }
 
-    constexpr operator bool () const { return false; }
+    constexpr explicit operator bool () const { return false; }
 
     void LoadMat(const cv::Mat& img);
     constexpr cv::Mat& GetMat();
@@ -135,7 +135,7 @@ public:
     template<typename... Types>
     SimpleCanvas(Types&&... args) : MatForm(std::forward<Types>(args)...) { }
 
-    constexpr operator bool () const { return true; }
+    constexpr explicit operator bool () const { return true; }
 
     void LoadMat(const cv::Mat& img) {
         MatForm::LoadMat(img.clone());
@@ -152,7 +152,7 @@ public:
     template<typename... Types>
     SimpleCanvas(Types&&... args) { }
 
-    constexpr operator bool () const { return false; }
+    constexpr explicit operator bool () const { return false; }
 
     void LoadMat(const cv::Mat& img);
     constexpr cv::Mat& GetMat();
@@ -164,9 +164,9 @@ class ReferenceCanvas {
 public:
 
     ReferenceCanvas() = delete;
-    ReferenceCanvas(Target& canvas) { }
+    ReferenceCanvas(Target& ) { }
 
-    constexpr operator bool() const { return false; }
+    constexpr explicit operator bool() const { return false; }
 
     constexpr cv::Mat& GetMat();
 };
@@ -180,7 +180,7 @@ public:
     ReferenceCanvas() = delete;
     ReferenceCanvas(ControlCanvas<true>& canvas) : _target(canvas.GetMat()) { }
 
-    constexpr operator bool() const { return true; }
+    constexpr explicit operator bool() const { return true; }
 
     constexpr cv::Mat& GetMat() {
         return _target;
@@ -196,7 +196,7 @@ public:
     ReferenceCanvas() = delete;
     ReferenceCanvas(SimpleCanvas<true>& canvas) : _target(canvas.GetMat()) { }
 
-    constexpr operator bool() const { return true; }
+    constexpr explicit operator bool() const { return true; }
 
     constexpr cv::Mat& GetMat() {
         return _target;
@@ -210,7 +210,7 @@ public:
     template<typename... Types>
     ReadonlyCanvas(Types... args) : MatForm(std::forward<Types>(args)...) { }
 
-    constexpr operator bool() const { return true; }
+    constexpr explicit operator bool() const { return true; }
 
     void LoadMat(const cv::Mat& img) {
         //Note: 只在类内部去除const约束，不要在类内对img做任何修改
@@ -226,9 +226,9 @@ template<>
 class ReadonlyCanvas<false> {
 public:
     template<typename... Types>
-    ReadonlyCanvas(Types... args) { }
+    explicit ReadonlyCanvas(Types... ) { }
 
-    constexpr operator bool() const { return false; }
+    constexpr explicit operator bool() const { return false; }
 
     void LoadMat(const cv::Mat& img);
     constexpr const cv::Mat& GetMat();

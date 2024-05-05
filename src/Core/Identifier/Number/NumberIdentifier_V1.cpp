@@ -64,6 +64,7 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
     case 7:
         armor.id = ArmorID::InfantryIII;
         armor.is_large_armor = true;
+        break;
     case 8:
         armor.id = ArmorID::InfantryIV;
         armor.is_large_armor = true;

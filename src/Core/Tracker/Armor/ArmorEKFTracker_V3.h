@@ -292,7 +292,7 @@ public:
 #endif
         TrackerUnit* selected_tracker = nullptr;
         int selected_level            = 0;
-        double minimum_angle;
+        double minimum_angle=0;
         for (auto& [armor_id, tracker_array] : tracker_map_) {
             for (auto& tracker : tracker_array) {
                 int level = 0;
