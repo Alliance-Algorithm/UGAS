@@ -16,9 +16,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # Set configure_file
 set (CONFIGURE_DIR_PATH ${PROJECT_SOURCE_DIR}/src)
-configure_file (
-        "${PROJECT_SOURCE_DIR}/src/config.h.in"
-        "${CONFIGURE_DIR_PATH}/config.h")
+# configure_file (
+#         "${PROJECT_SOURCE_DIR}/src/config.h.in"
+#         "${CONFIGURE_DIR_PATH}/config.h")
 
 # Initialize custom options
 option (ENABLE_DEBUG_CANVAS "Enable debug canvas to draw debug image" ON)
