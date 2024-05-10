@@ -226,20 +226,21 @@ public:
             ObservationType deduced_observation;
             applyObservationModel(particle, deduced_observation);
 
-            /**
-             * Calculate error of each particle
-             */
-            double error = 0.0; // TODO
+            // /**
+            //  * Calculate error of each particle
+            //  */
+            // double error = 0.0; 
 
             /**
              * Calculate weight of each particle using Gaussian distribution
              */
-
+            
+            // TODO: Gaussian distribution with dim=4
 
             /**
              * Normalize the weights to [0~1]
              */
-            
+
         }
     }
     // bool resample() = 0;
@@ -267,14 +268,8 @@ public:
         deduced_observation.yaw     = particle.particle_state.yaw;
     }
 
-    /**
-     * Distance, i.e., observation_l - observation_r
-     * TODO: how to balance xyz and yaw ?
-     */
-    double distance(const ObservationType& observation_l, const ObservationType& observation_r) {
+    double gaussianProbability() {
 
-
-        return 0.0;
     }
 
 private:
@@ -292,7 +287,13 @@ private:
 
     bool is_initialized_;
 
+
 };
+
+/**
+ * TODO
+ * transform data to Eigen or from Eigen
+ */
 
 
 #endif
