@@ -4,7 +4,10 @@
 #include <eigen3/Eigen/Dense>
 #include <vector>
 #include <random>
+#include <cmath>
+#include <stdexcept>
 
+using FLOAT_TYPE = double;
 
 /**
  * Particle Filter interface
@@ -33,13 +36,13 @@ public:
 
     virtual bool init() = 0; 
     //
-    virtual bool predict(double delta_t) = 0;
+    virtual bool predict(FLOAT_TYPE delta_t) = 0;
     //
     virtual bool update(TYPE_OBSERVATION observation) = 0;
 
     virtual bool updateWeights() = 0;
     virtual bool resample() = 0;
-    virtual void getEstimation(TYPE_STATE& state) = 0;
+    virtual void getEstimation(TYPE_STATE& state) const = 0;
 
 private:
 
@@ -54,11 +57,11 @@ private:
 
 template<typename TYPE_STATE>
 struct Particle {
-    Particle(TYPE_STATE state, size_t i=0, double weight=1.0) : particle_state{state}, id{i}, particle_weight{weight} {}
-    // Particle(TYPE_STATE&& state, size_t i=0, double weight=1.0) : particle_state{state}, id{i}, particle_weight{weight} {}
+    Particle(TYPE_STATE state, size_t i=0, FLOAT_TYPE weight=1.0) : particle_state{state}, id{i}, particle_weight{weight} {}
+    // Particle(TYPE_STATE&& state, size_t i=0, FLOAT_TYPE weight=1.0) : particle_state{state}, id{i}, particle_weight{weight} {}
 
     TYPE_STATE particle_state;
-    double particle_weight;
+    FLOAT_TYPE particle_weight;
     size_t id;
 };
 
@@ -67,15 +70,32 @@ struct Particle {
  * states to be estimated
  */
 struct StateType {
-    double pos_c_x; // x positon of car
-    double pos_c_y;
-    double pos_a_z; // z position of armor
-    double vel_c_x;
-    double vel_c_y;
-    double vel_c_z;
-    double yaw;
-    double vel_yaw;
-    double radius_c;
+    StateType() {}
+    StateType(const Eigen::Matrix<FLOAT_TYPE, 9, 1>& state_eigen) :
+        pos_c_x{state_eigen(0)}, 
+        pos_c_y{state_eigen(1)},
+        pos_a_z{state_eigen(2)}, 
+        vel_c_x{state_eigen(3)},
+        vel_c_y{state_eigen(4)},
+        vel_c_z{state_eigen(5)},
+        yaw{state_eigen(6)},
+        vel_yaw{state_eigen(7)},
+        radius_c{state_eigen(8)}
+    { }
+
+    Eigen::Matrix<FLOAT_TYPE, 9, 1>& toEigen() {
+        return {pos_c_x, pos_c_y, pos_a_z, vel_c_x, vel_c_y, vel_c_z, yaw, vel_yaw, radius_c};
+    }
+
+    FLOAT_TYPE pos_c_x; // x positon of car
+    FLOAT_TYPE pos_c_y;
+    FLOAT_TYPE pos_a_z; // z position of armor
+    FLOAT_TYPE vel_c_x;
+    FLOAT_TYPE vel_c_y;
+    FLOAT_TYPE vel_c_z;
+    FLOAT_TYPE yaw;
+    FLOAT_TYPE vel_yaw;
+    FLOAT_TYPE radius_c;
 };
 
 /**
@@ -83,10 +103,22 @@ struct StateType {
  * state of armor is observed
  */
 struct ObservationType {
-    double pos_a_x;
-    double pos_a_y;
-    double pos_a_z;
-    double yaw;
+    ObservationType() {}
+    ObservationType(const Eigen::matrix<FLOAT_TYPE, 4, 1>& observation_eigen) :
+        pos_a_x{observation_eigen(0)},
+        pos_a_y{observation_eigen(1)},
+        pos_a_z{observation_eigen(2)},
+        yaw{observation(3)}
+    { }
+
+    Eigen::Matrix<FLOAT_TYPE, 4, 1>& toEigen() {
+        return {pos_a_x, pos_a_y, pos_a_z, yaw};
+    }
+
+    FLOAT_TYPE pos_a_x;
+    FLOAT_TYPE pos_a_y;
+    FLOAT_TYPE pos_a_z;
+    FLOAT_TYPE yaw;
 };
 
 using StateNoiseType = StateType;
@@ -106,20 +138,20 @@ public:
         // hyper parameters for PF
         size_t num_particles = 30;
         // noise parameters
-        double pos_c_x_std = 0.1;
-        double pos_c_y_std = 0.1; // standard deviation of y position of center
-        double pos_a_z_std = 0.1; // standard deviation of z position of armor
-        double vel_c_x_std = 0.1; // standard deviation of velocity along x-axis of center
-        double vel_c_y_std = 0.1; // standard deviation of velocity along y-axis of center
-        double vel_c_z_std = 0.1; // standard deviation of velocity along z-axis of center
-        double yaw_std = 0.1; // standard deviation of yaw angle
-        double vel_yaw_std = 0.1; // standard deviation of angular velocity (yaw rate)
-        double radius_c_std = 0.1; // standard deviation of radius of center
+        FLOAT_TYPE pos_c_x_std = 0.1;
+        FLOAT_TYPE pos_c_y_std = 0.1; // standard deviation of y position of center
+        FLOAT_TYPE pos_a_z_std = 0.1; // standard deviation of z position of armor
+        FLOAT_TYPE vel_c_x_std = 0.1; // standard deviation of velocity along x-axis of center
+        FLOAT_TYPE vel_c_y_std = 0.1; // standard deviation of velocity along y-axis of center
+        FLOAT_TYPE vel_c_z_std = 0.1; // standard deviation of velocity along z-axis of center
+        FLOAT_TYPE yaw_std = 0.1; // standard deviation of yaw angle
+        FLOAT_TYPE vel_yaw_std = 0.1; // standard deviation of angular velocity (yaw rate)
+        FLOAT_TYPE radius_c_std = 0.1; // standard deviation of radius of center
 
-        double observed_pos_a_x_std = 0.1; // standard deviation of x position of armor
-        double observed_pos_a_y_std = 0.1; // standard deviation of y position of armor
-        double observed_pos_a_z_std = 0.1; // standard deviation of z position of armor
-        double observed_yaw_armor_std = 0.1; // standard deviation of yaw angle of armor
+        FLOAT_TYPE observed_pos_a_x_std = 0.1; // standard deviation of x position of armor
+        FLOAT_TYPE observed_pos_a_y_std = 0.1; // standard deviation of y position of armor
+        FLOAT_TYPE observed_pos_a_z_std = 0.1; // standard deviation of z position of armor
+        FLOAT_TYPE observed_yaw_armor_std = 0.1; // standard deviation of yaw angle of armor
     };
 
     ArmorParticleFilter(Params params=Params()) : params_{params}, 
@@ -155,17 +187,25 @@ public:
         particles_.reserve(params_.num_particles);
     }
 
+    /**
+     * @brief 
+     * 
+     * @param init_state 
+     * @param init_state_std 
+     * @return true 
+     * @return false 
+     */
     bool init(const StateType& init_state, const StateNoiseType& init_state_std) {
 
-        std::normal_distribution<double> dist_pos_c_x{init_state.pos_c_x, init_state_std.pos_c_x};
-        std::normal_distribution<double> dist_pos_c_y{init_state.pos_c_y, init_state_std.pos_c_y};
-        std::normal_distribution<double> dist_pos_a_z{init_state.pos_a_z, init_state_std.pos_a_z};
-        std::normal_distribution<double> dist_vel_c_x{init_state.vel_c_x, init_state_std.vel_c_x};
-        std::normal_distribution<double> dist_vel_c_y{init_state.vel_c_y, init_state_std.vel_c_y};
-        std::normal_distribution<double> dist_vel_c_z{init_state.vel_c_z, init_state_std.vel_c_z};
-        std::normal_distribution<double> dist_yaw{init_state.yaw, init_state_std.yaw};
-        std::normal_distribution<double> dist_vel_yaw{init_state.vel_yaw, init_state_std.vel_yaw};
-        std::normal_distribution<double> dist_radius_c{init_state.radius_c, init_state_std.radius_c};
+        std::normal_distribution<FLOAT_TYPE> dist_pos_c_x{init_state.pos_c_x, init_state_std.pos_c_x};
+        std::normal_distribution<FLOAT_TYPE> dist_pos_c_y{init_state.pos_c_y, init_state_std.pos_c_y};
+        std::normal_distribution<FLOAT_TYPE> dist_pos_a_z{init_state.pos_a_z, init_state_std.pos_a_z};
+        std::normal_distribution<FLOAT_TYPE> dist_vel_c_x{init_state.vel_c_x, init_state_std.vel_c_x};
+        std::normal_distribution<FLOAT_TYPE> dist_vel_c_y{init_state.vel_c_y, init_state_std.vel_c_y};
+        std::normal_distribution<FLOAT_TYPE> dist_vel_c_z{init_state.vel_c_z, init_state_std.vel_c_z};
+        std::normal_distribution<FLOAT_TYPE> dist_yaw{init_state.yaw, init_state_std.yaw};
+        std::normal_distribution<FLOAT_TYPE> dist_vel_yaw{init_state.vel_yaw, init_state_std.vel_yaw};
+        std::normal_distribution<FLOAT_TYPE> dist_radius_c{init_state.radius_c, init_state_std.radius_c};
         
         for (int id_particle = 0; id_particle < params_.num_particles; id_particle++) {
             StateType state{dist_pos_c_x(gen_),
@@ -183,22 +223,29 @@ public:
         return is_initialized_;
     }
 
-    bool predict(double delta_t) {
+    /**
+     * @brief 
+     * 
+     * @param delta_t 
+     * @return true 
+     * @return false 
+     */
+    bool predict(FLOAT_TYPE delta_t) {
         // update the state of each particle
         for (auto &particle: particles_) {
             // apply motion model
             applyMotionModel(particle, delta_t);
            
             // add random noise
-            std::normal_distribution<double> dist_pos_c_x{particle.particle_state.pos_c_x, motion_noise_std_.pos_c_x};
-            std::normal_distribution<double> dist_pos_c_y{particle.particle_state.pos_c_y, motion_noise_std_.pos_c_y};
-            std::normal_distribution<double> dist_pos_a_z{particle.particle_state.pos_a_z, motion_noise_std_.pos_a_z};
-            std::normal_distribution<double> dist_vel_c_x{particle.particle_state.vel_c_x, motion_noise_std_.vel_c_x};
-            std::normal_distribution<double> dist_vel_c_y{particle.particle_state.vel_c_y, motion_noise_std_.vel_c_y};
-            std::normal_distribution<double> dist_vel_c_z{particle.particle_state.vel_c_z, motion_noise_std_.vel_c_z};
-            std::normal_distribution<double> dist_yaw{particle.particle_state.yaw, motion_noise_std_.yaw};
-            std::normal_distribution<double> dist_vel_yaw{particle.particle_state.vel_yaw, motion_noise_std_.vel_yaw};
-            std::normal_distribution<double> dist_radius_c{particle.particle_state.radius_c, motion_noise_std_.radius_c};
+            std::normal_distribution<FLOAT_TYPE> dist_pos_c_x{particle.particle_state.pos_c_x, motion_noise_std_.pos_c_x};
+            std::normal_distribution<FLOAT_TYPE> dist_pos_c_y{particle.particle_state.pos_c_y, motion_noise_std_.pos_c_y};
+            std::normal_distribution<FLOAT_TYPE> dist_pos_a_z{particle.particle_state.pos_a_z, motion_noise_std_.pos_a_z};
+            std::normal_distribution<FLOAT_TYPE> dist_vel_c_x{particle.particle_state.vel_c_x, motion_noise_std_.vel_c_x};
+            std::normal_distribution<FLOAT_TYPE> dist_vel_c_y{particle.particle_state.vel_c_y, motion_noise_std_.vel_c_y};
+            std::normal_distribution<FLOAT_TYPE> dist_vel_c_z{particle.particle_state.vel_c_z, motion_noise_std_.vel_c_z};
+            std::normal_distribution<FLOAT_TYPE> dist_yaw{particle.particle_state.yaw, motion_noise_std_.yaw};
+            std::normal_distribution<FLOAT_TYPE> dist_vel_yaw{particle.particle_state.vel_yaw, motion_noise_std_.vel_yaw};
+            std::normal_distribution<FLOAT_TYPE> dist_radius_c{particle.particle_state.radius_c, motion_noise_std_.radius_c};
 
             particle.particle_state.pos_c_x = dist_pos_c_x(gen_);
             particle.particle_state.pos_c_y = dist_pos_c_y(gen_);
@@ -212,11 +259,25 @@ public:
         }
         return true;
     }
-    // //
+    
+    /**
+     * @brief 
+     * 
+     * @param observation 
+     * @return true 
+     * @return false 
+     */
     bool update(ObservationType observation) {
 
     }
 
+    /**
+     * @brief 
+     * 
+     * @param observations 
+     * @return true 
+     * @return false 
+     */
     bool updateWeights(const std::vector<ObservationType>& observations) {
         
         for (auto &particle: particles_) {
@@ -229,7 +290,7 @@ public:
             // /**
             //  * Calculate error of each particle
             //  */
-            // double error = 0.0; 
+            // FLOAT_TYPE error = 0.0; 
 
             /**
              * Calculate weight of each particle using Gaussian distribution
@@ -243,13 +304,23 @@ public:
 
         }
     }
-    // bool resample() = 0;
-    // void getEstimation(TYPE_STATE& state) = 0;
+
+    bool resample() {
+
+    }
+
+
+    void getEstimation(StateType& state) {
+
+    }
 
     /**
+     * @brief 
      * 
+     * @param particle 
+     * @param delta_t 
      */
-    void applyMotionModel(Particle<StateType>& particle, double delta_t) {
+    void applyMotionModel(Particle<StateType>& particle, FLOAT_TYPE delta_t) {
         particle.particle_state.pos_c_x += particle.particle_state.vel_c_x * delta_t;
         particle.particle_state.pos_c_y += particle.particle_state.vel_c_y * delta_t;
         particle.particle_state.pos_a_z += particle.particle_state.vel_c_z * delta_t;
@@ -257,7 +328,10 @@ public:
     }
 
     /**
+     * @brief 
      * 
+     * @param particle 
+     * @param deduced_observation 
      */
     void applyObservationModel(const Particle<StateType>& particle, ObservationType& deduced_observation) {
         deduced_observation.pos_a_x = particle.particle_state.pos_c_x - 
@@ -268,8 +342,34 @@ public:
         deduced_observation.yaw     = particle.particle_state.yaw;
     }
 
-    double gaussianProbability() {
+    /**
+     * @brief 
+     * 
+     * @param x 
+     * @param mu 
+     * @param sigma 
+     * @return FLOAT_TYPE 
+     */
+    FLOAT_TYPE gaussianProbability(const Eigen::Matrix<FLOAT_TYPE, Dynamic, 1>& x, const Eigen::Matrix<FLOAT_TYPE, Dynamic, 1>& mu, const Eigen::MatrixXd& sigma) {
+        if (x.size() != mu.size() || x.size() != sigma.rows() || sigma.rows() != sigma.cols()) {
+            throw std::invalid_argument("Input dimensions do not match");
+        }
+        
+        int n = x.size(); // Dimensionality
+        FLOAT_TYPE det_sigma = sigma.determinant();
+        if (det_sigma <= 0) {
+            throw std::runtime_error("Sigma matrix is not positive definite");
+        }
 
+        FLOAT_TYPE exponent = 0.0;
+        FLOAT_TYPE normalization_factor = pow(2 * M_PI, -n / 2.0);
+
+        // Calculate exponent term in the Gaussian probability density function
+        Eigen::VectorXd diff = x - mu;
+        exponent = -0.5 * diff.transpose() * sigma.inverse() * diff;
+
+        // Calculate the probability density
+        return normalization_factor * exp(exponent) / sqrt(det_sigma);
     }
 
 private:
@@ -286,8 +386,6 @@ private:
 
 
     bool is_initialized_;
-
-
 };
 
 /**
