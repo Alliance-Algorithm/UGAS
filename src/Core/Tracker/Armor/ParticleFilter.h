@@ -15,20 +15,9 @@ using FLOAT_TYPE = double;
 template<typename TYPE_STATE, typename TYPE_OBSERVATION>
 class ParticleFilter {
 protected:
-    // Params params_;
     // random number generator
     std::default_random_engine gen_;
 public:
-    // type definition
-
-    // params
-    // struct Params {
-    //     Params() {}
-
-    //     // hyper parameters for PF
-    //     size_t num_particles = 100;
-    //     // noise parameters
-    // };
 
     ParticleFilter() { }
 
@@ -42,17 +31,9 @@ public:
 
     virtual bool updateWeights() = 0;
     virtual bool resample() = 0;
-    virtual void getEstimation(TYPE_STATE& state) const = 0;
+    virtual void calculateEstimation() = 0;
+    virtual TYPE_STATE getEstimation() const = 0;
 
-private:
-
-    
-
-    // states, to be estimated
-
-    // observations
-
-    
 };
 
 template<typename TYPE_STATE>
@@ -82,6 +63,18 @@ struct StateType {
         vel_yaw{state_eigen(7)},
         radius_c{state_eigen(8)}
     { }
+    StateType& operator=(const Eigen::Matrix<FLOAT_TYPE, 9, 1>& state_eigen) {
+        pos_c_x = state_eigen(0);
+        pos_c_y = state_eigen(1);
+        pos_a_z = state_eigen(2);
+        vel_c_x = state_eigen(3);
+        vel_c_y = state_eigen(4);
+        vel_c_z = state_eigen(5);
+        yaw = state_eigen(6);
+        vel_yaw = state_eigen(7);
+        radius_c = state_eigen(8);
+        return *this;
+    }    
 
     Eigen::Matrix<FLOAT_TYPE, 9, 1>& toEigen() {
         return {pos_c_x, pos_c_y, pos_a_z, vel_c_x, vel_c_y, vel_c_z, yaw, vel_yaw, radius_c};
@@ -121,6 +114,15 @@ struct ObservationType {
     FLOAT_TYPE yaw;
 };
 
+enum class ResamplingMethod {
+    Systematic,
+    // TODO:
+    // Multinomial,
+    // Stratified,
+    // Residual,
+    // StochasticUniversalSampling
+};
+
 using StateNoiseType = StateType;
 using ObservationNoiseType = ObservationType;
 
@@ -152,6 +154,7 @@ public:
         FLOAT_TYPE observed_pos_a_y_std = 0.1; // standard deviation of y position of armor
         FLOAT_TYPE observed_pos_a_z_std = 0.1; // standard deviation of z position of armor
         FLOAT_TYPE observed_yaw_armor_std = 0.1; // standard deviation of yaw angle of armor
+        ResamplingMethod resamplingMethod = ResamplingMethod::Systematic;
     };
 
     ArmorParticleFilter(Params params=Params()) : params_{params}, 
@@ -267,8 +270,10 @@ public:
      * @return true 
      * @return false 
      */
-    bool update(ObservationType observation) {
-
+    bool update(const ObservationType& observation) {
+        updateWeights(observation);
+        resample();
+        calculateEstimation();
     }
 
     /**
@@ -278,8 +283,11 @@ public:
      * @return true 
      * @return false 
      */
-    bool updateWeights(const std::vector<ObservationType>& observations) {
+    bool updateWeights(const ObservationType& observation) {
         
+        FLOAT_TYPE weight_sum = 0.0;
+        observation_ = observation;
+
         for (auto &particle: particles_) {
             /**
              * Apply observation model to each particle
@@ -287,31 +295,109 @@ public:
             ObservationType deduced_observation;
             applyObservationModel(particle, deduced_observation);
 
-            // /**
-            //  * Calculate error of each particle
-            //  */
-            // FLOAT_TYPE error = 0.0; 
-
             /**
              * Calculate weight of each particle using Gaussian distribution
              */
-            
+            particle.weight *= gaussianProbability(deduced_observation, observation, params_.observation_noise_std); 
             // TODO: Gaussian distribution with dim=4
-
-            /**
-             * Normalize the weights to [0~1]
-             */
-
+            weight_sum += particle.weight;
         }
+        /**
+         * Normalize the weights to [0~1]
+         */
+        for (int id_particle = 0; id_particle < particles_.size(); ++id_particle) {
+            particles_[id_particle].weight /= weight_sum;
+        }
+        return true;
     }
 
+    /**
+     * @brief Resample
+     * update particles_
+     * 
+     * @return true 
+     * @return false 
+     */
     bool resample() {
-
+        switch(params_.resamplingMethod) {
+            case ResamplingMethod::Systematic:
+                systematicResampling(params_.num_particles);
+            break;
+            // TODO
+            default:
+                systematicResampling(params_.num_particles);
+        }
+        return true;
     }
 
 
-    void getEstimation(StateType& state) {
+    /**
+     * @brief Systematic resampling method.
+     *
+     * @param particles_ori Particles before resampling.
+     * @param weights_ori_norm Normalized weights before resampling.
+     * @param particles_resampled Particles after resampling.
+     * @param weights_resampled Weights after resampling.
+     * @param N_r Number of particles to resample.
+     */
+    void systematicResampling(uint32_t N_r)
+    {
+        uint32_t N = params_.num_particles;
+        std::vector<Particle<StateType>> new_particles = std::vector<Particle<StateType>>(N);
 
+        Eigen::VectorXd weights_cum_sum = weightsCumSum();
+
+        uint32_t id_particle = 0;
+
+        // produces random values u0, uniformly distributed on the interval [0.0, 1.0 / N_r)
+        // std::random_device rd;
+        // std::mt19937 gen(rd());
+        std::uniform_real_distribution<> uniform_dist(0.0, 1 / N_r);        // random real num between [0.0, 1/N_r)
+        double u0 = uniform_dist(gen_);
+
+        for (size_t id_new_particle = N - N_r; id_new_particle < N; ++id_new_particle)
+        {
+            // calculate u = u0 + (id_new_particle - (N - N_r)) / N_r
+            double u = u0 + (id_new_particle - (N - N_r)) / N_r;
+
+            // select the resampled particle
+            while (weights_cum_sum(id_particle) < u)
+                ++id_particle;
+
+            // set new particles
+            new_particles[id_new_particle] = particles_[id_particle];
+            new_particles[id_new_particle].id = id_new_particle;
+            new_particles[id_new_particle].particle_weight = 1 / N;
+            // particles_resampled(id_new_particle) = particles_ori(id_particle);
+            // weights_resampled(id_new_particle) = 1 / N;
+        }
+        particles_ = new_particles;
+    }
+
+
+    void calculateEstimation() {
+        // TODO: maybe easier using Eigen matrix calculation
+        // transform to eigen type
+        // Eigen matrix: particles states
+        // Eigen col vector: particles weights
+        Eigen::Matrix<FLOAT_TYPE, 9, params_.num_particles> particles_state_matrix;
+        Eigen::Matrix<FLOAT_TYPE, params_.num_particles, 1> particles_weights_vector;
+
+        for (size_t id_particle = 0; id_particle < params_.num_particles; ++i) {
+            particles_state_matrix.col(id_particle) = particles_[id_particle].particle_state.toEigen();
+            particles_weights_vector(id_particle) = particles_[id_particle].particle_state;
+        }
+
+        state_ = particles_state_matrix * particles_weights_vector;
+        // bad method
+        // for (auto particle : particles_) {
+        //     state.pos_c_x += particle.particle_weight * particle.particle_state.pos_c_x;
+        //     state.pos_c_y += particle.particle_weight * particle.particle_state.pos_c_y;
+        // }
+    }
+
+    StateType getEstimation() const {
+        return state_;
     }
 
     /**
@@ -372,15 +458,34 @@ public:
         return normalization_factor * exp(exponent) / sqrt(det_sigma);
     }
 
+    /**
+     * @brief Calculate cumulative sum of normalized weights of particles.
+     * 
+     * @return Eigen::VectorXd Cumulative sum of normalized weights of particles.
+     */
+    inline Eigen::VectorXd weightsCumSum()
+    {
+        uint32_t N = params_.num_particles;
+        Eigen::VectorXd weights_cum_sum(N);
+
+        weights_cum_sum(0) = particles_[0].particle_weight;
+        for (size_t i = 1; i < N; ++i)
+            weights_cum_sum(i) = weights_cum_sum(i - 1) + particles_[i].particle_weight;
+        weights_cum_sum(N - 1) = 1.0;
+
+        return weights_cum_sum;
+    }
+
+
 private:
 
     Params params_;
-    // StateType state_;
+    StateType state_;
     StateNoiseType init_state_noise_std_;   // noise std of initial state
     StateNoiseType motion_noise_std_;       // noise std of motion
     ObservationNoiseType observation_noise_std_;    // noise std of observation
 
-    // ObservationType observation_;
+    ObservationType observation_;
 
     std::vector<Particle<StateType>> particles_; 
 
