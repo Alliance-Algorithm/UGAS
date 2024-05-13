@@ -64,6 +64,9 @@ public:
             auto pos = target->Predict(
                 static_cast<std::chrono::duration<double>>(diff).count() + fly_time + 0.05);
             auto aiming_direction = *trajectory_.GetShotVector(pos, 27.0, fly_time);
+            auto delta_yaw   = Eigen::AngleAxisd{0.005, gimbal_pose * Eigen::Vector3d::UnitZ()};
+            auto delta_pitch = Eigen::AngleAxisd{0.050, gimbal_pose * Eigen::Vector3d::UnitY()};
+            aiming_direction = delta_pitch * (delta_yaw * (aiming_direction));
             if (i == 0) {
                 *control_direction_ = aiming_direction;
             }
