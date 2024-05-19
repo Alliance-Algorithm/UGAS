@@ -2,15 +2,20 @@
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
 #include <chrono>
+#include <cmath>
+#include <cstdint>
 #include <eigen3/Eigen/Dense>
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/vector3.hpp>
 #include <hikcamera/image_capturer.hpp>
+#include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <rmcs_core/msgs.hpp>
 #include <thread>
 
 #include "Core/ImgCapture/Common/CVVideoCapture.h"
+#include "Util/Parameter/Parameters.h"
 #include "config.h"
 // #include "Core/ImgCapture/Common/HikCameraCapture.h"
 #include "Core/Identifier/Armor/ArmorIdentifier_V3.h"
@@ -118,13 +123,26 @@ inline const rclcpp::QoS kCoreQoS = rclcpp::QoS(1).best_effort().durability_vola
 // };
 
 void GimbalInfantry::Always(
-    TargetInterface*& target_ref, std::chrono::steady_clock::time_point& timestamp_ref) {
+    TargetInterface*& target_ref, std::chrono::steady_clock::time_point& timestamp_ref,
+    rmcs_core::msgs::RoboticColor color, uint8_t robit_id) {
+    auto target_color = ArmorColor::Blue;
+    switch (color) {
+    case rmcs_core::msgs::RoboticColor::Blue: target_color = ArmorColor::Red;
+    case rmcs_core::msgs::RoboticColor::Red:
+    case rmcs_core::msgs::RoboticColor::Neutral: break;
+    }
+
     hikcamera::ImageCapturer::CameraProfile camera_profile;
     {
         using namespace std::chrono_literals;
-        camera_profile.exposure_time = 3ms;
+        camera_profile.exposure_time = 13ms;
         camera_profile.gain          = 16.9807;
-        camera_profile.invert_image  = true;
+
+        if (robit_id == 7) {
+            camera_profile.invert_image = true;
+        } else {
+            camera_profile.invert_image = false;
+        }
     }
     hikcamera::ImageCapturer image_capturer(camera_profile);
 
@@ -160,7 +178,6 @@ void GimbalInfantry::Always(
         if constexpr (debugCanvas.master) {
             debugCanvas.master.LoadMat(img);
         }
-
         // autoscope_enabled = cboard.get_auto_scope_enabled();
 
         do {
@@ -169,7 +186,7 @@ void GimbalInfantry::Always(
             // buff_enabled = cboard.get_buff_mode_enabled();
 
             if (!buff_enabled) {
-                auto armors   = armor_identifier.Identify(img, ArmorColor::Blue);
+                auto armors   = armor_identifier.Identify(img, target_color);
                 auto armors3d = ArmorPnPSolver::SolveAll(armors);
                 if (auto target = ekf_tracker.Update(armors3d, timestamp)) {
                     timestamp_ref = timestamp;

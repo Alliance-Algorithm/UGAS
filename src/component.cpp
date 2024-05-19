@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <memory>
 #include <thread>
 
@@ -5,6 +6,7 @@
 #include <rclcpp/logger.hpp>
 #include <rclcpp/logging.hpp>
 #include <rclcpp/node.hpp>
+#include <rmcs_core/msgs.hpp>
 #include <rmcs_description/tf_description.hpp>
 #include <rmcs_executor/component.hpp>
 
@@ -27,6 +29,8 @@ public:
 
         register_input("/predefined/update_count", update_count_);
         register_input("/tf", tf_);
+        register_input("/robot_color", color_);
+        register_input("/robot_id", robot_id_);
         register_output(
             "/gimbal/auto_aim/control_direction", control_direction_, Eigen::Vector3d::Zero());
 
@@ -40,7 +44,8 @@ public:
 
     void update() override {
         if (*update_count_ == 0) {
-            gimbal_thread_ = std::thread{[this]() { gimbal_->Always(target_, timestamp_); }};
+            gimbal_thread_ = std::thread{
+                [this]() { gimbal_->Always(target_, timestamp_, *color_, *robot_id_); }};
             return;
         }
 
@@ -75,6 +80,8 @@ public:
 
 private:
     InputInterface<size_t> update_count_;
+    InputInterface<rmcs_core::msgs::RoboticColor> color_;
+    InputInterface<uint8_t> robot_id_;
     InputInterface<rmcs_description::Tf> tf_;
 
     std::unique_ptr<GimbalInfantry> gimbal_;
