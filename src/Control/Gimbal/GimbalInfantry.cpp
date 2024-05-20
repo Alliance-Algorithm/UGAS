@@ -171,7 +171,11 @@ void GimbalInfantry::Always(
         auto timestamp = std::chrono::steady_clock::now();
 
         if constexpr (debugCanvas.master) {
-            debugCanvas.master.LoadMat(img);
+            auto center_x = img.cols / 2;
+            auto center_y = img.rows / 2;
+            auto debug    = img.clone();
+            circle(debug, cv::Point(center_x, center_y), 10, CV_RGB(0, 255, 255), 2, 8, 0);
+            debugCanvas.master.LoadMat(debug);
         }
         // autoscope_enabled = cboard.get_auto_scope_enabled();
 
@@ -181,7 +185,10 @@ void GimbalInfantry::Always(
             // buff_enabled = cboard.get_buff_mode_enabled();
             if (!buff_enabled && *buff_mode) {
                 buff_tracker.ResetAll();
-                buff_enabled = *buff_mode;
+                buff_enabled = true;
+            } else if (buff_enabled && !(*buff_mode)) {
+                buff_tracker.ResetAll();
+                buff_enabled = false;
             }
 
             if (!buff_enabled) {
