@@ -31,10 +31,15 @@ public:
         register_input("/tf", tf_);
         register_input("/robot_color", color_);
         register_input("/robot_id", robot_id_);
+        register_input("/auto_rune", buff_mode_);
         register_output(
             "/gimbal/auto_aim/control_direction", control_direction_, Eigen::Vector3d::Zero());
 
         gimbal_ = std::make_unique<GimbalInfantry>();
+
+        exposure_time_          = get_parameter("exposure_time").as_int();
+        armor_predict_duration_ = get_parameter("armor_predict_duration").as_int();
+        buff_predict_duration_  = get_parameter("buff_predict_duration").as_int();
     }
 
     ~Component() {
@@ -44,8 +49,12 @@ public:
 
     void update() override {
         if (*update_count_ == 0) {
-            gimbal_thread_ = std::thread{
-                [this]() { gimbal_->Always(target_, timestamp_, *color_, *robot_id_); }};
+            gimbal_thread_ = std::thread{[this]() {
+                gimbal_->Always(
+                    target_, timestamp_, color_, robot_id_,
+                    std::chrono::milliseconds(exposure_time_), buff_mode_, armor_predict_duration_,
+                    buff_predict_duration_);
+            }};
             return;
         }
 
@@ -83,6 +92,11 @@ private:
     InputInterface<rmcs_core::msgs::RoboticColor> color_;
     InputInterface<uint8_t> robot_id_;
     InputInterface<rmcs_description::Tf> tf_;
+    InputInterface<bool> buff_mode_;
+
+    int64_t exposure_time_;
+    int64_t armor_predict_duration_;
+    int64_t buff_predict_duration_;
 
     std::unique_ptr<GimbalInfantry> gimbal_;
     std::thread gimbal_thread_;

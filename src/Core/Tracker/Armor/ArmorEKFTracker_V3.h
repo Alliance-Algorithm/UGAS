@@ -10,6 +10,7 @@ Header Functions:
 - 基于EKF的目标追踪器 第二版
 */
 
+#include <cstdint>
 #include <eigen3/Eigen/Dense>
 
 #include "Core/Tracker/Armor/EKF.h"
@@ -182,7 +183,8 @@ public:
     };
 
     std::unique_ptr<TargetInterface> Update(
-        const std::vector<ArmorPlate3d>& armors, std::chrono::steady_clock::time_point timestamp) {
+        const std::vector<ArmorPlate3d>& armors, std::chrono::steady_clock::time_point timestamp,
+        int64_t predict_duration) {
         // dt: interval between adjacent updates by seconds.
         double dt    = std::chrono::duration<double>(timestamp - last_update_).count();
         last_update_ = timestamp;
@@ -190,7 +192,7 @@ public:
         for (auto& [armor_id, tracker_array] : tracker_map_) {
             for (auto iter = tracker_array.begin(); iter != tracker_array.end();) {
                 auto& tracker = *iter;
-                if (timestamp - tracker.last_update > std::chrono::milliseconds(1000))
+                if (timestamp - tracker.last_update > std::chrono::milliseconds(predict_duration))
                     iter = tracker_array.erase(iter);
                 else {
                     tracker.Predict(dt);
@@ -292,7 +294,7 @@ public:
 #endif
         TrackerUnit* selected_tracker = nullptr;
         int selected_level            = 0;
-        double minimum_angle=0;
+        double minimum_angle          = 0;
         for (auto& [armor_id, tracker_array] : tracker_map_) {
             for (auto& tracker : tracker_array) {
                 int level = 0;

@@ -124,25 +124,20 @@ inline const rclcpp::QoS kCoreQoS = rclcpp::QoS(1).best_effort().durability_vola
 
 void GimbalInfantry::Always(
     TargetInterface*& target_ref, std::chrono::steady_clock::time_point& timestamp_ref,
-    rmcs_core::msgs::RoboticColor color, uint8_t robit_id) {
-    auto target_color = ArmorColor::Blue;
-    switch (color) {
-    case rmcs_core::msgs::RoboticColor::Blue: target_color = ArmorColor::Red;
-    case rmcs_core::msgs::RoboticColor::Red:
-    case rmcs_core::msgs::RoboticColor::Neutral: break;
-    }
+    rmcs_executor::Component::InputInterface<rmcs_core::msgs::RoboticColor>& color,
+    rmcs_executor::Component::InputInterface<uint8_t>& robot_id,
+    std::chrono::milliseconds exposure_time,
+    rmcs_executor::Component::InputInterface<bool>& buff_mode, int64_t armor_predict_duration,
+    int64_t buff_predict_duration) {
 
     hikcamera::ImageCapturer::CameraProfile camera_profile;
-    {
-        using namespace std::chrono_literals;
-        camera_profile.exposure_time = 13ms;
-        camera_profile.gain          = 16.9807;
+    camera_profile.exposure_time = exposure_time;
+    camera_profile.gain          = 16.9807;
 
-        if (robit_id == 7) {
-            camera_profile.invert_image = true;
-        } else {
-            camera_profile.invert_image = false;
-        }
+    if ((*robot_id) == 7) {
+        camera_profile.invert_image = true;
+    } else {
+        camera_profile.invert_image = false;
     }
     hikcamera::ImageCapturer image_capturer(camera_profile);
 
@@ -184,11 +179,17 @@ void GimbalInfantry::Always(
             // if (!buff_enabled && cboard.get_buff_mode_enabled())
             // buff_tracker.ResetAll();
             // buff_enabled = cboard.get_buff_mode_enabled();
+            if (!buff_enabled && *buff_mode) {
+                buff_tracker.ResetAll();
+                buff_enabled = *buff_mode;
+            }
 
             if (!buff_enabled) {
-                auto armors   = armor_identifier.Identify(img, target_color);
+                auto armors = armor_identifier.Identify(
+                    img, *color == rmcs_core::msgs::RoboticColor::Blue ? ArmorColor::Red
+                                                                       : ArmorColor::Blue);
                 auto armors3d = ArmorPnPSolver::SolveAll(armors);
-                if (auto target = ekf_tracker.Update(armors3d, timestamp)) {
+                if (auto target = ekf_tracker.Update(armors3d, timestamp, armor_predict_duration)) {
                     timestamp_ref = timestamp;
                     target_ref    = target.release();
                     // sender.update(std::move(target), timestamp);
@@ -198,7 +199,8 @@ void GimbalInfantry::Always(
             } else {
                 if (auto buff = buff_identifier.Identify(img)) {
                     if (auto buff3d = BuffPnPSolver::Solve(*buff)) {
-                        if (auto target = buff_tracker.Update(*buff3d, timestamp)) {
+                        if (auto target =
+                                buff_tracker.Update(*buff3d, timestamp, buff_predict_duration)) {
                             timestamp_ref = timestamp;
                             target_ref    = target.release();
                             // sender.update(std::move(target), timestamp);
