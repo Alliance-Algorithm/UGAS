@@ -13,5 +13,11 @@ Header Functions:
 class TargetInterface {
 public:
     virtual ~TargetInterface() = default;
+
     [[nodiscard]] virtual GimbalGyro::Position Predict(double sec) const = 0;
+
+    [[nodiscard]] virtual bool IsPrecise(double sec) const {
+        (void)sec;
+        return true;
+    };
 };

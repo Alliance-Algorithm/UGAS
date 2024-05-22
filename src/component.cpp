@@ -29,6 +29,7 @@ public:
         register_input("/tf", tf_);
         register_output(
             "/gimbal/auto_aim/control_direction", control_direction_, Eigen::Vector3d::Zero());
+        register_output("/gimbal/auto_aim/control_fire", control_fire_, false);
 
         gimbal_ = std::make_unique<GimbalInfantry>();
     }
@@ -63,14 +64,26 @@ public:
         for (int i = 5; i-- > 0;) {
             auto pos = target->Predict(
                 static_cast<std::chrono::duration<double>>(diff).count() + fly_time + 0.05);
-            auto aiming_direction = *trajectory_.GetShotVector(pos, 27.0, fly_time);
-            auto delta_yaw   = Eigen::AngleAxisd{0.005, gimbal_pose * Eigen::Vector3d::UnitZ()};
+            auto aiming_direction = *trajectory_.GetShotVector(pos, 28.3, fly_time);
+            auto delta_yaw   = Eigen::AngleAxisd{-0.002, gimbal_pose * Eigen::Vector3d::UnitZ()};
             auto delta_pitch = Eigen::AngleAxisd{0.050, gimbal_pose * Eigen::Vector3d::UnitY()};
             aiming_direction = delta_pitch * (delta_yaw * (aiming_direction));
             if (i == 0) {
                 *control_direction_ = aiming_direction;
             }
         }
+
+        bool control_fire = false;
+        if (diff < 100ms
+            && target->IsPrecise(
+                static_cast<std::chrono::duration<double>>(diff).count() + fly_time + 0.05)) {
+            auto real_direction = *fast_tf::cast<rmcs_description::OdomImu>(
+                rmcs_description::PitchLink::DirectionVector{Eigen::Vector3d::UnitX()}, *tf_);
+            double diff_angle = std::acos(real_direction.dot(*control_direction_));
+            if (diff_angle < 0.03)
+                control_fire = true;
+        }
+        *control_fire_ = control_fire;
     }
 
 private:
@@ -85,6 +98,7 @@ private:
     Trajectory_V1 trajectory_{};
 
     OutputInterface<Eigen::Vector3d> control_direction_;
+    OutputInterface<bool> control_fire_;
 };
 
 }; // namespace ugas

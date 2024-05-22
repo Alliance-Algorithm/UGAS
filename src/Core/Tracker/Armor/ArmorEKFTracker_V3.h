@@ -22,6 +22,10 @@ class ArmorEKFTracker {
         TrackerUnit(
             const ArmorPlate3d& armor, const std::chrono::steady_clock::time_point& timestamp)
             : last_update(timestamp) {
+            if (armor.id == ArmorID::Outpost) {
+                armor_count = 3;
+                r_list[0] = r_list[1] = r_list[2] = -0.2765;
+            }
             double& r        = r_list[0];
             double yaw       = GetArmorYaw(armor);
             double xc        = armor.position->x() + r * cos(yaw);
@@ -42,8 +46,8 @@ class ArmorEKFTracker {
         void Predict(double dt) {
             ekf.Predict(dt);
             tracked_duration += dt;
-            for (bool& updated : armor_newly_updated)
-                updated = false;
+            // for (bool& updated : armor_newly_updated)
+            //     updated = false;
         }
 
         void Update(
@@ -52,11 +56,11 @@ class ArmorEKFTracker {
             double yaw = GetArmorYaw(armor);
 
             constexpr double legal_range = parameters::Pi / 4;
-            constexpr double step        = 2 * parameters::Pi / armor_count;
+            double step                  = 2 * parameters::Pi / armor_count;
 
             double shift = 0;
 
-            size_t i;
+            int i;
             for (i = 0; i < armor_count; ++i) {
                 // std::cout << yaw << ' ';
                 double diff = GetMinimumAngleDiff(yaw, model_yaw + shift);
@@ -77,7 +81,9 @@ class ArmorEKFTracker {
                 last_update = timestamp;
 
                 v_za = 0;
-                if (r > -0.12)
+                if (armor_count == 3)
+                    r = -0.2765;
+                else if (r > -0.12)
                     r = -0.12;
                 else if (r < -0.4)
                     r = -0.4;
@@ -88,18 +94,20 @@ class ArmorEKFTracker {
                 model_yaw -= shift;
 
                 tracked_times += 1;
-                if (tracked_duration > 0.5)
+                if (tracked_duration > 0.25)
                     tracking_density = tracked_times / tracked_duration;
 
-                armor_newly_updated[i] = true;
+                // armor_newly_updated[i] = true;
+                if (armor_count == 3)
+                    ekf.x_[1] = ekf.x_[3] = ekf.x_[5] = 0;
             }
         }
 
-        [[nodiscard]] static std::tuple<Eigen::Vector3d, double>
-            GetArmorState(const Eigen::VectorXd& x, size_t index) {
+        [[nodiscard]] std::tuple<Eigen::Vector3d, double>
+            GetArmorState(const Eigen::VectorXd& x, size_t index) const {
             const double &xc = x(0), &yc = x(2), &za = x(4), &r = x(8);
-            constexpr double yaw_step = 2 * parameters::Pi / armor_count;
-            double yaw                = x(6) + yaw_step * (double)index;
+            double yaw_step = 2 * parameters::Pi / armor_count;
+            double yaw      = x(6) + yaw_step * (double)index;
 
             double xa = xc - r * cos(yaw);
             double ya = yc - r * sin(yaw);
@@ -114,10 +122,10 @@ class ArmorEKFTracker {
         }
 
         EKF ekf;
-        static constexpr size_t armor_count = 4;
+        int armor_count = 4;
         std::chrono::steady_clock::time_point last_update;
-        double r_list[armor_count]{-0.26, -0.26, -0.26, -0.26};
-        bool armor_newly_updated[armor_count]{false, false, false, false};
+        double r_list[4]{-0.26, -0.26, -0.26, -0.26};
+        // bool armor_newly_updated[armor_count]{false, false, false, false};
 
         double tracked_duration = 0, tracked_times = 0, tracking_density = 0;
 
@@ -138,19 +146,19 @@ class ArmorEKFTracker {
             const double &xc = x(0), &yc = x(2), &za = x(4), &v_yaw = x(7);
             double& model_yaw = x(6);
             double camera_yaw = std::atan2(-yc, -xc);
-            if (fabs(v_yaw) < 12.0) {
+            if (fabs(v_yaw) < 6.0 && tracker_.armor_count != 3) {
                 double shift                 = 0;
                 constexpr double legal_range = parameters::Pi / 4;
-                constexpr double step        = 2 * parameters::Pi / TrackerUnit::armor_count;
-                size_t i;
-                for (i = 0; i < TrackerUnit::armor_count; ++i) {
+                double step                  = 2 * parameters::Pi / tracker_.armor_count;
+                int i;
+                for (i = 0; i < tracker_.armor_count; ++i) {
                     double diff = GetMinimumAngleDiff(camera_yaw, model_yaw + shift);
                     if (-legal_range < diff && diff < legal_range)
                         break;
                     else
                         shift += step;
                 }
-                if (i < TrackerUnit::armor_count) {
+                if (i < tracker_.armor_count) {
                     double r   = tracker_.r_list[i];
                     double yaw = model_yaw + shift;
                     auto pos   = Eigen::Vector3d{xc - r * cos(yaw), yc - r * sin(yaw), za};
@@ -165,6 +173,34 @@ class ArmorEKFTracker {
 
             return GimbalGyro::Position(pos);
         }
+
+        [[nodiscard]] bool IsPrecise(double sec) const override {
+            // xc  v_xc  yc  v_yc  za  v_za  yaw  v_yaw  r
+            Eigen::VectorXd x = tracker_.ekf.PredictConst(sec);
+            const double &xc = x(0), &yc = x(2), &za = x(4), &v_yaw = x(7);
+            double& model_yaw = x(6);
+            double camera_yaw = std::atan2(-yc, -xc);
+            if (fabs(v_yaw) < 6.0 && tracker_.armor_count != 3) {
+                return true;
+            }
+
+            double shift                 = 0;
+            constexpr double legal_range = parameters::Pi / 4;
+            double step                  = 2 * parameters::Pi / tracker_.armor_count;
+            int i;
+            for (i = 0; i < tracker_.armor_count; ++i) {
+                double diff = GetMinimumAngleDiff(camera_yaw, model_yaw + shift);
+                if (-legal_range < diff && diff < legal_range)
+                    break;
+                else
+                    shift += step;
+            }
+            if (i < tracker_.armor_count) {
+                double yaw = model_yaw + shift;
+                return std::abs(GetMinimumAngleDiff(yaw, camera_yaw)) < 0.3;
+            }
+            return false;
+        };
 
     private:
         const TrackerUnit& tracker_;
@@ -225,7 +261,7 @@ public:
 
                     // std::cout << (int)armor_id << ' ' << tracker.ekf.x_(7) << ' ';
                     // std::cout << tracker.ekf.x_[7] << '\n';
-                    for (size_t i = 0; i < TrackerUnit::armor_count; ++i) {
+                    for (int i = 0; i < tracker.armor_count; ++i) {
                         visualization_msgs::msg::Marker marker1;
                         marker1.header.frame_id = "odom_imu";
                         // marker1.ns              = "armor_plate_array";
@@ -292,7 +328,7 @@ public:
 #endif
         TrackerUnit* selected_tracker = nullptr;
         int selected_level            = 0;
-        double minimum_angle=0;
+        double minimum_angle          = 0;
         for (auto& [armor_id, tracker_array] : tracker_map_) {
             for (auto& tracker : tracker_array) {
                 int level = 0;
