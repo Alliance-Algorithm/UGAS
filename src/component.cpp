@@ -38,11 +38,12 @@ public:
 
         gimbal_ = std::make_unique<GimbalInfantry>();
 
-        exposure_time_          = get_parameter("exposure_time").as_int();
-        armor_predict_duration_ = get_parameter("armor_predict_duration").as_int();
-        buff_predict_duration_  = get_parameter("buff_predict_duration").as_int();
-        yaw_error               = get_parameter("yaw_error").as_double();
-        pitch_error             = get_parameter("pitch_error").as_double();
+        exposure_time_           = get_parameter("exposure_time").as_int();
+        armor_predict_duration_  = get_parameter("armor_predict_duration").as_int();
+        buff_predict_duration_   = get_parameter("buff_predict_duration").as_int();
+        yaw_error_               = get_parameter("yaw_error").as_double();
+        pitch_error_             = get_parameter("pitch_error").as_double();
+        gimbal_predict_duration_ = get_parameter("gimbal_predict_duration").as_int();
     }
 
     ~Component() {
@@ -72,9 +73,7 @@ public:
 
         using namespace std::chrono_literals;
         auto diff = std::chrono::steady_clock::now() - timestamp_;
-        if (diff > std::chrono::milliseconds(
-                armor_predict_duration_ < buff_predict_duration_ ? armor_predict_duration_
-                                                                 : buff_predict_duration_)) {
+        if (diff > std::chrono::milliseconds(gimbal_predict_duration_)) {
             *control_direction_ = Eigen::Vector3d::Zero();
             return;
         }
@@ -84,9 +83,9 @@ public:
             auto pos = target->Predict(
                 static_cast<std::chrono::duration<double>>(diff).count() + fly_time + 0.05);
             auto aiming_direction = *trajectory_.GetShotVector(pos, 27.0, fly_time);
-            auto delta_yaw = Eigen::AngleAxisd{yaw_error, gimbal_pose * Eigen::Vector3d::UnitZ()};
+            auto delta_yaw = Eigen::AngleAxisd{yaw_error_, gimbal_pose * Eigen::Vector3d::UnitZ()};
             auto delta_pitch =
-                Eigen::AngleAxisd{pitch_error, gimbal_pose * Eigen::Vector3d::UnitY()};
+                Eigen::AngleAxisd{pitch_error_, gimbal_pose * Eigen::Vector3d::UnitY()};
             aiming_direction = delta_pitch * (delta_yaw * (aiming_direction));
             if (i == 0) {
                 *control_direction_ = aiming_direction;
@@ -104,9 +103,10 @@ private:
     int64_t exposure_time_;
     int64_t armor_predict_duration_;
     int64_t buff_predict_duration_;
+    int64_t gimbal_predict_duration_;
 
-    double yaw_error;
-    double pitch_error;
+    double yaw_error_;
+    double pitch_error_;
 
     std::unique_ptr<GimbalInfantry> gimbal_;
     std::thread gimbal_thread_;

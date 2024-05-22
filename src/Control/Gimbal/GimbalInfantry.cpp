@@ -4,17 +4,25 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <cstdlib>
 #include <eigen3/Eigen/Dense>
+#include <exception>
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/vector3.hpp>
 #include <hikcamera/image_capturer.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/core/mat.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/opencv.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <rmcs_core/msgs.hpp>
+#include <stdexcept>
 #include <thread>
+#include <vector>
 
 #include "Core/ImgCapture/Common/CVVideoCapture.h"
+#include "ThirdParty/Serial/serial.h"
+#include "Util/Debug/Log.h"
 #include "Util/Parameter/Parameters.h"
 #include "config.h"
 // #include "Core/ImgCapture/Common/HikCameraCapture.h"
@@ -133,6 +141,7 @@ void GimbalInfantry::Always(
     hikcamera::ImageCapturer::CameraProfile camera_profile;
     camera_profile.exposure_time = exposure_time;
     camera_profile.gain          = 16.9807;
+    // camera_profile.exposure_debug_ = true;
 
     if ((*robot_id) == 7) {
         camera_profile.invert_image = true;
@@ -148,7 +157,7 @@ void GimbalInfantry::Always(
 
     std::string package_share_directory = ament_index_cpp::get_package_share_directory("ugas");
 
-    std::string path0     = package_share_directory + "/models/NumberIdentifyModelV4.pb";
+    std::string path0     = package_share_directory + "/models/armoridentify_with_base.onnx";
     auto armor_identifier = ArmorIdentifier_V3<NumberIdentifier_V1>(path0.c_str());
     auto buff_identifier =
         BuffIdentifier_V1(package_share_directory + "/models/buff_nocolor_v6.onnx");
@@ -161,13 +170,14 @@ void GimbalInfantry::Always(
 
     auto fps = FPSCounter_V2();
 
-    auto recorder = PNGRecorder("images/", ENABLE_RECORDING ? 3.0 : 0.0);
+    // auto recorder = PNGRecorder("images/", 3.0);
 
     // bool autoscope_enabled = true;
     bool buff_enabled = false;
 
     while (rclcpp::ok()) {
-        auto img       = image_capturer.read();
+        auto img = image_capturer.read();
+
         auto timestamp = std::chrono::steady_clock::now();
 
         if constexpr (debugCanvas.master) {
@@ -232,5 +242,7 @@ void GimbalInfantry::Always(
         if (fps.Count()) {
             RCLCPP_INFO(rclcpp::get_logger("ugas"), "Fps: %d", fps.GetFPS());
         }
+
+        // recorder.Record(img, timestamp);
     }
 }
