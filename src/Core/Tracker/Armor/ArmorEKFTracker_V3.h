@@ -94,7 +94,7 @@ class ArmorEKFTracker {
                 model_yaw -= shift;
 
                 tracked_times += 1;
-                if (tracked_duration > 0.25)
+                if (tracked_duration > 0.05)
                     tracking_density = tracked_times / tracked_duration;
 
                 // armor_newly_updated[i] = true;

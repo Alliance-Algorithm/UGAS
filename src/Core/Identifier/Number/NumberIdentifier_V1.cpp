@@ -46,10 +46,10 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
         armor.id             = ArmorID::Hero;
         armor.is_large_armor = true;
         break;
-    case 2:
-        armor.id             = ArmorID::Engineer;
-        armor.is_large_armor = false;
-        break;
+    // case 2:
+    //     armor.id             = ArmorID::Engineer;
+    //     armor.is_large_armor = false;
+    //     break;
     case 3:
         armor.id             = ArmorID::InfantryIII;
         armor.is_large_armor = false;
@@ -62,10 +62,10 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
         armor.id             = ArmorID::InfantryV;
         armor.is_large_armor = false;
         break;
-    case 6:
-        armor.id             = ArmorID::Sentry;
-        armor.is_large_armor = false;
-        break;
+    // case 6:
+    //     armor.id             = ArmorID::Sentry;
+    //     armor.is_large_armor = false;
+    //     break;
     case 7:
         armor.id             = ArmorID::InfantryIII;
         armor.is_large_armor = true;
@@ -78,13 +78,13 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
         armor.id             = ArmorID::InfantryV;
         armor.is_large_armor = true;
         break;
-    case 10:
-        armor.id             = ArmorID::Outpost;
-        armor.is_large_armor = false;
-        break;
+    // case 10:
+    //     armor.id             = ArmorID::Outpost;
+    //     armor.is_large_armor = false;
+    //     break;
     case 11:
         armor.id             = ArmorID::Base;
-        armor.is_large_armor = false;
+        armor.is_large_armor = true;
         break;
     default: return false;
     }

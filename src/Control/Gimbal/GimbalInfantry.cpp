@@ -148,7 +148,7 @@ void GimbalInfantry::Always(
 
     auto fps = FPSCounter_V2();
 
-    auto recorder = PNGRecorder("/record/images/", false ? 3.0 : 0.0);
+    auto recorder = PNGRecorder("/record/images/", true ? 3.0 : 0.0);
 
     // bool autoscope_enabled = true;
     bool buff_enabled = false;
@@ -169,7 +169,7 @@ void GimbalInfantry::Always(
             // buff_enabled = cboard.get_buff_mode_enabled();
 
             if (!buff_enabled) {
-                auto armors   = armor_identifier.Identify(img, ArmorColor::Blue);
+                auto armors   = armor_identifier.Identify(img, ArmorColor::Red);
                 auto armors3d = ArmorPnPSolver::SolveAll(armors);
                 if (auto target = ekf_tracker.Update(armors3d, timestamp)) {
                     timestamp_ref = timestamp;
