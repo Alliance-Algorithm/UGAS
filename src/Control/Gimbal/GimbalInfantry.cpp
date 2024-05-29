@@ -170,7 +170,7 @@ void GimbalInfantry::Always(
 
     auto fps = FPSCounter_V2();
 
-    // auto recorder = PNGRecorder("images/", 3.0);
+    auto recorder = PNGRecorder("/images/", 3.0);
 
     // bool autoscope_enabled = true;
     bool buff_enabled = false;
@@ -195,11 +195,8 @@ void GimbalInfantry::Always(
             // buff_enabled = cboard.get_buff_mode_enabled();
             if (!buff_enabled && *buff_mode) {
                 buff_tracker.ResetAll();
-                buff_enabled = true;
-            } else if (buff_enabled && !(*buff_mode)) {
-                buff_tracker.ResetAll();
-                buff_enabled = false;
             }
+            buff_enabled = *buff_mode;
 
             if (!buff_enabled) {
                 auto armors = armor_identifier.Identify(
@@ -243,6 +240,6 @@ void GimbalInfantry::Always(
             RCLCPP_INFO(rclcpp::get_logger("ugas"), "Fps: %d", fps.GetFPS());
         }
 
-        // recorder.Record(img, timestamp);
+        recorder.Record(img, timestamp);
     }
 }

@@ -84,14 +84,15 @@ bool NumberIdentifier_V1::Identify(const cv::Mat& imgGray, ArmorPlate& armor) {
         armor.id             = ArmorID::InfantryV;
         armor.is_large_armor = true;
         break;
-    case 10:
-        armor.id             = ArmorID::Outpost;
-        armor.is_large_armor = false;
-        break;
+    // case 10:
+    //     armor.id             = ArmorID::Outpost;
+    //     armor.is_large_armor = false;
+    //     break;
     case 11:
         armor.id             = ArmorID::Base;
         armor.is_large_armor = false;
         break;
+    default: return false;
     }
 
     if constexpr (debugCanvas.armorNum) {

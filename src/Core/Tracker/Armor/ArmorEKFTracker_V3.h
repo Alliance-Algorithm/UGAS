@@ -10,6 +10,7 @@ Header Functions:
 - 基于EKF的目标追踪器 第二版
 */
 
+#include <cmath>
 #include <cstdint>
 #include <eigen3/Eigen/Dense>
 
@@ -294,7 +295,7 @@ public:
 #endif
         TrackerUnit* selected_tracker = nullptr;
         int selected_level            = 0;
-        double minimum_angle          = 0;
+        double minimum_angle          = INFINITY;
         for (auto& [armor_id, tracker_array] : tracker_map_) {
             for (auto& tracker : tracker_array) {
                 int level = 0;
@@ -307,12 +308,16 @@ public:
                     GimbalGyro::Position(tracker.ekf.x_(0), tracker.ekf.x_(2), tracker.ekf.x_(4)));
                 double angle = std::acos(center.dot(Eigen::Vector3d{1, 0, 0}) / center.norm());
 
-                if (level > selected_level) {
-                    selected_level   = level;
+                if (angle < minimum_angle) {
                     minimum_angle    = angle;
                     selected_tracker = &tracker;
-                } else if (level > 0 && level == selected_level && angle < minimum_angle) {
-                    minimum_angle    = angle;
+                    selected_level   = level;
+                } else if (
+                    !std::isinf(angle) && fabs(angle - minimum_angle) < 1e-3
+                    && selected_level < level) {
+                    selected_level = level;
+                    minimum_angle  = angle;
+
                     selected_tracker = &tracker;
                 }
             }
