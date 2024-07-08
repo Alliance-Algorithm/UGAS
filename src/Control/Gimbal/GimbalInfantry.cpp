@@ -132,10 +132,8 @@ inline const rclcpp::QoS kCoreQoS = rclcpp::QoS(1).best_effort().durability_vola
 
 void GimbalInfantry::Always(
     TargetInterface*& target_ref, std::chrono::steady_clock::time_point& timestamp_ref,
-    rmcs_executor::Component::InputInterface<rmcs_core::msgs::RoboticColor>& color,
-    rmcs_executor::Component::InputInterface<uint8_t>& robot_id,
-    std::chrono::milliseconds exposure_time,
-    rmcs_executor::Component::InputInterface<bool>& buff_mode, int64_t armor_predict_duration,
+    rmcs_core::msgs::RoboticColor& color, uint8_t& robot_id,
+    std::chrono::milliseconds exposure_time, bool& buff_mode, int64_t armor_predict_duration,
     int64_t buff_predict_duration) {
 
     hikcamera::ImageCapturer::CameraProfile camera_profile;
@@ -143,7 +141,7 @@ void GimbalInfantry::Always(
     camera_profile.gain          = 16.9807;
     // camera_profile.exposure_debug_ = true;
 
-    if ((*robot_id) == 7) {
+    if ((robot_id) == 7) {
         camera_profile.invert_image = true;
     } else {
         camera_profile.invert_image = false;
@@ -193,15 +191,15 @@ void GimbalInfantry::Always(
             // if (!buff_enabled && cboard.get_buff_mode_enabled())
             // buff_tracker.ResetAll();
             // buff_enabled = cboard.get_buff_mode_enabled();
-            if (!buff_enabled && *buff_mode) {
+            if (!buff_enabled && buff_mode) {
                 buff_tracker.ResetAll();
             }
-            buff_enabled = *buff_mode;
+            buff_enabled = buff_mode;
 
             if (!buff_enabled) {
                 auto armors = armor_identifier.Identify(
-                    img, *color == rmcs_core::msgs::RoboticColor::Blue ? ArmorColor::Red
-                                                                       : ArmorColor::Blue);
+                    img, color == rmcs_core::msgs::RoboticColor::Blue ? ArmorColor::Red
+                                                                      : ArmorColor::Blue);
                 auto armors3d = ArmorPnPSolver::SolveAll(armors);
                 if (auto target = ekf_tracker.Update(armors3d, timestamp, armor_predict_duration)) {
                     timestamp_ref = timestamp;

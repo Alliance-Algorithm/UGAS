@@ -30,9 +30,10 @@ public:
 
         register_input("/predefined/update_count", update_count_);
         register_input("/tf", tf_);
-        register_input("/robot_color", color_);
-        register_input("/robot_id", robot_id_);
-        register_input("/auto_rune", buff_mode_);
+        // register_input("/robot_color", color_);
+        // register_input("/robot_id", robot_id_);
+        // register_input("/auto_rune", buff_mode_);
+
         register_output(
             "/gimbal/auto_aim/control_direction", control_direction_, Eigen::Vector3d::Zero());
 
@@ -95,10 +96,10 @@ public:
 
 private:
     InputInterface<size_t> update_count_;
-    InputInterface<rmcs_core::msgs::RoboticColor> color_;
-    InputInterface<uint8_t> robot_id_;
+    rmcs_core::msgs::RoboticColor color_ = rmcs_core::msgs::RoboticColor::Blue;
+    uint8_t robot_id_                    = 7;
     InputInterface<rmcs_description::Tf> tf_;
-    InputInterface<bool> buff_mode_;
+    bool buff_mode_ = false;
 
     int64_t exposure_time_;
     int64_t armor_predict_duration_;
