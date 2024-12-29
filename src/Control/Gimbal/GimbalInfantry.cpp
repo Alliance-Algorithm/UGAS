@@ -155,6 +155,7 @@ void GimbalInfantry::Always(
 
     while (rclcpp::ok()) {
         auto img       = image_capturer.read();
+        cv::rotate(img, img, cv::ROTATE_180);
         auto timestamp = std::chrono::steady_clock::now();
 
         if constexpr (debugCanvas.master) {
